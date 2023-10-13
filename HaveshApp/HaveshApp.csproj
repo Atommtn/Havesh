@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>6dadb91b-03a9-4f75-82eb-12fe7fa14d21</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Client\**" />
+    <Compile Remove="StudentsStuff\**" />
+    <Content Remove="Client\**" />
+    <Content Remove="StudentsStuff\**" />
+    <EmbeddedResource Remove="Client\**" />
+    <EmbeddedResource Remove="StudentsStuff\**" />
+    <None Remove="Client\**" />
+    <None Remove="StudentsStuff\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Admin\DailyJV\Components\PreRegistrationPage.razor.cs" />
+    <Compile Remove="Admin\Planning\ClassProgramPage.razor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Admin\Planning\ClassProgramPage.razor" />
+    <Content Remove="wwwroot\imageOptimize\OptimizerService.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspectCore.Core" Version="2.4.0" />
+    <PackageReference Include="AspectCore.Extensions.LightInject" Version="2.4.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.13.20" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.9.69" />
+    <PackageReference Include="Blazor.QRCode" Version="0.2.1" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="DNTPersianUtils.Core" Version="5.7.1" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="MudBlazor" Version="6.10.0" />
+    <PackageReference Include="Olive" Version="2.1.349" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
+    <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\imageOptimize\OptimizerService.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="alb-http-to-https-redirection.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,163 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Classes
+@using ShokouhApp.Model
+
+<MudStack Row="true">
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.TwoTone.Person" Size="Size.Small" OnClick="AddNewStudentClick">
+        ثبت نام زبان آموز جدید
+    </MudButton>
+</MudStack>
+
+@if (list is { })
+{
+    @if (list is { Count: 0 })
+    {
+        <MudCard Class="ma-4">
+            <MudCardHeader>
+                <MudText Typo="Typo.h6">
+                    هیچ زبان آموزی توسط شما هنوز ورود اطلاعات نشده
+                </MudText>
+
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.subtitle1">
+                    شما می توانید حداکثر 4 زبان آموز را ثبت نام کنید. برای این منظور بر روی دکمه ثبت نام زبان آموز کلیک کنید
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudSpacer />
+                <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Class="ma-3 pa-3">
+                    <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.TwoTone.Person" OnClick="AddNewStudentClick">
+                        ثبت نام زبان آموز جدید
+                    </MudButton>
+
+                </MudStack>
+
+            </MudCardActions>
+        </MudCard>
+
+    }
+    else
+    {
+        <MudText Typo="Typo.h3">
+            زبان آموزان وارد شده توسط شما:
+        </MudText>
+    }
+
+    <MudList Clickable="true">
+        @foreach (var stu in list)
+        {
+            <MudListItem Value="stu" OnClick="() => SelectStudentClick(stu)">
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    @if (stu.ProfilePicture.IsNullOrEmpty())
+                    {
+                        <MudAvatar Size="Size.Large">
+                            @stu.StudentName.FirstOrDefault()&nbsp;
+                            @stu.StudentFamily.FirstOrDefault()
+
+                        </MudAvatar>
+                    }
+                    else
+                    {
+                        <MudAvatar Image="@stu.ProfilePicture" Size="Size.Large" />
+
+                    }
+                    <h4>
+                        @stu.StudentName @stu.StudentFamily - @stu.StudentIdno
+                    </h4>
+
+
+                </MudStack>
+
+            </MudListItem>
+        }
+    </MudList>
+}
+else
+{
+    <MudProgressLinear Size="Size.Large" Striped="true" Rounded="true" Indeterminate="true" Class="ma-5"></MudProgressLinear>
+}
+
+@code {
+
+    [Inject] DataProviderService DataService { get; set; }
+    [Inject] TokenProviderService ProviderService { get; set; }
+    [Inject] BrowserService BrowserService { get; set; }
+
+    Guid? _uniqueKey;
+    List<ShokouhPardisStudentClassOnlineForm>? list;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var uniqueKey = await ProviderService.TryGetUniqueKey(BrowserService);
+            if (uniqueKey.Item2)
+            {
+                await AddNewStudentClick();
+                return;
+            }
+
+            list = DataService.GetOnlineFormStudentsList(uniqueKey.Item1);
+            if (!list.Any())
+            {
+                await AddNewStudentClick();
+                return;
+            }
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    [Inject] IDialogService DialogService { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+    [Inject] Navigation Navigation { get; set; }
+
+    async Task AddNewStudentClick()
+    {
+        if (list is { Count: 4 })
+        {
+            await DialogService.ShowMessageBox("عدم امکان ایجاد زبان آموز جدید", "شما می توانید حداکثر 4 زبان آموز را ورود اطلاعات نمایید");
+            return;
+        }
+        Navigation.IgnoreThis();
+        Navigation.NavigateTo("/NewStu");
+        return;
+
+        var dialogReference = DialogService.Show<StudentOnlineFormNewDialog>("زبان آموز جدید",
+            new DialogOptions()
+                {
+                    FullWidth = true
+                });
+
+        var dialogReferenceResult = await dialogReference.Result;
+        if (dialogReferenceResult.Cancelled is false)
+        {
+            if (ProviderService.UniqueKey is { } &&
+                dialogReferenceResult.Data is StudentOnlineFormNewDialog.StudentNameFamil student)
+            {
+
+                // list ??= new();
+                // list.Add(shokouhPardisStudentClassOnlineForm);
+                // SelectStudentClick(shokouhPardisStudentClassOnlineForm);
+                // StateHasChanged();
+            }
+
+        }
+
+    }
+
+    [CascadingParameter]
+    ShokouhPardisStudentClassOnlineForm? Student { get; set; }
+
+    [Parameter]
+    public Action<ShokouhPardisStudentClassOnlineForm>? SelectedStudentChanged { get; set; }
+
+    void SelectStudentClick(ShokouhPardisStudentClassOnlineForm stu)
+    {
+        Student = stu;
+        SelectedStudentChanged?.Invoke(stu);
+    }
+
+}

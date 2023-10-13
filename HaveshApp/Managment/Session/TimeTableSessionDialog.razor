@@ -1,0 +1,67 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Classes
+@using System.Globalization
+
+<MtnDialog>
+    <ChildComponent>
+        <MudGrid>
+            <MudItem sm="12" md="6"> 
+                <MudDatePicker Label="تاریخ" @bind-Date="TimeTableSession.SessionDate" Culture="_persianCulture"></MudDatePicker>
+                <MudTimePicker Label="ساعت" @bind-Time="TimeTableSession.SessionTime"></MudTimePicker>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <MudTextField @bind-Value="TimeTableSession.SessionNumber" Label="جلسه"></MudTextField>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <TeacherSelectorComponent @bind-Teacher="TimeTableSession.Teacher" Label="مدرس"></TeacherSelectorComponent>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <ClassroomSelectorComponent @bind-ClassRoom="TimeTableSession.ClassRoom" ></ClassroomSelectorComponent>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <MudSelect Label="وضعیت" @bind-Value="TimeTableSession.SessionStatus">
+                    <MudSelectItem Value="SessionStatuses.Pending"></MudSelectItem>
+                    <MudSelectItem Value="SessionStatuses.Completed"></MudSelectItem>
+                    <MudSelectItem Value="SessionStatuses.Canceled"></MudSelectItem>
+                    <MudSelectItem Value="SessionStatuses.Replaced"></MudSelectItem>
+                </MudSelect>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <MudTextField @bind-Value="TimeTableSession.SessionDescription" Label="توضیحات"></MudTextField>
+            </MudItem>
+            
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Save" OnClick="SaveClick">
+            Save
+        </MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="CloseClick">
+            Close
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    [Parameter]
+    public TimeTableSession TimeTableSession { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    void SaveClick()
+    {
+        _dataProvider.SaveTimeTableSession(TimeTableSession);
+        Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", _userSession.Payload.UserName, TimeTableSession.ID);
+        DialogInstance.Close();
+    }
+
+    void CloseClick()
+    {
+        DialogInstance.Close(DialogResult.Cancel());
+    }
+
+    readonly CultureInfo _persianCulture = new("fa-IR");
+}

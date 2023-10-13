@@ -1,0 +1,50 @@
+﻿@page "/IntervalDefinition"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Clone
+
+@layout PersianPagesLayout
+
+<h3>تعریف سانس های کلاس ها</h3>
+
+<TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"></TermSelectorComponent>
+
+<MudTable @ref="table"
+          Hover="true"
+          Breakpoint="Breakpoint.None"
+          Items="Interval"
+          Style="background-color: #3c4043;">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">جدول سانس های ترمیک</MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewIntervalClick">
+            اضافه کردن سانس جدید
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>عنوان</MudTh>
+        <MudTh>زمان شروع</MudTh>
+        <MudTh>زمان پایان</MudTh>
+        <MudTh>زمان</MudTh>
+        <MudTh></MudTh>
+
+    </HeaderContent>
+    <RowTemplate Context="interval">
+        <MudTd DataLabel="عنوان">@interval.Title</MudTd>
+        <MudTd DataLabel="زمان شروع">@interval.StartTime</MudTd>
+        <MudTd DataLabel="زمان پایان">@interval.EndTime</MudTd>
+        <MudTd DataLabel="زمان">@interval.TimeInterval</MudTd>
+        <MudTd >
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() =>EditButtonClick(interval)"></MudIconButton>
+        </MudTd>
+
+
+    </RowTemplate>
+   
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+
+</MudTable>
+

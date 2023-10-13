@@ -1,0 +1,55 @@
+﻿@using ShokouhApp.Admin.Components
+@using ShokouhApp.Model
+@using System.Globalization
+
+<MtnDialog>
+    <ChildComponent>
+        <MudGrid>
+            <MudItem sm="12" md="6">
+                <MudTextField @bind-Value="TermSessionTemplateDate.SessionNumber" Label="Session Number" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <MudDatePicker   @bind-Date="@TermSessionTemplateDate.Date"  Label="Session Date" Culture="_persianCulture"></MudDatePicker>
+            </MudItem>
+            <MudItem sm="12" md="12">
+                <MudTextField @bind-Value="TermSessionTemplateDate.Description" Label="Description" Lines="4"></MudTextField>
+            </MudItem>
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Add" OnClick="SaveDateClick">
+            Save
+        </MudButton>
+
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="CloseClick">
+            Close
+        </MudButton>
+
+
+    </DialogAction>
+</MtnDialog>
+
+
+
+@code {
+
+    [Parameter]
+    public TermSessionTemplateDate TermSessionTemplateDate { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    readonly CultureInfo _persianCulture = new("fa-IR");
+
+    void SaveDateClick()
+    {
+        _dataProvider.SaveTermSessionTemplateDate(TermSessionTemplateDate);
+        DialogInstance.Close(DialogResult.Ok(true));
+    }
+
+    void CloseClick()
+    {
+        DialogInstance.Close(DialogResult.Cancel());
+    }
+
+}

@@ -1,0 +1,63 @@
+﻿@page "/StuAbsPres/{TimeTableGuid}"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@layout PersianPagesLayout
+
+<h3>Class Students Present Page</h3>
+
+<MudTable Items="_students" MultiSelection="true">
+    <HeaderContent>
+        <MudTd>حاضر</MudTd>
+        <MudTh>نام و نام خانوادگی</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.StudentName @context.StudentFamily</MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+@code {
+
+    [Parameter]
+    public string? TimeTableGuid
+    {
+        get => _timeTableGuidStr;
+        set
+        {
+            if(_timeTableGuidStr != null && 
+               _timeTableGuidStr == value) return;
+            
+            _timeTableGuidStr = value;
+            
+            if (Guid.TryParse(_timeTableGuidStr , out var guid))
+            {
+                TimeTable = DataProvider.GetTimeTable(guid);
+            }
+            else
+            {
+                _students = null;
+            }
+            
+        }
+    }
+
+
+    ShokouhPardisTimeTable? TimeTable
+    {
+        get => _timeTable;
+        set
+        {
+            _timeTable = value;
+            _students = DataProvider.GetTimeTableStudents(_timeTable);
+
+        }
+    }
+
+    public DataProviderService DataProvider { get; set; }
+    
+    List<ShokouhPardisStudentClass>? _students;
+    string? _timeTableGuidStr;
+    ShokouhPardisTimeTable? _timeTable;
+
+
+}

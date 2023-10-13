@@ -1,0 +1,1 @@
+dotnet ef dbcontext scaffold "Data Source=94.232.174.176;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;" Microsoft.EntityFrameworkCore.SqlServer -o Model --force -c MyDbContext --no-build

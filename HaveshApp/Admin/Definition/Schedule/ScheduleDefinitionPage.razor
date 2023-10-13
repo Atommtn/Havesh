@@ -1,0 +1,62 @@
+﻿@page "/ScheduleDefinition"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Clone
+@layout PersianPagesLayout
+
+<h3>تعریف عناوین زمانبندی کلاس ها</h3>
+
+<TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"></TermSelectorComponent>
+
+<MudTable @ref="table"
+          Hover="true"
+          Breakpoint="Breakpoint.None"
+          Items="Schedules"
+          RowsPerPage="20"
+          Style="background-color: #3c4043;">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">جدول زمانبندی ترمیک</MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewScheduleClick">
+            اضافه کردن عنوان زمانبندی جدید
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>عنوان زمانبندی</MudTh>
+        <MudTh>برنامه ها</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+
+    </HeaderContent>
+    <RowTemplate Context="Schedule">
+        <MudTd DataLabel="عنوان زمانبندی">@Schedule.Title</MudTd>
+        <MudTd>
+            <MudItem md="6">
+                @if (Schedule is { Programs: { } })
+                {
+                    @foreach (var prog in Schedule.Programs)
+                    {
+                        <MudChip Color="Color.Success"  CloseIcon="@Icons.Filled.Delete"  OnClose="()=>DeleteProg(prog)">
+                            @prog.DaySession.WeekDay.Title @prog.DaySession.Interval.Title
+                        </MudChip>
+
+                    }
+                }
+            </MudItem>
+        </MudTd>
+        <MudTd>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => EditScheduleClick(Schedule)"></MudIconButton>
+        </MudTd><MudTd>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Add" Size="Size.Small" OnClick="()=>AddProgramClick(Schedule)"></MudIconButton>
+        </MudTd>
+
+
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+
+</MudTable>
+

@@ -1,0 +1,34 @@
+﻿@using ShokouhApp.Model
+
+<MudStack Row="true" Spacing="2">
+    @foreach (var wd in _weekDays)
+    {
+        <MudCheckBox T="bool" @bind-Checked="CheckedDays[wd.WeekDayId]" Label="@wd.Title" ></MudCheckBox>
+    }
+</MudStack>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        _weekDays = _dataProvider.GetWeekDays();
+        foreach (var weekDay in _weekDays)
+        {
+            CheckedDays.Add(weekDay.WeekDayId , false);
+        }
+
+        base.OnInitialized();
+    }
+
+    List<ShokouhPardisWeekDay> _weekDays;
+
+    [Parameter]
+    public Dictionary<int, bool> CheckedDays { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Dictionary<int, bool>> CheckedDaysChanged { get; set; }
+
+    public EventCallback<(int,bool)> DayChecked { get; set; }
+
+
+}

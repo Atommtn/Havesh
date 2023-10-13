@@ -1,0 +1,75 @@
+﻿@page "/LevelPriceDefinition"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Clone
+@layout PersianPagesLayout
+
+<h3>ویرایش قیمت کتاب و شهریه</h3>
+
+<TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"></TermSelectorComponent>
+@if (_emptyBookPriceTustion?.IsNotEmpty() is true)
+{
+    <MudAlert Severity="Severity.Error">
+        لول های لیست زیر فاقد قیمت صحیح می باشند. لطفا پیگیری و اصلاح کنید
+    </MudAlert>
+    <MudTable T="ShokouhPardisLevelClass" Items="_emptyBookPriceTustion">
+        <HeaderContent>
+            <MudTh>سطح</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.LevelName</MudTd>
+            <MudTd>
+                <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() =>EditLevelPriceClick(context)"></MudIconButton>
+            </MudTd>
+
+        </RowTemplate>
+    </MudTable>
+}
+<MudTable @ref="table"
+          Hover="true"
+          GroupBy="@_groupDefinition"
+          Breakpoint="Breakpoint.None"
+          Items="levelBookPriceList"
+          GroupHeaderStyle="background-color:#4b3535"
+          RowsPerPage="100"
+          Style="background-color: #3c4043;">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">جدول قیمت کتاب و شهریه</MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewDaySessionClick">
+            اضافه کردن قیمت جدید
+        </MudButton>
+
+    </ToolBarContent>
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>سطح</MudTh>
+        <MudTh>هزینه کتاب</MudTh>
+        <MudTh>شهریه</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.GroupName}: {context.Key}") </MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+        <MudTd DataLabel="روز هفته">@context.Level.LevelName</MudTd>
+        <MudTd Style="font-size: 18pt" DataLabel="سانس">@context.BookPrice.ToString("N0")</MudTd>
+        <MudTd Style="font-size: 18pt" DataLabel="سانس">@context.TuitionAmount.ToString("N0")</MudTd>
+        <MudTd>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(context)"></MudIconButton>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+

@@ -1,0 +1,135 @@
+﻿@page "/LoginPage"
+@page "/LoginPage/{LogOutString}"
+@attribute [AllowAnonymous]
+@layout AuthenticationLayout
+
+@using ShokouhApp.Services
+@using ShokouhApp.Classes
+@using Serilog
+
+<MudPaper Class="m-5 p-5" Elevation="3">
+    <MudGrid Class="m-2">
+        <MudItem sm="12" md="12">
+            <MudText Typo="Typo.h5">Login</MudText>
+            <MudDivider />
+        </MudItem>
+        <MudItem sm="12" md="6">
+            <MudTextField @bind-Value="UserName" Label="User name"></MudTextField>
+        </MudItem>
+        <MudItem sm="12" md="6">
+            <MudTextField @bind-Value="Password" Label="Password" InputType="InputType.Password"></MudTextField>
+        </MudItem>
+    </MudGrid>
+    <MudToolBar Class="m-2">
+        <MudSpacer  />
+        @if (!_loginCheck)
+        {
+            <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Login" OnClick="LoginClick">
+                Login
+            </MudButton>
+
+        }
+        else
+        {
+            <MudProgressLinear Striped="true" Size="Size.Medium" Color="Color.Primary" Indeterminate="true" Class="my-7" />
+        }
+    </MudToolBar>
+    
+</MudPaper>
+
+@code {
+    bool _loginCheck = false;
+    [Inject] DataProviderService DataProviderService { get; set; }
+    public string UserName { get; set; }
+    public string Password { get; set; }
+
+    [Inject] BrowserService BrowserService { get; set; }
+
+    [Inject]
+    ISnackbar Snackbar { get; set; }
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    [Inject] IConfiguration Configuration { get; set; }
+
+    [Parameter]
+    public string? LogOutString { get; set; }
+    [Inject] UserSessionService UserSession { get; set; }
+    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (LogOutString is  "Logout")
+            {
+                UserSession.Token = null;
+                var jwtSection = Configuration.GetSection("JWT");
+
+                var tokenName = jwtSection["TokenName"]!;
+                
+                await BrowserService.EraseCookieAsync(tokenName);
+                await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
+                //Snackbar.Add("User Logged-out !");
+                NavigationManager.NavigateTo("/LoginPage",true);
+
+            }
+
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+
+    async Task LoginClick()
+    {
+        if (UserName.IsNullOrEmpty() || Password.IsNullOrEmpty())
+        {
+            Snackbar.Add("Please enter username and password.", Severity.Info);
+            return;
+        }
+
+        _loginCheck = true;
+        StateHasChanged();
+        await Task.Delay(100);
+
+        var user = DataProviderService.CheckUserLogin(UserName , Password);
+        if (user == null)
+        {
+            Log.Error("Someone tried to login by user: {UserName} with Password: {Password}",UserName,Password);
+            Snackbar.Add("Invalid username or password",Severity.Error);
+            _loginCheck = false;
+            return;
+        }
+
+        if (user.IsActive == false)
+        {
+            Log.Error("User {UserName} is Inactive but he(she) tried to login !",UserName);
+            Snackbar.Add("User is not ACTIVE, Please Contact Administrator.", Severity.Warning);
+            _loginCheck = false;
+            return;
+
+        }
+        var jwtSection = Configuration.GetSection("JWT");
+
+        var tokenName = jwtSection["TokenName"]!;
+        var secretKey = jwtSection["Secret"]!;
+        var issuer = jwtSection["Issuer"]!;
+        var audience = jwtSection["Audience"]!;
+
+        var expiryMinutes = 60 * 24 * 30; // Token expiration time in minutes
+        var generator = new JwtTokenGenerator(secretKey,issuer,audience , expiryMinutes);
+        var jwt = generator.GenerateToken(
+            user.UserName, 
+            user.Roles.Select(x => x.Name).ToArray(),
+            user.Gender,
+            user.FirstName ,
+            user.LastName,
+            user.Email,
+            user.Phone);
+        await BrowserService.SetCookieAsync(tokenName, jwt, 30);
+        Log.Information("User {UserName} Successfully logged-in to application.",UserName);
+        NavigationManager.NavigateTo("/" , true);
+    }
+
+}

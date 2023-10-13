@@ -1,0 +1,114 @@
+﻿@using ShokouhApp.Model
+<style type="text/css" media="all">
+    .mud-table-head{
+        background-color: #237a93;
+        }
+</style>
+<MtnDialog>
+    <ChildComponent>
+       
+        <h3>@Section.SectionType </h3>
+        
+        <MudTable @ref="table"
+                  Hover="true"
+                  Breakpoint="Breakpoint.None"
+                  Items="SectionItems"
+                  Style="background-color: #355167;">
+            <ToolBarContent>
+                <MudTextField @bind-Value="NewSectionItemTitle" Label="NewSectionItem"/>
+                <MudSpacer></MudSpacer>
+                <MudTextField @bind-Value="NewSectionItemOrder" Label="Item Order"/>
+                <MudSpacer></MudSpacer>
+                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewSectionItemClick">
+                    Add Section Item
+                </MudButton>
+
+            </ToolBarContent>
+            <HeaderContent >
+                <MudTh>Item Title</MudTh>
+                <MudTh>Order</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate Context="secItem">
+                <MudTd>@secItem.SectionItemTitle </MudTd>
+                <MudTd>@secItem.Order </MudTd>
+                <MudTd>
+                    <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(secItem)"></MudIconButton>
+
+                </MudTd>
+
+            </RowTemplate>
+
+    
+
+        </MudTable>
+     
+    </ChildComponent>
+    <DialogAction>
+  
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    
+    [Inject] ISnackbar Snackbar { get; set; }
+    MudTable<LessonPlanSectionItem>? table;
+    public List<LessonPlanSectionItem> SectionItems { get; set; }
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public LessonPlanSection? Section { get; set; }
+
+    public string? NewSectionItemTitle { get; set; }
+    public int NewSectionItemOrder { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        
+        RefreshData();
+        base.OnInitialized();
+    }
+
+    private void RefreshData()
+    {
+
+        SectionItems = _dataProvider.GetLessonPlanSectionItems(Section);
+
+    }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+ 
+    private void NewSectionItemClick()
+    {
+        if (NewSectionItemTitle is not null && NewSectionItemOrder != 0)
+        {
+            var lessonPlanSectionItem = new LessonPlanSectionItem()
+            {
+                LessonPlanSectionFk = Section.Id,
+                Order = NewSectionItemOrder,
+                SectionItemTitle = NewSectionItemTitle
+            };
+            _dataProvider.SaveSectionItem(lessonPlanSectionItem);
+            Snackbar.Add("New Section Item Succsecfullu Add", Severity.Success);
+            StateHasChanged();
+        }
+    }
+
+    private void EditButtonClick(LessonPlanSectionItem secItem)
+    {
+        NewSectionItemOrder = secItem.Order;
+        NewSectionItemTitle = secItem.SectionItemTitle;
+    }
+
+}

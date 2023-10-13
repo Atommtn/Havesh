@@ -1,0 +1,31 @@
+﻿@using System.Net.Http
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using ShokouhApp
+@using ShokouhApp.Shared
+
+@using MudBlazor
+
+@using ShokouhApp.Admin.Planning.Components
+@using ShokouhApp.Admin.Components
+@using ShokouhApp.Admin.Clone
+@using ShokouhApp.Services
+
+@using Serilog
+@using ShokouhApp.Admin.Authentication
+
+@attribute [Authorize]
+@inject DataProviderService _dataProvider
+@inject NavigationManager _navigationManager
+@inject IAuthorizationService _authorizationService
+@inject ISnackbar _snackBar
+@inject IDialogService _dialogService
+@inject HttpClient _httpClient
+@inject UserSessionService _userSession 
+@inject IJSRuntime _jsRuntime;

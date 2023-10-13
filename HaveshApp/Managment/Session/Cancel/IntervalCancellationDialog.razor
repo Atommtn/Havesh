@@ -1,0 +1,269 @@
+﻿@using ShokouhApp.Model
+@using System.Globalization
+@using ShokouhApp.Classes
+@using System.ComponentModel
+@using DNTPersianUtils.Core
+@using Olive
+<style>
+    .mud-table-cell-custom-group {
+        font-weight: 500;
+    }
+
+    .mud-table-cell-custom-group-footer {
+        padding-bottom: 50px;
+        text-align: right;
+    }
+</style>
+<MtnDialog>
+    <ChildComponent>
+
+        <MudPaper Class="m-3" Elevation="4">
+
+            <MudGrid>
+                <MudItem sm="12" md="6">
+                    <MudDatePicker Label="تاریخ کنسلی جلسه" Culture="_persianCulture" @bind-Date="OrigSessionDate" MinDate="DateTime.Today"></MudDatePicker>
+                </MudItem>
+                <MudItem sm="12" md="6">
+                    <MudDatePicker @ref="_replDP" Label="تاریخ جبرانی" Culture="_persianCulture" @bind-Date="ReplSessionDate" MinDate="DateTime.Today"></MudDatePicker>
+                </MudItem>
+                @if (Interval is not null)
+                {
+                    <MudItem sm="12" md="6">
+                        <MudTimePicker Label="ساعت آغاز جلسه جبرانی" @bind-Time="ReplSessionTime" Culture="_persianCulture"></MudTimePicker>
+                    </MudItem>
+                }
+                <MudItem sm="12" md="6">
+                    <MudSelect T="string" @bind-Value="CauseItem" Label="علت کنسل شدن جلسه">
+                        <MudSelectItem Value="@("تعطیلی رسمی")"></MudSelectItem>
+                        <MudSelectItem Value="@("تغییر برنامه")"></MudSelectItem>
+                        <MudSelectItem Value="@("اعلام رسمی")"></MudSelectItem>
+                        <MudSelectItem Value="@("بارش برف سنگین")"></MudSelectItem>
+                        <MudSelectItem Value="@("تعمییرات")"></MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem sm="12" md="6">
+                    <MudTextField @bind-Value="CauseText" Label="تشریح"></MudTextField>
+                </MudItem>
+                <MudItem sm="12" md="12">
+                    <MudStack Row="false" Spacing="3">
+                        <MudSwitch @bind-Checked="SendSMS" Label="اطلاع رسانی پیامکی انجام شود"></MudSwitch>
+                        @if (SendSMS)
+                        {
+                            <MudTextField @bind-Value="SMSText" Label="متن پیامک" Lines="4"></MudTextField>
+                        }
+                    </MudStack>
+                </MudItem>
+
+            </MudGrid>
+
+            <MudDivider Class="m-3"></MudDivider>
+
+            <MudTable T="ShokouhPardisTimeTable"
+                      Class="m-2"
+                      Items="TimeTablesToCancel.OrderBy(x=>x.Schedule.Programs.First().DaySession.Interval.StartTime ).ThenBy(x=>x.ClassRoom.ClassRoomName)"
+                      MultiSelection="true"
+            @bind-SelectedItems="SelectedTimeTablesToCancel"
+                      SelectedItemChanged="TimeTableSelected"
+                      Height="700px"
+                      FixedHeader="true"
+                      GroupBy="@_groupDefinition"
+                      GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+                      GroupFooterClass="mb-4">
+                <ColGroup>
+                    <col style="width: 60px;" />
+                    <col />
+                    <col />
+                    <col />
+                </ColGroup>
+                <GroupHeaderTemplate>
+                    <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.GroupName}: {context.Key}") </MudTh>
+                </GroupHeaderTemplate>
+                <HeaderContent>
+                    <MudTh>عنوان</MudTh>
+                    <MudTh>کلاس</MudTh>
+                    <MudTh>وضعیت</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>
+                        @if (@context.Tag == "Valid")
+                        {
+                            <MudText Typo="Typo.caption" Color="Color.Success">
+                                @context.Title
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.caption" Color="Color.Error">@context.Title</MudText>
+                        }
+
+                    </MudTd>
+                    <MudTd>@context.ClassRoom.ClassRoomName</MudTd>
+                    <MudTd>
+                        @if (@context.Tag == "Valid")
+                        {
+                            <MudText Typo="Typo.caption" Color="Color.Success">دارای جلسه</MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.caption" Color="Color.Error">فاقد جلسه</MudText>
+                        }
+                    </MudTd>
+                </RowTemplate>
+                <GroupFooterTemplate>
+                    <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="5"> تعداد برنامه کلاس: @context.Items.Count()</MudTh>
+                </GroupFooterTemplate>
+            </MudTable>
+        </MudPaper>
+
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Approval" OnClick="ApplyCancellationClick">
+            Apply
+        </MudButton>
+
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Cancel" OnClick="CloseClick">
+            Close
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    private readonly TableGroupDefinition<ShokouhPardisTimeTable> _groupDefinition = new()
+        {
+            GroupName = "سانس ",
+
+            Indentation = false,
+            Expandable = false,
+            Selector = (e) =>
+            {
+                var shokouhPardisPrograms = e.Schedule.Programs.Select(x => x.DaySession.Interval.Title).First();
+                return shokouhPardisPrograms;
+            }
+        };
+
+    [Inject] TimeTableSessionService TimeTableSessionService { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public List<ShokouhPardisTimeTable> TimeTablesToCancel { get; set; }
+
+    [Parameter]
+    public ShokouhPardisInterval? Interval { get; set; }
+
+    [Inject]
+    SmsService SmsService { get; set; }
+
+    DateTime? OrigSessionDate
+    {
+        get => _origSessionDate;
+        set
+        {
+            _origSessionDate = value;
+            //_replDP.MinDate = _origSessionDate?.Date;
+            _replDP.Date = _origSessionDate?.AddDays(1);
+            ValidateTimetableSession(_origSessionDate);
+        }
+    }
+
+    void ValidateTimetableSession(DateTime? dt)
+    {
+        foreach (var timeTable in TimeTablesToCancel)
+        {
+            timeTable.Tag =
+                timeTable.Sessions.Any(x => x.SessionDate == dt && x.SessionStatus == SessionStatuses.Pending)
+                    ? _valid
+                    : _invalid;
+        }
+    }
+
+    TimeSpan? ReplSessionTime { get; set; }
+
+    DateTime? ReplSessionDate = DateTime.Today.AddDays(2);
+
+    string? CauseItem;
+    string? CauseText;
+    bool _sendSms = false;
+    bool SendSMS
+    {
+        get => _sendSms;
+        set
+        {
+            _sendSms = value;
+            SMSText = SmsService.GetSessionCancelText(OrigSessionDate, Interval?.StartTime, ReplSessionDate, ReplSessionTime, CauseItem, CauseText);
+        }
+    }
+    string? SMSText;
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    readonly CultureInfo _persianCulture = new("fa-IR");
+    DateTime? _origSessionDate = DateTime.Today;
+    readonly string _valid = "Valid";
+    readonly string _invalid = "Invalid";
+    MudDatePicker? _replDP;
+
+    protected override void OnInitialized()
+    {
+        if (Interval is not null)
+            ReplSessionTime = Interval.StartTime;
+        base.OnInitialized();
+    }
+
+    void CloseClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    async Task ApplyCancellationClick()
+    {
+        if (SelectedTimeTablesToCancel.All(x => x.Tag != _valid))
+        {
+            _snackBar.Add("هیچ برنامه ای که شامل جلسه برگزاری در تاریخ مورد نظر باشد انتخاب نشده.", Severity.Warning);
+            return;
+        }
+        var dialogReference = await DialogService.ShowAsync<TimeTableSessionsCancelDialog>("اجرای کنسل کردن کلاس ها", new DialogParameters()
+        {
+
+            ["TimeTables"] = SelectedTimeTablesToCancel,
+            ["OrigSessionDate"] = OrigSessionDate,
+            ["ReplSessionDate"] = ReplSessionDate,
+            ["ReplInterval"] = Interval,
+            ["CauseText"] = CauseText,
+            ["CauseItem"] = CauseItem
+        },
+            new DialogOptions()
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                CloseButton = false,
+                DisableBackdropClick = true,
+                CloseOnEscapeKey = false
+            });
+
+        var dialogResult =await dialogReference.Result;
+        if (dialogResult.Canceled)
+        {
+            _snackBar.Add("حذف جلسه و ایجاد جلسه جدید با موفقیت به پایان رسید",severity:Severity.Info);
+        }
+
+
+        DialogInstance.Close();
+    }
+
+    public HashSet<ShokouhPardisTimeTable>? SelectedTimeTablesToCancel { get; set; }
+
+    void TimeTableSelected(ShokouhPardisTimeTable tt)
+    {
+        //var tt = (ShokouhPardisTimeTable)o;
+        if (SelectedTimeTablesToCancel != null &&
+            SelectedTimeTablesToCancel.Contains(tt) &&
+            tt.Tag == _invalid)
+            SelectedTimeTablesToCancel.Remove(tt);
+    }
+
+}

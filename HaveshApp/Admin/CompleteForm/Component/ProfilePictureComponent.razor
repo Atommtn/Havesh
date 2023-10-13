@@ -1,0 +1,142 @@
+﻿@using ShokouhApp.Services
+@using Olive
+<InputFile id="@controlGuid.ToString("N")" OnChange="UploadFiles" hidden />
+
+<MudCard>
+    <MudCardContent>
+        <MudStack Row="false" AlignItems="AlignItems.Center" Justify="Justify.Center">
+            @if (ProfilePictureUrl is { })
+            {
+                <MudImage Src="@ProfilePictureUrl" Width="150" Height="150"></MudImage>
+            }
+            else
+            {
+                <MudImage Src="images/noimage.jpg" Width="150" Height="150"></MudImage>
+            }
+            @if (showPendingUpload)
+            {
+                <MudProgressLinear Indeterminate="true" Size="Size.Medium" Striped="true"></MudProgressLinear>
+            }
+            @if (Error.IsNotNullOrEmpty())
+            {
+                <MudText Class="ma-4" Typo="Typo.subtitle2" Color="Color.Error">
+                    @Error
+                </MudText>
+            }
+        </MudStack>
+    </MudCardContent>
+    <MudCardActions>
+        @if (ProfilePictureUrl is { })
+        {
+            <MudButton FullWidth="true" Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.TwoTone.Delete" OnClick="RemovePictureClick">
+                حذف تصویر
+            </MudButton>
+        }
+        @if (!showPendingUpload)
+        {
+            <MudButton Class="m-3 p-2"
+                       HtmlTag="label"
+                       for="@controlGuid.ToString("N")"
+                       Color="Color.Info"
+                       Size="Size.Large"
+                       FullWidth="true"
+                       StartIcon="@Icons.TwoTone.Upload"
+                       Variant="Variant.Filled">
+                آپلود تصویر
+            </MudButton>
+        }
+        else
+        {
+            <MudText Typo="Typo.subtitle1" Color="Color.Warning" >
+                لطفا تا بارگیری کامل تصویر و مشاهده در جعبه بالا صبر کنید ...
+            </MudText>
+
+        }
+    </MudCardActions>
+</MudCard>
+@code {
+
+    [Parameter]
+    public string S3Folder { get; set; } = "Students";
+
+    [Parameter]
+    public string? ProfilePictureUrl { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ProfilePictureUrlChanged { get; set; }
+
+    [Parameter]
+    public string? Error { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ErrorChanged { get; set; }
+
+    [Parameter]
+    public Action<string> UploadComplete { get; set; }
+
+    [Parameter]
+    public Action<string> DeleteComplete { get; set; }
+
+    [Inject]
+    ILogger<ProfilePictureComponent> Logger { get; set; }
+
+    [Inject]
+    AwsS3Service AwsS3Service { get; set; }
+
+    bool showPendingUpload;
+    Guid controlGuid = Guid.NewGuid();
+
+
+    async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        if (ProfilePictureUrl is {})
+            await DeleteProfileUrl();
+
+        var attachmentGuid = Guid.NewGuid();
+        try
+        {
+            showPendingUpload = true;
+            var uploadFileAsync = await AwsS3Service.UploadFileAsync(e.File, attachmentGuid, S3Folder);
+            showPendingUpload = false;
+            
+            ProfilePictureUrl = uploadFileAsync;
+            await ProfilePictureUrlChanged.InvokeAsync(uploadFileAsync);
+
+            Error = null;
+            await ErrorChanged.InvokeAsync(Error);
+            
+            UploadComplete?.Invoke(uploadFileAsync);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("File: {Filename} Error: {Error}", e.File.Name, ex.Message);
+        }
+    }
+
+    [Inject]
+    IDialogService DialogService { get; set; }
+
+    async Task RemovePictureClick()
+    {
+        var delete = await DialogService.ShowMessageBox("حذف تصویر", "آیا از حذف تصویر اطمینان دارید؟","بله","خیر");
+        if (delete is true)
+        {
+            await DeleteProfileUrl();
+        }
+    }
+
+    async Task DeleteProfileUrl()
+    {
+        var deleteFileAsync = await AwsS3Service.DeleteFileAsync(ProfilePictureUrl);
+        if (deleteFileAsync)
+        {
+            ProfilePictureUrl = null;
+            await ProfilePictureUrlChanged.InvokeAsync(ProfilePictureUrl);
+            DeleteComplete?.Invoke(ProfilePictureUrl);
+        }
+
+        StateHasChanged();
+    }
+
+}

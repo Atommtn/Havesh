@@ -1,0 +1,157 @@
+﻿@page "/DailyJV"
+@layout PersianPagesLayout
+@using ShokouhApp.Admin.DailyJV.Components
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Student
+@using System.Globalization
+@using DNTPersianUtils.Core
+@using Olive
+@using ShokouhApp.Admin.Clone
+@attribute [Authorize]
+
+<style>
+    .me-auto{
+        color:#ffffff;
+        font-size:18pt;
+        }
+</style>
+<MudGrid>
+    <MudItem xs="12">
+        <MudTabs @ref="tabs" Outlined="true" Position="Position.Right" Rounded="true" Border="true"
+                 ApplyEffectsToContainer="true" Class="mt-8">
+            <MudTabPanel Text="اطلاعات اولیه" Disabled="TabDisabled[0]">
+                <MudStack Style="Width:100%">
+                    <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+                        <MudStack Class="pa-4">
+
+                           <TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"></TermSelectorComponent>
+
+                        </MudStack>
+                    @if (!IsOutOfIns)
+                    {
+                        <MudStack Row="true" Class="pa-4">
+                            <MudButton Class="col-md-6" ButtonType="ButtonType.Button" OnClick="SelectStudentClick" Variant="Variant.Filled" Color="Color.Success">انتخاب زبان آموز</MudButton>
+                            @if (_selectedStudent is { } )
+                            {
+                                <MudPaper Class="pa-md-6 mx-lg-auto mud-theme-success col-md-6 text-center">
+
+                                    <MudText Typo="Typo.h6" Color="Color.Default" GutterBottom="true">
+                                        @_dailyJV.Student.StudentName @_dailyJV.Student.StudentFamily
+                                    </MudText>
+                                    <MudSelect Label="انتخاب سطح" @bind-Value="SelectedLevel">
+                                        @foreach (var lvl in _dataProvider.GetLevels())
+                                        {
+                                            <MudSelectItem Value="lvl">@lvl.LevelName</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudPaper>
+                            }
+                        </MudStack>
+                        }
+                        @*<MudStack Row="true" Class="pa-4">
+                            <MudCheckBox @bind-Checked="@IsOutOfIns" Label="فروش خارج از آموزشگاه"></MudCheckBox>
+                            @if (IsOutOfIns)
+                            {
+                                <MudTextField @bind-Value="OutOfInsFullName" Label="نام و نام خانوادگی کامل"/>
+                            }
+
+                        </MudStack>*@
+                        <MudStack Class="pa-4" Row="true">
+                            <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateNext" aria-label="NextDay" OnClick='() => SetDay(1)'></MudIconButton>
+                            <MudSpacer></MudSpacer>
+                           @* @_userSession.LastJvDate
+                            @_dailyJV.CurrentDate*@
+                            <MudDatePicker @bind-Date="_dailyJV.CurrentDate"
+                                           Label="تاریخ"
+                                           FirstDayOfWeek="DayOfWeek.Saturday"
+                                           Culture="@GetPersianCulture()"
+                                           MaxDate="DateTime.Today"
+                                           TitleDateFormat="dddd, dd MMMM" />
+                            <MudSpacer></MudSpacer>
+                            <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateBefore" aria-label="BeforeDay" OnClick='() => SetDay(-1)'></MudIconButton>
+                        </MudStack>
+                    </MudPaper>
+                    <MudStack>
+                        @if (_dailyJV.Student is { } || IsOutOfIns)
+                        {
+                            <MudButton Variant="@Variant.Filled" Color="Color.Info" OnClick='() => Activate(1)'>Next</MudButton>
+                        }
+                    </MudStack>
+
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="اطلاعات پرداخت" Disabled="TabDisabled[1]">
+                <MudStack Style="Width:100%">
+                    <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+                        <MudStack>
+                            <MudText Typo="Typo.caption" Color="Color.Warning" GutterBottom="true">
+                                @_dailyJV.Student.StudentName @_dailyJV.Student.StudentFamily
+                            </MudText>
+
+                        </MudStack>
+                        <MudStack>
+                            <PaymentTypesComponent @bind-Value="_dailyJV.PaymentType" ></PaymentTypesComponent>
+                           
+                            <FeeForComponent @bind-Value="FeeFor" ></FeeForComponent>
+                          
+
+                            <MudTextField @bind-Value="_dailyJV.Fee" Immediate="true" Label="مبلغ به تومان" Style="font-size: 24pt" HelperText="@(_dailyJV.Fee.NumberToText(Language.Persian) + " تومان")"/>
+                            @if (_dailyJV.CurrentDate != DateTime.Today)
+                            {
+                                <MudTextField @bind-Value="_dailyJV.BillNo" Label="شماره قبض"/>
+                            }
+                        </MudStack>
+                    </MudPaper>
+                    <MudStack Row="true">
+                        <MudButton FullWidth="true" Variant="@Variant.Filled" Color="Color.Info" OnClick='() => Activate(0)'>Back</MudButton>
+                        @if (_dailyJV.PaymentType is { } && _dailyJV.FeeFor is { } && _dailyJV.Fee is { })
+                        {
+                            <MudButton FullWidth="true" Variant="@Variant.Filled" Color="Color.Info" OnClick='() => Activate(2)'>Next</MudButton>
+                        }
+                    </MudStack>
+                </MudStack>
+            </MudTabPanel>
+            <MudTabPanel Text="اطلاعات واریز" Disabled="TabDisabled[2]">
+
+                <MudStack Style="Width:100%">
+                    <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+                        <MudStack>
+
+                            @if (_dailyJV.PaymentType == "پوز")
+                            {
+                                <MudTextField @bind-Value="_dailyJV.PosCode" Label="شناسه پوز" />
+                            }
+                            @if (_dailyJV.PaymentType == "واریز")
+                            {
+                                <MudDatePicker @bind-Date="_dailyJV.DateOfSettle"
+                                           Label="زمان واریز"
+                                           FirstDayOfWeek="DayOfWeek.Saturday"
+                                           Culture="@GetPersianCulture()"
+                                           MaxDate="DateTime.Today"
+                                           TitleDateFormat="dddd, dd MMMM" />
+                                <MudTimePicker @bind-time="ts" Label="ساعت واریز" />
+                                <MudTextField @bind-Value="_dailyJV.Txcode" Label="شناسه واریز" />
+                                <MudTextField @bind-Value="_dailyJV.CardPostfix" Label="چهار رقم آخر شماره کارت واریز کننده" />
+                            }
+                            <MudTextField @bind-Value="_dailyJV.Description" Label="توضیحات" />
+                        </MudStack>
+                    </MudPaper>
+                    <MudStack Row="true">
+                        <MudButton FullWidth="true" Variant="@Variant.Filled" Color="Color.Info" OnClick='() => Activate(1)'>Back</MudButton>
+                        <MudButton FullWidth="true" Variant="@Variant.Filled" Color="Color.Success" OnClick="SaveClick">Save</MudButton>
+                    </MudStack>
+                </MudStack>
+            </MudTabPanel>
+        </MudTabs>
+    </MudItem>
+    <MudItem xs="12">
+
+
+        <MudStack Class="col-md-12">
+            <DailyJvRecordListComponent @ref="_dailyJVListComponent" SelectedDate="_dailyJV.CurrentDate">
+
+            </DailyJvRecordListComponent>
+        </MudStack>
+    </MudItem>
+</MudGrid>

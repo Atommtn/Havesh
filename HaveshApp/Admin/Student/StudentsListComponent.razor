@@ -1,0 +1,148 @@
+﻿@using ShokouhApp.Admin.DailyJV.Components
+@using ShokouhApp.Services
+@using ShokouhApp.Model
+
+
+@inherits ShokouhApp.Classes.SizeSupportComponentBase
+<MudContainer Style="@($"max-height: {(FullHeight == true ? (BrowserHeight-140) : Height + 100)}px;overflow-y:scroll;")">
+<MudTable @ref="table"
+          @attributes="@AdditionalAttributes"
+          FixedHeader="true"
+          FixedFooter="true"
+          Height="Height"
+          RowStyleFunc="RowStyleFunc"
+          RowsPerPage="RowPage"
+          Breakpoint="Breakpoint.None"
+          ServerData="ServerReload"
+          Style="background-color:#3c4043;">
+    <ToolBarContent>
+        <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Left">لیست زبان آموزان</MudAlert>
+        @if (AddNewStudent)
+        {
+            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="AddStudent">
+                اضافه نمودن دانش آموز
+            </MudButton>
+
+                <MudCheckBox @bind-Checked="@HasnotIdNo">بدون کد ملی</MudCheckBox>
+        }
+        @if (MultiSelect)
+        {
+            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" 
+                       OnClick="SelectCompleteMultiClick">
+                Select Complete
+            </MudButton>
+
+        }
+        @if (ShowPreRigester is true)
+        {
+                <MudSwitch @bind-Checked="@ShowPreRigesterItem" Label="پیشنهاد پیش ثبت نام" Color="Color.Secondary" />
+        }
+        <MudSpacer />
+        <MudTextField @ref="SearchTextField" 
+                      @bind-Value="SearchText"
+                      Label="جستجو"
+                      Placeholder="می توانید بر اساس هر چیزی جستجو را بنویسید"
+                      DebounceInterval="1000"
+                      OnDebounceIntervalElapsed="FilterData"
+                      AdornmentIcon="@Icons.Filled.Search"
+                      Adornment="Adornment.Start"
+                      Clearable="true" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh>نام</MudTh>
+        <MudTh>نام خانوادگی</MudTh>
+        <MudTh>کد ملی</MudTh>
+        
+        <MudTh> شماره منزل</MudTh>
+        <MudTh>تلفن پدر</MudTh>
+        <MudTh>تلفن مادر</MudTh>
+        <MudTh>تلفن زبان آموز</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="student">
+        <MudTd>
+            @if (MultiSelect)
+            {
+                <MudIconButton Icon="@(student.IsSelect ? Icons.Filled.Check : Icons.Filled.Square)" Color="Color.Warning" Variant="Variant.Outlined" OnClick="() => SelectStudentToListClick(student)" />
+            }
+        </MudTd>
+        <MudTd>
+            @if (SingleSelect)
+            {
+                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Check" Variant="Variant.Outlined" OnClick="() => SelectStudentClick(student)">
+                    Select
+                </MudButton>
+            }
+        </MudTd>
+        <MudTd>
+            @if (StudentDetail)
+            {
+                <MudIconButton Icon="@Icons.Filled.Person" Color="Color.Success" Variant="Variant.Outlined" OnClick="() => StudentProfileClick(student)"/>
+            }
+        </MudTd> 
+        <MudTd>
+            @if (RowStyle)
+            {
+                <MudIconButton Icon="@Icons.Filled.Money" Color="Color.Warning" Variant="Variant.Text" OnClick="() => { student.ShowDetail = !student.ShowDetail; }"/>
+            }
+        </MudTd>
+        <MudTd>@student.StudentName</MudTd>
+        <MudTd>@student.StudentFamily</MudTd>
+        <MudTd>@student.StudentIdno</MudTd>
+        
+        <MudTd>@student.HomePhone</MudTd>
+        <MudTd>@student.FatherPhone</MudTd>
+        <MudTd>@student.MotherPhone</MudTd>
+        <MudTd>@student.StudentPhone</MudTd>
+        <MudTd>
+            @if (AllowEdit)
+            {
+                <AuthorizeView Roles="Admin,Modiator">
+                    <Authorized>
+                        <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Default" Variant="Variant.Filled" OnClick="() => EditStudentClick(student)"/>
+                    </Authorized>
+                </AuthorizeView>
+            }
+        </MudTd>
+        <MudTd>
+            @ChildContent?.Invoke(student)
+        </MudTd>
+        <MudTd>
+
+            @if (AllowDelete)
+            {
+                <AuthorizeView Roles="Admin,Modiator">
+                    <Authorized>
+                        <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="() => DeleteStudentClick(student)"/>
+                    </Authorized>
+                </AuthorizeView>
+            }
+        </MudTd>
+    </RowTemplate>
+    <ChildRowContent>
+        @if (context.ShowDetail)
+
+        {
+            <MudTr>
+                <td colspan="14">
+                    <MudCard Elevation="0">
+                        <DailyJvRecordListComponent selectedTerm="TimeTable.Term" SearchTextDiasabled="true" Student="context">
+
+                        </DailyJvRecordListComponent>
+
+                    </MudCard>
+                </td>
+            </MudTr>
+        }
+    </ChildRowContent>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+</MudContainer>

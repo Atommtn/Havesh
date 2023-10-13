@@ -1,0 +1,82 @@
+﻿@page "/roles"
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.MemberShip.Model
+@layout PersianPagesLayout
+
+<MudTable Items="_roles">
+    <ToolBarContent>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewRoleClick">
+            Add New Role
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Permissions</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Name</MudTd>
+        <MudTd>
+            @foreach (var permission in context.Permissions)
+            {
+                @permission.Title <text>,</text>
+            }
+        </MudTd>
+        <MudTd>
+            <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Shield" Variant="Variant.Outlined" OnClick="()=>PermissionsClick(context)">
+                Permission
+            </MudButton>
+
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+@code {
+    [Inject]
+    public DataProviderService ProviderService { get; set; }
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    List<Role> _roles;
+    protected override void OnInitialized()
+    {
+        _roles = ProviderService.GetRoles();
+        base.OnInitialized();
+    }
+
+    private async Task NewRoleClick()
+    {
+        var role = new Role();
+        await OpenRoleDialog(role);
+    }
+
+    private async Task OpenRoleDialog(Role role)
+    {
+        var result = await DialogService.ShowAsync<RoleDialog>("Role", new DialogParameters()
+            {
+                ["Role"] = role
+            },
+            new DialogOptions()
+                {
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true
+                });
+        var resultResult = await result.Result;
+        if (!resultResult.Canceled)
+        {
+            _roles = ProviderService.GetRoles();
+        }
+    }
+
+    private async Task PermissionsClick(Role role)
+    {
+        var dialogReference = await DialogService.ShowAsync<RolePermissionsDialog>("Role Permissions " , new DialogParameters()
+        {
+            ["Role"] = role
+        });
+        var result = await dialogReference.Result;
+        _roles = ProviderService.GetRoles();
+    }
+
+}

@@ -1,0 +1,205 @@
+﻿@using ShokouhApp.Admin.CompleteForm.Component
+@if (Student is null)
+{
+    <MudAlert Class="m-auto text-center" Elevation="2" Variant="Variant.Outlined" Icon="@Icons.Filled.Person" Severity="Severity.Warning">
+        <MudText Typo="Typo.h6">
+            برای ورود اطلاعات زبان آموز جدید روی دکمه "ثبت نام زبان آموز جدید" کلیک کنید
+        </MudText>
+    </MudAlert>
+}
+else
+{
+
+
+    <h3>لطفا اطلاعات مشخص شده را در فرم زیر با دقت تکمیل نمایید</h3>
+    <MudCard>
+        <MudCardContent>
+            <MudPaper Width="100%">
+                <MudList Class="MList">
+                    <MudListItem Class="mud-typography" Text="لطفا قبل از تکمیل فرم مطالب زیر را با دقت مطالعه نمایید." Icon="@Icons.Filled.Warning" IconColor="Color.Warning" />
+                    <MudListItem Text="نام و نام خانوادگی بصورت جدا در قسمت مشخص شده وارد شود." Icon="@Icons.Filled.Person" IconColor="Color.Primary" />
+                    <MudListItem Text="لطفا کد ملی با دقت وارد شود.اگر کد ملی با صفر شروع میشود آن را وارد نمایید." Icon="@Icons.Filled.Grid3x3" IconColor="Color.Success" />
+                    <MudListItem Text="نام و نام خانوادگی مادر را بصورت کامل در قسمت مشخص شده وارد نمایید" Icon="@Icons.Filled.Woman" IconColor="Color.Info" />
+                    <MudListItem Text="شماره های تلفن همراه را با 09 وارد نمایید. اگر هم شماره ای را نداشتید یا نمیخواستید وارد کنید مثلا اگر منزلتان تلفن ثابت ندارد بجای آن صفر وارد نمایید." Icon="@Icons.Filled.PhoneAndroid" IconColor="Color.Error" />
+                    
+
+                </MudList>
+            </MudPaper>
+        </MudCardContent>
+
+    </MudCard>
+    <MudCard>
+        <MudCardContent>
+            <MudForm  Model="@Student" @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Validation="@(StudentFormValidator.ValidateValue)" ValidationDelay="0">
+                <MudGrid>
+                    <MudItem xs="12" lg="6">
+                        <MudPaper Outlined="true" Class="pa-3" Style="background-color: rgba(255, 255, 255, .03)">
+                            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Stretch"
+                                  Class="px-3 my-1" Style="background-color: rgba(120, 217, 245, .1);">
+                                <MudChip Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Info">
+                                    <MudText Typo="Typo.h6" Color="Color.Default" GutterBottom="true">
+                                        <MudIcon Icon="@Icons.TwoTone.Person" Color="Color.Default" Size="Size.Medium"></MudIcon>
+                                        اطلاعات شخصی
+                                    </MudText>
+                                </MudChip>
+                                <MudDivider DividerType="DividerType.FullWidth" />
+
+                            </MudStack>
+                            <MudStack Class="px-3" Style="background-color: rgba(120, 217, 245, .05);">
+
+                                @*<ProfilePictureComponent @bind-ProfilePictureUrl="@Student.ProfilePicture"  @bind-Error="@pictureRequiredError" Folder="Student" UploadComplete="UploadComplete" />*@
+
+                                <MudTextField @bind-Value="Student.StudentName"
+                                              For="@(() => Student.StudentName)"
+                                              Adornment="Adornment.Start"
+                                              Label="نام"/>
+
+                                <MudTextField @bind-Value="Student.StudentFamily"
+                                              For="@(() => Student.StudentFamily)"
+                                              Label="نام خانوادگی"/>
+                                <MudSwitch @bind-Checked="@Student.IsGirl"
+                                           ThumbIcon="@Icons.Filled.Girl" Color="Color.Error"
+                                           UnCheckedColor="Color.Success" ThumbIconColor="Color.Default" >
+                                    @if(Student.IsGirl==true)
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Error">
+                                            مونث
+                                        </MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Success">
+                                            مذکر
+                                        </MudText>
+
+                                    }
+                                </MudSwitch>
+                                <MudTextField @bind-Value="Student.StudentIdno"
+                                              For="@(() => Student.StudentIdno)"
+                                              Label="کد ملی" MaxLength="10"/>
+
+                                <MudDatePicker @bind-Date="Student.StudentBirthDay"
+                                               For="@(() => Student.StudentBirthDay)"
+                                               Label="تاریخ تولد"
+                                               Culture="@GetPersianCulture()"
+                                               Editable="true"
+                                               TitleDateFormat="dddd, dd MMMM" />
+
+                                <MudTextField @bind-Value="Student.StudentFrom"
+                                              For="@(() => Student.StudentFrom)"
+                                              Label="محل صدور شناسنامه "/>
+
+                                <MudTextField @bind-Value="Student.StudentFatherName"
+                                              For="@(() => Student.StudentFatherName)"
+                                              Label="نام پدر"/>
+
+                                <MudTextField @bind-Value="Student.StudentMotherFullName"
+                                              For="@(() => Student.StudentMotherFullName)"
+                                              Label="نام ونام خانوادگی مادر"/>
+
+                                <MudTextField @bind-Value="Student.FatherJob"
+                                              For="@(() => Student.FatherJob)"
+                                              Label="شغل پدر"/>
+
+                                <MudTextField @bind-Value="Student.MotherJob"
+                                              For="@(() => Student.MotherJob)"
+                                              Label="شغل مادر"/>
+                            </MudStack>
+                        </MudPaper>
+
+                    </MudItem>
+                    <MudItem xs="12" lg="6">
+                        <MudPaper Outlined="true" Class="pa-3" Style="background-color: rgba(255, 255, 255, .03)">
+                            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Stretch"
+                                  Class="px-3" Style="background-color: rgba(126, 239, 152, .1);">
+                                <MudChip Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Success">
+                                    <MudText Typo="Typo.h6" Color="Color.Default" GutterBottom="true">
+                                        <MudIcon Icon="@Icons.TwoTone.Phone" Color="Color.Default" Size="Size.Medium"></MudIcon>
+                                        مشخصات تماس
+                                    </MudText>
+                                </MudChip>
+                            </MudStack>
+                            <MudStack Class="px-3" Style="background-color: rgba(126, 239, 152, .05);">
+                                <MudDivider DividerType="DividerType.FullWidth" Light="true" />
+
+                                <MudTextField @bind-Value="Student.StudentAddress"
+                                          For="@(() => Student.StudentAddress)"
+                                          Label="نشانی منزل" />
+
+                                <MudTextField @bind-Value="Student.HomePhone"
+                                          For="@(() => Student.HomePhone)"
+                                          Label="تلفن منزل" InputType="InputType.Telephone" />
+
+                                <MudTextField @bind-Value="Student.StudentPhone"
+                                          For="@(() => Student.StudentPhone)"
+                                          InputType="InputType.Telephone"
+                                          Label="تلفن همراه زبان آموز - برای زبان آموزان بالای 18 سال" />
+
+                                <MudTextField @bind-Value="Student.FatherPhone"
+                                          For="@(() => Student.FatherPhone)"
+                                          InputType="InputType.Telephone"
+                                          Label="تلفن همراه پدر" />
+
+                                <MudTextField @bind-Value="Student.MotherPhone"
+                                          For="@(() => Student.MotherPhone)"
+                                          InputType="InputType.Telephone"
+                                          Label="تلفن همراه مادر" />
+
+                                <MudTextField @bind-Value="Student.WhatsAppPhone"
+                                          For="@(() => Student.WhatsAppPhone)"
+                                          InputType="InputType.Telephone"
+                                          Label="تلفنی که روی آن واتساپ دارید" />
+                            </MudStack>
+                        </MudPaper>
+
+                    </MudItem>
+                    @*<MudItem xs="12" lg="6">
+                        <MudPaper Outlined="true" Class="pa-3" Style="background-color: rgba(255, 255, 255, .03)">
+                            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Stretch"
+                                  Class="px-3" Style="background-color: rgba(251, 244, 115, .1);">
+                                <MudChip Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Warning" Style="@($"color:{Theme.Palette.Dark}")">
+                                    <MudText Typo="Typo.h6" Color="Color.Default" GutterBottom="true">
+                                        زمان شروع و خاتمه مدرسه
+                                    </MudText>
+                                </MudChip>
+                            </MudStack>
+                            <MudStack Class="px-3" Style="background-color: rgba(251, 244, 115, .05);">
+                                <MudDivider DividerType="DividerType.FullWidth" Light="true" />
+
+
+                                <MudTimePicker @bind-Time="@Student.SchoolStartTime"
+                                               For="() => Student.SchoolStartTime"
+                                               Label="ساعت شروع مدرسه" />
+
+                                <MudTimePicker @bind-Time="@Student.SchoolEndTime"
+                                           For="() => Student.SchoolEndTime"
+                                           Label="ساعت پایان مدرسه" />
+                            </MudStack>
+                        </MudPaper>
+
+                    </MudItem>*@
+
+                </MudGrid>
+            </MudForm>
+
+
+
+
+        </MudCardContent>
+
+        <MudCardActions>
+
+            <MudButton Style="width: 250px; height: 90px;" Class="m-auto" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Filled.Save" OnClick="SaveClick" Size="Size.Large" >
+                ذخیره
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+}
+@code {
+
+    void UploadComplete(string url)
+    {
+        DataService.DirectUpdateStudentProfileUrlField(Student);
+    }
+
+}

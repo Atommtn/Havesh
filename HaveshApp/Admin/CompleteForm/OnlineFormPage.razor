@@ -1,0 +1,52 @@
+﻿@page "/onlineForm/{StuGuid?}"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+
+@layout PersianPagesLayout
+
+<MudContainer Class="pa-5">
+    <OnlineFormStudentsListComponent SelectedStudentChanged="@SelectedStudentChanged"/>
+    <OnlineFormStudentComponent Student="CurrentStudent"/>
+</MudContainer>
+
+@code
+{
+    [Inject] DataProviderService DataProviderService { get; set; }
+
+    public ShokouhPardisStudentClassOnlineForm? CurrentStudent { get; set; }
+
+    [Parameter]
+    public string? StuGuid
+    {
+        get => _stuGuid;
+        set
+        {
+            _stuGuid = value;
+            if (_stuGuid is null)
+            {
+                return;
+            }
+            if (!Guid.TryParse(_stuGuid, out var guid)) return;
+
+            var st = DataProviderService.GetOnlineStudentByGuid(guid);
+            if (st is null) return;
+
+            CurrentStudent = st;
+        }
+    }
+
+    void SelectedStudentChanged(ShokouhPardisStudentClassOnlineForm student)
+    {
+        CurrentStudent = student;
+        Console.WriteLine(CurrentStudent.StudentClassGuid);
+        //CurrentStudent.StudentClassGuid = Guid.NewGuid();
+        //DataProviderService.SaveOnlineFormStudent(CurrentStudent);
+        StateHasChanged();
+    }
+
+
+    string? _stuGuid;
+
+   
+}
+

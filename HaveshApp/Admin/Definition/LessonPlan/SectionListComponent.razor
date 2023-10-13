@@ -1,0 +1,150 @@
+﻿@using ShokouhApp.Model
+
+<style type="text/css" media="all">
+    .SectionList -> .mud-table-row {
+        background-color: darkcyan;
+        }
+    
+</style>
+<MudTable @ref="table"
+          Hover="true"
+          Breakpoint="Breakpoint.None"
+          Items="Sections"
+          Class="SectionList"
+          Style="background-color: #3c4043; width:100%">
+    <ToolBarContent>
+                  
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewSectionClick">
+            Add Section
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>SectionType</MudTh>
+        <MudTh>Title</MudTh>
+        <MudTh>Duration</MudTh>
+        <MudTh>SelectionObjective</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.SectionType </MudTd>
+        <MudTd>@context.SectionTitle</MudTd>
+        <MudTd>@context.Duration</MudTd>
+        <MudTd>@context.SectionObjective</MudTd>
+        <MudTd>
+            <MudButton Color="Color.Success" Variant="Variant.Text" OnClick="()=>ShowItems(context)">
+               Show Items
+            </MudButton>
+        </MudTd>
+        
+        <MudTd>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.PlaylistAddCircle" Size="Size.Small" OnClick="() => AddEditSectionItemClick(context)"></MudIconButton>
+        </MudTd>
+
+    </RowTemplate>
+    <ChildRowContent >
+        @if (context.ShowDetail)
+        {
+            <MudTr>
+                <MudTd colspan="6">
+                    <LessonPlanSectionItemListViewComponent Section="context"></LessonPlanSectionItemListViewComponent>
+                </MudTd>
+            </MudTr>
+        }
+    </ChildRowContent>
+    
+
+</MudTable>
+
+
+@code {
+
+
+    [Parameter] public LessonPlan LessonPlan { get; set; }
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+    [Inject] ISnackbar Snackbar { get; set; }
+    MudTable<LessonPlanSection>? table;
+    public List<LessonPlanSection> Sections { get; set; }
+    protected override void OnInitialized()
+    {
+        RefreshData();
+        base.OnInitialized();
+    }
+
+    private void RefreshData()
+    {
+
+        Sections = _dataProvider.GetLessonPlanSection(LessonPlan);
+
+    }
+
+    
+
+    private void NewSectionClick()
+    {
+        throw new NotImplementedException();
+    }
+   
+
+    private async Task AddEditSectionItemClick(LessonPlanSection section)
+    {
+        var dialogReference = DialogService.Show<LessonPlanSectionItemDialog>(
+            "add SectionItem",
+            new DialogParameters
+            {
+                ["Section"] = section
+            },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraLarge
+            });
+
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Canceled == false)
+        {
+            //try
+            //{
+            //    var retData = (Model.LessonPlan)dialogResult.Data;
+            //    var result = _dataProvider.SaveEditlessonPlan(retData);
+
+            //    if (result)
+            //    {
+            //        var parameters = new DialogParameters();
+
+            //        bool? result1 = await DialogService.ShowMessageBox(
+            //            "خطا",
+            //            (MarkupString)
+            //                @$"برای این سطح و این شماره سیشن قبلا لسن پلن نوشته شده است
+            //            <br/>{retData.Level.LevelName}
+            //            <br/>{retData.SessionNumber}",
+            //            yesText: "متوجه شدم!");
+            //    }
+            //    else
+            //    {
+            //        Snackbar.Add("لسن پلن با موفقیت ذخیره شد.", Severity.Success);
+            //        Log.Warning("User {UserName} Save-Update LessonPlan {lessonPlanID}",
+            //            _userSession.Payload.UserName, retData.LessonPlanId);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(" lesson plan save-edite fail" + ex.Message);
+
+            //}
+
+            //RefreshData();
+            //StateHasChanged();
+        }
+    }
+
+    private void ShowItems(LessonPlanSection context)
+    {
+        context.ShowDetail = true;
+    }
+
+}

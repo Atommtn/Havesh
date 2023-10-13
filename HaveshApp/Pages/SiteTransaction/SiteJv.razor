@@ -1,0 +1,156 @@
+﻿@page "/SiteJv/{guid?}/{Cat?}"
+@layout PersianPagesLayout
+
+@if (JvfromSite != null)
+{
+    <MudText Typo="Typo.h5" Class="my-3" Color="Color.Warning" Align="Align.Center">ورود اطلاعات واریز وجه کارت به کارت</MudText>
+    <MudDivider />
+
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.StudentName" Required="true" RequiredError="نام زبان آموز را باید وارد کنید" Label="نام زبان آموز" Variant="Variant.Filled"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.StudentFamil" Required="true" RequiredError="نام خانوادگی زبان آموز را باید وارد کنید"  Label="نام خانوادگی زبان آموز" Variant="Variant.Filled"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.StudentIdNumber" Required="true" RequiredError="کد ملی زبان آموز را باید وارد کنید"Label="کد ملی زبان آموز" Variant="Variant.Filled"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.PhoneNumber" Required="true" RequiredError="تلفن تماس  و پیگیری را باید وارد کنید" Label="تلفن تماس  و پیگیری" Variant="Variant.Filled" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudListSubheader>علت واریز</MudListSubheader>
+            <MudRadioGroup T="string" @bind-SelectedOption="JvfromSite.FeeFor" Required="true" RequiredError="علت واریز را باید وارد کنید">
+                @foreach (var opt in _options)
+                {
+                    <MudRadio Option="opt" Placement="Placement.Left">@opt</MudRadio>
+                }
+            </MudRadioGroup>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudDatePicker @bind-Date="JvfromSite.DateOfSettle" Required="true" RequiredError="تاریخ واریز را باید وارد کنید"
+                           Label="تاریخ واریز"
+                           FirstDayOfWeek="DayOfWeek.Saturday"
+                           Culture="@GetPersianCulture()"
+                           MaxDate="DateTime.Today"
+                           TitleDateFormat="dddd, dd MMMM" Variant="Variant.Filled" />
+
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTimePicker @bind-time="Ts" Label="ساعت واریز" Variant="Variant.Filled" Required="true" RequiredError="ساعت واریز را باید وارد کنید" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.Fee" Label="مبلغ به ریال" Variant="Variant.Filled" Required="true" RequiredError="مبلغ به ریال را باید وارد کنید" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.Txcode" Label="شناسه واریز" Variant="Variant.Filled" Required="true" RequiredError="شناسه واریز را باید وارد کنید" />
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.CardPostfix" Label="چهار رقم آخر شماره کارت واریز کننده" Variant="Variant.Filled" Required="true" RequiredError="چهار رقم آخر شماره کارت واریز کننده را باید وارد کنید" />
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="JvfromSite.Description" Label="توضیحات" Variant="Variant.Filled" Lines="3" />
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <AttachmentComponent @bind-Attachment="Attachment" 
+                                 NoImageFile="images/receipt.png" 
+                                 Folder="StudentTransactionReport"
+                                 
+                                 UploadButtonText="ارسال تصویر قبض واریز" 
+                                 UploadStarted="UploadStarted"
+                                 UploadComplete="UploadComplete"
+            />
+        </MudItem>
+
+        @if (_errors.Any())
+        {
+            <MudItem xs="12">
+                <MudText Typo="Typo.h5" Color="Color.Error" GutterBottom="true">
+                    به دلایل زیر امکان ذخیره اطلاعات وارد شده توسط شما وجود ندارد :
+                </MudText>
+
+                @foreach (var error in _errors)
+                {
+                    <MudText Typo="Typo.body1" Color="Color.Error" GutterBottom="true">
+                        <li>@error</li>
+                    </MudText>
+                }
+            </MudItem>
+        }
+
+@if (_guid == null)
+{
+    <MudItem xs="12">
+        <MudButton FullWidth="true" Style="height: 100px;" Variant="Variant.Filled" Color="Color.Tertiary" EndIcon="@Icons.TwoTone.CreditCard" OnClick="()=>SaveClick(true)" Disabled="_disbaleSave">
+            <MudText Typo="Typo.h5">
+                ذخیره اطلاعات واریز وجه
+            </MudText>
+        </MudButton>
+    </MudItem>
+}
+    </MudGrid>
+
+    @if (_guid is {})
+    {
+        <MudCard Elevation="1" Class="ma-3" Outlined="true">
+            <MudCardHeader>
+                <MudText Typo="Typo.body1" Color="Color.Warning">
+                    کنترل مدیریتی
+                </MudText>
+
+            </MudCardHeader>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="6" md="6">
+                        <MudCheckBox @bind-Checked="JvfromSite.IsApproved" LabelPosition="LabelPosition.Start" Label="مورد تایید می باشد"></MudCheckBox>
+
+                        <MudCheckBox @bind-Checked="JvfromSite.IsRequiredInvestigation" LabelPosition="LabelPosition.Start" Label="نیاز به بررسی بیشتر دارد"></MudCheckBox>
+
+                    </MudItem>
+                    <MudItem xs="6" md="6">
+                        <MudTextField @bind-Value="JvfromSite.ApprovedBy" Label="تایید شده توسط"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="6" md="6">
+                        <MudTextField @bind-Value="JvfromSite.AdminDescription" Label="توضیحات مدیریتی" Lines="3"></MudTextField>
+
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+            <MudCardActions>
+                <MudSpacer />
+                <MudButton Variant="Variant.Text" Color="Color.Info" StartIcon="@Icons.TwoTone.Save" OnClick="SaveAdminStatusClick">
+                    ذخیره همه تغییرات
+
+                </MudButton>
+
+            </MudCardActions>
+        </MudCard>
+
+
+
+
+
+        <MudToolBar Dense="true">
+            <MudButton Variant="Variant.Filled" Color="Color.Warning" StartIcon="@Icons.TwoTone.NavigateNext" OnClick="NextClick">
+                بعدی
+            </MudButton>   
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled" Color="Color.Info" EndIcon="@Icons.TwoTone.NavigateBefore" OnClick="PreviuseClick">
+                فبلی
+            </MudButton>
+        </MudToolBar>
+
+        @*<MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="TestFileUploadClick">
+            TEXT
+        </MudButton>*@
+    }
+
+
+
+
+}
+

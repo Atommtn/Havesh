@@ -1,0 +1,55 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+
+ 
+<MtnDialog >
+    <ChildComponent>
+        @if (LessonPlan is { })
+        {
+            <h3>@LessonPlan.SessionNumber شماره جلسه </h3>
+            <MudGrid>
+                <MudItem md="12">
+                    <MudTextField @bind-Value="@LessonPlan.Title" Required Label="SessionScope" />
+                </MudItem>
+
+            </MudGrid>
+        }
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public LessonPlan? LessonPlan { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    private void SaveDialogClick()
+    {
+        DialogInstance.Close(LessonPlan);
+    }
+}

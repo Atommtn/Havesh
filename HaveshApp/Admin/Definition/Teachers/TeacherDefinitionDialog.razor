@@ -1,0 +1,81 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+@using System.Globalization
+
+
+<MtnDialog>
+    <ChildComponent>
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Teacher.TeacherName" Label="نام مدرس" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Teacher.TeacherFamily" Label="نام خانوادگی  مدرس" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Teacher.TeacherNationalId" Label="کد ملی مدرس" />
+            </MudItem>
+
+            <MudItem md="6">
+                
+                <MudSwitch @bind-Checked="@Teacher.TeacherSex" ThumbIcon="@Icons.Filled.Girl" Color="Color.Error" UnCheckedColor="Color.Success" ThumbIconColor="Color.Default">
+                    @if (Teacher.TeacherSex == true)
+                    {
+                        <MudText Typo="Typo.caption" Color="Color.Error">
+                            خانم
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption" Color="Color.Success">
+                            آقا
+                        </MudText>
+
+                    }
+                </MudSwitch>
+            </MudItem>
+            <MudItem md="6">
+                <MudDatePicker Culture="_persianCulture" Label="تاریخ تولد" @bind-Date="Teacher.TeacherBirthDay" />
+            </MudItem>
+            
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisTeacherClass? Teacher { get; set; }
+
+    [Inject] DataProviderService DataProvider { get; set; }
+
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+
+
+    private void SaveDialogClick()
+    {
+        DialogInstance.Close(Teacher);
+    }
+
+
+    readonly CultureInfo _persianCulture = new CultureInfo("fa-IR");
+}

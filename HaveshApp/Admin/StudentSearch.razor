@@ -1,0 +1,119 @@
+﻿@page "/StudentSearch"
+@using ShokouhApp.Services
+@using ShokouhApp.Model
+
+@using ShokouhApp.Admin.Planning
+@using ShokouhApp.Admin.Student
+@using ShokouhApp.Admin.Clone
+@using Serilog
+@using ShokouhApp.Admin.Authentication
+@layout PersianPagesLayout
+
+@attribute [Authorize]
+
+<TermSelectorComponent @bind-Term="Term" AllowAll="true" />
+
+<StudentsListComponent AllowEdit="true" 
+                       Term="Term" 
+                       AllowDelete="true"
+                       RowStyle="false"
+                       @ref="StudentListComponent"
+                       OnEditStudentAction="OnEditStudentAction"
+                       OnDeleteStudentAction="OnDeleteStudentAction"> </StudentsListComponent>
+<MudStack Row="true" AlignItems="AlignItems.End">
+
+</MudStack>
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+    @if (_isProgressing)
+    {
+        <MudProgressCircular Color="Color.Success" Indeterminate="true"></MudProgressCircular>
+    }
+   @* <MudButton StartIcon="@Icons.Filled.AutoFixNormal" Color="Color.Success" Variant="Variant.Filled" OnClick="NormalizeDataClick" Disabled="true">
+        Normalize data from Form
+    </MudButton>*@
+</MudStack>
+
+
+@code {
+    [Inject] StudentService StudentService { get; set; }
+
+
+    [Inject] IDialogService DialogService { get; set; }
+
+    
+    StudentsListComponent? StudentListComponent { get; set; }
+
+    bool _isProgressing = false;
+    ShokouhPardisTermClass? _term;
+
+    private async Task NormalizeDataClick()
+    {
+        _isProgressing = true;
+        StateHasChanged();
+
+        StudentService.NormalData();
+        await DialogService.ShowMessageBox("Finish", "Normalizing data is finished");
+
+        _isProgressing = false;
+        StateHasChanged();
+
+    }
+
+
+
+    private async Task StudentDialogButton(ShokouhPardisStudentClass student)
+    {
+        var dialogReference = await DialogService.ShowAsync<AddNewStudentDialog>(
+            (student.StudentClassId > 0 ? "Edit" : "New") + " Student",
+            new DialogParameters
+                {
+                    ["Student"] = student
+                },
+            new DialogOptions()
+                {
+                    CloseOnEscapeKey = false,
+                    CloseButton = false,
+                    DisableBackdropClick = true,
+                    MaxWidth = MaxWidth.Large
+                });
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Canceled == false)
+        {
+            var NewStudetent = (ShokouhPardisStudentClass)dialogResult.Data;
+            StudentService.SaveStudent(NewStudetent);
+            Log.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload?.UserName, NewStudetent.StudentClassId);
+            await StudentListComponent.ReloadTableServerData();
+            StateHasChanged();
+        }
+    }
+
+
+    private async Task OnEditStudentAction(StudentActionArgs args)
+    {
+
+        await StudentDialogButton(args.Student);
+    }
+
+
+
+    private async Task<bool> OnDeleteStudentAction(StudentActionArgs args)
+    {
+        var result = await DialogService.ShowMessageBox("Delete student", $"Are you sure you want delete {args.Student.StudentName} {args.Student.StudentFamily} ?", "Yes", "No");
+        if (result is true)
+        {
+            StudentService.DeleteStudent(args.Student);
+            Log.Warning("User {UserName} Delete Student {StudentId}", _userSession.Payload?.UserName, args.Student.StudentClassId);
+            return true;
+        }
+        return false;
+
+    }
+
+    public ShokouhPardisTermClass? Term
+    {
+        get => _term;
+        set => _term = value;
+    }
+
+}

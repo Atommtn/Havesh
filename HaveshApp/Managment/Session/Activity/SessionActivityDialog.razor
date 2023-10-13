@@ -1,0 +1,107 @@
+﻿@using ShokouhApp.Model
+
+<MtnDialog>
+    <ChildComponent>
+        <MudGrid>
+            <MudItem md="12">
+                <MudTextField @bind-Value="SessionActivity.ActivityTitle" Label="Title" />
+            </MudItem>
+
+            <MudItem md="6">
+                <MudSelect MultiSelection="true" @bind-Value="_levels" Label="سطوح"  Clearable="true">
+                    @foreach (var level in Levels)
+                    {
+                        <MudSelectItem Value="level.LevelName"></MudSelectItem>
+                    } 
+                </MudSelect>
+            </MudItem>
+
+            <MudItem md="6">
+                <MudSelect @bind-Value="SessionActivity.LevelGroups" Label="گروه" Dense="true" MultiSelection="true" Clearable="true">
+                    @foreach (var lGroup in LevelGroupingDistinct)
+                    {
+                        <MudSelectItem Value="lGroup" />
+                    }
+                </MudSelect>
+            </MudItem>
+
+            <MudItem md="9">
+                <MudSelect @bind-Value="SessionActivity.ValueType" Label="نوع ">
+                    <MudSelectItem Value="@("string")"></MudSelectItem>
+                    <MudSelectItem Value="@("int")"></MudSelectItem>
+                    <MudSelectItem Value="@("bool")"></MudSelectItem>
+                    <MudSelectItem Value="@("date")"></MudSelectItem>
+                </MudSelect>
+            </MudItem>
+            <MudItem md="3">
+                <MudNumericField @bind-Value="SessionActivity.SessionNo" Label="جلسه" Clearable="true" />
+            </MudItem>
+
+            <MudItem md="6">
+                <ActivityValueOptionsControl SessionActivity="SessionActivity" Label="گزینه ها"></ActivityValueOptionsControl>
+            </MudItem>
+
+            <MudItem md="6">
+                <MudSwitch T="bool?" @bind-Value="SessionActivity.ValueOptionsCanMultiple" LabelPosition="LabelPosition.Start" Label="قابل انتخاب چندتایی"></MudSwitch>    
+            </MudItem>
+
+            <MudItem md="6">
+                <MudSelect @bind-Value="SessionActivity.ValueControl" Label="کنترل ">
+                    <MudSelectItem Value="@("Buttons")"></MudSelectItem>
+                    <MudSelectItem Value="@("Options(Radio group/Checkbox group)")"></MudSelectItem>
+                    <MudSelectItem Value="@("Checkbox")"></MudSelectItem>
+                    <MudSelectItem Value="@("Switch")"></MudSelectItem>
+                    <MudSelectItem Value="@("Rating/Stars")"></MudSelectItem>
+                    <MudSelectItem Value="@("Slider")"></MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+        </MudGrid>
+
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveSessionActivityClick">
+            ذخیره
+        </MudButton>
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Filled" OnClick="CloseClick">
+            بستن
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    string _levels;
+    string _levelGroups;
+
+    [Parameter]
+    public SessionActivity SessionActivity { get; set; }
+
+    public List<ShokouhPardisLevelClass> Levels { get; set; }
+    private List<string> LevelGroupingDistinct = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        Levels = _dataProvider.GetLevels().ToList();
+        LevelGroupingDistinct = Levels.Select(x=>x.Grouping).Distinct().ToList();
+        base.OnInitialized();
+    }
+
+    private void SaveSessionActivityClick()
+    {
+        SessionActivity.SessionActivityLastModified = DateTime.Now;
+        _dataProvider.SaveSessionActivity(SessionActivity);
+        DialogInstance.Close(SessionActivity);
+    }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+
+    private void CloseClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+}

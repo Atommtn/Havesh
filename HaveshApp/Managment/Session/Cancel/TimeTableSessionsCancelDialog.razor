@@ -1,0 +1,93 @@
+﻿@using ShokouhApp.Model
+@using DNTPersianUtils.Core
+<h3>TimeTableSessionsCancelDialog</h3>
+<MtnDialog>
+    <ChildComponent>
+
+        <MudStack Row="false" Spacing="2">
+            <MudText Typo="Typo.caption">
+                @_currentTimeTable?.Title
+            </MudText>
+            <MudProgressLinear @ref="_progressbarSession" Rounded="true" Striped="true" Color="Color.Error"></MudProgressLinear>
+
+            <MudText Typo="Typo.caption">
+                جلسه :  @_currentTimeTableSession?.SessionDate.ToPersianDateTextify()  جبرانی به : @ReplSessionDate?.ToPersianDateTextify()
+            </MudText>
+
+        </MudStack>
+
+    </ChildComponent>
+    
+    <DialogAction></DialogAction>
+</MtnDialog>
+@code {
+    MudProgressLinear? _progressbarSession;
+    ShokouhPardisTimeTable? _currentTimeTable;
+    TimeTableSession? _currentTimeTableSession;
+
+    [Parameter]
+    public List<ShokouhPardisTimeTable> TimeTables { get; set; }
+
+    [Parameter]
+    public DateTime? OrigSessionDate { get; set; }
+
+    [Parameter]
+    public DateTime? ReplSessionDate { get; set; }
+
+    [Parameter]
+    public ShokouhPardisInterval ReplInterval { get; set; }
+
+    [Parameter]
+    public string? CauseText { get; set; }
+
+    [Parameter]
+    public string? CauseItem { get; set; }
+
+    readonly string _valid = "Valid";
+    readonly string _invalid = "Invalid";
+
+    [Inject] TimeTableSessionService TimeTableSessionService { get; set; }
+    [Inject] SmsService SmsService { get; set; }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+            DoAction();
+        base.OnAfterRender(firstRender);
+    }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    async void DoAction()
+    {
+        
+        _progressbarSession!.Max = TimeTables.Count;
+        _progressbarSession!.Value = 0;
+        var canceledSessionsCount = 0;
+        foreach (var timeTable in TimeTables)
+        {
+            canceledSessionsCount++;
+            if (timeTable.Tag != _valid)
+            {
+                _snackBar.Add($"برنامه : {timeTable.Title} در تاریخ {OrigSessionDate.ToPersianDateTextify()} هیچ جلسه برگزار نشده ای ندارد", Severity.Error);
+                continue;
+            }
+            
+            var timeTableSession = timeTable.Sessions.Single(x => x.SessionDate == OrigSessionDate);
+            var canceledSession = TimeTableSessionService.CancelSession(timeTableSession, ReplSessionDate, timeTableSession.SessionTime, CauseItem, CauseText);
+            var smsBody = SmsService.GetSessionCancelText(timeTableSession, canceledSession, CauseItem, CauseText);
+            TimeTableSessionService.SendSmsForCancelledTimetable(timeTable, smsBody);
+            _progressbarSession!.Value = canceledSessionsCount;
+
+            StateHasChanged();
+            await Task.Delay(100);
+        }
+        _snackBar.Add($"تعداد {canceledSessionsCount} برنامه در تاریخ انتخابی کنسل و کلاس جبرانی جایگزین گردید",severity:Severity.Success);
+
+        DialogInstance.Close();
+    }
+
+
+
+
+}

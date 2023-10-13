@@ -1,0 +1,121 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using DNTPersianUtils.Core
+<MudTable @ref="table"
+          RowsPerPage="1000"
+          GroupBy="@_groupDefinition"
+          ServerData="ServerReload">
+
+    <ToolBarContent>
+        @if (!SearchTextDiasabled)
+        {
+            <MudSpacer></MudSpacer>
+
+            <MudTextField @bind-Value="SearchText"
+                          Label="Search any thing"
+                          Style="@("display:" + (SearchTextDiasabled ? "none" : "block"))"
+                          Placeholder="You can search anything here"
+                          DebounceInterval="1000"
+                          OnDebounceIntervalElapsed="FilterData"
+                          AdornmentIcon="@Icons.Filled.Search"
+                          Adornment="Adornment.Start"
+                          Clearable="true" />
+        }
+    </ToolBarContent>
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh>نام و نام خانوادگی</MudTh>
+        @if (Student is { })
+        {
+            <MudTh>تاریخ</MudTh>
+        }
+        <MudTh>نوع پرداخت</MudTh>
+        <MudTh>بابت</MudTh>
+        <MudTh>مبلغ</MudTh>
+        <MudTh>شماره قبض</MudTh>
+        <MudTh> مشخصات پرداخت</MudTh>
+        <MudTh> توضیحات</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="7">@($"{context.GroupName}: {context.Key}") </MudTh>
+        <MudTh Class="mud-table-cell-custom-group" colspan="2">جمع مبلغ به حروف: @(context.Items.Sum((e) => e.Fee).NumberToText(Language.Persian) + " تومان ")</MudTh>
+        <br/>
+        <MudTh Class="mud-table-cell-custom-group" colspan="2">جمع مبلغ به عدد: @(context.Items.Sum((e) => e.Fee).ToString("##,###") + " تومان ")</MudTh>
+
+    </GroupHeaderTemplate>
+    <RowTemplate Context="dJV">
+        <MudTd></MudTd>
+        <MudTd>@dJV.Student.StudentName @dJV.Student.StudentFamily</MudTd>
+        @if (Student is { })
+        {
+            <MudTh>@dJV.CurrentDate.Value.Date</MudTh>
+        }
+        <MudTd>@dJV.PaymentType</MudTd>
+        <MudTd>@dJV.FeeFor</MudTd>
+        <MudTd>@dJV.Fee</MudTd>
+        <MudTd>@(dJV.BillNo is > 0 ? dJV.BillNo : dJV.DailyJvid)</MudTd>
+        <MudTd>
+            @if (dJV.PaymentType.Contains("پوز"))
+            {
+                @String.Format("شماره پوز {0}",dJV.PosCode)
+                ;
+
+            }
+            @if (dJV.PaymentType.Contains("واریز"))
+            {
+                @String.Format("شناسه واریز {0} چهار رقم آخر شماره کارت{1}",dJV.Txcode,dJV.CardPostfix)
+                ;
+
+            }
+
+        </MudTd>
+        <MudTd>@dJV.Description</MudTd>
+        <MudTd>
+
+            <AuthorizeView Roles="Admin,Modiator">
+                <Authorized>
+                    <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Warning" Variant="Variant.Filled" OnClick="() => EditDailyJVClick(dJV)" />
+                    
+                </Authorized>
+            </AuthorizeView>
+
+
+        </MudTd>
+        <MudTd>
+            <AuthorizeView Roles="Admin,Modiator">
+                <Authorized>
+                    <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" Variant="Variant.Filled" OnClick="() => DeleteDailyJVClick(dJV)" />
+                </Authorized>
+            </AuthorizeView>
+
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.TwoTone.Print" Color="Color.Surface" OnClick="()=>PrintDailyJvPrintClick(dJV)"></MudIconButton>
+        </MudTd>
+        <MudTd></MudTd>
+    </RowTemplate>
+    <GroupFooterTemplate>
+        <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="5">جمع مبلغ به حروف: @(context.Items.Sum((e) => e.Fee).NumberToText(Language.Persian) + " تومان ")</MudTh>
+        <br/>
+            <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="5">جمع مبلغ به عدد: @(context.Items.Sum((e) => e.Fee).ToString("##,###") + " تومان ")</MudTh>
+           
+    </GroupFooterTemplate>
+    <PagerContent>
+        <MudTablePager Style="@("display:" + (SearchTextDiasabled ?  "none":"block"))" />
+    </PagerContent>
+</MudTable>
+

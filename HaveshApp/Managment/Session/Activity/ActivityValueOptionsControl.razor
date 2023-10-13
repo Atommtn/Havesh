@@ -1,0 +1,92 @@
+﻿@using ShokouhApp.Model
+
+<MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+    Options
+</MudText>
+
+
+<MudTable Items="SessionActivity.ValueOptions" @ref="_table">
+    <ToolBarContent>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Filled" OnClick="NewValueOptionClick">
+            New Value Option
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>عنوان</MudTh>
+        <MudTh>رنگ</MudTh>
+        <MudTh>مقدار</MudTh>
+        <MudTh>نمایش شرطی (پس از مقدار)</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+            
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Title</MudTd>
+        <MudTd>@context.Color</MudTd>
+        <MudTd>@context.Value</MudTd>
+        <MudTd>@context.ShowByValue</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>ValueOptionItemEditClick(context)"/>
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" Variant="Variant.Filled" OnClick="()=>ValueOptionItemDeleteClick(context)"/>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+@code {
+
+    [Parameter]
+    public SessionActivity SessionActivity { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    private async Task NewValueOptionClick()
+    {
+        var valueOption = new SessionActivityValueOption()
+        {
+            SessionActivityFk = SessionActivity.SessionActivityID
+        };
+
+        await OpenValueOptionDialog(valueOption);
+    }
+
+    private async Task OpenValueOptionDialog(SessionActivityValueOption valueOption)
+    {
+        var dialogReference = await DialogService.ShowAsync<ActivityValueOptionDialog>("Value Option",
+            new DialogParameters()
+            {
+                ["ValueOption"] = valueOption
+            }, new DialogOptions
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            });
+        var dialogReferenceResult = await dialogReference.Result;
+        if (!dialogReferenceResult.Canceled)
+        {
+            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.SessionActivityID);
+        }
+    }
+
+    private MudTable<SessionActivityValueOption>? _table;
+
+    private async Task ValueOptionItemEditClick(SessionActivityValueOption vo)
+    {
+        await OpenValueOptionDialog(vo);
+    }
+
+    private async Task ValueOptionItemDeleteClick(SessionActivityValueOption vo)
+    {
+        var showMessageBox = await DialogService.ShowMessageBox("Delete Value Option", "Are you sure to delete?","Yes","No");
+        if (showMessageBox is true)
+        {
+            _dataProvider.DeleteSessionActivityValueOption(vo);
+            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.SessionActivityID);
+        }
+    }
+
+}

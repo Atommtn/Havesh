@@ -1,0 +1,126 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+<MtnDialog>
+    <ChildComponent>
+
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudBadge Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Success" Overlap="true" Bordered="true" Class="mx-6 my-4">
+                <MudAlert Severity="Severity.Success" Icon="null" ContentAlignment="HorizontalAlignment.Left">اطلاعات زبان آموز</MudAlert>
+
+                
+            </MudBadge>
+            <MudGrid>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentName" Label="نام زبان آموز" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentFamily" Label="نام خانوادگی زبان آموز" Clearable="true"/>
+                </MudItem>
+
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentIdno" Label="کد ملی" Clearable="true"/>
+
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentFrom" Label="صادره از" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudCheckBox @bind-Checked="ShnoSameIdno">شماره شناسنامه و کد ملی یکی است</MudCheckBox>
+                    @if (!ShnoSameIdno)
+                    {
+                        <MudTextField @bind-Value="Student.StudentShno" Label="شماره شناسنامه" Clearable="true"/>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+        
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudBadge Icon="@Icons.Material.Filled.ContactPhone" Color="Color.Warning" Overlap="true" Bordered="true" Class="mx-6 my-4">
+                <MudAlert Severity="Severity.Warning" Icon="null" ContentAlignment="HorizontalAlignment.Left">
+                اطلاعات تماس
+                </MudAlert>
+            </MudBadge>
+            <MudGrid>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentPhone" Label="شماره همراه زبان آموز" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.HomePhone" Label="تلفن منزل" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.FatherPhone" Label="شماره همراه پدر زبان آموز" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.MotherPhone" Label="شماره همراه مادر زبان آموز" Clearable="true"/>
+                </MudItem>
+
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.WhatsAppPhone" Label="شماره واتساپ" Clearable="true"/>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+        
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudBadge Icon="@Icons.Material.Filled.FamilyRestroom" Color="Color.Info" Overlap="true" Bordered="true" Class="mx-6 my-4">
+                <MudAlert Severity="Severity.Info" Icon="null" ContentAlignment="HorizontalAlignment.Left">
+                اطلاعات اولیا
+                </MudAlert>
+            </MudBadge>
+            <MudGrid>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentFatherName" Label="نام پدر" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.FatherJob" Label="شغل پدر" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentMotherFullName" Label="نام کامل مادر زبان آموز" Clearable="true"/>
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.MotherJob" Label="شغل مادر" Clearable="true"/>
+                </MudItem>
+                <MudItem md="12">
+                    <MudTextField @bind-Value="Student.StudentAddress" Label="نشانی زبان آموز" Clearable="true"/>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+        
+    </ChildComponent>
+    <DialogAction>
+
+        <MudButton Color="@Color.Success" StartIcon="@Icons.Filled.Save"
+                   Variant="@Variant.Filled" OnClick="@SaveDialogClick">
+            Save
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+@code {
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisStudentClass? Student { get; set; }
+    [Inject] ISnackbar Snackbar { get; set; }
+
+    [Inject] StudentService StudentService { get; set; }
+    public bool ShnoSameIdno { get; set; } = true;
+
+
+    private void SaveDialogClick()
+    {
+
+        if (!StudentService.IsDuplicatedStudent(Student, Student.StudentClassId))
+        {
+            Snackbar.Add("Student Save Successfully", severity: Severity.Success);
+            DialogInstance.Close(Student);
+        }
+        else
+        {
+            Snackbar.Add("There is a student same you enter", severity: Severity.Error);
+        }
+
+    }
+
+}

@@ -1,0 +1,173 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+@using System.Globalization
+@using ShokouhApp.Admin.Clone
+
+<MtnDialog >
+    <ChildComponent>
+
+
+        <MudStack>
+            <MudTable RowStyleFunc="RowStyleFunc"
+                      @ref="_studentTables" Items="@Students"
+                      @bind-SelectedItems="SelectStudent" Hover="true" RowsPerPage="100">
+                <HeaderContent>
+                    <MudTh>نام و نام خانوادگی زبان آموز</MudTh>
+                    <MudTh>شماره زبان آموز</MudTh>
+                    <MudTh>شماره همراه پدر</MudTh>
+                    <MudTh>شماره همراه مادر</MudTh>
+                    <MudTh>مشخصات ترم</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Student.StudentName @context.Student.StudentFamily</MudTd>
+                    <MudTd DataLabel="Phone">@context.Student.StudentPhone</MudTd>
+                    <MudTd DataLabel="MotherPhone">@context.Student.MotherPhone</MudTd>
+                    <MudTd DataLabel="FatherPhone">@context.Student.FatherPhone</MudTd>
+                    <MudTd>
+                        @context.TimeTable.Level.LevelName
+                        @context.TimeTable.Teacher.FullName
+
+
+                    </MudTd>
+                    <MudTd>
+
+                        @if (_jvs.Any(x => x.StudentId == context.Student.StudentClassId))
+                        {
+                            <MudButton Variant="Variant.Filled"
+                                   EndIcon="@Icons.Filled.Light"
+                                   Color="Color.Tertiary" OnClick="() => { context.Student.ShowDetail = !context.Student.ShowDetail; }">
+                                نمایش پرداخت
+                            </MudButton>
+                        }
+
+                        @*  @{
+                        var status = GetStudentPaymentStatus(context.Student);
+                        }
+
+                        @switch (status)
+                        {
+                        case 1:
+                        <MudIcon Icon="@Icons.Filled.Check" />
+                        break;
+
+                        case -1:
+                        <MudIcon Icon="@Icons.Filled.AirplaneTicket" />
+                        break;
+                        case 0:
+                        <MudIcon Icon="@Icons.Filled.Add" />
+                        break;
+                        }*@
+
+                    </MudTd>
+
+
+                </RowTemplate>
+
+                <ChildRowContent>
+                    @if (context.Student.ShowDetail)
+
+                    {
+                        <MudTr>
+                            <td colspan="6">
+                                <MudCard Elevation="0">
+                                    <DailyJvRecordListComponent selectedTerm="SelectedTerm" SearchTextDiasabled="true" Student="context.Student">
+
+                                    </DailyJvRecordListComponent>
+
+                                </MudCard>
+                            </td>
+                        </MudTr>
+                    }
+                </ChildRowContent>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[] { 150, 200 }" />
+                </PagerContent>
+            </MudTable>
+        </MudStack>
+
+    </ChildComponent>
+    
+    <DialogAction>
+    
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+@code {
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public List<ShokouhPardisDailyJv> _jvs { get; set; }
+    [Parameter]
+    public ShokouhPardisTermClass SelectedTerm { get; set; }
+    [Parameter]
+    public List<ShokouhPardisTimeTableStudent> Students { get; set; }
+   
+    [Inject]
+    public DataProviderService DataProvider { get; set; }
+    public HashSet<ShokouhPardisTimeTableStudent> SelectStudent { get; set; }
+    private MudTable<ShokouhPardisTimeTableStudent> _studentTables;
+
+    private string RowStyleFunc(ShokouhPardisTimeTableStudent TTstudents, int index)
+    {
+        var TTStdLevel = DataProvider.GetStudetnLevel(TTstudents.Student, SelectedTerm);
+        var shahriehDarInTerm = DataProvider.GetLevelBookPrice(SelectedTerm.TermClassId, TTStdLevel.Level.LevelClassId);
+        //var list = DataProvider.GetDailyJvBy(SelectedTerm.TermClassId, student.StudentClassId);
+        var list = _jvs.Where(x => x.StudentId == TTstudents.Student.StudentClassId);
+
+        int jamPardakhtiShahrieh = list.Where(x => x.FeeFor.Equals("شهریه")).Sum(x => x.Fee);
+        int tedadjamPardakhtiShahrieh = list.Count(x => x.FeeFor.Equals("شهریه"));
+        var jamPardakhtiKetab = list.Where(x => x.FeeFor.Equals("کتاب")).Sum(x => x.Fee);
+
+        if (tedadjamPardakhtiShahrieh == 0)
+        {
+            // عدم پرداخت قرمز
+            return "background-color:rgba(255, 0, 4, 0.5);";
+        }
+        
+        if (jamPardakhtiShahrieh < shahriehDarInTerm.TuitionAmount)
+        {
+        // Bedehkar نارنجی
+            return "background-color:rgba(243, 143, 12, 0.5);";
+        }
+
+        if (jamPardakhtiShahrieh > shahriehDarInTerm.TuitionAmount)
+        {
+            // Bestankar سفید
+            return "background-color:rgba(255, 255, 255, 0.5);";
+        }
+        if (jamPardakhtiShahrieh == shahriehDarInTerm.TuitionAmount)
+        {
+            // Tasvieh سبز
+            //if (!StudentJVSFull.Keys.Contains(student.StudentClassId))
+            //{
+            //    StudentJVSFull.Add(student.StudentClassId, jamPardakhtiShahrieh);
+            //}
+            return "background-color:rgba(0, 255, 21, 0.5);";
+        }
+        //طوسی
+        return "background-color:rgba(79, 79, 79, 0.5);";
+        //switch (_jvs.Any(x=>x.StudentId == TTstudents.Student.StudentClassId && x.TermId == SelectedTerm.TermClassId))
+        //{
+        //    case true:
+        //        return "background-color:rgba(34, 177, 76, 0.2);";
+        //    case false:
+        //        return "background-color:rgba(247, 32, 32, 0.2);";
+        //    default: return "background-color:white";
+
+        //}
+    }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+
+
+  
+}

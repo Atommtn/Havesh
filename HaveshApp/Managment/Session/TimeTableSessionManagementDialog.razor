@@ -1,0 +1,215 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+@using System.Globalization
+@using DNTPersianUtils.Core
+@using ShokouhApp.Classes
+
+<MtnDialog>
+
+    <ChildComponent>
+        @if (_sessions.Count == 0)
+        {
+            <MudPaper Class="m-3" Elevation="1">
+                <MudGrid>
+                    <MudItem sm="12" md="6">
+                        <MudSelect Label="Session Template" @bind-Value="SessionsTemplate">
+                            @foreach (var t in _sessionTemplates)
+                            {
+                                <MudSelectItem Value="t">@t.TemplateName</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                </MudGrid>
+                <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.GeneratingTokens" OnClick="GenerateSessions">
+                    Generate Sessions
+                </MudButton>
+
+            </MudPaper>
+
+        }
+        else
+        {
+            <MudTable RowStyleFunc="RowStyleFunc" Items="_sessions">
+                <HeaderContent>
+                    <MudTh>جلسه</MudTh>
+                    <MudTh>تاریخ</MudTh>
+                    <MudTh>برنامه</MudTh>
+                    <MudTh>مدرس</MudTh>
+                    <MudTh>کلاس</MudTh>
+                    <MudTh>وضعیت</MudTh>
+                    <MudTh>توضیحات</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.SessionNumber</MudTd>
+                    <MudTd>
+                        @context.SessionDate.ToPersianDateTextify()
+                        <MudText Typo="Typo.caption">
+                            @context.SessionTime?.ToString("hh\\:mm")
+                        </MudText>
+
+                    </MudTd>
+                    <MudTd>@context.TimeTable.Title</MudTd>
+                    <MudTd>@context.Teacher.FullName</MudTd>
+                    <MudTd>@context.ClassRoom.ClassRoomName</MudTd>
+                    <MudTd>@context.SessionStatus</MudTd>
+                    <MudTd>@context.SessionDescription</MudTd>
+                    <MudTd>
+                        @if (context.SessionDate >= DateTime.Today)
+                        {
+                            <AuthorizeView Roles="Admin">
+                                <Authorized Context="authContext">
+                                    <MudIconButton Icon="@Icons.TwoTone.Edit" Color="Color.Success" OnClick="() => EditSessionClick(context)"></MudIconButton>
+                                </Authorized>
+                            </AuthorizeView>
+                            @if (context.SessionStatus == SessionStatuses.Pending && ShowCancle)
+                            {
+                                <MudIconButton Icon="@Icons.TwoTone.Cancel" Color="Color.Warning" OnClick="() => SessionCancelClick(context)"></MudIconButton>
+                            }
+
+                        }
+
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+
+
+
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="CloseAction">
+            Close
+        </MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Save" OnClick="SaveAction">
+            Save
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    TermSessionTemplate SessionsTemplate;
+    List<TermSessionTemplate> _sessionTemplates;
+
+    protected override void OnInitialized()
+    {
+        _sessionTemplates = _dataProvider.GetTermTemplates(TimeTable.Term);
+        LoadSessions();
+
+        base.OnInitialized();
+    }
+
+    void LoadSessions()
+    {
+        _sessions = _dataProvider.GetTimeTableSessions(TimeTable);
+    }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisTimeTable TimeTable { get; set; }
+
+    [Parameter]
+    public bool ShowCancle { get; set; } = true;
+
+    void CloseAction()
+    {
+        DialogInstance.Close(DialogResult.Cancel());
+
+    }
+
+    void SaveAction()
+    {
+        DialogInstance.Close(DialogResult.Ok(1));
+    }
+
+    void GenerateSessions()
+    {
+        var dates = _dataProvider.GetTermSessionTemplateDates(SessionsTemplate);
+
+        TimeSpan? sessionStartTime = null;
+        foreach (var date in dates)
+        {
+            var lp = _dataProvider.GetLessonPlan(date.SessionNumber, TimeTable.LevelId);
+            var wd = (int)date.Date?.GetPersianWeekDayNumber();
+            var program = TimeTable.Schedule.Programs.FirstOrDefault(x => x.DaySession.WeekdayId == wd);
+            if (program != null)
+            {
+                sessionStartTime = program.DaySession.Interval.StartTime;
+            }
+            var timeTableSession = new TimeTableSession()
+                {
+                    SessionNumber = date.SessionNumber,
+                    SessionDate = (DateTime)date.Date,
+                    SessionTime = (TimeSpan)sessionStartTime,
+
+
+                    ClassRoomFk = TimeTable.ClassRoomId,
+                    TimeTableFk = TimeTable.TimeTableId,
+                    TeacherFk = TimeTable.TeacherId,
+                    SessionDescription = date.Description,
+                    SessionStatus = SessionStatuses.Pending
+
+                };
+
+            _dataProvider.SaveTimeTableSession(timeTableSession);
+            Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", _userSession.Payload.UserName, timeTableSession.ID);
+        }
+
+        LoadSessions();
+        StateHasChanged();
+        _snackBar.Add("Sessions Created Successfully", Severity.Success);
+    }
+
+    List<TimeTableSession> _sessions;
+
+    async Task EditSessionClick(TimeTableSession context)
+    {
+        var dialogref = await _dialogService.ShowAsync<TimeTableSessionDialog>("ویرایش جلسات", new DialogParameters()
+            {
+                ["TimeTableSession"] = context
+            }, new DialogOptions()
+            {
+                CloseButton = true,
+                FullWidth = true,
+                MaxWidth = MaxWidth.Medium
+            });
+        var result = await dialogref.Result;
+        if (!result.Canceled)
+        {
+            LoadSessions();
+        }
+
+    }
+
+    async Task SessionCancelClick(TimeTableSession context)
+    {
+        await _dialogService.ShowAsync<TermSessionCancelDialog>("حذف کلاس و تعریف کلاس جایگزین", new DialogParameters()
+            {
+                ["TimeTableSession"] = context
+            }, new DialogOptions()
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            });
+    }
+    private string RowStyleFunc(TimeTableSession TTs, int index)
+    {
+
+        if (TTs.SessionDate < DateTime.Today)
+        {
+            // کلاس های گذشته
+            return "background-color:rgba(128, 135, 127, 0.5);";
+        }
+        if (TTs.SessionDate == DateTime.Today)
+        {
+            // کلاس امروز
+            return "background-color:rgba(119, 240, 87, 0.5);";
+        }
+        return "background-color:rgba(108, 156, 199, 0.5);";
+       
+    }
+}

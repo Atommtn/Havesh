@@ -1,0 +1,37 @@
+﻿@using ShokouhApp.Model
+<MtnDialog>
+    <ChildComponent>
+        <LevelSelectorComponenet Title="سطح مورد نظر را انتخاب نمایید" @bind-Level="SelectedLevel">
+
+        </LevelSelectorComponenet>
+
+    </ChildComponent>
+    <DialogAction>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+@code {
+
+    [Parameter]
+    public ShokouhPardisLevelClass SelectedLevel{ get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+    void SaveDialogClick()
+    {
+        
+        DialogInstance.Close(SelectedLevel);
+    }
+
+    void CloseDialogClick()
+    {
+        DialogInstance.Close(DialogResult.Cancel());
+    }
+}

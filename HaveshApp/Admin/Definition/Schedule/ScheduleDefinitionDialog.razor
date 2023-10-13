@@ -1,0 +1,57 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+
+
+<MtnDialog>
+    <ChildComponent>
+
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField @bind-Value="@Schedule.Title" Label="@Schedule.Title"/>
+            </MudItem>
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+    [Inject] DataProviderService DataProvider { get; set; }
+
+    [Parameter]
+    public ShokouhPardisSchedule? Schedule { get; set; }
+
+
+ 
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    private void SaveDialogClick()
+    {
+        DialogInstance.Close(Schedule);
+    }
+
+
+
+
+
+
+
+
+
+
+}

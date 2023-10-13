@@ -1,0 +1,39 @@
+﻿@page "/RollCall/{SessionId:int}/{SessionActivityId:int}"
+@using ShokouhApp.Model
+@using DNTPersianUtils.Core
+@layout PersianPagesLayout
+
+<MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
+    جلسه @_sessionItem.SessionNumber - @_sessionItem.SessionDate.ToPersianDateTextify() - @_sessionItem.SessionTime
+</MudText>
+
+<StudentListRollCallComponenets RowStyle="true" RowsPerPage="25" TimeTableSession="_sessionItem" SessionActivity="_sessionActivity" ></StudentListRollCallComponenets>
+
+@code {
+    private int _sessionId;
+    private int _sessionActivityId;
+    TimeTableSession? _sessionItem;
+    SessionActivity? _sessionActivity;
+
+    [Parameter]
+    public int SessionId
+    {
+        get => _sessionId;
+        set
+        {
+            _sessionId = value;
+            _sessionItem = _dataProvider.GetTimeTableSession(_sessionId);
+        }
+    }
+
+    [Parameter]
+    public int SessionActivityId
+    {
+        get => _sessionActivityId;
+        set
+        {
+            _sessionActivityId = value;
+            _sessionActivity = _dataProvider.GetSessionActivity(_sessionActivityId);
+        }
+    }
+}

@@ -1,0 +1,54 @@
+﻿@page "/BookPriceClone"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@layout PersianPagesLayout
+
+<h3>BookPriceClonePage</h3>
+<MudStack Class="pa-4" Row="true">
+    <MudGrid>
+        <TermSelectorComponent @bind-Term="SourceTerm" Title="مبدا کلون"></TermSelectorComponent>
+        
+    </MudGrid>
+    <MudGrid>
+        <TermSelectorComponent @bind-Term="DestinationTerm" Title="مقصد کلون"></TermSelectorComponent>
+    </MudGrid>
+    <MudGrid>
+        <MudToolBar>
+            <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.CopyAll" Variant="Variant.Filled" OnClick="CloneBookPriceClick">
+                Clone Book Price
+            </MudButton>
+
+        </MudToolBar>
+    </MudGrid>
+
+    @if (isBusy)
+    {
+        <MudProgressLinear Indeterminate="true" Size="Size.Medium" Striped="true"></MudProgressLinear>
+    }
+</MudStack>
+
+@code {
+    [Inject] DataProviderService DataProvider { get; set; }
+    [Inject] DataProviderAsyncService DataProviderAsync { get; set; }
+    bool isBusy = false;
+    public ShokouhPardisTermClass SourceTerm { get; set; }
+    public ShokouhPardisTermClass DestinationTerm { get; set; }
+    
+    [Inject] ISnackbar Snackbar { get; set; }
+
+    List<ShokouhPardisYearClass> Years => DataProvider.GetYears();
+  
+    private async Task CloneBookPriceClick()
+    {
+
+        isBusy = true;
+        var result = await DataProviderAsync.CloneBookPriceAsync(SourceTerm, DestinationTerm);
+        if (result)
+            Snackbar.Add($"Data Book Price Cloned Successfully ({SourceTerm.TermName} TO {DestinationTerm.TermName})", Severity.Success);
+        else
+            Snackbar.Add($"OOPS! Something went wrong, Data Book Price Cloned Failed. ({SourceTerm.TermName} TO {DestinationTerm.TermName})", Severity.Error);
+
+        isBusy = false;
+    }
+
+}

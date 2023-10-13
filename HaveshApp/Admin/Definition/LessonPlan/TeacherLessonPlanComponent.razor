@@ -1,0 +1,59 @@
+﻿@using ShokouhApp.Model
+
+<MudCard Outlined="true" Elevation="1" Square="false" Class="m-4">
+	<MudCardHeader>
+		Lesson Plan for Session @_lessonPlan.SessionNumber - @Session.TimeTable.Level.LevelName
+	</MudCardHeader>
+
+	<MudCardContent >
+		@foreach (var lps in _lessonPlan.Sections)
+		{
+			<MudPaper Elevation="1">
+				<MudStack Spacing="2">
+					<MudText Typo="Typo.h4" Class="m-2">
+						@lps.SectionType.Title - @lps.SectionTitle
+					</MudText>
+					<ul class="m-3">
+						<li>
+							<MudText Typo="Typo.caption">Objective: </MudText>
+							<MudText Typo="Typo.body2">
+								@lps.SectionObjective
+							</MudText>
+						</li>
+						@foreach (var lpsi in lps.Items)
+						{
+							<li>
+								@lpsi.SectionItemTitle
+							</li>
+						}
+					</ul>
+
+				</MudStack>
+
+			</MudPaper>
+
+			<MudDivider DividerType="DividerType.FullWidth" Class="mt-2"></MudDivider>
+
+		}
+
+	</MudCardContent>
+</MudCard>
+
+
+@code {
+
+    LessonPlan _lessonPlan;
+
+    [Parameter]
+    public TimeTableSession Session
+    {
+        get => _session;
+        set
+        {
+            _session = value;
+            _lessonPlan = _dataProvider.GetLessonPlan(_session.SessionNumber, _session.TimeTable.LevelId);
+        }
+    }
+
+    private TimeTableSession _session;
+}

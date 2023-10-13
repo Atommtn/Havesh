@@ -1,0 +1,54 @@
+﻿@using ShokouhApp.Services
+@inherits LayoutComponentBase
+@layout MainLayout
+<HeadContent>
+    <link href="webfontpackages/PersianFonts.css" rel="stylesheet" />
+    <style>
+        .mud-popover-provider .mud-popover p,
+        .mud-popover-provider .mud-popover span,
+        .persian-content, .mud-typography, .Mlist,
+        .persian-content h1,
+        .persian-content h2,
+        .persian-content h3,
+        .persian-content h4,
+        .persian-content h5,
+        .persian-content h6,
+        .persian-content .mud-input-text input {
+            font-family: BMitra !important;
+        }
+
+            .MList .mud-typography {
+                font-size: 14pt;
+            }
+
+            .mud-popover-provider .mud-popover span .mud-day-label {
+                font-size: 2pt;
+            }
+    </style>
+</HeadContent>
+
+<MudRTLProvider RightToLeft="true" Class="persian-content">
+
+    <MudToolBar>
+        <MudSpacer />
+        @if (Navigation.CanNavigateBack)
+        {
+            <MudButton Color="Color.Info" StartIcon="@Icons.Filled.ArrowBack" Variant="Variant.Outlined" OnClick="BackClick">
+                بازگشت
+            </MudButton>
+        }
+    </MudToolBar>
+
+    @Body
+</MudRTLProvider>
+
+@code {
+
+    [Inject] Navigation Navigation { get; set; }
+
+    private void BackClick()
+    {
+        Navigation.NavigateBack();
+    }
+
+}

@@ -1,0 +1,48 @@
+﻿@page "/DaySesseionDefinition"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Clone
+
+@layout PersianPagesLayout
+
+<h3>تعریف روز-سانس کلاس ها</h3>
+
+<TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"></TermSelectorComponent>
+
+<MudTable @ref="table"
+          Hover="true"
+          Breakpoint="Breakpoint.None"
+          Items="daySessions"
+          Style="background-color: #3c4043;">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">جدول روز-سانس های ترمیک</MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewDaySessionClick">
+            اضافه کردن روز-سانس جدید
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>روز هفته</MudTh>
+        <MudTh>سانس</MudTh>
+        
+        <MudTh></MudTh>
+
+    </HeaderContent>
+    <RowTemplate Context="daySe">
+        <MudTd DataLabel="روز هفته">@daySe.WeekDay.Title</MudTd>
+        <MudTd DataLabel="سانس">@daySe.Interval.Title</MudTd>
+        
+        <MudTd >
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() =>EditButtonClick(daySe)"></MudIconButton>
+        </MudTd>
+
+
+    </RowTemplate>
+   
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+
+</MudTable>
+

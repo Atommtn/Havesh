@@ -1,0 +1,61 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+
+
+<MtnDialog>
+    <ChildComponent>
+
+        <MudGrid>
+            <MudItem md="6">
+                <LevelSelectorComponenet @bind-Level="LevelParam"></LevelSelectorComponenet>
+            <MudItem md="12">
+                <MudTextField @bind-Value="LevelPrice.BookPrice" Immediate="true" Label="هزینه کتاب به تومان" Style="font-size: 24pt" HelperText="@LevelPrice.BookPrice.ToString("N0")" />
+                
+                <MudTextField @bind-Value="LevelPrice.TuitionAmount" Immediate="true" Label="شهریه به تومان" Style="font-size: 24pt" HelperText="@LevelPrice.TuitionAmount.ToString("N0")" />
+                </MudItem>
+            </MudItem>
+       
+
+
+
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+    [Inject] DataProviderService DataProvider { get; set; }
+
+    [Parameter] public ShokouhPardisLevelBookPrice? LevelPrice { get; set; }
+    
+    [Parameter] public ShokouhPardisTermClass? SelectedTerm { get; set; }
+    [Parameter]public ShokouhPardisLevelClass? LevelParam { get; set; }
+
+    private IEnumerable<ShokouhPardisLevelClass> _levels;
+
+    
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    private void SaveDialogClick()
+    {
+
+        DialogInstance.Close(LevelPrice);
+    }
+}

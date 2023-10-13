@@ -1,0 +1,58 @@
+﻿@using ShokouhApp.Model
+@using Microsoft.AspNetCore.Components
+@using ShokouhApp.Services
+<MudAutocomplete T="ShokouhPardisTeacherClass"
+                 Label="@Label"
+                 @bind-Value="Teacher"
+                 SearchFunc="@TeacherSearch"
+                 MaxItems="100"
+                 Clearable="true"
+                 ToStringFunc="ToStringFunc">
+    <ItemTemplate Context="e">
+        <MudText>
+            @($"{e.TeacherName} {e.TeacherFamily}")
+        </MudText>
+    </ItemTemplate>
+
+</MudAutocomplete>
+
+
+
+@code {
+    [Inject]  DataProviderService DataProvider { get; set; }
+
+    [Parameter]
+    public ShokouhPardisTeacherClass Teacher
+    {
+        get => _teacher;
+        set
+        {
+            if(_teacher == value) return;
+            _teacher = value;
+
+            TeacherChanged.InvokeAsync(_teacher);
+        }
+    }
+
+    [Parameter] public EventCallback<ShokouhPardisTeacherClass> TeacherChanged { get; set; }
+    [Parameter] public string Label { get; set; }
+    private Task<IEnumerable<ShokouhPardisTeacherClass>> TeacherSearch(string search)
+    {
+        var teachers = DataProvider
+            .GetTeacherByAny(search , Term)
+            .AsEnumerable();
+        return Task.FromResult(teachers);
+    }
+
+    [Parameter]
+    public ShokouhPardisTermClass? Term { get; set; }
+
+    private string ToStringFunc(ShokouhPardisTeacherClass arg)
+    {
+        return arg == null ? "" : arg.ToString();
+    }
+
+    private ShokouhPardisTeacherClass _teacher;
+    
+
+}

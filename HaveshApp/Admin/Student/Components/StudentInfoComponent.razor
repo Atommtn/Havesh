@@ -1,0 +1,89 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Admin.Student
+@using ShokouhApp.Services
+@using Microsoft.AspNetCore.Components
+@using System.Globalization
+
+@if (Student is { })
+{
+    
+    <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Filled" OnClick="EditStudentClick">
+        ویرایش اطلاعات زیان آموز
+    </MudButton>
+    <MudPaper Class="pa-2 ma-2" Outlined="true">
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentName" Label="نام زبان آموز" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentFamily" Label="نام خانوادگی زبان آموز" ReadOnly="true" />
+            </MudItem>
+
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentIdno" Label="کد ملی" ReadOnly="true" />
+
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentFrom" Label="صادره از" ReadOnly="true" />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <MudPaper Class="pa-2 ma-2" Outlined="true">
+        <MudBadge Icon="@Icons.Material.Filled.ContactPhone" Color="Color.Warning" Overlap="true" Bordered="true" Class="mx-6 my-4">
+            <MudAlert Severity="Severity.Warning" Icon="null" ContentAlignment="HorizontalAlignment.Left">
+                اطلاعات تماس
+            </MudAlert>
+        </MudBadge>
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentPhone" Label="شماره همراه زبان آموز" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.HomePhone" Label="تلفن منزل" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.FatherPhone" Label="شماره همراه پدر زبان آموز" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.MotherPhone" Label="شماره همراه مادر زبان آموز" ReadOnly="true" />
+            </MudItem>
+
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.WhatsAppPhone" Label="شماره واتساپ" ReadOnly="true" />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <MudPaper Class="pa-2 ma-2" Outlined="true">
+        <MudBadge Icon="@Icons.Material.Filled.FamilyRestroom" Color="Color.Info" Overlap="true" Bordered="true" Class="mx-6 my-4">
+            <MudAlert Severity="Severity.Info" Icon="null" ContentAlignment="HorizontalAlignment.Left">
+                اطلاعات اولیا
+            </MudAlert>
+        </MudBadge>
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentFatherName" Label="نام پدر" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.FatherJob" Label="شغل پدر" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.StudentMotherFullName" Label="نام کامل مادر زبان آموز" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Student.MotherJob" Label="شغل مادر" ReadOnly="true" />
+            </MudItem>
+            <MudItem md="12">
+                <MudTextField @bind-Value="Student.StudentAddress" Label="نشانی زبان آموز" ReadOnly="true" />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+   
+
+}
+else
+{
+@NoContent
+}
+

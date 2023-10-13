@@ -1,0 +1,31 @@
+﻿@page "/StudentInfo"
+@layout PersianPagesLayout
+
+<MudGrid>
+    <MudItem xs="4" sm="3" md="2">
+        <MudButton Style="height: 150px" Variant="Variant.Filled" Color="Color.Info" Href="/onlineForm">
+            <MudStack Row="false" Spacing="2" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.TwoTone.Person" Color="Color.Default" Size="Size.Large"></MudIcon>
+                <MudText Typo="Typo.body1" GutterBottom="true" Align="Align.Center">
+                    ورود مشخصات زبان آموز
+                </MudText>
+            </MudStack>
+        </MudButton>
+    </MudItem>
+    <MudItem xs="4" sm="3" md="2">
+        <MudButton Style="height: 150px" Variant="Variant.Filled" Color="Color.Info" Href="/SiteJv">
+            <MudStack Row="false" Spacing="2" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.TwoTone.CreditCard" Color="Color.Default" Size="Size.Large"></MudIcon>
+                <MudText Typo="Typo.body1" GutterBottom="true" Align="Align.Center">
+                    ورود مشخصات واریز کارت به کارت
+                </MudText>
+            </MudStack>
+        </MudButton>
+
+    </MudItem>
+</MudGrid>
+
+@code {
+
+
+}

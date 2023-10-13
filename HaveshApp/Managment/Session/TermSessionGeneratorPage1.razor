@@ -1,0 +1,100 @@
+﻿@page "/TermSessionGeneratorX"
+@layout PersianPagesLayout
+@using ShokouhApp.Model
+
+<MudGrid>
+    <MudItem sm="12" md="12">
+        <TermSelectorComponent @bind-Term="Term"></TermSelectorComponent>
+    </MudItem>
+    <MudItem sm="12" md="12">
+        <MudTable ServerData="DataServer" @ref="table" MultiSelection="true" RowsPerPage="200">
+            <ToolBarContent>
+                <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Check" OnClick="SelectAllTimeTabledClick">
+                    Select All
+                </MudButton>
+
+                <MudSpacer />
+
+                <MudTextField @bind-Value="SearchText" Label="جستجو" Placeholder="جستجو در همه موارد" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search"
+                              DebounceInterval="1000" OnDebounceIntervalElapsed="SearchInList" Clearable="true"></MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>
+                    <MudTd></MudTd>
+                    <MudTd></MudTd>
+                    <MudTd></MudTd>
+                    <MudTd></MudTd>
+                    <MudTd></MudTd>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    <TimeTableItemComponent TimeTable="context"></TimeTableItemComponent>
+                </MudTd>
+                <MudTd>
+
+                </MudTd>
+                <MudTd></MudTd>
+                <MudTd></MudTd>
+                <MudTd>
+
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager/>
+            </PagerContent>
+        </MudTable>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+
+    MudTable<ShokouhPardisTimeTable>? table;
+    ShokouhPardisTermClass _term;
+
+    ShokouhPardisTermClass Term
+    {
+        get => _term;
+        set
+        {
+            _term = value;
+            table?.ReloadServerData();
+        }
+    }
+
+    public string? SearchText { get; set; }
+
+    Task<TableData<ShokouhPardisTimeTable>> DataServer(TableState arg)
+    {
+        var totalItems = GetTotalData(SearchText);
+        var shokouhPardisTimeTables = GetPagedData(SearchText, arg.Page, arg.PageSize);
+        return Task.FromResult(new TableData<ShokouhPardisTimeTable>
+            {
+                TotalItems = totalItems,
+                Items = shokouhPardisTimeTables
+            });
+    }
+
+    IEnumerable<ShokouhPardisTimeTable> GetPagedData(string? searchText, int page, int pageSize)
+    {
+        return _dataProvider.GetTimeTables(Term, searchText, page, pageSize);
+    }
+
+    int GetTotalData(string? searchText)
+    {
+        return _dataProvider.GetTotalTimeTablesCount(Term.TermClassId, searchText);
+    }
+
+    void SearchInList()
+    {
+        table?.ReloadServerData();
+    }
+
+    void SelectAllTimeTabledClick()
+    {
+        if (table != null)
+            table.SelectedItems = GetPagedData(SearchText, table.CurrentPage, table.RowsPerPage).ToHashSet();
+    }
+
+}

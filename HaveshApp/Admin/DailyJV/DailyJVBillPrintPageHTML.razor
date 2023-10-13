@@ -1,0 +1,239 @@
+﻿@page "/BillPrintHTML/{DalyJVID:int}"
+@using Blazor.QRCode
+@using ShokouhApp.Classes
+@using ShokouhApp.Model
+@using DNTPersianUtils.Core
+@layout PrintLayout
+
+
+<div class="col-md-12 persian-content" style="direction: rtl">
+    <div class="row">
+
+        <div class="col-xs-10 col-sm-10 col-md-4 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="row">
+                <div  style="float:right">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <div>
+                            @*<img class="img-responsive" alt="Shokouh Logo" src="https://shokouhpardis.ir/getdoc/67424c73-921a-4236-86f6-4e0ddf9861dc/shokouh-logo.aspx" style="width: 71px; border-radius: 43px;">*@
+                        </div>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9" style="text-align:center">
+                        <div>
+                            <h5>
+                                آموزشگاه زبان انگلیسی شکوه
+                                <br />
+                                شعبه پردیس
+                            </h5>
+                            <br />
+                            <h5>
+                                آکادمی تخصصی
+                                <br />
+                                <b>هاوِش</b>
+                            </h5>
+                            <div >
+                                <p>02176245989<i class="fa fa-phone"></i></p>
+                                <p>پردیس جنب بانک پارسیان<i class="fa fa-location-arrow"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <table class="table table-bordered" style="direction: rtl">
+                        <thead>
+                            <tr>
+
+                                <th>زبان آموز</th>
+                                <th>بابت</th>
+                              
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                
+                                <td class="col-md-2">@_djv.Student.StudentName @_djv.Student.StudentFamily </td>
+                                <td class="col-md-2">
+                                    @if (_pr is not null)
+                                    {
+                                        @_djv.FeeFor @(" ")  @_pr.Term.TermName  
+                                    }
+                                    else
+                                    {
+                                        @_djv.FeeFor @(" ")  @_djv.Term.TermName
+                                    }
+
+
+                                </td>
+
+                                
+
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table class="table table-bordered" style="direction: rtl">
+                        <thead>
+                            <tr>
+
+                                <th>شماره قبض</th>
+                                <th>مبلغ(تومان)</th>
+                                <th>سطح</th>
+                                @*    <th>نحوه پرداخت</th>
+                                <th>توضیحات</th>*@
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td class="col-md-3">@(_djv.BillNo is > 0 ? _djv.BillNo : _djv.DailyJvid)</td>
+                                <td class="col-md-3">@_djv.Fee.ToString("##,###")</td>
+
+                                <td class="col-md-3">
+                                    @if (_pr is not null)
+                                    {
+                                        @_pr.Level.LevelDes
+                                    }
+                                    else
+                                    {
+                                        @_djv.TimeTable.Level.LevelDes
+                                    }
+                                </td>
+                                @*
+                                <td class="col-md-4">
+                                @if (_djv.PaymentType == "پوز")
+                                {
+                                @pos
+                                ;
+                                @_djv.PosCode.ToString()
+                                ;
+
+                                }
+                                @if (_djv.PaymentType == "واریز")
+                                {
+                                @par
+                                ;
+                                @_djv.Txcode
+                                <br />
+                                @tar
+                                ;
+                                @_djv.DateOfSettle.ToString()
+                                ;
+                                }
+
+                                @_djv.Description
+
+                                </td>*@
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    به حروف @_djv.FeeFor مبلغ @_djv.Fee.NumberToText(Language.Persian) تومان تمام
+                </div>
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 text-left">
+                    <div >
+                        <p>
+                            <b>تاریخ صدور :</b>
+                            @_djv.CurrentDate.ToPersianDateTextify()
+
+                            <h4>با اسکن این کد میتوانید رسید خود را در سایت ما ملاحظه و آنرا برای خود ذخیره نمایید.</h4>
+                            <div style="text-align:center">
+                                
+                                <QrCode
+                                    ElementId="id"
+                                    Width="100"
+                                    height="100"
+                                    Text="@($"https://havesh.ir/bill?k={_djv.DailyJvguid}")">
+                                </QrCode>
+
+                            </div>
+
+
+                            <h4>پرینت این رسید به منزله رسید پرداخت می باشد.</h4>
+                        </p>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <br />
+
+            @*  <div class="col-xs-12 col-sm-12 col-md-12">
+            <div>
+            <p>
+            <div>
+            <b>Website :</b>
+            Havesh.ir
+            </div>
+
+            </p>
+            <b>برای وارد شدن به سایت آموزشگاه شکوه پردیس با دوربین خود کادر زیر را اسکن کنید.</b>
+            <img class="img-responsive" alt="QrCode" src="https://shokouhpardis.ir/getdoc/bb47907c-b911-4d5f-8be0-16f38a8c1fbd/qrcode.aspx" style="width: 71px;">
+
+            </div>
+            </div>*@
+
+
+        </div>
+    </div>
+</div>
+
+@code {
+    string par = "شناسه پرداخت";
+    string pos = "شناسه پوز";
+    string tar = "تاریخ واریز";
+    [Inject]
+    DataProviderService DataProvider { get; set; }
+
+    ShokouhPardisDailyJv _djv;
+    PreRegistration? _pr ;
+    [Parameter]
+    public int DalyJVID
+    {
+        get => _dalyJvid;
+        set
+        {
+            _dalyJvid = value;
+            _djv = DataProvider.GetDailyJv(_dalyJvid);
+            if (_djv.TimeTableFk is null)
+            {
+                _pr= _dataProvider.GetPreRegistrationByJv(_dalyJvid);
+            }
+        }
+    }
+
+    private int _dalyJvid;
+
+
+    [Inject]
+    public BrowserService BrowserService { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await PrintPage();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    async Task PrintPage()
+    {
+        await BrowserService.PrintPageAsync();
+    }
+}

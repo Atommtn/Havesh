@@ -1,0 +1,63 @@
+﻿@using ShokouhApp.Admin.Components
+@using ShokouhApp.Admin.MemberShip.Model
+@using ShokouhApp.Services
+<h3>UserDialog</h3>
+
+<MtnDialog>
+    <ChildComponent>
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="User.UserName" Label="User Name"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="User.Password" Label="User Password" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="User.Email" Label="Email" />
+            </MudItem>
+            <MudItem md="6">
+                <MudCheckBox @bind-Checked="User.IsActive" Label="Active"></MudCheckBox>
+            </MudItem>
+
+        </MudGrid>
+
+
+
+    </ChildComponent>
+    <DialogAction>
+
+        <MudButton Color="@Color.Success" StartIcon="@Icons.Filled.Save"
+                   Variant="@Variant.Filled" OnClick="SaveDialogClick">
+            Save
+        </MudButton>
+
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text"
+                   OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+@code {
+
+    [Parameter]
+    public User User { get; set; }
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+    [Inject] ISnackbar Snackbar { get; set; }
+    [Inject] public DataProviderService DataProvider { get; set; }
+    private void CloseDialogClick()
+    {
+        DialogInstance.Close();
+
+    }
+
+    private void SaveDialogClick()
+    {
+        DataProvider.SaveUser(User);
+        
+        DialogInstance.Close();
+    }
+
+}

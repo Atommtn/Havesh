@@ -1,0 +1,449 @@
+ï»¿@font-face {
+  font-family: 'BBadr';
+  src: local('â˜º'), url('PersianFonts/BBadr.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BBadr.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BBadr.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BBaran';
+  src: local('â˜º'), url('PersianFonts/BBaran.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BBaran.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BBaran.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BBardiya';
+  src: local('â˜º'), url('PersianFonts/BBardiya.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BBardiya.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BBardiya.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BCompset';
+  src: local('â˜º'), url('PersianFonts/BCompset.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BCompset.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BCompset.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BDavat';
+  src: local('â˜º'), url('PersianFonts/BDavat.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BDavat.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BDavat.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BElham';
+  src: local('â˜º'), url('PersianFonts/BElham.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BElham.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BElham.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BEsfehanBold';
+  src: local('â˜º'), url('PersianFonts/BEsfehanBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BEsfehanBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BEsfehanBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BFantezy';
+  src: local('â˜º'), url('PersianFonts/BFantezy.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BFantezy.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BFantezy.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BFarnaz';
+  src: local('â˜º'), url('PersianFonts/BFarnaz.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BFarnaz.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BFarnaz.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BFerdosi';
+  src: local('â˜º'), url('PersianFonts/BFerdosi.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BFerdosi.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BFerdosi.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BHamid';
+  src: local('â˜º'), url('PersianFonts/BHamid.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BHamid.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BHamid.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BHelal';
+  src: local('â˜º'), url('PersianFonts/BHelal.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BHelal.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BHelal.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BHoma';
+  src: local('â˜º'), url('PersianFonts/BHoma.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BHoma.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BHoma.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BJadidBold';
+  src: local('â˜º'), url('PersianFonts/BJadidBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BJadidBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BJadidBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BJalal';
+  src: local('â˜º'), url('PersianFonts/BJalal.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BJalal.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BJalal.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BKoodakBold';
+  src: local('â˜º'), url('PersianFonts/BKoodakBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BKoodakBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BKoodakBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BKourosh';
+  src: local('â˜º'), url('PersianFonts/BKourosh.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BKourosh.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BKourosh.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BLotus';
+  src: local('â˜º'), url('PersianFonts/BLotus.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BLotus.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BLotus.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BMahsa';
+  src: local('â˜º'), url('PersianFonts/BMahsa.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BMahsa.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BMahsa.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BMehrBold';
+  src: local('â˜º'), url('PersianFonts/BMehrBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BMehrBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BMehrBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BMitra';
+  src: local('â˜º'), url('PersianFonts/BMitra.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BMitra.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BMitra.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BMorvarid';
+  src: local('â˜º'), url('PersianFonts/BMorvarid.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BMorvarid.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BMorvarid.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BNarm';
+  src: local('â˜º'), url('PersianFonts/BNarm.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BNarm.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BNarm.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BNasimBold';
+  src: local('â˜º'), url('PersianFonts/BNasimBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BNasimBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BNasimBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BNazanin';
+  src: local('â˜º'), url('PersianFonts/BNazanin.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BNazanin.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BNazanin.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BRoya';
+  src: local('â˜º'), url('PersianFonts/BRoya.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BRoya.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BRoya.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BSetarehBold';
+  src: local('â˜º'), url('PersianFonts/BSetarehBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BSetarehBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BSetarehBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BShiraz';
+  src: local('â˜º'), url('PersianFonts/BShiraz.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BShiraz.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BShiraz.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BSinaBold';
+  src: local('â˜º'), url('PersianFonts/BSinaBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BSinaBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BSinaBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BTabassom';
+  src: local('â˜º'), url('PersianFonts/BTabassom.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BTabassom.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BTabassom.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BTehran';
+  src: local('â˜º'), url('PersianFonts/BTehran.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BTehran.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BTehran.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BTitrBold';
+  src: local('â˜º'), url('PersianFonts/BTitrBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BTitrBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BTitrBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BTitrTGEBold';
+  src: local('â˜º'), url('PersianFonts/BTitrTGEBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BTitrTGEBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BTitrTGEBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BTraffic';
+  src: local('â˜º'), url('PersianFonts/BTraffic.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BTraffic.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BTraffic.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BVahidBold';
+  src: local('â˜º'), url('PersianFonts/BVahidBold.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BVahidBold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BVahidBold.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BYagut';
+  src: local('â˜º'), url('PersianFonts/BYagut.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BYagut.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BYagut.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BYas';
+  src: local('â˜º'), url('PersianFonts/BYas.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BYas.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BYas.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BYekan';
+  src: local('â˜º'), url('PersianFonts/BYekan.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BYekan.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BYekan.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BZar';
+  src: local('â˜º'), url('PersianFonts/BZar.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BZar.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BZar.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+  font-family: 'BZiba';
+  src: local('â˜º'), url('PersianFonts/BZiba.eot?#') format('eot'),  /* IE6–8 */
+       url('PersianFonts/BZiba.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/BZiba.ttf') format('truetype');  /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+@font-face {
+  font-family: 'MRT_Khodkar';
+  src: url('PersianFonts/MRT_Khodkar.eot?#') format('eot'),  /* IE6â€“8 */
+       url('PersianFonts/MRT_Khodkar.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('PersianFonts/MRT_Khodkar.ttf') format('truetype');  /* Saf3â€”5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+.Khodkar ,.f0{
+	font-family: MRT_Khodkar , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BBadr ,.f1{
+	font-family: BBadr , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BBaran ,.f2{
+	font-family: BBaran , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BBardiya ,.f3{
+	font-family: BBardiya , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BCompset ,.f4{
+	font-family: BCompset , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BDavat ,.f5{
+	font-family: BDavat , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BElham ,.f6{
+	font-family: BElham , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BEsfehanBold ,.f7{
+	font-family: BEsfehanBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BFantezy ,.f8{
+	font-family: BFantezy , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BFarnaz ,.f9{
+	font-family: BFarnaz , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BFerdosi ,.f10{
+	font-family: BFerdosi , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BHamid ,.f11{
+	font-family: BHamid , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BHelal ,.f12{
+	font-family: BHelal , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BHoma ,.f13{
+	font-family: BHoma , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BJadidBold ,.f14{
+	font-family: BJadidBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BJalal ,.f15{
+	font-family: BJalal , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BKoodakBold ,.f16{
+	font-family: BKoodakBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BKourosh ,.f17{
+	font-family: BKourosh , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BLotus ,.f18{
+	font-family: BLotus , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BMahsa ,.f19{
+	font-family: BMahsa , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BMehrBold ,.f20{
+	font-family: BMehrBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BMitra ,.f21{
+	font-family: BMitra , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BMorvarid ,.f22{
+	font-family: BMorvarid , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BNarm ,.f23{
+	font-family: BNarm , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BNasimBold ,.f24{
+	font-family: BNasimBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BNazanin ,.f25{
+	font-family: BNazanin , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BRoya ,.f26{
+	font-family: BRoya , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BSetarehBold ,.f27{
+	font-family: BSetarehBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BShiraz ,.f28{
+	font-family: BShiraz , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BSinaBold ,.f29 {
+	font-family: BSinaBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BTabassom ,.f30 {
+	font-family: BTabassom , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BTehran ,.f31 {
+	font-family: BTehran , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BTitrBold ,.f32 {
+	font-family: BTitrBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BTitrTGEBold ,.f33 {
+	font-family: BTitrTGEBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BTraffic ,.f34 {
+	font-family: BTraffic , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BVahidBold ,.f35 {
+	font-family: BVahidBold , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BYagut ,.f36 {
+	font-family: BYagut , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BYas ,.f37 {
+	font-family: BYas , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BYekan ,.f38 {
+	font-family: BYekan , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BZar ,.f39 {
+	font-family: BZar , Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.BZiba ,.f40 {
+	font-family: BZiba , Tahoma, Arial, Helvetica, sans-serif;
+}

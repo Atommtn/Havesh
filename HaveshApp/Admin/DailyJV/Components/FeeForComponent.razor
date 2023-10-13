@@ -1,0 +1,26 @@
+﻿@using ShokouhApp.Classes
+<MudSelect T="string" @bind-Value="Value" SelectedValuesChanged="SelectedChange" Label="بابت" Dense="true" TransformOrigin="Origin.TopCenter">
+  
+    <MudSelectItem Value="@FeeForStatuses.TuitionAmount"/>
+    <MudSelectItem Value="@FeeForStatuses.Book"/>
+    <MudSelectItem Value="@FeeForStatuses.PrivateCalss"/>
+    <MudSelectItem Value="@FeeForStatuses.Final"/>
+    <MudSelectItem Value="@FeeForStatuses.Placement"/>
+</MudSelect>
+@code {
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private async Task SelectedChange()
+    {
+            await ValueChanged.InvokeAsync(Value);
+        
+    }
+
+
+    private string _value;
+}

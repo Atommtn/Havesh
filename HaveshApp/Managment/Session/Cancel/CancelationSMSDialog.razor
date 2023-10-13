@@ -1,0 +1,80 @@
+﻿@using ShokouhApp.Model
+<MtnDialog>
+    <ChildComponent>
+        <h3>Cancellation SMSDialog</h3>
+        <MudGrid>
+            <MudItem sm="12" md="12">
+                <MudCheckBox Label="@("مدرس :" + Session.Teacher.FullName)" @bind-Checked="SendToTeacher">
+                </MudCheckBox>
+            </MudItem>
+            <MudItem sm="12" md="12">
+                <MudText Typo="Typo.h6">
+                    دانش آموزان کلاس:
+                </MudText>
+
+                <MudTable Items="_students" MultiSelection="true" @bind-SelectedItems="SelectedStudents">
+                    <HeaderContent>
+                        <MudTh></MudTh>
+                        <MudTh>نام و نام خانوادگی</MudTh>
+                        <MudTh>نام پدر</MudTh>
+                        <MudTh>کد ملی</MudTh>
+                        <MudTh>تلفن تماس</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd></MudTd>
+                        <MudTd>@context.StudentName @context.StudentFamily</MudTd>
+                        <MudTd>@context.StudentFatherName</MudTd>
+                        <MudTd>@context.StudentIdno</MudTd>
+                        <MudTd>@context.WhatsAppPhone</MudTd>
+                        <MudTd>@context.Tag</MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudItem>
+            <MudItem sm="12" md="12">
+            </MudItem>
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Send" OnClick="SendToAllSelectedClick">
+            Send SMS
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+@code {
+    
+    [Parameter]
+    public TimeTableSession Session { get; set; }
+
+
+    [Parameter]
+    public string SmsBody { get; set; }
+
+    List<ShokouhPardisStudentClass>? _students;
+    protected override void OnInitialized()
+    {
+        _students = _dataProvider.GetTimeTableStudents(Session.TimeTable);
+
+        base.OnInitialized();
+    }
+
+    public HashSet<ShokouhPardisStudentClass>? SelectedStudents { get; set; }
+
+    public bool? SendToTeacher { get; set; }
+
+    [Inject]
+    SmsService SmsService { get; set; }
+
+    [Inject]
+    TimeTableSessionService TimeTableSessionService { get; set; }
+
+    void SendToAllSelectedClick()
+    {
+        //if (SelectedStudents != null) 
+        //    TimeTableSessionService.SendSmsForCancelledTimetable(SelectedStudents.ToList(), new[] { "+989122192992" }, SmsBody);
+
+        _snackBar.Add("پیامک کنسلی کلاس برای اعضای کلاس ارسال گردید");
+    }
+
+}

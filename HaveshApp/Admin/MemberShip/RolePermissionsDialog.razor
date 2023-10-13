@@ -1,0 +1,56 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Admin.MemberShip.Model
+<MudDialog>
+    <DialogContent>
+        <MudTable Items="_permissions" @bind-SelectedItems="_selectedPermissions" MultiSelection="true">
+            
+        </MudTable>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Text" OnClick="SaveClick">
+            Save
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseClick">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+
+    [Parameter]
+    public Role Role { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    [Inject]
+    DataProviderService ProviderService { get; set; }
+
+    List<Permission> _permissions;
+    HashSet<Permission> _selectedPermissions;
+
+    protected override void OnInitialized()
+    {
+        _permissions = ProviderService.GetPermissions();
+        _selectedPermissions = Role.Permissions.ToHashSet();
+        base.OnInitialized();
+    }
+
+    private void CloseClick()
+    {
+        DialogInstance.Close();
+    }
+
+    private void SaveClick()
+    {
+        Role.Permissions.Clear();
+        Role.Permissions.AddRange(_selectedPermissions);
+        ProviderService.SaveRole(Role);
+        DialogInstance.Close();
+
+    }
+
+}

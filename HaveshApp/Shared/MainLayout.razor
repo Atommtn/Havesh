@@ -1,0 +1,88 @@
+﻿@using ShokouhApp.Admin.Setting;
+@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using Olive
+@using System.Security.Claims
+@using ShokouhApp.Admin.Authentication
+@inherits LayoutComponentBase
+
+
+
+<PageTitle>Havesh App</PageTitle>
+
+<MudThemeProvider IsDarkMode="true" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        HAVESH Professional Academy Portal
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+               
+                <MudText Typo="Typo.caption" Color="Color.Default" Class="m-3">
+                    سلام @UserSession.Payload.Gender @UserSession.Payload.FirstName @UserSession.Payload.LastName
+                </MudText>
+
+                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Logout" Variant="Variant.Outlined" Size="Size.Small" Href="/LoginPage/Logout">
+                    خروج
+                </MudButton>
+
+            </Authorized>
+            <NotAuthorized>
+
+                @*<MudButton Color="Color.Success" StartIcon="@Icons.Filled.Login" Variant="Variant.Text" Href="/LoginPage">
+                    Login
+                </MudButton>*@
+
+            </NotAuthorized>
+        </AuthorizeView>
+        
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                    @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+
+    [Inject] UserSessionService UserSession { get; set; }
+
+    [Inject] DataProviderService DataProvider { get; set; }
+
+    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    bool _drawerOpen = true;
+
+    ClaimsPrincipal? _user;
+    
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; }
+    private MudTheme _currentTheme;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // await JsRuntime.InitializeMudBlazorExtensionsAsync();
+             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+             _user = state.User;
+             StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+}

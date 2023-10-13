@@ -1,0 +1,19 @@
+﻿@inherits ShokouhApp.Classes.SizeSupportComponentBase
+<MudRTLProvider RightToLeft="true" Class="persian-content">
+    <MudDialog >
+        <DialogContent>
+            <MudContainer Style="@($"max-height: {BrowserHeight-140}px;overflow-y:scroll;")">
+                @ChildComponent
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            @DialogAction
+        </DialogActions>
+    </MudDialog>
+</MudRTLProvider>
+
+
+@code {
+    [Parameter] public RenderFragment ChildComponent { get; set; }
+    [Parameter] public RenderFragment DialogAction { get; set; }
+}

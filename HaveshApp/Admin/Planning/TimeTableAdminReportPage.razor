@@ -1,0 +1,84 @@
+﻿@page "/TimeTableAdmin/"
+@using Microsoft.AspNetCore.Components
+@using ShokouhApp.Admin.Clone
+@using ShokouhApp.Model
+@layout PersianPagesLayout
+
+
+@attribute [Authorize]
+<TermSelectorComponent @bind-Term="SelectedTerm"></TermSelectorComponent>
+<MudTextField @bind-Value="LevelSearch" Label="Level Search" Clearable="true" DebounceInterval="1000" OnDebounceIntervalElapsed="SearchChange" />
+
+<MudPaper Class="pa-4">
+    @if (chartData2 != null)
+    {
+        <MudGrid>
+            <MudItem md="3">
+                <MudPaper Width="300px" Elevation="0" >
+                    <MudTreeView T="string" CanHover="true"
+                                 
+                                 MultiSelection="true"
+                                 @bind-SelectedValues="SelectedLevelGroups">
+
+                        @foreach (var Group in LevelGroupingDistinct)
+                        {
+                            <MudTreeViewItem Value="Group">
+                            @foreach (var level in chartData1)
+                            {
+                                @if (level.Key.Grouping == Group)
+                                {
+                                        <MudTreeViewItem Value="level.Key.LevelName" EndText="@level.Value.ToString()" />
+                                }
+                            }
+                            </MudTreeViewItem>
+                        }
+                    </MudTreeView>
+                </MudPaper>
+            </MudItem>
+            <MudItem md="9">
+                <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                    <MudTabPanel Text="Pie Chart">
+                       
+                        @if (_index > -1)
+                        {
+                            <MudAlert Severity="Severity.Success" Variant="Variant.Filled"
+                                      Style="@($"background-color: {GetChartColor(_index)}")">@GetInfo(_index)</MudAlert>
+                        }
+                        <MudText class="pie-inner-text" x="47%" y="35%"
+                                 dominant-baseline="middle" text-anchor="middle"
+                                 fill="black" font-family="Helvetica" font-size="2"
+                                 Color="Color.Default" GutterBottom="true">
+                            Total: <MudText class="pie-inner-text" x="47%" y="50%"
+                                            dominant-baseline="middle" text-anchor="middle"
+                                            fill="black" font-family="Helvetica" font-size="2"
+                                            Color="Color.Default" GutterBottom="true">
+                                @chartData2.Values.Select(x => x.ToDouble()).ToArray().Sum().ToString()
+                            </MudText>
+                        </MudText>
+                       
+                        <MudChart ChartType="ChartType.Pie"
+                                  Width="600px" Height="600px"
+                                  @bind-SelectedIndex="Index"
+                                  ChartOptions="@ChartOP"
+                                  LegendPosition="Position.End"
+                                  XAxisLabels="@chartData2.Keys.Select(x => x.LevelName).ToArray()"
+                                  InputData="@chartData2.Values.Select(x => x.ToDouble()).ToArray()"
+                                  InputLabels="@chartData2.Keys.Select(x => x.LevelName).ToArray()">
+                        </MudChart>
+
+                    </MudTabPanel>
+                    <MudTabPanel Text="Line Chart">
+                        <MudChart ChartOptions="@ChartLineOP" 
+                                  ChartType="ChartType.Line" 
+                                  ChartSeries="@Series" @bind-SelectedIndex="Index"
+                              XAxisLabels="@XAxisLabels" 
+                              Width="100%" Height="350px"></MudChart>
+                    </MudTabPanel>
+
+                </MudTabs>
+
+            </MudItem>
+        </MudGrid>
+
+    }
+</MudPaper>

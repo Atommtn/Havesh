@@ -1,0 +1,161 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using Olive
+@using Log = Serilog.Log
+@layout PersianPagesLayout
+@page "/TermSessionTemplate"
+
+<h3>Term Session Template Dialog</h3>
+
+<TermSelectorComponent @bind-Term="Term"></TermSelectorComponent>
+
+<MudTable T="TermSessionTemplate" Items="_templates" SelectedItemChanged="Callback">
+    <HeaderContent>
+        <MudTh>شناسه</MudTh>
+        <MudTh>ترم</MudTh>
+        <MudTh>عنوان</MudTh>
+        <MudTh>توضیحات</MudTh>
+        <MudTh>روزها</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.TermSessionTemplateID</MudTd>
+        <MudTd>@context.Term.TermName</MudTd>
+        <MudTd>@context.TemplateName</MudTd>
+        <MudTd>@context.Description</MudTd>
+        <MudTd>
+            @GetDayNames(context.WeekdayIds)
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.TwoTone.Edit" Color="Color.Success" OnClick="()=>EditSessionTemplate(context)"></MudIconButton>
+            <MudIconButton Icon="@Icons.TwoTone.Book" Color="Color.Primary" OnClick="()=>TemplateDatesClick(context)"></MudIconButton>
+            <MudIconButton Icon="@Icons.TwoTone.Delete" Color="Color.Error" OnClick="()=>DeleteTemplateClick(context)"></MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudPaper Class="m-3" Elevation="2" Style="width:50%;text-align:center" >
+    <MudGrid>
+        <MudItem >
+            <TermSelectorComponent @bind-Term="TermSessionTemplate.Term"></TermSelectorComponent>
+        </MudItem>
+        <MudItem >
+            <MudTextField @bind-Value="TermSessionTemplate.TemplateName" Label="Template Name"></MudTextField>
+        </MudItem>
+        <MudItem>
+            <WeekdaySelectorComponent @bind-CheckedDays="Days"></WeekdaySelectorComponent>
+        </MudItem>
+    </MudGrid>
+    
+</MudPaper>
+
+
+<MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Add" OnClick="SaveTemplate">
+    Save Template
+</MudButton>
+
+
+
+@code {
+
+    List<TermSessionTemplate> _templates;
+    ShokouhPardisTermClass _term;
+
+    Dictionary<int, bool> Days { get; set; } = new Dictionary<int, bool>();
+
+    [Parameter]
+    public TermSessionTemplate TermSessionTemplate { get; set; } = new TermSessionTemplate();
+
+    [Inject]
+    public DataProviderService DataProviderService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            LoadTemplates(Term);
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+    void LoadTemplates(ShokouhPardisTermClass term)
+    {
+        _templates = DataProviderService.GetTermTemplates(term);
+    }
+
+    void Callback(TermSessionTemplate template)
+    {
+        TermSessionTemplate = template;
+    }
+
+
+    void SaveTemplate()
+    {
+        var x = string.Join(',', Days.Where(x => x.Value == true).Select(x => x.Key));
+        TermSessionTemplate.WeekdayIds = x;
+        _dataProvider.SaveTermSessionTemplate(TermSessionTemplate);
+        Log.Warning("User {UserName} Save TermSessionTemplate {TermSessionTemplateId}", _userSession.Payload.UserName, TermSessionTemplate.TermSessionTemplateID);
+        _templates = DataProviderService.GetTermTemplates(Term);
+        TermSessionTemplate = new TermSessionTemplate();
+        StateHasChanged();
+
+    }
+
+    string GetDayNames(string contextWeekdayIds)
+    {
+        var str = "";
+        var list = _dataProvider.GetWeekDays();
+        var days = contextWeekdayIds.Split(',').Select(x => Convert.ToInt32(x));
+        days.ForEach(d => str += list.First(z => z.WeekDayId == d).Title + " ");
+        return str;
+    }
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    public ShokouhPardisTermClass Term
+    {
+        get => _term;
+        set
+        {
+            _term = value;
+            LoadTemplates(_term);
+        }
+    }
+
+    async Task TemplateDatesClick(TermSessionTemplate template)
+    {
+        await DialogService.ShowAsync<TermSessionTemplateDateManagementDialog>("Dates" , new DialogParameters()
+        {
+                ["TermSessionTemplate"] = template
+        });
+    }
+
+    void EditSessionTemplate(TermSessionTemplate tst)
+    {
+        var days = tst.WeekdayIds.Split(',').Select(x => Convert.ToInt32(x));
+        Dictionary<int, bool> bools = new();
+        for (var i = 0; i < 7; i++) bools.Add(i + 1, false);
+        days.ForEach(x => bools[x] = true);
+        Days = bools;
+        TermSessionTemplate = tst;
+    }
+
+    async Task DeleteTemplateClick(TermSessionTemplate context)
+    {
+        var box= await _dialogService.ShowMessageBox("Warning", "Are you sure to delete this template and all it's Date (sessions) ?", "Yes", "No");
+        if (box is true)
+        {
+            _dataProvider.DeleteTermSessionTemplateDates(context);
+            _dataProvider.DeleteTermSessionTemplate(context);
+            _snackBar.Add("Template and all Template Date/Sessions deleted successfully.", Severity.Info);
+            LoadTemplates(context.Term);
+        }
+    }
+
+}

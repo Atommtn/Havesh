@@ -1,0 +1,17 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:7.0
+  script:
+    - dotnet restore
+    - dotnet build --configuration Release
+    # You can publish the Blazor app to a specific directory if needed
+    - dotnet publish -c Release -o ./publish
+  artifacts:
+    paths:
+      # Specify the path to the built output directory if needed
+     - ./publish
+
+# Add more stages as needed for deployment or other tasks

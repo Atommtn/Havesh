@@ -1,0 +1,32 @@
+﻿@page "/siteJvPage"
+@using ShokouhApp.Pages.SiteTransaction.Component
+@using ShokouhApp.Model
+@layout PersianPagesLayout
+@attribute [Authorize()]
+
+<MudTabs>
+    <MudTabPanel Text="همه اعلام واریزها">
+        <SiteJvListComponent ViewType="SiteJvListComponent.ViewTypeEnum.All" OnViewItemClick="ViewItemClick" ></SiteJvListComponent>
+    </MudTabPanel>
+    <MudTabPanel Text="تایید شده">
+        <SiteJvListComponent ViewType="SiteJvListComponent.ViewTypeEnum.Approved" OnViewItemClick="ViewItemClick"></SiteJvListComponent>
+    </MudTabPanel>
+    <MudTabPanel Text="در انتظار تایید">
+        <SiteJvListComponent ViewType="SiteJvListComponent.ViewTypeEnum.PendingToApprive" OnViewItemClick="ViewItemClick"></SiteJvListComponent>
+    </MudTabPanel> 
+    
+    <MudTabPanel Text="نیاز به بررسی بیشتر">
+        <SiteJvListComponent ViewType="SiteJvListComponent.ViewTypeEnum.Invesigate" OnViewItemClick="ViewItemClick"></SiteJvListComponent>
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    void ViewItemClick(ShokouhPardisJvfromSite jv,string cat)
+    {
+        NavigationManager.NavigateTo($"/SiteJv/{jv.DailyJvguid}/{cat}");
+    }
+
+}

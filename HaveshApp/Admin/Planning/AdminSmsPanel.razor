@@ -1,0 +1,90 @@
+﻿@page "/AdminSmsPanel/"
+@using Microsoft.AspNetCore.Components
+@using ShokouhApp.Admin.Clone
+@using ShokouhApp.Classes
+@using ShokouhApp.Model
+@layout PersianPagesLayout
+
+@attribute [Authorize]
+<MudStack Class="pa-12">
+    <MudPaper >
+        <TermSelectorComponent  @bind-Term="SelectedTerm" Title="انتخاب ترم"> </TermSelectorComponent>
+    </MudPaper>
+    <MudPaper>
+        <MudSelect @bind-Value="Schedule"  Label="زمانبندی" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var SS in Schedules)
+            {
+                <MudSelectItem  Value="SS">@SS.Title </MudSelectItem>
+            }
+    
+        </MudSelect>
+    </MudPaper >
+    @if (TimeTables is { })
+    {
+        <MudPaper>
+        
+            <MudTable @ref="_tables" Items="@TimeTables"
+                      MultiSelection="true" @bind-SelectedItems="SelectTimeTables" Hover="true" RowsPerPage="20">
+                <HeaderContent>
+                    <MudTh>عنوان کلاس</MudTh>
+                    <MudTh>سطح</MudTh>
+                    <MudTh>نام استاد</MudTh>
+                    <MudTh>نام کلاس</MudTh>
+                    <MudTh>تعداد</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Title">@context.Title</MudTd>
+                    <MudTd DataLabel="Level">@context.Level.LevelName</MudTd>
+                    <MudTd DataLabel="Fullname">@context.Teacher.FullName</MudTd>
+                    <MudTd DataLabel="ClassRoom">@context.ClassRoom.ClassRoomName</MudTd>
+                    <MudTd DataLabel="Count">@context.StudentsCount</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[] { 50, 100 }"/>
+                </PagerContent>
+                <FooterContent>
+                    <MudTd colspan="5">Select All</MudTd>
+                </FooterContent>
+            </MudTable>
+            <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Tertiary" OnClick="ShowClick">نمایش شماره تلفن ها</MudButton>
+        </MudPaper>
+        }
+</MudStack>
+
+
+
+@if (Students is { Count: > 0 } && ShowTable)
+{
+    <MudStack>
+        <MudTable  @ref="_studentTables" Items="@Students"
+              MultiSelection="true" @bind-SelectedItems="SelectStudent" Hover="true" RowsPerPage="100" >
+        <HeaderContent>
+            <MudTh>نام و نام خانوادگی زبان آموز</MudTh>
+            <MudTh>شماره زبان آموز</MudTh>
+            <MudTh>شماره همراه پدر</MudTh>
+            <MudTh>شماره همراه مادر</MudTh>
+            
+        </HeaderContent>
+        <RowTemplate>
+                <MudTd DataLabel="Name">@context.Student.StudentName @context.Student.StudentFamily</MudTd>
+                <MudTd DataLabel="Phone">@context.Student.StudentPhone</MudTd>
+                <MudTd DataLabel="MotherPhone">@context.Student.MotherPhone</MudTd>
+                <MudTd DataLabel="FatherPhone">@context.Student.FatherPhone</MudTd>
+            
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 150, 200 }"/>
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+    </MudStack>
+    @foreach (var stu in Students)
+    {
+        <MudText> @stu.Student.FatherPhone.NormalizeClearNumber() </MudText>
+        <MudText> @stu.Student.MotherPhone.NormalizeClearNumber()</MudText>
+        <MudText> @stu.Student.StudentPhone.NormalizeClearNumber()</MudText>
+    }
+
+}

@@ -1,0 +1,135 @@
+﻿@page "/NewStu"
+@using ShokouhApp.Classes
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@layout PersianPagesLayout
+
+<MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Filled.Person">
+    <MudText Typo="Typo.body1">
+        توجه : لطفا نام و نام خانوادگی را بصورت فارسی وارد کنید.
+    </MudText>
+
+</MudAlert>
+
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <MudTextField Required="true" Label="کد ملی زبان آموز" @bind-Value="@Student.IDNo" TextChanged="Callback" ></MudTextField>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <MudTextField Required="true" Label="نام زبان آموز" @bind-Value="@Student.Name"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudTextField Required="true" Label="نام خانوادگی زبان آموز" @bind-Value="@Student.Famil"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudTextField Label="شماره همراه پدر" @bind-Value="@Student.FatherPhone"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudTextField Label="شماره همراه مادر" @bind-Value="@Student.MotherPhone"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudTextField Label="شماره همراه دانش آموز" @bind-Value="@Student.StudentPhone"></MudTextField>
+    </MudItem>
+
+</MudGrid>
+<MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.TwoTone.Save" OnClick="SaveClick">
+    ذخیره
+</MudButton>
+
+
+@code {
+
+    // [CascadingParameter]
+    // MudDialogInstance DialogInstance { get; set; }
+
+    [Inject] IDialogService DialogService { get; set; }
+
+    public StudentNameFamil Student { get; set; } = new StudentNameFamil();
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+    [Inject] DataProviderService DataService { get; set; }
+    [Inject] TokenProviderService ProviderService { get; set; }
+
+
+    async Task SaveClick()
+    {
+
+        Student.IDNo = Student.IDNo.NormalizeClearNumber().NormalizeFromFarsiNumber();
+        if (!Student.IDNo.IsValidNationalCode())
+        {
+            await DialogService.ShowMessageBox("خطا", "کد ملی وارد شده زبان آموز معتبر نیست. لطفاً کد ملی زبان آموز را با دقت وارد کنید.");
+            return;
+        }
+
+        if (Student.Name.IsNullOrEmpty() ||
+            Student.Famil.IsNullOrEmpty())
+        {
+            await DialogService.ShowMessageBox("خطا", " لطفاً نام و نام خانوادگی زبان آموز را با دقت وارد کنید.");
+            return;
+        }
+
+        if (Student.FatherPhone is null && Student.MotherPhone is null && Student.StudentPhone is null)
+        {
+            await DialogService.ShowMessageBox("خطا", "حداقل باید یک شماره تلفن را وارد کنید");
+            return;
+        }
+        else
+        {
+            var tel = new List<string>();
+            if (Student.FatherPhone is not null) tel.Add(Student.FatherPhone.NormalizeClearNumber().NormalizeFromFarsiNumber());
+            if (Student.MotherPhone is not null) tel.Add(Student.MotherPhone.NormalizeClearNumber().NormalizeFromFarsiNumber());
+            if (Student.StudentPhone is not null) tel.Add(Student.StudentPhone.NormalizeClearNumber().NormalizeFromFarsiNumber());
+            foreach (var t in tel)
+            {
+                var isValidPhoneNumber = StudentFormValidator.IsValidPhoneNumber(t, true);
+                if (!isValidPhoneNumber)
+                {
+
+                }
+            }
+
+            var newStudent = new ShokouhPardisStudentClassOnlineForm
+            {
+                UniqueKey = ProviderService.UniqueKey.Value,
+                StudentName = Student.Name,
+                StudentFamily = Student.Famil,
+                StudentIdno = Student.IDNo ?? "0000000000",
+                StudentClassGuid = Guid.NewGuid()
+            };
+            DataService.SaveOnlineFormStudent(newStudent);
+            NavigationManager.NavigateTo("/" + newStudent.StudentClassGuid.ToString("N"));
+            return;
+
+            await DialogService.ShowMessageBox("هشدار", "ثبت نام شما هنوز انجام نگردیده، لذا ضروری است که ضمن مطالعه نکات ذکر شده و تکمیل اطلاعات فرم بعدی، شامل اطلاعات شناسنامه ای و اطلاعات تماس، دکمه ذخیره را بفشارید و پیام سبز رنگ تایید ثبت نام را دریافت نمایید.", "متوجه شدم");
+
+    //DialogInstance.Close(Student);
+        }
+    }
+
+    public class StudentNameFamil
+    {
+        public string? Name { get; set; }
+        public string? Famil { get; set; }
+        public string? IDNo { get; set; }
+        public string? FatherPhone { get; set; }
+        public string? MotherPhone { get; set; }
+        public string? StudentPhone { get; set; }
+    }
+
+    private void Callback(string code)
+    {
+        if (code.Length == 10)
+        {
+            if (code.IsValidNationalCode())
+            {
+                var inOnlineForm = DataService.StudentExistInOnlineForm(code);
+                if (inOnlineForm != null)
+                {
+                    NavigationManager.NavigateTo($"/onlineForm/{inOnlineForm.StudentClassGuid:N}");
+                }
+            }
+        }
+    }
+
+}

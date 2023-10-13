@@ -1,0 +1,149 @@
+﻿@page "/prereg"
+@using DNTPersianUtils.Core
+@using ShokouhApp.Admin.DailyJV.Components
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Student
+@using System.Globalization
+@using DNTPersianUtils.Core
+@using Olive
+@using ShokouhApp.Admin.Clone
+@layout PersianPagesLayout
+@attribute [Authorize]
+
+<MudRTLProvider RightToLeft="true" Class="persian-content">
+
+    <MudStack Row="false" Spacing="2">
+        @if (StudentsListComponentShow)
+        {
+            <StudentsListComponent FullHeight="false"
+                                   Height="500"
+                                   AddNewStudent="false"
+                                   StudentDetail="false"
+                                   MultiSelect="false"
+                                   SingleSelect="true"
+                                   OnSelectStudentAction="OnSelectStudentAction"
+                                   AllowDelete="false"
+                                   RowStyle="false"></StudentsListComponent>
+        }
+
+        <MudCard Elevation="1" Outlined="true">
+            <MudCardHeader>
+                @if (ShowStudent)
+                {
+                    @* <MudChip Label="true" Size="Size.Large" Color="Color.Error">@Student.FullName</MudChip>
+                <MudChip Label="true" Size="Size.Large" Color="Color.Error">@findStudentLastTimeTable.Level.LevelName</MudChip>
+                <MudChip Label="true" Size="Size.Large" Color="Color.Error">@findStudentLastTimeTable.Term.TermName</MudChip>
+                *@
+
+                    <MudCard>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h5">@Student.FullName</MudText>
+
+                            @if (FindStudentLastTimeTable is not null)
+                            {
+                                <MudText Color="Color.Info" Typo="Typo.body2">@CurrentTerm.TermName</MudText>
+                                <MudText Color="Color.Warning" Typo="Typo.body2">@FindStudentLastTimeTable.Level.LevelName</MudText>
+                            }
+                            else
+                            {
+                                <MudText Color="Color.Warning" Typo="Typo.body2">شاگرد جدید و تعیین سطح شده است</MudText>
+                            }
+                            <br /><br /><br />
+                            <MudSpacer></MudSpacer>
+                            <MudDivider></MudDivider>
+                            <MudText Color="Color.Tertiary" Typo="Typo.body1">
+                                سطح ترم آینده
+                            </MudText>
+                            <MudText Color="Color.Info" Typo="Typo.body2">@NextTerm.TermName</MudText>
+                            <MudText Color="Color.Warning" Typo="Typo.body2">@NextLevel.LevelName</MudText>
+
+
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Success" OnClick="PreRegister">پیش ثبت نام</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="RestForm">حذف</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </MudCardHeader>
+            <MudCardContent>
+                @if (PreRegisterShow)
+                {
+                    <MudStack Class="pa-4" Row="true">
+                        <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateNext" aria-label="NextDay" OnClick='() => SetDay(1)'></MudIconButton>
+                        <MudSpacer></MudSpacer>
+
+                        <MudDatePicker @bind-Date="_dailyJV.CurrentDate"
+                                       Label="تاریخ"
+                                       FirstDayOfWeek="DayOfWeek.Saturday"
+                                       Culture="@GetPersianCulture()"
+                                       MaxDate="DateTime.Today"
+                                       TitleDateFormat="dddd, dd MMMM" />
+                        <MudSpacer></MudSpacer>
+                        <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateBefore" aria-label="BeforeDay" OnClick='() => SetDay(-1)'></MudIconButton>
+                    </MudStack>
+
+
+
+
+
+                    <MudStack Style="Width:100%">
+                        <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+
+                            <MudStack>
+                                <PaymentTypesComponent @bind-Value="_dailyJV.PaymentType"></PaymentTypesComponent>
+
+                                <FeeForComponent @bind-Value="FeeFor"></FeeForComponent>
+
+
+                                <MudTextField @bind-Value="_dailyJV.Fee" Immediate="true" Label="مبلغ به تومان" Style="font-size: 24pt" HelperText="@(_dailyJV.Fee.NumberToText(Language.Persian) + " تومان")" />
+                          
+                            </MudStack>
+                        </MudPaper>
+                    </MudStack>
+
+                    <MudStack Style="Width:100%">
+                        <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+                            <MudStack>
+
+                                @if (_dailyJV.PaymentType == "پوز")
+                                {
+                                    <MudTextField @bind-Value="_dailyJV.PosCode" Label="شناسه پوز" />
+                                }
+                                @if (_dailyJV.PaymentType == "واریز")
+                                {
+                                    <MudDatePicker @bind-Date="_dailyJV.DateOfSettle"
+                                                   Label="زمان واریز"
+                                                   FirstDayOfWeek="DayOfWeek.Saturday"
+                                                   Culture="@GetPersianCulture()"
+                                                   MaxDate="DateTime.Today"
+                                                   TitleDateFormat="dddd, dd MMMM" />
+                                    <MudTimePicker @bind-time="ts" Label="ساعت واریز" />
+                                    <MudTextField @bind-Value="_dailyJV.Txcode" Label="شناسه واریز" />
+                                    <MudTextField @bind-Value="_dailyJV.CardPostfix" Label="چهار رقم آخر شماره کارت واریز کننده" />
+                                }
+                                <MudTextField @bind-Value="_dailyJV.Description" Label="توضیحات" />
+                            </MudStack>
+                        </MudPaper>
+                    </MudStack>
+
+                }
+            </MudCardContent>
+            <MudCardActions>
+                @if (PreRegisterShow)
+                {
+                    @*<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Print" OnClick="PrintDailyJvFishClick">
+                        Print Page
+                    </MudButton>*@
+
+
+                    <MudButton FullWidth="true" Variant="@Variant.Filled" Color="Color.Success" OnClick="SaveClick">Save</MudButton>
+                }
+            </MudCardActions>
+        </MudCard>
+
+    </MudStack>
+</MudRTLProvider>
+
+

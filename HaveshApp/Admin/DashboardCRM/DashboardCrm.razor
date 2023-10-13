@@ -1,0 +1,230 @@
+﻿@page "/"
+@layout PersianPagesLayout
+@using ShokouhApp.Admin.Definition.LessonPlan
+@using ShokouhApp.Services
+@using ShokouhApp.Classes.Auth
+@using ShokouhApp.Model
+@inherits ShokouhApp.Classes.SizeSupportComponentBase
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <MudRTLProvider RightToLeft="true" Class="persian-content">
+
+            <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+                <MudGrid>
+                    <MudItem xs="12" sm="6" md="12">
+                        <MudPaper Elevation="2" Class="pa-4" Style="">
+                            <MudAlert Severity="Severity.Normal" Style="direction:ltr">کارهای روزانه</MudAlert>
+                            @*<MudChart ChartType="ChartType.Bar" ChartSeries="@_UserDo" XAxisLabels="@_dataEnterBarChartXAxisLabels.Select(a => _localizer[a].Value).ToArray()" Width="100%" Height="300px"></MudChart>*@
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="12">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;background-color: #C8E6C9; color: #000;">
+                            <MudAlert Severity="Severity.Success" Style="direction:ltr">تماس های روزانه</MudAlert>
+
+                        </MudPaper>
+                    </MudItem>
+
+                    <MudItem xs="12" sm="6">
+                        <MudGrid>
+                            <MudItem xs="12">
+                                <MudPaper Elevation="2" Style="height: 200px;background-color: #BBDEFB; color: #000;">
+                                    <MudAlert Severity="Severity.Info" Style="direction:ltr">
+                                        اساتید جایگزین
+
+                                    </MudAlert>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+                                    <MudAlert Severity="Severity.Warning" Style="direction:ltr">
+                                        تقویم روز
+                                    </MudAlert>
+
+                                </MudPaper>
+                            </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 100%;background-color: #FFCDD2; color: #000;">
+
+                            <MudAlert Severity="Severity.Error" Style="direction:ltr">
+                                یادآوری تماس های مهم
+                            </MudAlert>
+
+
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">6</MudPaper>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">7</MudPaper>
+                    </MudItem>
+                    <MudItem xs="12" sm="12" md="4">
+                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">8</MudPaper>
+                    </MudItem>
+                </MudGrid>
+
+            </MudContainer>
+        </MudRTLProvider>
+
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Teacher">
+    <Authorized>
+        @if (_session is not null)
+        {
+            @_session.TimeTable.Title
+            <TimeTableItemComponent TimeTable="_session.TimeTable" Dense="false" ShowRecordId="false" ShowSessionCount="false" IsSessionCanceler="false">
+                <ChildContent>
+
+                </ChildContent>
+                <NoContent>
+
+                </NoContent>
+            </TimeTableItemComponent>
+
+            <TeacherLessonPlanComponent Session="_session" >
+
+            </TeacherLessonPlanComponent>
+
+            @foreach (var act in _activities)
+            {
+                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Class" Variant="Variant.Outlined" OnClick="() => ClassSessionClick(_session,act)">
+                    <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                        @act.ActivityTitle - جلسه @_session?.SessionNumber
+                    </MudText>
+                </MudButton>
+
+            }
+
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    List<SessionActivity> _activities;
+    private List<ChartSeries> _UserDo;
+
+    TimeTableSession? _session;
+
+    [Inject]
+    UserSessionService UserSessionService { get; set; }
+
+    protected override void OnInitialized()
+    {
+     var term = _dataProvider.GetTermsInRangeToday();
+        
+        if (term is null)
+        {
+            _snackBar.Add("There is not any Term in today range");
+            return;
+        }
+
+        //_UserDo = ProviderService.GetLog();
+        var payload = UserSessionService.Payload;
+        if (!(payload?.Roles?.Contains(AuthorizeRolesConstant.Teacher) ?? false))
+            return;
+
+        var teacher = _dataProvider.GetTeacherByUserId(UserSessionService.User?.Id);
+        // TODO: Should be remark -> var startTime = DateTime.Now.TimeOfDay; //TimeSpan.Parse("11:15");// DateTime.Now;
+        var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
+        var fromMinutes = TimeSpan.FromMinutes(3);
+        var interval = _dataProvider.GetInterval(term, startTime, offset: fromMinutes);
+        if (interval is null || teacher is null)
+            return;
+
+        // TODO: Should be remarked -> var weekday = _dataProvider.GetTodayWeekday();
+        var weekday = _dataProvider.GetTodayWeekday(7);
+        var timetable = _dataProvider.GetTeacherTimeTable(term, teacher, weekday, interval);
+        // TODO:Should be remark to work well -> _session = _dataProvider.GetTimeTableSession(timetable, DateTime.Today);
+        var dateTime = DateTime.Today.Date.AddDays(2);
+        _session = _dataProvider.GetTimeTableSession(timetable, dateTime);
+        if (_session != null)
+            _activities = _dataProvider.GetSessionActivities(_session);
+    }
+
+    private void ClassSessionClick(TimeTableSession session, SessionActivity sessionActivity)
+    {
+        _navigationManager.NavigateTo($"/RollCall/{session?.ID}/{sessionActivity.SessionActivityID}");
+    }
+
+}
+@*<MudGrid>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.ViewCarousel" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Products"]</MudText>
+                <MudText Typo="Typo.h5">@ProductCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.PanoramaPhotosphereSelect" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Brands"]</MudText>
+                <MudText @bind-Value="@BrandCount" Typo="Typo.h5">@BrandCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.AttachFile" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Documents"]</MudText>
+                <MudText @bind-Value="@DocumentCount" Typo="Typo.h5">@DocumentCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.FileCopy" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Document Types"]</MudText>
+                <MudText @bind-Value="@DocumentTypeCount" Typo="Typo.h5">@DocumentTypeCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Assignment" Color="Color.Error" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Document Extended Attributes"]</MudText>
+                <MudText @bind-Value="@DocumentExtendedAttributeCount" Typo="Typo.h5">@DocumentExtendedAttributeCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Face" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Registered Users"]</MudText>
+                <MudText Typo="Typo.h5">@UserCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Groups" Color="Color.Warning" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@_localizer["Registered Roles"]</MudText>
+                <MudText Typo="Typo.h5">@RoleCount</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="8">
+        <MudPaper Elevation="25" Class="pa-4" Style="height:400px;">
+            <MudChart ChartType="ChartType.Bar" ChartSeries="@_dataEnterBarChartSeries" XAxisLabels="@_dataEnterBarChartXAxisLabels.Select(a => _localizer[a].Value).ToArray()" Width="100%" Height="300px"></MudChart>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="4">
+        <MudPaper Elevation="25" Class="pa-4" Style="height:400px;">
+            @_localizer["Charts comming soon ish..."]
+        </MudPaper>
+    </MudItem>
+</MudGrid>*@

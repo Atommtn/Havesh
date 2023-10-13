@@ -1,0 +1,144 @@
+﻿@using ShokouhApp.Admin.Components
+@using ShokouhApp.Model
+@using System.Globalization
+@using ShokouhApp.Services
+<MudRTLProvider Class="persian-content" RightToLeft="true">
+    <MtnDialog>
+        <ChildComponent>
+            <MudContainer>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Color="Color.Secondary" Variant="Variant.Outlined">
+                                <MudIcon Icon="@Icons.Filled.ContactPhone" />
+                            </MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudTextField Label="نام" @bind-Value="@Student.StudentName" ReadOnly="@MTDisabled"></MudTextField>
+                            <MudTextField Label="نام خانوادگی" @bind-Value="@Student.StudentFamily" ReadOnly="@MTDisabled"></MudTextField>
+                            <MudTextField Label="کد ملی" @bind-Value="@Student.StudentIdno" ReadOnly="@MTDisabled"></MudTextField>
+                            <MudSwitch @bind-Checked="@Student.IsGirl" ThumbIcon="@Icons.Filled.Girl" Color="Color.Error" UnCheckedColor="Color.Success" ThumbIconColor="Color.Default" Disabled="@MTDisabled">
+                                @if(Student.IsGirl==true)
+                                {
+                                    <MudText Typo="Typo.caption" Color="Color.Error">
+                                        Girl
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.caption" Color="Color.Success">
+                                        Boy
+                                    </MudText>
+
+                                }
+                            </MudSwitch>
+                            
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" ButtonType="ButtonType.Button" OnClick="EditProfileClick" />
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Style="height: 250px">
+                            @if (!string.IsNullOrEmpty(Student.ProfilePicture))
+                            {
+                                <MudImage Src="@Student.ProfilePicture" ObjectPosition="ObjectPosition.Top" ObjectFit="ObjectFit.ScaleDown" Height="250"></MudImage>
+                            }
+                            else
+                            {
+                                {
+                                    <MudImage Src="/images/noimage.jpg" ObjectPosition="ObjectPosition.Top" ObjectFit="ObjectFit.ScaleDown" Height="250"></MudImage>
+                                }
+                            }
+                        </MudStack>
+
+                        <MudStack>
+
+                            <MudPaper Class="pa-4">
+                                <MudStack Row="true">
+                                    <MudTextField Label="متولد-صادره" @bind-Value="@Student.StudentFrom" ReadOnly="@MTDisabled"></MudTextField>
+                                    <MudTextField Culture="@GetPersianCulture()" Label="تاریخ تولد" @bind-Value="@Student.StudentBirthDay" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                                <MudStack>
+                                    <MudTextField Label="نشانی" @bind-Value="@Student.StudentAddress" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                                <MudStack Row="true">
+                                    <MudTextField Label="نام پدر" @bind-Value="@Student.StudentFatherName" ReadOnly="@MTDisabled"></MudTextField>
+                                    <MudTextField Label="شغل پدر" @bind-Value="@Student.FatherJob" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                                <MudStack Row="true">
+                                    <MudTextField Label="نام مادر" @bind-Value="@Student.StudentMotherFullName" ReadOnly="@MTDisabled"></MudTextField>
+                                    <MudTextField Label="شغل مادر" @bind-Value="@Student.MotherJob" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                            </MudPaper>
+                            <MudPaper Class="pa-4">
+                                <MudStack>
+                                    <MudText> تلفن های تماس</MudText>
+                                </MudStack>
+                                <MudStack>
+                                    <MudTextField Label="تلفن منزل" @bind-Value="@Student.HomePhone" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                                <MudStack Row="true">
+                                    <MudTextField Label="تلفن پدر" @bind-Value="@Student.FatherPhone" ReadOnly="@MTDisabled"></MudTextField>
+                                    <MudTextField Label="تلفن مادر" @bind-Value="@Student.MotherPhone" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                                <MudStack Row="true">
+                                    <MudTextField Label="واتساپ" @bind-Value="@Student.WhatsAppPhone" ReadOnly="@MTDisabled"></MudTextField>
+                                    <MudTextField Label="تلفن زبان آموز" @bind-Value="@Student.StudentPhone" ReadOnly="@MTDisabled"></MudTextField>
+                                </MudStack>
+                            </MudPaper>
+                        </MudStack>
+
+                    </MudCardContent>
+                    <MudCardActions>
+                        @if (@ShowSaveButton)
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Success" ButtonType="ButtonType.Button" OnClick="SaveEditProfile" />
+                        }
+                        <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
+                    </MudCardActions>
+                </MudCard>
+            </MudContainer>
+        </ChildComponent>
+    </MtnDialog>
+</MudRTLProvider>
+@code {
+ [CascadingParameter] MudDialogInstance DialogInstance { get; set; }
+    [Parameter] public ShokouhPardisStudentClassOnlineForm? Student { get; set; }
+    [Inject] ISnackbar Snackbar { get; set; }
+    bool MTDisabled = true;
+    bool ShowSaveButton = false;
+    [Inject] public StudentService StudentService { get; set; }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var mt = new MudTextField<string>();
+        mt.Disabled = true;
+    }
+
+    CultureInfo GetPersianCulture()
+    {
+        var culture = new CultureInfo("fa-IR");
+        return culture;
+    }
+
+    private void EditProfileClick()
+    {
+        MTDisabled = false;
+        ShowSaveButton = true;
+    }
+
+
+    private void SaveEditProfile()
+    {
+        StudentService.SaveOnlineProfile(Student);
+        MTDisabled = true;
+        ShowSaveButton = false;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+        Snackbar.Add("Student Profile Save Successfully", severity: Severity.Success);
+        DialogInstance.Close();
+    }
+
+
+
+}

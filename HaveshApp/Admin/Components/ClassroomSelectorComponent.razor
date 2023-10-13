@@ -1,0 +1,20 @@
+﻿@using ShokouhApp.Model
+<MudSelect @bind-Value="ClassRoom" Label="@Label" Dense="true" Required="true" RequiredError="true" ErrorText="کلاس را باید انتخاب نمایید">
+    @foreach (var room in _dataProvider.GetClassRooms())
+    {
+        <MudSelectItem Value="@room">@room.ClassRoomName (@room.Capacity) </MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+
+    [Parameter]
+    public ShokouhPardisClassRoom ClassRoom { get; set; }
+
+    [Parameter]
+    public EventCallback<ShokouhPardisClassRoom> ClassRoomChanged { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "انتخاب کلاس";
+
+}

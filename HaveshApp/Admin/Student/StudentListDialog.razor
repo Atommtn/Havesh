@@ -1,0 +1,42 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+@using ShokouhApp.Admin.Planning
+@using ShokouhApp.Admin.Student
+<MtnDialog>
+    <ChildComponent>
+        <StudentsListComponent
+            MultiSelect="SelectMulti" SingleSelect="SelectSingle"
+            OnSelectStudentAction="OnSelectStudentAction" 
+            TimeTable="TimeTable" AllowDelete="AllowDelete"
+            PreTT="PreTT"
+            ShowPreRigester="ShowPreRegister"
+            RowStyle="false"
+            OnDeleteStudentAction="OnDeleteStudentAction" ></StudentsListComponent>
+    </ChildComponent>
+</MtnDialog>
+
+
+@code {
+    [Parameter] public bool SelectSingle { get; set; }
+    [Parameter] public bool SelectMulti { get; set; }
+    [Parameter] public bool? ShowPreRegister { get; set; }
+    [Parameter] public ShokouhPardisTimeTable? TimeTable { get; set; }
+    [Parameter] public ShokouhPardisTimeTable? PreTT { get; set; }
+    [Parameter] public bool AllowDelete { get; set; }
+    [Parameter] public Func<StudentActionArgs, Task<bool>?>? OnDeleteStudentActionProx { get; set; }
+
+    [CascadingParameter] public MudDialogInstance DialogInstance { get; set; }
+
+    private Task OnSelectStudentAction(List<ShokouhPardisStudentClass> students)
+    {
+        DialogInstance.Close(students);
+
+        return Task.CompletedTask;
+    }
+
+    Task<bool>? OnDeleteStudentAction(StudentActionArgs arg)
+    {
+        return OnDeleteStudentActionProx?.Invoke(arg);
+    }
+
+}

@@ -1,0 +1,30 @@
+﻿@using ShokouhApp.Classes
+<MudSelect T="string" Label="نحوه پرداخت" Clearable   SelectedValuesChanged="SelectedChange" @bind-Value="Value" Dense="true">
+    <MudSelectItem  Value="@PaymentTypeStatuses.Cash"/>
+    <MudSelectItem Value="@PaymentTypeStatuses.Pos"/>
+    <MudSelectItem Value="@PaymentTypeStatuses.Debit"/>
+</MudSelect>
+@code {
+
+   
+    //public string Value { get; set; }
+
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    
+
+    private async Task SelectedChange()
+    {
+        await ValueChanged.InvokeAsync(Value);
+
+    }
+
+   
+
+    private string _value;
+}

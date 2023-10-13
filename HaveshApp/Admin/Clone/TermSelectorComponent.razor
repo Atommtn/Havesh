@@ -1,0 +1,146 @@
+﻿@using Microsoft.AspNetCore.Components
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+
+
+<MudCard Class="my-3" Elevation="1" Outlined="true">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">
+                @Title
+            </MudText>
+        </MudCardHeader>
+    }
+    <MudCardContent>
+
+        <MudStack Class="pb-4" Row="true">
+
+            @if (Years is { })
+            {
+
+                <MudSelect @bind-Value="Year" Label="سال" Dense="true">
+                    @if (AllowAll)
+                    {
+                        <MudSelectItem Value="@(null as ShokouhPardisYearClass)">همه سالها</MudSelectItem>
+                    }
+                    @foreach (var y in Years)
+                    {
+                        <MudSelectItem Value="y">@y.YearName</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudIconButton Icon="@Icons.TwoTone.ArrowCircleDown" Color="Color.Info" OnClick="NextTermClick"></MudIconButton>
+                <MudSelect @bind-Value="Term" Label="ترم" Dense="true">
+                    @if (AllowAll)
+                    {
+                        <MudSelectItem Value="@(null as ShokouhPardisTermClass)">همه ترمها</MudSelectItem>
+                    }
+                    @foreach (var t in Terms)
+                    {
+                        <MudSelectItem Value="t">@t.TermName</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudIconButton Icon="@Icons.TwoTone.ArrowCircleUp" Color="Color.Info" OnClick="PrevTermClick"></MudIconButton>
+            }
+        </MudStack>
+
+
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Inject] DataProviderService DataProvider { get; set; }
+    public IEnumerable<ShokouhPardisYearClass> Years;
+    private bool initComplete = false;
+
+    public ShokouhPardisYearClass Year
+    {
+        get => _year;
+        set
+        {
+            if (_year == value) return;
+            _year = value;
+            if (_year == null)
+            {
+                Term = null;
+                return;
+            }
+            Terms = DataProvider.GetTerms(_year);
+            if (Term == null)
+            {
+                Term = DataProvider.GetTermsInRangeToday();
+            }
+            StateHasChanged();
+        }
+    }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public ShokouhPardisTermClass? Term
+    {
+        get => _term;
+        set
+        {
+            if (_term == value) return;
+            _term = value;
+            TermChanged?.InvokeAsync(_term);
+        }
+    }
+
+    [Parameter]
+    public bool AllowAll { get; set; }
+
+    [Parameter]
+    public EventCallback<ShokouhPardisTermClass>? TermChanged { get; set; }
+
+    [Inject] IDialogService DialogService { get; set; }
+    private List<ShokouhPardisTermClass> Terms;
+    ShokouhPardisTermClass? _term;
+    ShokouhPardisYearClass? _year;
+
+    private void Init()
+    {
+        if (initComplete)
+            return;
+        DataLoading = true;
+        StateHasChanged();
+        Years = DataProvider.GetYears();
+        Year = DataProvider.GetYearsInRange();
+        Term ??= DataProvider.GetTermsInRangeToday();
+        Terms = DataProvider.GetTerms(Year);
+        initComplete = true;
+        StateHasChanged();
+    }
+
+    public bool DataLoading { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Init();
+        base.OnInitialized();
+    }
+
+    void NextTermClick()
+    {
+        var i = Terms.IndexOf(Term);
+        if (i == Terms.Count - 1)
+        {
+            return;
+        }
+        Term = Terms[i + 1];
+    }
+
+    void PrevTermClick()
+    {
+        var i = Terms.IndexOf(Term);
+        if (i == 0)
+        {
+            return;
+        }
+        Term = Terms[i - 1];
+    }
+
+}

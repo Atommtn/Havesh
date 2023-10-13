@@ -1,0 +1,166 @@
+﻿@page "/ClonePage"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using System.Data
+@layout PersianPagesLayout
+
+<MudText Typo="Typo.h5" Color="Color.Warning" GutterBottom="true">
+    کلون مدرس
+</MudText>
+
+
+<TermSelectorComponent @bind-Term="SourceTerm" Title="مبدا کلون"></TermSelectorComponent>
+<TermSelectorComponent @bind-Term="DestinationTerm" Title="مقصد کلون"></TermSelectorComponent>
+
+<MudTreeView T="string" Dense="true" Hover="true" MultiSelection="true" @bind-SelectedValues="SelectedValues">
+    <MudTreeViewItem Value="@("Clone BookPrice")" Expanded="true"></MudTreeViewItem>
+    <MudTreeViewItem Value="@("Clone Teacher")" Expanded="true"></MudTreeViewItem>
+    <MudTreeViewItem Value="@("Clone Schedule")" Expanded="true">
+        <MudTreeViewItem Value="@("Clone Interval")" Expanded="true">
+            <MudTreeViewItem Value="@("Clone DaySession")" Expanded="true">
+                <MudTreeViewItem Value="@("Clone Program")" Expanded="true"></MudTreeViewItem>
+            </MudTreeViewItem>
+        </MudTreeViewItem>
+        <MudTreeViewItem Value="@("Clone TimeTable")" Expanded="true">
+            <MudTreeViewItem Value="@("Clone TimeTableStudent")" Expanded="true"></MudTreeViewItem>
+        </MudTreeViewItem>
+
+    </MudTreeViewItem>
+</MudTreeView>
+
+<MudCard Elevation="1" Outlined="true">
+    <MudCardHeader>
+        <MudText Typo="Typo.body1" Color="Color.Default" GutterBottom="true">
+
+        </MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
+            روند اجرا :
+        </MudText>
+        <MudPaper Outlined="true" Style="overflow-y: scroll;height: 500px;" Class="mud-ltr">
+            @foreach (var msg in _messages)
+            {
+                <MudText Typo="Typo.body1" Color="Color.Info">
+                    @msg
+                </MudText>
+
+            }
+        </MudPaper>
+
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.CopyAll" Variant="Variant.Filled" OnClick="CloneClick" Disabled="cloneInProgress">
+            کلون
+        </MudButton>
+
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    public ShokouhPardisTermClass SourceTerm { get; set; }
+    public ShokouhPardisTermClass DestinationTerm { get; set; }
+
+    List<string> _messages = new List<string>();
+
+    [Inject] CloneProviderService CloneService { get; set; }
+    bool cloneInProgress = false;
+    private void CloneClick()
+    {
+
+        if (cloneInProgress) return;
+
+        cloneInProgress = true;
+
+
+        if (SourceTerm.TermClassId == DestinationTerm.TermClassId)
+        {
+            _messages.Add("Source and destination term can not be same, change source or destination terms");
+            cloneInProgress = false;
+            return;
+        }
+
+        // BookPrice Clone
+        List<ShokouhPardisLevelBookPrice> bookPrices;
+        if (SelectedValues.Contains("Clone BookPrice"))
+            bookPrices = DoClone(() => CloneService.CloneBookPrices(SourceTerm, DestinationTerm));
+
+        // Teacher Clone
+        IEnumerable<ShokouhPardisTeacherTermClass> teacherTermClasses;
+        if (SelectedValues.Contains("Clone Teacher"))
+        {
+            teacherTermClasses = DoClone(() => CloneService.CloneTeachers(SourceTerm, DestinationTerm));
+        }
+
+        // Schedule Clone
+        List<ShokouhPardisSchedule> clonedSchedule = null;
+        if (SelectedValues.Contains("Clone Schedule"))
+            clonedSchedule = DoClone(() => CloneService.CloneSchedules(SourceTerm, DestinationTerm));
+
+        // Interval Clone
+        List<ShokouhPardisInterval> clonedIntervals = null;
+        if (SelectedValues.Contains("Clone Interval"))
+            clonedIntervals = DoClone(() => CloneService.CloneIntervals(SourceTerm, DestinationTerm));
+
+        // Day Session Clone
+        List<ShokouhPardisDaySession> clonedDaySession = null;
+        if (SelectedValues.Contains("Clone DaySession"))
+            clonedDaySession = DoClone(() => CloneService.CloneDaySessions(SourceTerm, DestinationTerm,
+            clonedIntervals));
+
+        // Programs Clone
+        List<ShokouhPardisProgram> clonedPrograms;
+        if (SelectedValues.Contains("Clone Program"))
+            clonedPrograms = DoClone(() => CloneService.ClonePrograms(SourceTerm, DestinationTerm,
+            clonedSchedule, clonedDaySession));
+
+        // NEXT LEVEL (LEVEL UP The TimeTable)
+        // Time Table Clone TT
+        List<ShokouhPardisTimeTable> clonedTimeTable = null;
+        if (SelectedValues.Contains("Clone TimeTable"))
+            clonedTimeTable = DoClone(() => CloneService.CloneTimeTable(SourceTerm, DestinationTerm,
+                clonedSchedule));
+
+        // TT -> Student Clone
+        List<ShokouhPardisTimeTableStudent> cloneTimeTableStudents;
+        if (SelectedValues.Contains("Clone TimeTableStudent"))
+            cloneTimeTableStudents = DoClone(() => CloneService.CloneTimeTableStudents(SourceTerm,
+                clonedTimeTable));
+
+        //CloneService.RollBackTransaction();
+
+        CloneService.CommitTransaction();
+        _messages.Add("Data has been updated to database.");
+        cloneInProgress = false;
+
+    }
+
+    T DoClone<T>(Func<T> cloneFunction) where T : class
+    {
+        var entity = typeof(T).GenericTypeArguments.First().Name.Replace("ShokouhPardis", null);
+        // Teacher Term Clone
+        T ret = null;
+        _messages.Add($"Start cloning {entity}s from term : {SourceTerm.TermName} to term :{DestinationTerm.TermName}");
+        try
+        {
+            ret = cloneFunction();
+            _messages.Add($"{entity}s successfully Cloned to term :{DestinationTerm.TermName}");
+        }
+        catch (DuplicateNameException e)
+        {
+            _messages.Add($"There are {entity}s in term :{DestinationTerm.TermName}, {entity} Clone Skipped");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            _messages.Add($"Failed to clone {entity}s to term :{DestinationTerm.TermName}");
+        }
+
+        StateHasChanged();
+        return ret;
+    }
+
+    public HashSet<string> SelectedValues { get; set; }
+
+}

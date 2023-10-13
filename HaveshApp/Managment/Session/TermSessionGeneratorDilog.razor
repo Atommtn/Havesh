@@ -1,0 +1,108 @@
+﻿@using DNTPersianUtils.Core;
+@using ShokouhApp.Model
+<MtnDialog>
+    <ChildComponent>
+        @if (_doAction == false)
+        {
+            <MudPaper Class="m-3">
+                <MudText Typo="Typo.caption">آیا از تولید جلسات برای سانس انتخابی مطمعن می باشید</MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Save" OnClick="YesClick">
+                    بله
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="CloseClick">
+                    خیر
+                </MudButton>
+            </MudPaper>
+        }
+
+        <MudStack Row="false" Spacing="2">
+            <MudStack Row="false" Spacing="1">
+                <MudText Typo="Typo.caption">TimeTable : @_currentTimetable?.Title</MudText>
+                <MudProgressLinear @ref="_progressbarTimeTable" Striped="true" Size="Size.Medium" Min="0" Color="Color.Warning" Rounded="true"></MudProgressLinear>
+            </MudStack>
+
+            <MudStack Row="false" Spacing="1">
+                <MudText Typo="Typo.caption">Session : @_currentSession?.SessionDate.ToPersianDateTextify() - @_currentSession?.SessionTime?.ToString("hh\\:mm") - جلسه : @_currentSession?.SessionNumber</MudText>
+                <MudProgressLinear @ref="_progressbarSession" Striped="false" Size="Size.Medium" Min="0" Color="Color.Info"></MudProgressLinear>
+            </MudStack>
+
+
+        </MudStack>
+
+
+    </ChildComponent>
+
+</MtnDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+    ShokouhPardisTimeTable? _currentTimetable;
+
+    TimeTableSession? _currentSession;
+
+    MudProgressLinear? _progressbarTimeTable;
+    MudProgressLinear? _progressbarSession;
+
+    [Parameter]
+    public List<ShokouhPardisTimeTable> TimeTables { get; set; }
+
+    [Parameter]
+    public TermSessionTemplate SessionsTemplate { get; set; }
+
+    [Parameter]
+    public int SessionsCount { get; set; }
+
+    [Inject] TimeTableSessionService TTSessionService { get; set; }
+
+
+    bool _doAction = false;
+    async Task YesClick()
+    {
+        _doAction = true;
+        var dilog = this;
+        TTSessionService.OnTimeTableSessionCreated = async session =>
+        {
+            await dilog.InvokeAsync(async () =>
+            {
+                _progressbarSession!.Value = session.SessionNumber;
+                _currentSession = session;
+                StateHasChanged();
+                await Task.Delay(100);
+            });
+
+        };
+
+        _progressbarSession!.Max = SessionsCount;
+        _progressbarSession!.Value = 0;
+
+        _progressbarTimeTable!.Max = TimeTables.Count;
+        _progressbarTimeTable!.Value = 0;
+
+        foreach (var timeTable in TimeTables)
+        {
+
+            _currentTimetable = timeTable;
+            await Task.Delay(50);
+            StateHasChanged();
+            _progressbarTimeTable.Value++;
+            try
+            {
+                await TTSessionService.GenerateTimeTableSessions(timeTable);
+                await Task.Delay(50);
+            }
+            catch (Exception e)
+            {
+                _snackBar.Add(e.Message, Severity.Error);
+            }
+        }
+
+        DialogInstance.Close(DialogResult.Ok("Ok"));
+    }
+
+    void CloseClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+}

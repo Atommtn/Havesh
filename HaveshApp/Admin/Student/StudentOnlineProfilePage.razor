@@ -1,0 +1,142 @@
+﻿@page "/Profile"
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using Olive
+@attribute [Authorize]
+@layout PersianPagesLayout
+
+<h3>StudentOnlineProfilePage</h3>
+
+<MudTable @ref="table"
+          RowStyleFunc="RowStyleFunc"
+          OnRowClick="OpenProfileClick"
+          T="ShokouhPardisStudentClassOnlineForm"
+          Breakpoint="Breakpoint.None"
+          ServerData="@(new Func<TableState, Task<TableData<ShokouhPardisStudentClassOnlineForm>>>(ServerReloadProfile))">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField @bind-Value="SearchText"
+                      Label="Search any thing"
+                      Placeholder="You can search anything here"
+                      DebounceInterval="1000"
+                      OnDebounceIntervalElapsed="FilterData"
+                      AdornmentIcon="@Icons.Filled.Search"
+                      Adornment="Adornment.Start"
+                      Clearable="true" />
+    </ToolBarContent>
+    <HeaderContent>
+
+        
+        <MudTh>Avatar</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Last Name</MudTh>
+        <MudTh>Meli Code</MudTh>
+        <MudTh>Father Name</MudTh>
+
+
+        <MudTh>Home</MudTh>
+        <MudTh>F-Tel</MudTh>
+        <MudTh>M-Tel</MudTh>
+        <MudTh>S-Tel</MudTh>
+
+    </HeaderContent>
+    <RowTemplate Context="student">
+        
+        <MudTd>
+            @if (!string.IsNullOrEmpty(student.ProfilePicture))
+            {
+                <MudAvatar Image="@student.ProfilePicture" Alt="StudentProfile" />
+            }
+            else
+            {
+                <MudAvatar Image="/images/noimage.jpg" Alt="StudentProfile" />
+            }
+        </MudTd>
+        <MudTd>@student.StudentName</MudTd>
+        <MudTd>@student.StudentFamily</MudTd>
+        <MudTd>@student.StudentIdno</MudTd>
+        <MudTd>@student.StudentFatherName</MudTd>
+
+
+        <MudTd>@student.HomePhone</MudTd>
+        <MudTd>@student.FatherPhone</MudTd>
+        <MudTd>@student.MotherPhone</MudTd>
+        <MudTd>@student.StudentPhone</MudTd>
+
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+
+
+
+
+@code {
+    public bool? _IsGirl { get; set; }
+    string? SearchText { get; set; } = null;
+    MudTable<ShokouhPardisStudentClassOnlineForm>? table;
+
+    [Inject] public StudentService StudentService { get; set; }
+    [Inject] IDialogService DialogService { get; set; }
+    private async Task<TableData<ShokouhPardisStudentClassOnlineForm>> ServerReloadProfile(TableState state)
+    {
+        List<int> studentIds = null;
+        studentIds = StudentService.GetStudentsprofile()
+                .Select(x => x.StudentClassId)
+                .ToList();
+
+        var total = StudentService.GetTotalStudentsProfile(studentIds);
+        var pagedStudents = StudentService.GetPagedStudentProfile(state.Page, state.PageSize, SearchText, studentIds);
+
+        return new TableData<ShokouhPardisStudentClassOnlineForm>()
+            {
+                TotalItems = total,
+                Items = pagedStudents
+            };
+    }
+
+    private async Task FilterData()
+    {
+
+        await table.ReloadServerData();
+    }
+
+
+
+    private async Task OpenProfileClick(TableRowClickEventArgs<ShokouhPardisStudentClassOnlineForm> tableRowClickEventArgs)
+    {
+        var dialogReference = DialogService.Show<StudentOnlineProfileDialog>("پروفایل زبان آموز",
+            new DialogParameters
+                {
+                    ["Student"] = tableRowClickEventArgs.Item
+                },
+            new DialogOptions()
+                {
+
+                    CloseButton = true,
+                    MaxWidth = MaxWidth.Large
+                });
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Cancelled == false)
+        {
+            await table.ReloadServerData();
+            StateHasChanged();
+        }
+    }
+    private string RowStyleFunc(ShokouhPardisStudentClassOnlineForm Student, int index)
+    {
+        switch (Student.IsGirl)
+        {
+            case true:
+                return "background-color:rgba(247, 32, 32, 0.2);";
+            case false:
+                return "background-color:rgba(34, 177, 76, 0.2);";
+            default: return "background-color:white";
+
+        }
+    }
+
+
+}

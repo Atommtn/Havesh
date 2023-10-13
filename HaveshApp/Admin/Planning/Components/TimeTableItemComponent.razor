@@ -1,0 +1,319 @@
+﻿@using ShokouhApp.Model
+@using ShokouhApp.Admin.Student
+@using ShokouhApp.Classes
+@using ShokouhApp.Managment.Session
+
+@if (TimeTable is not null)
+{
+    @if (Dense is true)
+    {
+        <MudPaper Outlined="false" Elevation="0" Style="@Style" Class="align-self-center">
+            <MudStack Row="false" Class="ma-0" Spacing="1">
+
+                <MudPaper Style="@($"background-color: {SetLevelColor(TimeTable.Level.LevelName)}")">
+                    @if (ShowRecordId is true)
+                    {
+                        <MudText Typo="Typo.overline" Class="ma-2 border-dark">
+                            @TimeTable.TimeTableId
+                        </MudText>
+                    }
+                    <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Filled.PersonPin">
+                        <MudText Typo="Typo.body1">
+                            @TimeTable.Teacher.TeacherFamily
+                        </MudText>
+                    </MudChip>
+
+                    <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Filled.Abc">
+                        <MudText Typo="Typo.caption">
+                            @TimeTable.Level.LevelDes
+                        </MudText>
+                    </MudChip>
+                    
+                    @if (IsSessionCanceler is true)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Default" StartIcon="@Icons.TwoTone.CancelPresentation" OnClick="ShowManageSesseionDialog">
+                            کنسل
+                        </MudButton>
+
+                    }
+                </MudPaper>
+
+
+                <MudPaper Style="@($"background-color: {SetScheduleColor(TimeTable.Schedule.Title)}")">
+
+                    @if (TimeTable.StudentsCount > 0)
+                    {
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.TwoTone.People" OnClick="ShowStudentsDialogClick">
+                            <MudText Typo="Typo.h6" Class="mx-1">
+                                @TimeTable.StudentsCount
+                            </MudText>
+                            <MudText Typo="Typo.caption">
+                                نفر
+                            </MudText>
+
+                        </MudChip>
+                    }
+                    @if (ShowSessionCount == true)
+                    {
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Material.Filled.FormatListNumbered" OnClick="ShowSesseionPreviewDialog">
+                            <MudText Typo="Typo.h6" Class="mx-1">
+                                @TimeTable.Sessions.Count(x => x.SessionNumber > 0)
+                            </MudText>
+
+                        </MudChip>
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowCircleLeft">
+                            <MudText Typo="Typo.h6" Class="mx-1">
+                                @TimeTable.Sessions.Count(x => x.SessionStatus == SessionStatuses.Pending)
+                            </MudText>
+                        </MudChip>
+                    }
+                </MudPaper>
+            
+                @ChildContent
+           
+            </MudStack>
+        </MudPaper>
+    }
+    else
+    {
+        <MudPaper Outlined="false" Elevation="0" Style="@Style" Class="align-self-center">
+            <MudStack Row="false" Class="ma-3" Spacing="2">
+
+                <MudChip>
+                    @if (ShowRecordId is true)
+                    {
+                        <MudText Typo="Typo.overline" Class="ma-2 border-dark">
+                            @TimeTable.TimeTableId
+                        </MudText>
+                    }
+                    <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Filled.PersonPin">
+                        نام مدرس:
+                    </MudChip>
+                    <MudText Typo="Typo.caption">
+                        @TimeTable.Teacher
+                    </MudText>
+                    @if (IsSessionCanceler is true)
+                    {
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark">
+                            کنسل
+                        </MudChip>
+                        <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.TwoTone.CancelPresentation" OnClick="ShowManageSesseionDialog">
+
+                        </MudButton>
+
+                    }
+                </MudChip>
+
+                <MudChip Style="@($"background-color: {SetLevelColor(TimeTable.Level.LevelName)}")">
+                    <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Filled.Abc">
+                        سطح:
+                    </MudChip>
+                    <MudText Typo="Typo.caption">
+                        @TimeTable.Level.LevelName
+                    </MudText>
+                    <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Material.Filled.OtherHouses">
+                        کلاس:
+                    </MudChip>
+                    <MudText Typo="Typo.h6" Class="mx-3">
+                        @TimeTable.ClassRoom.ClassRoomName
+                    </MudText>
+                    @if (TimeTable.StudentsCount > 0)
+                    {
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.TwoTone.People">
+                            با :
+                        </MudChip>
+                        <MudButton Variant="Variant.Text" Color="Color.Transparent" OnClick="ShowStudentsDialogClick">
+                            <MudText Typo="Typo.h6" Class="mx-1">
+                                @TimeTable.StudentsCount
+                            </MudText>
+                            <MudText Typo="Typo.caption">
+                                نفر زبان آموز
+                            </MudText>
+                        </MudButton>
+
+                    }
+                </MudChip>
+                <MudChip Style="@($"background-color: {SetScheduleColor(TimeTable.Schedule.Title)}")">
+                    <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Filled.Schedule">
+                        برنامه:
+                    </MudChip>
+                    <MudText Typo="Typo.caption">
+                        @TimeTable.Schedule.Title
+                    </MudText>
+                    @if (ShowSessionCount == true)
+                    {
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Material.Filled.FormatListNumbered">
+                            تعداد جلسات
+                        </MudChip>
+                        <MudButton Variant="Variant.Text" Color="Color.Transparent" OnClick="ShowSesseionPreviewDialog">
+                            <MudText Typo="Typo.h6" Class="mx-1">
+                                @TimeTable.Sessions.Count(x => x.SessionNumber > 0)
+                            </MudText>
+                        </MudButton>
+                        <MudChip Label="true" Size="Size.Large" Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowCircleLeft">
+                            باقی مانده
+                        </MudChip>
+                        <MudText Typo="Typo.h6" Class="mx-1">
+                            @TimeTable.Sessions.Count(x => x.SessionStatus == SessionStatuses.Pending)
+                        </MudText>
+                    }
+                </MudChip>
+
+                @* <MudChip Style="@($"background-color: darkred")">
+
+        </MudChip>*@
+               
+                    @ChildContent
+               
+            </MudStack>
+        </MudPaper>
+    }
+}
+else
+{
+    @NoContent
+}
+
+
+@code {
+
+    [CascadingParameter(Name = "Parent")]
+    public ICanChangeComponentState Parent { get; set; }
+
+    [Parameter]
+    public bool? ShowRecordId { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public bool? Dense { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public ShokouhPardisTimeTable? TimeTable { get; set; }
+
+    [Parameter]
+    public RenderFragment NoContent { get; set; }
+
+    [Parameter]
+    public bool ShowSessionCount { get; set; } = false;
+
+    [Parameter]
+    public bool? IsSessionCanceler { get; set; } = false;
+
+    private string SetLevelColor(string level)
+    {
+        var words = level.Trim().Split(new[] { ' ', '-', ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+        foreach (var word in words)
+        {
+            switch (word)
+            {
+                case "Family":
+                    return Colors.Red.Lighten1;
+                case "First":
+                    return Colors.Green.Darken3;
+                case "Hip":
+                    return Colors.Amber.Darken3;
+                case "Pockets":
+                    return Colors.Purple.Lighten2;
+                case "HeyThere":
+                    return Colors.Cyan.Darken3;
+                case "FA":
+                    return Colors.Indigo.Darken4;
+                case "TN":
+                    return Colors.Indigo.Lighten2;
+                case "Sum":
+                    return Colors.Brown.Darken1;
+
+            }
+
+        }
+        return Colors.Shades.Black;
+    }
+
+    private string SetScheduleColor(string Schedule)
+    {
+        return Schedule switch
+        {
+            "زوج-دو روز در هفته-سانس اول صبح" => Colors.Pink.Lighten2,
+            "زوج-دو روز در هفته سانس دوم صبح" => Colors.Pink.Lighten1,
+            "زوج-دو روز در هفته-سانس اول بعدازظهر" => Colors.Pink.Darken1,
+            "زوج-دو روز در هفته سانس-دوم بعدازظهر" => Colors.Pink.Darken2,
+            "زوج-دو روز در هفته سانس-سوم بعدازظهر" => Colors.Pink.Darken3,
+            "زوج-دو روز در هفته-سانس آخر بعدازظهر" => Colors.Pink.Darken4,
+            "فرد-دو روز در هفته-سانس اول صبح" => Colors.Blue.Lighten2,
+            "فرد-دو روز در هفته-سانس دوم صبح" => Colors.Blue.Lighten1,
+            "فرد-دو روز در هفته-سانس اول بعدازظهر" => Colors.Blue.Darken1,
+            "فرد-دو روز در هفته-سانس دوم بعدازظهر" => Colors.Blue.Darken2,
+            "فرد-دو روز در هفته-سانس سوم بعدازظهر" => Colors.Blue.Darken3,
+            "فرد-دو روز در هفته-سانس آخر بعدازظهر" => Colors.Blue.Darken4,
+            _ => Colors.Shades.Black
+        };
+    }
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+
+
+
+    void ShowStudentsDialogClick()
+    {
+        DialogService.Show<StudentListDialog>($" {TimeTable?.ClassRoom.ClassRoomName} کلاس  - {TimeTable?.Level.LevelName} - دانش آموزان - {TimeTable?.Teacher.FullName}"
+            , new()
+                {
+                    ["TimeTable"] = TimeTable,
+                    ["AllowDelete"] = false,
+                }
+            , new DialogOptions
+                {
+                    CloseButton = true,
+                    CloseOnEscapeKey = true,
+                    FullWidth = true,
+                    MaxWidth = MaxWidth.Large
+                });
+    }
+
+    async Task ShowManageSesseionDialog()
+    {
+        var dialogReference = await DialogService.ShowAsync<TimeTableSessionManagementDialog>("مدیریت جلسات", new DialogParameters()
+        {
+            ["TimeTable"] = TimeTable
+        },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            });
+        var dialogReferenceResult = await dialogReference.Result;
+        if (!dialogReferenceResult.Canceled)
+        Parent.ChangeYourState();
+    }
+
+    async Task ShowSesseionPreviewDialog()
+    {
+        var dialogReference = await DialogService.ShowAsync<TimeTableSessionManagementDialog>("نمایش جلسات", new DialogParameters()
+        {
+            ["TimeTable"] = TimeTable,
+            ["ShowCancle"] = false
+        },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            });
+        var dialogReferenceResult = await dialogReference.Result;
+        if (!dialogReferenceResult.Canceled)
+        Parent.ChangeYourState();
+    }
+
+
+
+}

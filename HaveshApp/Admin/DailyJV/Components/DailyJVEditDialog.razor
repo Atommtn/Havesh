@@ -1,0 +1,130 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.Components
+@using System.Globalization
+@using ShokouhApp.Admin.Clone
+@using ShokouhApp.Classes
+
+<MtnDialog >
+    <ChildComponent>
+        <MudGrid>
+            <MudStack Style="Width:100%" Class="pa-4">
+
+                <TermSelectorComponent @bind-Term="DailyJv.Term" Title="انتخاب ترم"></TermSelectorComponent>
+
+            </MudStack>
+            <MudStack Style="Width:100%" Class="pa-4">
+
+                <MudDatePicker @bind-Date="DailyJv.CurrentDate"
+                               Label="تاریخ"
+                               FirstDayOfWeek="DayOfWeek.Saturday"
+                               Culture="@GetPersianCulture()"
+                               MaxDate="DateTime.Today"
+                               TitleDateFormat="dddd, dd MMMM" />
+
+            </MudStack>
+
+            <MudStack Style="Width:100%">
+                <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+                    <MudStack>
+                        <MudText Typo="Typo.caption" Color="Color.Warning" GutterBottom="true">
+                            @DailyJv.Student.StudentName @DailyJv.Student.StudentFamily
+                        </MudText>
+
+                    </MudStack>
+                    <MudStack>
+                        <PaymentTypesComponent  @bind-Value="DailyJv.PaymentType"></PaymentTypesComponent>
+
+                        <FeeForComponent @bind-Value="DailyJv.FeeFor"></FeeForComponent>
+
+
+                        <MudTextField @bind-Value="DailyJv.Fee" Immediate="true" Label="مبلغ به تومان" Style="font-size: 24pt" HelperText="@DailyJv.Fee.ToString("N0", _ir)"/>
+
+                        <MudTextField @bind-Value="DailyJv.BillNo" Disabled="true" Label="شماره قبض"/>
+
+                    </MudStack>
+                </MudPaper>
+
+            </MudStack>
+
+
+
+            <MudStack Style="Width:100%">
+                <MudPaper Outlined="true" MaxWidth="MaxWidth" Class="pa-4">
+                    <MudStack>
+
+                        @if (DailyJv.PaymentType == "پوز")
+                        {
+                            <MudTextField @bind-Value="DailyJv.PosCode" Label="شناسه پوز"/>
+                        }
+                        @if (DailyJv.PaymentType == "واریز")
+                        {
+
+                            <MudTextField @bind-Value="DailyJv.Txcode" Label="شناسه واریز"/>
+                            <MudTextField @bind-Value="DailyJv.CardPostfix" Label="چهار رقم آخر شماره کارت واریز کننده"/>
+                        }
+                        <MudTextField @bind-Value="DailyJv.Description" Label="توضیحات"/>
+                    </MudStack>
+                </MudPaper>
+
+            </MudStack>
+
+
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisDailyJv? DailyJv { get; set; }
+
+    [Inject] DataProviderService DataProvider { get; set; }
+    
+
+    public CultureInfo _ir = new CultureInfo("fa-Ir");
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    CultureInfo GetPersianCulture()
+    {
+        var culture = new CultureInfo("fa-IR");
+        return culture;
+    }
+
+    private void SaveDialogClick()
+    {
+        var _timeTable = DataProvider.GetStudetnLevel(DailyJv.Student, DailyJv.Term)!;
+        if (_timeTable != null)
+        {
+            DailyJv.TimeTableFk = _timeTable.TimeTableId;
+        }
+        DialogInstance.Close(DailyJv);
+    }
+
+
+
+
+
+
+
+
+
+
+}

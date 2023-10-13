@@ -1,0 +1,225 @@
+﻿@using ShokouhApp.Model
+@using System.Globalization
+@using ShokouhApp.Model
+@using System.Globalization
+@using Amazon.S3.Model
+@using Olive
+@using ShokouhApp.Classes
+@using ShokouhApp.Managment.Session.Cancel
+
+<MtnDialog>
+
+    <ChildComponent>
+        <MudGrid>
+        @if (CancelSession == false)
+        {
+            <MudItem sm="12" md="12">
+                <MudText Typo="Typo.caption">آیا از عدم برگزاری این کلاس اطمینان دارید؟</MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Check" OnClick="SessionCancelClick">
+                    بله
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="SessionCancelFailClick">
+                    خیر
+                </MudButton>
+            </MudItem>
+            }
+            @if (CancelSession)
+            {
+                <MudItem sm="6" md="6">
+                    <MudDatePicker Label="تاریخ جلسه جبرانی" @bind-Date="SessionDate"  Culture="_persianCultureInfo" MinDate="DateTime.Today"></MudDatePicker>
+                </MudItem>
+                <MudItem sm="6" md="6">
+                    <MudTimePicker Label="ساعت آغاز جلسه جبرانی" @bind-Time="SessionTime" Culture="_persianCultureInfo" ></MudTimePicker>
+                </MudItem>
+                <MudItem sm="6" md="6">
+                    <MudSelect T="string" @bind-Value="CauseItem" Label="علت کنسل شدن جلسه" >
+                        <MudSelectItem Value="@("تعطیلی رسمی")"></MudSelectItem>
+                        <MudSelectItem Value="@("تغییر برنامه")"></MudSelectItem>
+                        <MudSelectItem Value="@("اعلام رسمی")"></MudSelectItem>
+                        <MudSelectItem Value="@("بارش برف سنگین")"></MudSelectItem>
+                        <MudSelectItem Value="@("تعمییرات")"></MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem sm="6" md="6">
+                    <MudTextField @bind-Value="CauseText" Label="تشریح"></MudTextField>
+                </MudItem>
+                <MudItem sm="12" md="12">
+                    <MudStack Row="false" Spacing="3">
+                        <MudSwitch @bind-Checked="SendSMS" Label="اطلاع رسانی پیامکی انجام شود"></MudSwitch>
+                        @if (SendSMS)
+                        {
+                            <MudTextField @bind-Value="SMSText" Label="متن پیامک" Lines="4"></MudTextField>
+                        }
+
+                    </MudStack>
+                </MudItem>
+                <MudItem sm="12" md="12">
+
+                </MudItem>
+            }
+        </MudGrid>
+    </ChildComponent>
+
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.SettingsApplications" OnClick="ApplyClick">
+            Apply
+        </MudButton>
+
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="CloseClick">
+            Cancel
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+
+    [Parameter]
+    public TimeTableSession TimeTableSession { get; set; }
+
+    readonly TimeTableSession _timeTableSessionRepl = new();
+
+    [Inject]
+    public SmsService SmsService { get; set; }
+
+    [Inject]
+    public TimeTableSessionService TableSessionService { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    readonly CultureInfo _persianCultureInfo = new("fa-IR");
+
+    bool CancelSession = false;
+    string SMSText = "";
+
+    public string CauseItem
+    {
+        get => _causeItem;
+        set
+        {
+            _causeItem = value;
+            UpdateSmsText();
+        }
+    }
+
+    string? CauseText
+    {
+        get => _causeText;
+        set
+        {
+            _causeText = value;
+            UpdateSmsText();
+        }
+    }
+
+    bool _sendSms = false;
+    DateTime? _sessionDate;
+    TimeSpan? _sessionTime;
+    string _causeItem = null;
+    string? _causeText = null;
+
+    DateTime? SessionDate
+    {
+        get => _sessionDate;
+        set
+        {
+            _timeTableSessionRepl.SessionDate=_sessionDate = value;
+            UpdateSmsText();
+        }
+    }
+
+    bool SendSMS
+    {
+        get => _sendSms;
+        set
+        {
+            _sendSms = value;
+            UpdateSmsText();
+        }
+    }
+
+    public TimeSpan? SessionTime
+    {
+        get => _sessionTime;
+        set
+        {
+            _timeTableSessionRepl.SessionTime = _sessionTime = value;
+            UpdateSmsText();
+        }
+    }
+
+  
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _timeTableSessionRepl.SessionDate = TimeTableSession.SessionDate?.AddDays(1);
+            _timeTableSessionRepl.SessionTime = TimeTableSession.SessionTime;
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    void CloseClick()
+    {
+        DialogInstance.Close(DialogResult.Cancel());
+    }
+
+    async Task ApplyClick()
+    {
+        
+        var timeTableSessionRepl = TableSessionService.CancelSession(TimeTableSession, _timeTableSessionRepl.SessionDate ,_timeTableSessionRepl.SessionTime, CauseItem, CauseText);
+
+        DialogInstance.Close();
+
+        var result= await _dialogService.ShowAsync<CancelationSMSDialog>("Send Cancellation SMS", new DialogParameters()
+        {
+                ["Session"] = TimeTableSession,
+                ["SmsBody"] = SMSText,
+        }, new DialogOptions()
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Large
+        });
+
+        var resultResult = await result.Result;
+
+        await _dialogService.ShowAsync<TimeTableSessionDialog>("ویرایش کلاس جبرانی",
+            new DialogParameters()
+                {
+                    ["TimeTableSession"] = timeTableSessionRepl
+                }, new DialogOptions()
+                {
+                    FullWidth = true,
+                    MaxWidth = MaxWidth.Medium
+                });
+    }
+
+
+
+
+    void SessionCancelClick()
+    {
+        CancelSession = true;
+    }
+
+    void SessionCancelFailClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    void SendSmsToAllClick()
+    {
+
+        _snackBar.Add("SMS Sent to all completed" , Severity.Success);
+    }
+
+    void UpdateSmsText()
+    {
+        SMSText = SmsService.GetSessionCancelText(TimeTableSession, _timeTableSessionRepl, CauseItem, CauseText);
+    }
+
+}

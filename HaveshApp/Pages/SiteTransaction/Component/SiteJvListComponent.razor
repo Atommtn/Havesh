@@ -1,0 +1,124 @@
+﻿@using ShokouhApp.Services
+@using ShokouhApp.Model
+@using System.Globalization
+
+
+<MudTable @ref="table" ServerData="ServerData">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField @bind-Value="SearchText" Label="جستجو" Placeholder="جستجو در همه موارد" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search"
+                      DebounceInterval="1000" OnDebounceIntervalElapsed="SearchInList" Clearable="true"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>نام</MudTh>
+        <MudTh>نام خانوادگی</MudTh>
+        <MudTh>کدملی</MudTh>
+        <MudTh>پرداخت برای</MudTh>
+        <MudTh>(ریال(مبلغ</MudTh>
+        <MudTh>زمان پرداخت</MudTh>
+        <MudTh>شناسه تراکنش</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.StudentName</MudTd>
+        <MudTd>@context.StudentFamil</MudTd>
+        <MudTd>@context.StudentIdNumber</MudTd>
+        <MudTd>@context.FeeFor</MudTd>
+        <MudTd>@context.Fee?.ToString("##,###")</MudTd>
+        <MudTd>@GetPerDate(((DateTime)context.DateOfSettle)!)</MudTd>
+        <MudTd>@context.Txcode</MudTd>
+        <MudTd>
+            @if (OnViewItemClick is { })
+            {
+                <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.ViewColumn" OnClick="() => ViewItemClick(context)">
+                    نمایش
+                </MudButton>
+            }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+
+</MudTable>
+
+@code {
+
+    public enum ViewTypeEnum
+    {
+        All,
+        Approved,
+        PendingToApprive,
+        Invesigate
+    }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    [Inject]
+    DataProviderService DataProviderService { get; set; }
+
+    [Parameter]
+    public Action<ShokouhPardisJvfromSite, string>? OnViewItemClick { get; set; }
+
+    [Parameter]
+    public ViewTypeEnum? ViewType { get; set; }
+
+    List<ShokouhPardisJvfromSite> _siteJv;
+
+    void ViewItemClick(ShokouhPardisJvfromSite context)
+    {
+        OnViewItemClick?.Invoke(context, ViewType.ToString());
+    }
+
+    PersianCalendar perCal = new();
+    string GetPerDate(DateTime dt)
+    {
+        return perCal.GetYear(dt) + "/" + perCal.GetMonth(dt) + "/" + perCal.GetDayOfMonth(dt) + " " + dt.ToShortTimeString();
+    }
+
+    void SearchInList()
+    {
+        //_siteJv = GetData(SearchText,1,10);
+        table?.ReloadServerData();
+    }
+
+    public string? SearchText { get; set; }
+
+    MudTable<ShokouhPardisJvfromSite>? table;
+
+    Task<TableData<ShokouhPardisJvfromSite>> ServerData(TableState arg)
+    {
+        return Task.FromResult(new TableData<ShokouhPardisJvfromSite>
+        {
+            TotalItems = GetTotalData(SearchText),
+            Items = GetPagedData(SearchText, arg.Page, arg.PageSize)
+        });
+
+    }
+
+    List<ShokouhPardisJvfromSite> GetPagedData(string? search, int page, int pageSize)
+    {
+        return ViewType switch
+        {
+            ViewTypeEnum.All => DataProviderService.GetPagedAllSiteJv(search, page, pageSize),
+            ViewTypeEnum.Approved => DataProviderService.GetPagedApprovedSiteJv(search, page, pageSize),
+            ViewTypeEnum.PendingToApprive => DataProviderService.GetPagedPendingToApproveSiteJv(search, page, pageSize),
+            ViewTypeEnum.Invesigate => DataProviderService.GetPagedRequireInvestigateSiteJv(search, page, pageSize),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+    }
+
+    int GetTotalData(string? search)
+    {
+        return ViewType switch
+        {
+            ViewTypeEnum.All => DataProviderService.GetAllSiteJvCount(search),
+            ViewTypeEnum.Approved => DataProviderService.GetApprovedSiteJvCount(search),
+            ViewTypeEnum.PendingToApprive => DataProviderService.GetPendingToApproveSiteJvCount(search),
+            ViewTypeEnum.Invesigate => DataProviderService.GetRequireInvestigateSiteJvCount(search),
+            _ => throw new ArgumentOutOfRangeException()
+            };
+    }
+
+}

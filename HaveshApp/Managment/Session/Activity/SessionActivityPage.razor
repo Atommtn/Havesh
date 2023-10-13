@@ -1,0 +1,87 @@
+﻿@page "/SessionActiviy"
+@using ShokouhApp.Model
+
+<MudTable T="SessionActivity" Items="_allActivities">
+    <ToolBarContent>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewSessionActivityClick">
+            New Session Activity
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Activity Title</MudTh>
+        <MudTh>Levels</MudTh>
+        <MudTh>Level Groups</MudTh>
+        <MudTh>Session No</MudTh>
+        <MudTh>Value Type</MudTh>
+        <MudTh>Value Options</MudTh>
+        <MudTh>Can Select Multi</MudTh>
+        <MudTh>Value Control</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.ActivityTitle</MudTd>
+        <MudTd>@context.Levels</MudTd>
+        <MudTd>@context.LevelGroups</MudTd>
+        <MudTd>@context.SessionNo</MudTd>
+        <MudTd>@context.ValueType</MudTd>
+        <MudTd>@string.Join(",", context.ValueOptions.Select(x=>x.Title))</MudTd>
+        <MudTd>@context.ValueOptionsCanMultiple</MudTd>
+        <MudTd>@context.ValueControl</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>EditSessionActivity(context)"/>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    //todo:قابل انتخب چنداتیی ذخیره نمیشود
+    //todo:پیج رفرش شود
+    List<SessionActivity> _allActivities;
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _allActivities = _dataProvider.GetSessionActivities();
+        base.OnInitialized();
+    }
+
+    private async Task NewSessionActivityClick()
+    {
+        var sa = new SessionActivity()
+        {
+            SessionActivityGuid = Guid.NewGuid(),
+            SessionActivityLastModified = DateTime.Now
+        };
+
+        await OpenDialog(sa);
+    }
+
+    private async Task OpenDialog(SessionActivity sa)
+    {
+        var reference = await DialogService.ShowAsync<SessionActivityDialog>("New Activity"
+            , new DialogParameters
+            {
+                ["SessionActivity"] = sa
+            }
+            , new DialogOptions
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = true,
+                FullWidth = true,
+                MaxWidth = MaxWidth.Large
+            });
+        if (reference.Result.Result.Canceled == false)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private async Task EditSessionActivity(SessionActivity sa)
+    {
+        await OpenDialog(sa);
+    }
+
+}

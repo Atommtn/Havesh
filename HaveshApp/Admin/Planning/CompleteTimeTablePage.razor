@@ -1,0 +1,161 @@
+﻿@page "/TimeTable/{TimeTableId}"
+@using Microsoft.AspNetCore.Components
+@using ShokouhApp.Admin.Student
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@layout PersianPagesLayout
+
+
+<MudCard>
+    <MudCardHeader>
+        <MudToolBar>
+            <MudSpacer/>
+            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="AddStudentsToClassClick">
+                اضافه کردن دانش آموز به این کلاس
+            </MudButton>
+
+        </MudToolBar>
+    </MudCardHeader>
+    <MudCardContent Class="pa-3">
+        <MudPaper Class="ma-3 pa-3">
+            <MudGrid Spacing="2">
+                <MudItem md="12">
+                    <MudChip Label="true" Color="Color.Warning" Style="color:black;">@TimeTableItem?.Title</MudChip>
+                    
+                </MudItem>
+                <MudItem md="4">
+                    <MudField Label="سال">@TimeTableItem?.Term.Year.YearName</MudField>
+                </MudItem>
+                <MudItem md="4">
+                    <MudField Label="ترم">@TimeTableItem?.Term?.TermName</MudField>
+                </MudItem>
+                <MudItem md="4">
+                    <MudField Label="مدرس">@TimeTableItem?.Teacher?.TeacherName @TimeTableItem?.Teacher.TeacherFamily </MudField>
+                </MudItem>
+                <MudItem md="4">
+                    <MudField Label="برنامه">@TimeTableItem?.Schedule?.Title </MudField>
+                </MudItem>
+                <MudItem md="4">
+                    <MudField Label="سطح">@TimeTableItem?.Level?.LevelName </MudField>
+                </MudItem>
+                <MudItem md="4">
+                    <MudField Label="کلاس">@TimeTableItem?.ClassRoom.ClassRoomName </MudField>
+                </MudItem>
+            </MudGrid>
+
+        </MudPaper>
+
+        
+        <StudentsListComponent class="mt-2" @ref="studentsTableComponent" RowStyle="false" RowPage="25" AllowDelete="true" TimeTable="TimeTableItem" OnDeleteStudentAction="OnDeleteStudentAction">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.ChangeCircle" Variant="Variant.Filled" OnClick="()=>ChangeStudentTimeTableClick(context)">
+                انتقال
+            </MudButton>
+
+        </StudentsListComponent>
+        
+    </MudCardContent>
+</MudCard>
+
+
+@code {
+    
+    StudentsListComponent? studentsTableComponent;
+    private string _timeTableId;
+
+    [Parameter]
+    public string TimeTableId
+    {
+        get => _timeTableId;
+        set
+        {
+            _timeTableId = value;
+            TimeTableItem = DataProvider.GetTimeTable(_timeTableId.ToInt32());
+            /*InvokeAsync(async () =>
+            {
+                await studentsTableComponent.ReloadData();
+                StateHasChanged();
+            });*/
+        }
+    }
+
+    ShokouhPardisTimeTable? TimeTableItem { get; set; }
+
+    [Inject] DataProviderService DataProvider { get; set; }
+    [Inject] IDialogService DialogService { get; set; }
+
+    private async Task AddStudentsToClassClick()
+    {
+        var dialogReference = DialogService.Show<StudentListDialog>("Select Students",
+            new DialogParameters()
+        {
+            ["SelectSingle"] = true,
+            ["SelectMulti"] = true,
+            ["ShowPreRegister"] = true,
+            ["PreTT"] = TimeTableItem
+        },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraLarge,
+                FullWidth = true
+            });
+        var dialogReferenceResult = await dialogReference.Result;
+        if (dialogReferenceResult.Cancelled == false)
+        {
+            if (dialogReferenceResult.Data is List<ShokouhPardisStudentClass> { Count: > 0 } selectedStudents)
+            {
+                if (await ValidateStudents(TimeTableItem, selectedStudents))
+                {
+                    // todo: transaction
+                    DataProvider.AddStudentsToTeacherTimeSheet(TimeTableItem, selectedStudents);
+                    _dataProvider.ArchivePreRegister(selectedStudents);
+                    _dataProvider.DailyJvAssignToTimeTable(TimeTableItem, selectedStudents);
+                    await studentsTableComponent?.ReloadData()!;
+                }
+            }
+        }
+
+    }
+    private async Task<bool> ValidateStudents(ShokouhPardisTimeTable timeTable,
+        IEnumerable<ShokouhPardisStudentClass> selectedStudents)
+    {
+        foreach (var student in selectedStudents
+            .Where(student => DataProvider.IsStudentInOtherClassesInTheTerm(timeTable, student)))
+        {
+            await DialogService.ShowMessageBox("Warning", $"Student {student.StudentName} {student.StudentFamily} is in Another classes");
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private async Task<bool> OnDeleteStudentAction(StudentActionArgs args)
+    {
+        var isAdmin = _userSession.Payload.Roles.Contains("Admin");
+        if (isAdmin == false)
+        {
+            await _dialogService.ShowMessageBox("نمی توانید زبان آموز را حدف کنید","حدف زبان آموز در این قسمت امکان پدیر نیست. اگر قصد دارید تا کلاس زبان آموز را تغییر دعید از دکمه انتقال زبان آموز به کلاس جدید استفاده کنید");
+            return false;
+        }
+
+        var result = await DialogService.ShowMessageBox("Delete student From Class Plan", $"Are you sure you want delete {args.Student.StudentName} {args.Student.StudentFamily} from this class plan ?", "Yes", "No");
+        if (result is true)
+        {
+            DataProvider.deleteStudentFromClassPlan(args.Student, args.TimeTable);
+            return true;
+        }
+        return false;
+
+       
+    }
+
+
+    private void ChangeStudentTimeTableClick(ShokouhPardisStudentClass student)
+    {
+        //todo: move student time table
+        _snackBar.Add("Move Student");
+    }
+
+
+}

@@ -1,0 +1,142 @@
+﻿@page "/studentInfo/{StudentGuid?}"
+@layout PersianPagesLayout
+
+
+@using ShokouhApp.Admin.Planning.Components
+@using ShokouhApp.Model
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.Clone
+@using ShokouhApp.Admin.DailyJV.Components
+@using ShokouhApp.Admin.Student.Components
+
+<MudTabs>
+    <MudTabPanel Text="مشخصات آموزشی">
+        <TermSelectorComponent @bind-Term="Term" />
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                @if (timeTable != null)
+                {
+                    <TimeTableItemComponent TimeTable="timeTable">
+                        <ChildContent>
+                            @if (bookPrice != null)
+                            {
+                                <MudStack Row="true" Spacing="1">
+                                    <MudChip Color="Color.Info">
+                                        <MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Filled.Book">
+                                             کتاب:
+                                        </MudChip>
+                                        <MudText Typo="Typo.h6">
+                                            @bookPrice.BookPrice.ToString("##,###") تومان
+                                        </MudText>
+                                    </MudChip>
+
+                                    <MudChip Color="Color.Tertiary">
+                                        <MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Filled.Money">
+                                             شهریه:
+                                        </MudChip>
+                                        <MudText Typo="Typo.h6">
+                                            @bookPrice.TuitionAmount.ToString("##,###") تومان
+                                        </MudText>
+                                    </MudChip>
+                                    
+                                </MudStack>
+                            }
+                        </ChildContent>
+                    </TimeTableItemComponent>
+                }
+            </MudItem>
+        </MudGrid>
+
+    </MudTabPanel>
+
+    <MudTabPanel Text="واریز شهریه">
+        <TermSelectorComponent @bind-Term="Term" />
+        <DailyJvRecordListComponent selectedTerm="Term" Student="Student">
+
+        </DailyJvRecordListComponent>
+    </MudTabPanel>
+    <MudTabPanel Text="مشخصات دانش آموز">
+        <StudentInfoComponent Student="Student" ></StudentInfoComponent>
+
+    </MudTabPanel>
+    <MudTabPanel Text="سابقه آموزشی">
+        <StudentHistoryComponent Student="Student" ></StudentHistoryComponent>
+  
+        
+    </MudTabPanel>
+</MudTabs>
+@code {
+
+    [Inject]
+    DataProviderService DataProvider { get; set; }
+
+    private Guid? _studentGuid;
+
+    ShokouhPardisYearClass Year;
+    private ShokouhPardisTermClass? Term
+    {
+        get => _term;
+        set
+        {
+            if (_term == value) return;
+            _term = value;
+
+            GetStudentClassByTerm();
+        }
+    }
+
+    private List<ShokouhPardisTermClass> Terms;
+
+    protected override void OnInitialized()
+    {
+        //Year = DataProvider.GetYearsInRange();
+        //Terms = DataProvider.GetTerms(Year);
+        Term = DataProvider.GetTermsInRangeToday();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public string? StudentGuid
+    {
+        get => _studentGuid?.ToString("N");
+        set
+        {
+            if (!Guid.TryParse(value, out var guid)) return;
+
+            _studentGuid = guid;
+            Student = DataProvider.GetStudentClassByGuid(_studentGuid);
+            
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Student is { } && Term is { })
+            GetStudentClassByTerm();
+
+        base.OnParametersSet();
+    }
+
+    ShokouhPardisStudentClass? Student { get; set; }
+    ShokouhPardisTimeTable? timeTable;
+    ShokouhPardisLevelBookPrice? bookPrice;
+    List<ShokouhPardisDailyJv> StudentDailyJvs;
+    private ShokouhPardisTermClass? _term;
+
+    void GetStudentClassByTerm()
+    {
+        if (Student == null)
+            return;
+
+        if (Term != null)
+        {
+            timeTable = DataProvider.GetStudentTermClass(Student.StudentClassId, Term.TermClassId);
+            StudentDailyJvs = DataProvider.GetDailyJvBy(Term.TermClassId,Student.StudentClassId);
+        }
+
+        if (timeTable != null)
+            bookPrice = DataProvider.GetLevelBookPrice(timeTable);
+
+    }
+
+}

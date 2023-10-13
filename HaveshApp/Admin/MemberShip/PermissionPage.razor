@@ -1,0 +1,67 @@
+﻿@page "/permissions"
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.MemberShip.Model
+@layout PersianPagesLayout
+
+<MudTable Items="_permissions">
+    <ToolBarContent>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewPermissionClick">
+            Add New Permission
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Roles</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Title</MudTd>
+        <MudTd>
+            @foreach (var permission in context.Roles)
+            {
+                @permission.Name <text>,</text>
+            }
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+@code {
+    [Inject]
+    public DataProviderService ProviderService { get; set; }
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    List<Permission> _permissions;
+    protected override void OnInitialized()
+    {
+        _permissions = ProviderService.GetPermissions();
+        base.OnInitialized();
+    }
+
+    private async Task NewPermissionClick()
+    {
+        var role = new Permission();
+        await OpenRoleDialog(role);
+    }
+
+    private async Task OpenRoleDialog(Permission permissions)
+    {
+        var result = await DialogService.ShowAsync<PermissionDialog>("Permission", new DialogParameters()
+            {
+                ["Permission"] = permissions
+            },
+            new DialogOptions()
+                {
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true
+                });
+        var resultResult = await result.Result;
+        if (!resultResult.Canceled)
+        {
+            _permissions = ProviderService.GetPermissions();
+        }
+    }
+
+
+}

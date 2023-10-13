@@ -1,0 +1,38 @@
+﻿@page "/SiteJvRequireFillForm/{guid}"
+@layout PersianPagesLayout
+
+<MudCard>
+    <MudCardContent>
+        <MudText Typo="Typo.body1" Color="Color.Success">
+            با سپاس از شما، اطلاعات با موفقیت در سامانه ثبت گردید
+        </MudText>
+        <MudText Typo="Typo.body1" Color="Color.Warning">
+            باتوچه به اینکه مشخصات پروفایل ثبت نامی زبان آموز در سامانه تکمیل نشده از شما تقاضا داریم با کلیک بر روی 
+            دکمه تکمیل فرم ثبت نام نسبت به پر کردن فرم و ثبت نهایی آن اقدام فرمایید
+        </MudText>
+        <MudCardActions>
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.TwoTone.Person" OnClick="CompleteRegisrationFormClick">
+                تکمیل فرم ثبت نام زبان آموز
+                
+            </MudButton>
+
+        </MudCardActions>
+    </MudCardContent>
+</MudCard>
+
+
+@code {
+
+    [Inject]
+     NavigationManager NavigationManager { get; set; }
+    
+    [Parameter]
+    public string guid { get; set; }
+
+    void CompleteRegisrationFormClick()
+    {
+        NavigationManager.NavigateTo($"/onlineForm/{guid}");    
+    }
+
+}

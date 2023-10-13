@@ -1,0 +1,94 @@
+﻿@page "/users"
+@using ShokouhApp.Services
+@using ShokouhApp.Admin.MemberShip.Model
+<MudTable Items="_users">
+    <ToolBarContent>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewUserClick">
+            New User
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>User Name </MudTh>
+        <MudTh>Password </MudTh>
+        <MudTh>Email </MudTh>
+        <MudTh>Roles </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.UserName </MudTd>
+        <MudTd>@context.Password </MudTd>
+        <MudTd>@context.Email </MudTd>
+        <MudTd>
+            @foreach (var role in context.Roles)
+            {
+                @role.Name <text>, </text>
+            }
+        </MudTd>
+        <MudTd>
+            <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Person" Variant="Variant.Outlined" OnClick="() => UserRolesClick(context)">
+                Roles
+            </MudButton>
+            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Edit" Variant="Variant.Text" OnClick="()=>UserEditClick(context)">
+                Edit
+            </MudButton>
+
+        </MudTd>
+
+    </RowTemplate>
+</MudTable>
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    [Inject] public DataProviderService DataProvider { get; set; }
+    List<User> _users;
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _users = DataProvider.GetUsers();
+        base.OnInitialized();
+
+    }
+
+    private async Task NewUserClick()
+    {
+        User newUser = new();
+        await OpenUserDialog(newUser);
+    }
+
+    private async Task OpenUserDialog(User newUser)
+    {
+        await DialogService.ShowAsync<UserDialog>("User", new DialogParameters()
+            {
+                ["User"] = newUser
+            },
+            new DialogOptions()
+                {
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true
+                });
+
+        _users = DataProvider.GetUsers();
+    }
+
+    private async Task UserRolesClick(User user)
+    {
+        var dialogReference = await DialogService.ShowAsync<UserRolesDialog>("User Roles", new DialogParameters()
+        {
+            ["User"] = user
+        });
+        var dialogReferenceResult = await dialogReference.Result;
+        _users = DataProvider.GetUsers();
+
+    }
+
+    private async Task UserEditClick(User user)
+    {
+        await OpenUserDialog(user);
+        StateHasChanged();
+    }
+
+}

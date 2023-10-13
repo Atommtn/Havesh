@@ -1,0 +1,50 @@
+﻿@using System.Globalization
+@using DNTPersianUtils.Core
+<MudSimpleTable>
+    <MudTh Style="Width:14%">
+        @foreach (var wd in _wd)
+        {
+            <MudTd>
+                <MudText Typo="Typo.caption">@wd</MudText>
+            </MudTd>
+        }
+    </MudTh>
+    
+    @for (int i = 0; i < 4; i++)
+    {
+        <MudTr>
+            @for (int i = 0; i < 7; i++)
+            {
+                <MudTd>
+                    @_dt.ToPersianDay().Day
+                    @{ _dt = _dt.AddDays(1);}
+                </MudTd>
+            }
+        </MudTr>
+    }
+
+
+</MudSimpleTable>
+
+@code {
+    
+    PersianCalendar _persianCalendar = new PersianCalendar();
+    //Dictionary<string , DayOfWeek> 
+    string[] _wd = new[] { "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه" };
+    DateTime _dt;
+    protected override void OnInitialized()
+    {
+        
+        _dt = DateTime.Today;
+        
+        var year = _persianCalendar.GetYear(_currentDay);
+        var month = _persianCalendar.GetMonth(_currentDay);
+        var monthDays = _persianCalendar.GetDaysInMonth(year, month);
+        var dateTime = _persianCalendar.ToDateTime(year, month, 1, 0, 0, 0, 0);
+        var wdOfFirstDayInMonth = (int)dateTime.DayOfWeek;
+        base.OnInitialized();
+    }
+
+    public DateTime _currentDay { get; set; } = DateTime.Now;
+
+}

@@ -1,0 +1,81 @@
+﻿@using ShokouhApp.Admin.DailyJV.Components
+@using ShokouhApp.Managment.Session.Activity
+@using ShokouhApp.Services
+@using ShokouhApp.Model
+
+
+@inherits ShokouhApp.Classes.SizeSupportComponentBase
+
+<MudContainer Style="@($"max-height: {BrowserHeight-140}px;overflow-y:scroll; direction:RTL")">
+    <MudTable @ref="table"
+              @attributes="@AdditionalAttributes"
+              RowStyleFunc="RowStyleFunc"
+              Breakpoint="Breakpoint.None"
+              ServerData="ServerReload"
+              Style="background-color:#3c4043;">
+        <ToolBarContent>
+
+            <MudAlert Severity="Severity.Warning" Icon="@Icons.Material.Filled.Subtitles" ContentAlignment="HorizontalAlignment.Left">
+                @TimeTableSession?.TimeTable?.Title
+
+            </MudAlert>
+
+            <MudAlert Severity="Severity.Error" Icon="@Icons.Material.Filled.LocalLibrary" ContentAlignment="HorizontalAlignment.Left">
+                @TimeTableSession?.TimeTable?.Level?.LevelName
+
+            </MudAlert>
+
+            <MudAlert Severity="Severity.Normal" Icon="@Icons.Material.Filled.Room" ContentAlignment="HorizontalAlignment.Left">
+                @TimeTableSession?.TimeTable?.ClassRoom?.ClassRoomName
+
+            </MudAlert>
+            <MudAlert Severity="Severity.Success" icon="@Icons.Material.Filled.PersonPin" ContentAlignment="HorizontalAlignment.Left">
+                @TimeTableSession?.TimeTable?.Teacher?.FullName
+
+            </MudAlert>
+
+
+        </ToolBarContent>
+        <HeaderContent>
+
+            <MudTh>نام</MudTh>
+            <MudTh>نام خانوادگی</MudTh>
+            <MudTh>کد ملی</MudTh>
+
+
+            <MudTh></MudTh>
+
+        </HeaderContent>
+        <RowTemplate Context="student">
+
+            <MudTd>@student.StudentName</MudTd>
+            <MudTd>@student.StudentFamily</MudTd>
+            <MudTd>@student.StudentIdno</MudTd>
+
+            <MudTd>
+                @if (_stuActiv != null && 
+                     _stuActiv.TryGetValue(student.StudentClassId,out var xx) && 
+                     xx.Any(x => x.ActivityFk == SessionActivity.SessionActivityID && 
+													x.ActivityDeletedDateTime == null))
+                {
+                    @foreach (var sac in xx.Where(x => x.ActivityFk == SessionActivity.SessionActivityID && x.ActivityDeletedDateTime == null))
+                    {
+	                    <MudChip Size="Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)" >
+		                    @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
+	                    </MudChip>
+                        
+	                    <DependentSessionActivityItemComponent Student="student" SessionActivity="SessionActivity" AllStudentSessionActivities="xx" StudentSessionActivity="sac" ActivityExec="Exec" />
+                    }
+                    @if (SessionActivity.ValueOptionsCanMultiple is true)
+                    {
+	                    <SessionActivityItemComponent Student="student" SessionActivity="SessionActivity" ActivityExec="Exec"></SessionActivityItemComponent>
+                    }
+                }
+                else
+                {
+                    <SessionActivityItemComponent Student="student" SessionActivity="SessionActivity" ActivityExec="Exec"></SessionActivityItemComponent>
+                }
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>

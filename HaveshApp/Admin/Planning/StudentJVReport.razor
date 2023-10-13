@@ -1,0 +1,59 @@
+﻿@page "/StudentJVReport/"
+@using Microsoft.AspNetCore.Components
+@using ShokouhApp.Admin.Clone
+@using ShokouhApp.Classes
+@using ShokouhApp.Model
+@using ShokouhApp.Admin.DailyJV.Components
+
+@attribute [Authorize]
+<MudStack Class="pa-12">
+    <MudPaper>
+        <TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"> </TermSelectorComponent>
+    </MudPaper>
+    <MudPaper>
+        <MudSelect @bind-Value="Schedule" Label="زمانبندی" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var SS in Schedules)
+            {
+                <MudSelectItem Value="SS">@SS.Title </MudSelectItem>
+            }
+
+        </MudSelect>
+    </MudPaper>
+    @if (TimeTables is { })
+    {
+        <MudPaper>
+
+            <MudTable @ref="_tables" Items="@TimeTables"
+                 @bind-SelectedItems="SelectTimeTables" Hover="true" RowsPerPage="20">
+                <HeaderContent>
+                    <MudTh>عنوان کلاس</MudTh>
+                    <MudTh>سطح</MudTh>
+                    <MudTh>نام استاد</MudTh>
+                    <MudTh>نام کلاس</MudTh>
+                    <MudTh></MudTh>
+                    
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Title">@context.Title</MudTd>
+                    <MudTd DataLabel="Level">@context.Level.LevelName</MudTd>
+                    <MudTd DataLabel="Fullname">@context.Teacher.FullName</MudTd>
+                    <MudTd DataLabel="ClassRoom">@context.ClassRoom.ClassRoomName</MudTd>
+                    <MudTd>
+                        <MudButton Color="Color.Success" Variant="Variant.Text" OnClick="()=>ShowClass(context)">
+                            نمایش کلاس
+                        </MudButton>
+
+                    </MudTd>
+                    
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+                </PagerContent>
+                
+            </MudTable>
+            @*<MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Tertiary" OnClick="ShowClick">نمایش پرداخت ها</MudButton>*@
+        </MudPaper>
+    }
+</MudStack>
+
+

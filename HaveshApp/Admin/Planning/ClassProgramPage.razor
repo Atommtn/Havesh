@@ -1,0 +1,123 @@
+﻿@page "/ClassProgram"
+@layout PersianPagesLayout
+
+@attribute [Authorize]
+
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudGrid>
+        <MudItem xs="12">
+            <TermSelectorComponent @bind-Term="SelectedTerm"></TermSelectorComponent>
+        </MudItem>
+        <MudItem sm="12" md="6">
+            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <MudText Typo="Typo.body1">روزهای زوج</MudText>
+                <MudSwitch @bind-Checked="OddEvenSwitch"></MudSwitch>
+                <MudText Typo="Typo.body1">روزهای فرد</MudText>
+            </MudStack>
+            <MudStack Row="true" Spacing="3" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <MudText Typo="Typo.body1">صبح</MudText>
+                <MudSwitch @bind-Checked="IsPm"></MudSwitch>
+                <MudText Typo="Typo.body1">بعد از ظهر</MudText>
+            </MudStack>
+        </MudItem>
+        <MudItem sm="12" md="6">
+            <MudSelect Label="انتخاب روز های هفته" MultiSelection="true" @bind-SelectedValues="SelectedWeekdays">
+                @foreach (var weekday in _weekdays)
+                {
+                    <MudSelectItem Value="weekday" Class="mud-rtl">
+                        @weekday.Title @weekday.WeekDayId
+                    </MudSelectItem>
+                }
+            </MudSelect>
+            <MudCheckBox @bind-Checked="ShowPrices" LabelPosition="LabelPosition.Start" Label="نمایش هزینه کلاس و کتاب"></MudCheckBox>
+        </MudItem>
+        <MudItem sm="12" md="6">
+            <MudSwitch @bind-Checked="@isPrivate" Label="نمایش کلاس های خصوص" Color="Color.Primary" />    
+        </MudItem>
+        
+    </MudGrid>
+
+    @if (_tt is { } && _intervals is { })
+    {
+        <MudSimpleTable Bordered="true" FixedHeader="true" Striped="true" Dense="true" Elevation="1">
+            <thead>
+                <tr>
+                    <td style="width: 50px">
+                    </td>
+                    @foreach (var interval in _intervals)
+                    {
+                        <td style="width: 300px">
+                            <MudChip Label="true" Color="Color.Info" Variant="Variant.Filled" Class="w-100">
+                                @interval.Title
+                            </MudChip>
+                        </td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var classRoom in _classRooms)
+                {
+                    <tr>
+                        <td>
+                            <MudButton Style="width: 50px">
+                                @classRoom.ClassRoomName
+                            </MudButton>
+                        </td>
+                        @foreach (var interval in _intervals)
+                        {
+                            <td style="width: 300px">
+
+                                @{
+                                    var timeTable = GetTimeTable(interval, classRoom, SelectedWeekdays);
+                                }
+                                <TimeTableItemComponent Style="width: 100%;" TimeTable="timeTable">
+                                    <ChildContent>
+                                        @if (ShowPrices && _prices != null)
+                                        {
+                                            <MudStack Row="true" Spacing="1">
+                                                <MudChip Color="Color.Info">
+                                                    <MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Filled.Book">
+                                                         کتاب:
+                                                    </MudChip>
+                                                    <MudText Typo="Typo.h6">
+                                                        @_prices.FirstOrDefault(x=>x.LevelId == timeTable.LevelId)?.BookPrice.ToString("##,###") تومان
+                                                    </MudText>
+                                                </MudChip>
+
+                                                <MudChip Color="Color.Tertiary">
+                                                    <MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Filled.Money">
+                                                         شهریه:
+                                                    </MudChip>
+                                                    <MudText Typo="Typo.h6">
+                                                        @_prices.FirstOrDefault(x=>x.LevelId == timeTable.LevelId)?.TuitionAmount.ToString("##,###") تومان
+                                                    </MudText>
+                                                </MudChip>
+
+                                            </MudStack>
+                                        }
+                                    </ChildContent>
+                                    <NoContent>
+                                        <MudPaper Class="w-100 text-center" Elevation="0">
+                                            <MudIcon Icon="@Icons.Filled.Warning" Color="Color.Warning"></MudIcon>
+                                        </MudPaper>
+                                    </NoContent>
+                                </TimeTableItemComponent>
+                            </td>
+                        }
+
+                    </tr>
+
+                }
+            </tbody>
+
+        </MudSimpleTable>
+    }
+
+</MudContainer>
+
+
+
+
+

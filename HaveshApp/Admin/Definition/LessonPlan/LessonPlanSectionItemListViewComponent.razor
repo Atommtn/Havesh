@@ -1,0 +1,27 @@
+﻿@using ShokouhApp.Model
+@using System.Collections
+
+<MudGrid Style="Width:100%;background-color: #2d2614; padding: 10px;margin: 20px;">
+    @foreach (var Item in Items)
+    {
+        <MudItem xs="12">
+            <MudChip>@Item.Order</MudChip>
+            <MudText Typo="Typo.caption" Color="Color.Default">
+                @Item.SectionItemTitle
+            </MudText>
+        </MudItem>
+
+    }
+</MudGrid>
+
+@code {
+
+    [Parameter] public LessonPlanSection Section { get; set; }
+    List<LessonPlanSectionItem> Items;
+    protected override void OnInitialized()
+    {
+        Items = _dataProvider.GetLessonPlanSectionItems(Section);
+        base.OnInitialized();
+    }
+
+}
