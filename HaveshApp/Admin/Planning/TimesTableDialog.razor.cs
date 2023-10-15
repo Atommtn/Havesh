@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Admin.Planning
+namespace HaveshApp.Admin.Planning
 {
     public partial class TimesTableDialog
     {

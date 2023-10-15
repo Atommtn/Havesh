@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Admin.Authentication;
+﻿namespace HaveshApp.Admin.Authentication;
 
 using System;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor;
-using ShokouhApp.Admin.Student;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.Student;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System.Globalization;
 using System.Linq;
-using ShokouhApp.Admin.Components;
+using HaveshApp.Admin.Components;
 using static MudBlazor.CategoryTypes;
 using System.Collections.Generic;
 using System.Xml;
 using Amazon.Util;
 using Serilog;
-using ShokouhApp.Admin.Authentication;
-using ShokouhApp.Admin.DailyJV.Components;
-using ShokouhApp.Classes;
+using HaveshApp.Admin.Authentication;
+using HaveshApp.Admin.DailyJV.Components;
+using HaveshApp.Classes;
 
-namespace ShokouhApp.Admin.DailyJV
+namespace HaveshApp.Admin.DailyJV
 {
     public partial class DailyJVPage
     {

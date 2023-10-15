@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using Serilog;
-using ShokouhApp.Admin.Authentication;
+using HaveshApp.Admin.Authentication;
 
 
-namespace ShokouhApp.Admin.Student
+namespace HaveshApp.Admin.Student
 {
     public partial class StudentsListComponent
     {

@@ -7,7 +7,7 @@ using Olive;
 using System.Net;
 using Amazon;
 
-namespace ShokouhApp.Services
+namespace HaveshApp.Services
 {
     public class AwsS3Service
     {

@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata.Ecma335;
 using Amazon.S3.Model;
-using ShokouhApp.Admin.MemberShip.Model;
+using HaveshApp.Admin.MemberShip.Model;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class InboxMessage
     {

@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
-using ShokouhApp.Admin.Authentication;
+using HaveshApp.Admin.Authentication;
 
-namespace ShokouhApp.Classes
+namespace HaveshApp.Classes
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {

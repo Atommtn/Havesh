@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ShokouhApp.Classes
+namespace HaveshApp.Classes
 {
     public static class Helpers
     {

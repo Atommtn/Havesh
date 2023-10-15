@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace ShokouhApp.Classes
+namespace HaveshApp.Classes
 {
     public class BrowserService
     {

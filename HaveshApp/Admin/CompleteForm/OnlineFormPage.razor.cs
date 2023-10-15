@@ -1,12 +1,12 @@
 ﻿
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using ShokouhApp.Classes;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Classes;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System.Globalization;
 
-namespace ShokouhApp.Admin.CompleteForm
+namespace HaveshApp.Admin.CompleteForm
 {
     public partial class OnlineFormPage
     {

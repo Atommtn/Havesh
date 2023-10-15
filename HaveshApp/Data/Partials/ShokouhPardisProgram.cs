@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace ShokouhApp.Model;
+namespace HaveshApp.Model;
 
 public partial class ShokouhPardisProgram
 {

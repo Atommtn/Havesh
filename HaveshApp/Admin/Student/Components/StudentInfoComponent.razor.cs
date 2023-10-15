@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Admin.Student.Components
+namespace HaveshApp.Admin.Student.Components
 {
     public partial class StudentInfoComponent
     {

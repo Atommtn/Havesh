@@ -15,13 +15,13 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
-using ShokouhApp.Admin.Audit;
-using ShokouhApp.Admin.Authentication;
-using ShokouhApp.Classes;
-using ShokouhApp.Classes.Serilog;
-using ShokouhApp.Managment.Session;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.Audit;
+using HaveshApp.Admin.Authentication;
+using HaveshApp.Classes;
+using HaveshApp.Classes.Serilog;
+using HaveshApp.Managment.Session;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using Log = Serilog.Log;
 // Configure logging to log to MSSqlServer database
 

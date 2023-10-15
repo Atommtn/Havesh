@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
-using ShokouhApp.Admin.CompleteForm;
-using ShokouhApp.Classes;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.CompleteForm;
+using HaveshApp.Classes;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System.Globalization;
 
-namespace ShokouhApp.Pages.SiteTransaction
+namespace HaveshApp.Pages.SiteTransaction
 {
     public partial class SiteJv
     {

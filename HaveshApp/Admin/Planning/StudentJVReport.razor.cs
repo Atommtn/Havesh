@@ -2,16 +2,16 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MudBlazor;
-using ShokouhApp.Admin.DailyJV.Components;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.DailyJV.Components;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System;
 using System.Linq;
 using System.Xml;
 using static MudBlazor.CategoryTypes;
 using static MudBlazor.Colors;
 
-namespace ShokouhApp.Admin.Planning
+namespace HaveshApp.Admin.Planning
 {
     public partial class StudentJVReport
     {

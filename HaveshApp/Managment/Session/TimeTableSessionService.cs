@@ -1,14 +1,14 @@
 ﻿using DNTPersianUtils.Core;
-using ShokouhApp.Classes;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Classes;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Olive;
-using ShokouhApp.Admin.Authentication;
+using HaveshApp.Admin.Authentication;
 using Log = Serilog.Log;
 
-namespace ShokouhApp.Managment.Session
+namespace HaveshApp.Managment.Session
 {
     public class TimeTableSessionService
     {

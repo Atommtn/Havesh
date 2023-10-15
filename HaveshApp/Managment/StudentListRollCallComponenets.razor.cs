@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using ShokouhApp.Admin;
-using ShokouhApp.Admin.Authentication;
-using ShokouhApp.Admin.Student;
-using ShokouhApp.Managment.Session.Activity;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
-using static ShokouhApp.Admin.Planning.CompleteTimeTablePage;
+using HaveshApp.Admin;
+using HaveshApp.Admin.Authentication;
+using HaveshApp.Admin.Student;
+using HaveshApp.Managment.Session.Activity;
+using HaveshApp.Model;
+using HaveshApp.Services;
+using static HaveshApp.Admin.Planning.CompleteTimeTablePage;
 
-namespace ShokouhApp.Managment
+namespace HaveshApp.Managment
 {
 
 

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using ShokouhApp.Admin.MemberShip;
-using ShokouhApp.Admin.MemberShip.Model;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.MemberShip;
+using HaveshApp.Admin.MemberShip.Model;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Admin.Definition.Teachers
+namespace HaveshApp.Admin.Definition.Teachers
 {
     public partial class TeacherDefinitionPage
     {

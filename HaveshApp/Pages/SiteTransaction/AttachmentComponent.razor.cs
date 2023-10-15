@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using MudBlazor;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Pages.SiteTransaction
+namespace HaveshApp.Pages.SiteTransaction
 {
     public partial class AttachmentComponent
     {

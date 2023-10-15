@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ShokouhApp.Migrations
+namespace HaveshApp.Migrations
 {
     public partial class frz_LessonPlan_Extented : Migration
     {

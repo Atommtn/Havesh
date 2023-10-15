@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Admin.Authentication;
+﻿namespace HaveshApp.Admin.Authentication;
 
 public class Payload
 {

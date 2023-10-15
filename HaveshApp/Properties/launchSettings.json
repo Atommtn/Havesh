@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ShokouhApp": {
+    "HaveshApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

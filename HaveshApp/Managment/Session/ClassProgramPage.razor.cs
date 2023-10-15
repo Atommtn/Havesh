@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Olive;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System.Xml;
-using ShokouhApp.Managment.Session.Cancel;
+using HaveshApp.Managment.Session.Cancel;
 using static MudBlazor.CategoryTypes;
-using ShokouhApp.Admin.Planning.Components;
+using HaveshApp.Admin.Planning.Components;
 
-namespace ShokouhApp.Managment.Session
+namespace HaveshApp.Managment.Session
 {
     public partial class ClassProgramPage : ICanChangeComponentState
     {

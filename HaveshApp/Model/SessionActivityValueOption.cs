@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Model;
+namespace HaveshApp.Model;
 
 [Table("ShokouhPardis_SessionActivityValueOption")]
 public partial class SessionActivityValueOption

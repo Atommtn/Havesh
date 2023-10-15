@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using ShokouhApp.Admin.MemberShip.Model;
+using HaveshApp.Admin.MemberShip.Model;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class InboxMessage
     {

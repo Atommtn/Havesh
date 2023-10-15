@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Admin.Definition.DaySession
+namespace HaveshApp.Admin.Definition.DaySession
 {
     public partial class DaySesseionDefinitionPage
     {

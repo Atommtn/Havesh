@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShokouhApp.Admin.MemberShip.Model;
-using ShokouhApp.Data;
-using ShokouhApp.Managment.Session.Activity;
-using ShokouhApp.Services;
+using HaveshApp.Admin.MemberShip.Model;
+using HaveshApp.Data;
+using HaveshApp.Managment.Session.Activity;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Model;
+namespace HaveshApp.Model;
 
 public partial class MyDbContext : DbContext
 {

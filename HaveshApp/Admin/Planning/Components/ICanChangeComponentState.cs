@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Admin.Planning.Components
+﻿namespace HaveshApp.Admin.Planning.Components
 {
     public interface ICanChangeComponentState
     {

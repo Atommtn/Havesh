@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components;
 
-namespace ShokouhApp.Services;
+namespace HaveshApp.Services;
 
 public class Navigation : IDisposable
 {

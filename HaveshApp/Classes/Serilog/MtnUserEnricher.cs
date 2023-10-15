@@ -3,9 +3,9 @@ using System.Security.Claims;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 using Serilog.Events;
-using ShokouhApp.Admin.Authentication;
+using HaveshApp.Admin.Authentication;
 
-namespace ShokouhApp.Classes.Serilog
+namespace HaveshApp.Classes.Serilog
 {
     /// <summary>
     /// Enrich log events with the named Claim Value.

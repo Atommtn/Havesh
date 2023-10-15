@@ -1,6 +1,6 @@
-﻿using ShokouhApp.Model;
+﻿using HaveshApp.Model;
 
-namespace ShokouhApp.Admin.Student;
+namespace HaveshApp.Admin.Student;
 
 public class StudentActionArgs
 {

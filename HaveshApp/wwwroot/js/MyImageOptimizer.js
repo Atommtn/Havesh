@@ -1,4 +1,4 @@
 ﻿window.updateMessageCaller = (dotNetHelper) => {
-    dotNetHelper.invokeMethodAsync('ShokouhApp', 'UpdateMessageCaller');
+    dotNetHelper.invokeMethodAsync('HaveshApp', 'UpdateMessageCaller');
     dotNetHelper.dispose();
 }

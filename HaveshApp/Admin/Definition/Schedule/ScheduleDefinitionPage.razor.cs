@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using ShokouhApp.Admin.Components;
-using ShokouhApp.Admin.Definition.DaySession;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.Components;
+using HaveshApp.Admin.Definition.DaySession;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Admin.Definition.Schedule
+namespace HaveshApp.Admin.Definition.Schedule
 {
     public partial class ScheduleDefinitionPage
     {

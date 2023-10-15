@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Admin.Definition.LessonPlan
+namespace HaveshApp.Admin.Definition.LessonPlan
 {
     public partial class SectionDefinitionDialog
     {

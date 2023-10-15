@@ -2,7 +2,7 @@
 using MudBlazor;
 using MudBlazor.Services;
 
-namespace ShokouhApp.Classes;
+namespace HaveshApp.Classes;
 
 public class SizeSupportComponentBase : ComponentBase , IDisposable
 {

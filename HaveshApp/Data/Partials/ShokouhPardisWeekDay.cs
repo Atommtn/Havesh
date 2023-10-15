@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Model
+﻿namespace HaveshApp.Model
 {
     public partial class ShokouhPardisWeekDay
     {

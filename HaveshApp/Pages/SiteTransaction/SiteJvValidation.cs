@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using ShokouhApp.Classes;
-using ShokouhApp.Model;
+using HaveshApp.Classes;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Pages.SiteTransaction
+namespace HaveshApp.Pages.SiteTransaction
 {
     public class SiteJvValidation : AbstractValidator<ShokouhPardisJvfromSite>
     {

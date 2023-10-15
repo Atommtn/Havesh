@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Rendering;
 using MudBlazor;
 using MudBlazor.Extensions;
-using ShokouhApp.Admin.Definition.Teachers;
-using ShokouhApp.Admin.Student;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.Definition.Teachers;
+using HaveshApp.Admin.Student;
+using HaveshApp.Model;
+using HaveshApp.Services;
 using System.ComponentModel;
 using Serilog;
 using static MudBlazor.CategoryTypes;
-using ShokouhApp.Admin.Authentication;
-using ShokouhApp.Classes;
+using HaveshApp.Admin.Authentication;
+using HaveshApp.Classes;
 
-namespace ShokouhApp.Admin.DailyJV.Components
+namespace HaveshApp.Admin.DailyJV.Components
 {
     public partial class DailyJvRecordListComponent
     {

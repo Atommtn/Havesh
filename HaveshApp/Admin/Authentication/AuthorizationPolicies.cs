@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace ShokouhApp.Admin.Authentication
+namespace HaveshApp.Admin.Authentication
 {
     public abstract class AuthorizationPolicies
     {

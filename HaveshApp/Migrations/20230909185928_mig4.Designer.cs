@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
 #nullable disable
 
-namespace ShokouhApp.Migrations
+namespace HaveshApp.Migrations
 {
     [DbContext(typeof(MyDbContext))]
     [Migration("20230909185928_mig4")]
@@ -653,7 +653,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("RoleUser", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Admin.MemberShip.Model.Permission", b =>
+            modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.Permission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -673,7 +673,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Permissions", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Admin.MemberShip.Model.Role", b =>
+            modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -690,7 +690,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Roles", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Admin.MemberShip.Model.User", b =>
+            modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -729,7 +729,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Users", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaign", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaign", b =>
                 {
                     b.Property<int>("CampaignId")
                         .ValueGeneratedOnAdd()
@@ -796,7 +796,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_Campaign", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignAsset", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignAsset", b =>
                 {
                     b.Property<int>("CampaignAssetId")
                         .ValueGeneratedOnAdd()
@@ -834,7 +834,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_CampaignAsset", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignAssetUrl", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignAssetUrl", b =>
                 {
                     b.Property<int>("CampaignAssetUrlId")
                         .ValueGeneratedOnAdd()
@@ -870,7 +870,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_CampaignAssetUrl", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignConversion", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignConversion", b =>
                 {
                     b.Property<int>("CampaignConversionId")
                         .ValueGeneratedOnAdd()
@@ -939,7 +939,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_CampaignConversion", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignConversionHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignConversionHit", b =>
                 {
                     b.Property<int>("CampaignConversionHitsId")
                         .ValueGeneratedOnAdd()
@@ -973,7 +973,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_CampaignConversionHits", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignObjective", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignObjective", b =>
                 {
                     b.Property<int>("CampaignObjectiveId")
                         .ValueGeneratedOnAdd()
@@ -1011,7 +1011,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_CampaignObjective", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsConversion", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsConversion", b =>
                 {
                     b.Property<int>("ConversionId")
                         .ValueGeneratedOnAdd()
@@ -1052,7 +1052,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_Conversion", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsDayHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsDayHit", b =>
                 {
                     b.Property<int>("HitsId")
                         .ValueGeneratedOnAdd()
@@ -1090,7 +1090,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_DayHits", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsExitPage", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsExitPage", b =>
                 {
                     b.Property<string>("SessionIdentificator")
                         .HasMaxLength(200)
@@ -1118,7 +1118,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_ExitPages", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsHourHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsHourHit", b =>
                 {
                     b.Property<int>("HitsId")
                         .ValueGeneratedOnAdd()
@@ -1156,7 +1156,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_HourHits", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsMonthHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsMonthHit", b =>
                 {
                     b.Property<int>("HitsId")
                         .ValueGeneratedOnAdd()
@@ -1194,7 +1194,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_MonthHits", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsStatistic", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsStatistic", b =>
                 {
                     b.Property<int>("StatisticsId")
                         .ValueGeneratedOnAdd()
@@ -1243,7 +1243,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_Statistics", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsWeekHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsWeekHit", b =>
                 {
                     b.Property<int>("HitsId")
                         .ValueGeneratedOnAdd()
@@ -1281,7 +1281,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_WeekHits", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsYearHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsYearHit", b =>
                 {
                     b.Property<int>("HitsId")
                         .ValueGeneratedOnAdd()
@@ -1319,7 +1319,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Analytics_YearHits", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BadWordsWord", b =>
+            modelBuilder.Entity("HaveshApp.Model.BadWordsWord", b =>
                 {
                     b.Property<int>("WordId")
                         .ValueGeneratedOnAdd()
@@ -1371,7 +1371,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("BadWords_Word", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BlogComment", b =>
+            modelBuilder.Entity("HaveshApp.Model.BlogComment", b =>
                 {
                     b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
@@ -1446,7 +1446,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Blog_Comment", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BlogPostSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.BlogPostSubscription", b =>
                 {
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd()
@@ -1490,7 +1490,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Blog_PostSubscription", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardBoard", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardBoard", b =>
                 {
                     b.Property<int>("BoardId")
                         .ValueGeneratedOnAdd()
@@ -1615,7 +1615,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Board_Board", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardMessage", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardMessage", b =>
                 {
                     b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
@@ -1717,7 +1717,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Board_Message", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardSubscription", b =>
                 {
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd()
@@ -1764,7 +1764,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Board_Subscription", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatInitiatedChatRequest", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatInitiatedChatRequest", b =>
                 {
                     b.Property<int>("InitiatedChatRequestId")
                         .ValueGeneratedOnAdd()
@@ -1818,7 +1818,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_InitiatedChatRequest", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatMessage", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatMessage", b =>
                 {
                     b.Property<int>("ChatMessageId")
                         .ValueGeneratedOnAdd()
@@ -1883,7 +1883,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_Message", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatNotification", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatNotification", b =>
                 {
                     b.Property<int>("ChatNotificationId")
                         .ValueGeneratedOnAdd()
@@ -1933,7 +1933,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_Notification", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatOnlineSupport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatOnlineSupport", b =>
                 {
                     b.Property<int>("ChatOnlineSupportId")
                         .ValueGeneratedOnAdd()
@@ -1969,7 +1969,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_OnlineSupport", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatOnlineUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatOnlineUser", b =>
                 {
                     b.Property<int>("ChatOnlineUserId")
                         .ValueGeneratedOnAdd()
@@ -2014,7 +2014,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_OnlineUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatPopupWindowSetting", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatPopupWindowSetting", b =>
                 {
                     b.Property<int>("ChatPopupWindowSettingsId")
                         .ValueGeneratedOnAdd()
@@ -2051,7 +2051,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_PopupWindowSettings", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatRoom", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatRoom", b =>
                 {
                     b.Property<int>("ChatRoomId")
                         .ValueGeneratedOnAdd()
@@ -2136,7 +2136,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_Room", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatRoomUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatRoomUser", b =>
                 {
                     b.Property<int>("ChatRoomUserId")
                         .ValueGeneratedOnAdd()
@@ -2185,7 +2185,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_RoomUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatSupportCannedResponse", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatSupportCannedResponse", b =>
                 {
                     b.Property<int>("ChatSupportCannedResponseId")
                         .ValueGeneratedOnAdd()
@@ -2228,7 +2228,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_SupportCannedResponse", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatSupportTakenRoom", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatSupportTakenRoom", b =>
                 {
                     b.Property<int>("ChatSupportTakenRoomId")
                         .ValueGeneratedOnAdd()
@@ -2262,7 +2262,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_SupportTakenRoom", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatUser", b =>
                 {
                     b.Property<int>("ChatUserId")
                         .ValueGeneratedOnAdd()
@@ -2294,7 +2294,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Chat_User", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CiFileMetadatum", b =>
+            modelBuilder.Entity("HaveshApp.Model.CiFileMetadatum", b =>
                 {
                     b.Property<int>("FileMetadataId")
                         .ValueGeneratedOnAdd()
@@ -2325,7 +2325,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CI_FileMetadata", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CiMigration", b =>
+            modelBuilder.Entity("HaveshApp.Model.CiMigration", b =>
                 {
                     b.Property<int>("MigrationId")
                         .ValueGeneratedOnAdd()
@@ -2356,7 +2356,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CI_Migration", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAbuseReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAbuseReport", b =>
                 {
                     b.Property<int>("ReportId")
                         .ValueGeneratedOnAdd()
@@ -2437,7 +2437,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_AbuseReport", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAcl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAcl", b =>
                 {
                     b.Property<int>("Aclid")
                         .ValueGeneratedOnAdd()
@@ -2476,7 +2476,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ACL", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAclitem", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAclitem", b =>
                 {
                     b.Property<int>("AclitemId")
                         .ValueGeneratedOnAdd()
@@ -2527,7 +2527,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ACLItem", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAlternativeForm", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAlternativeForm", b =>
                 {
                     b.Property<int>("FormId")
                         .ValueGeneratedOnAdd()
@@ -2603,7 +2603,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_AlternativeForm", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAlternativeUrl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAlternativeUrl", b =>
                 {
                     b.Property<int>("AlternativeUrlId")
                         .ValueGeneratedOnAdd()
@@ -2645,7 +2645,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_AlternativeUrl", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAttachment", b =>
                 {
                     b.Property<int>("AttachmentId")
                         .ValueGeneratedOnAdd()
@@ -2760,7 +2760,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Attachment", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAttachmentHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAttachmentHistory", b =>
                 {
                     b.Property<int>("AttachmentHistoryId")
                         .ValueGeneratedOnAdd()
@@ -2873,7 +2873,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_AttachmentHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAutomationHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAutomationHistory", b =>
                 {
                     b.Property<int>("HistoryId")
                         .ValueGeneratedOnAdd()
@@ -2961,7 +2961,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_AutomationHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAutomationState", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAutomationState", b =>
                 {
                     b.Property<int>("StateId")
                         .ValueGeneratedOnAdd()
@@ -3030,7 +3030,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_AutomationState", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAvatar", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAvatar", b =>
                 {
                     b.Property<int>("AvatarId")
                         .ValueGeneratedOnAdd()
@@ -3120,7 +3120,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Avatar", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBadge", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBadge", b =>
                 {
                     b.Property<int>("BadgeId")
                         .ValueGeneratedOnAdd()
@@ -3174,7 +3174,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Badge", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBannedIp", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBannedIp", b =>
                 {
                     b.Property<int>("IpaddressId")
                         .ValueGeneratedOnAdd()
@@ -3245,7 +3245,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_BannedIP", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBanner", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBanner", b =>
                 {
                     b.Property<int>("BannerId")
                         .ValueGeneratedOnAdd()
@@ -3336,7 +3336,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Banner", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBannerCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBannerCategory", b =>
                 {
                     b.Property<int>("BannerCategoryId")
                         .ValueGeneratedOnAdd()
@@ -3389,7 +3389,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_BannerCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCategory", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -3470,7 +3470,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Category", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsClass", b =>
                 {
                     b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
@@ -3705,7 +3705,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Class", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsConsent", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsConsent", b =>
                 {
                     b.Property<int>("ConsentId")
                         .ValueGeneratedOnAdd()
@@ -3754,7 +3754,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Consent", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsConsentAgreement", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsConsentAgreement", b =>
                 {
                     b.Property<int>("ConsentAgreementId")
                         .ValueGeneratedOnAdd()
@@ -3795,7 +3795,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ConsentAgreement", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsConsentArchive", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsConsentArchive", b =>
                 {
                     b.Property<int>("ConsentArchiveId")
                         .ValueGeneratedOnAdd()
@@ -3836,7 +3836,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ConsentArchive", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCountry", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCountry", b =>
                 {
                     b.Property<int>("CountryId")
                         .ValueGeneratedOnAdd()
@@ -3887,7 +3887,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Country", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCssStylesheet", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCssStylesheet", b =>
                 {
                     b.Property<int>("StylesheetId")
                         .ValueGeneratedOnAdd()
@@ -3946,7 +3946,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_CssStylesheet", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCulture", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCulture", b =>
                 {
                     b.Property<int>("CultureId")
                         .ValueGeneratedOnAdd()
@@ -4002,7 +4002,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Culture", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDeviceProfile", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDeviceProfile", b =>
                 {
                     b.Property<int>("ProfileId")
                         .ValueGeneratedOnAdd()
@@ -4056,7 +4056,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_DeviceProfile", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDeviceProfileLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDeviceProfileLayout", b =>
                 {
                     b.Property<int>("DeviceProfileLayoutId")
                         .ValueGeneratedOnAdd()
@@ -4095,7 +4095,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_DeviceProfileLayout", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocument", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocument", b =>
                 {
                     b.Property<int>("DocumentId")
                         .ValueGeneratedOnAdd()
@@ -4417,7 +4417,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Document", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocumentAlias", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocumentAlias", b =>
                 {
                     b.Property<int>("AliasId")
                         .ValueGeneratedOnAdd()
@@ -4491,7 +4491,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_DocumentAlias", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocumentTypeScope", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocumentTypeScope", b =>
                 {
                     b.Property<int>("ScopeId")
                         .ValueGeneratedOnAdd()
@@ -4554,7 +4554,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_DocumentTypeScope", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmail", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmail", b =>
                 {
                     b.Property<int>("EmailId")
                         .ValueGeneratedOnAdd()
@@ -4646,7 +4646,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Email", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmailAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmailAttachment", b =>
                 {
                     b.Property<int>("AttachmentId")
                         .ValueGeneratedOnAdd()
@@ -4698,7 +4698,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_EmailAttachment", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmailTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmailTemplate", b =>
                 {
                     b.Property<int>("EmailTemplateId")
                         .ValueGeneratedOnAdd()
@@ -4780,7 +4780,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_EmailTemplate", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmailUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmailUser", b =>
                 {
                     b.Property<int>("EmailId")
                         .HasColumnType("int")
@@ -4808,7 +4808,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_EmailUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEventLog", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEventLog", b =>
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
@@ -4901,7 +4901,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_EventLog", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsExternalLogin", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsExternalLogin", b =>
                 {
                     b.Property<int>("ExternalLoginId")
                         .ValueGeneratedOnAdd()
@@ -4929,7 +4929,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ExternalLogin", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsForm", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsForm", b =>
                 {
                     b.Property<int>("FormId")
                         .ValueGeneratedOnAdd()
@@ -5061,7 +5061,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Form", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsFormUserControl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsFormUserControl", b =>
                 {
                     b.Property<int>("UserControlId")
                         .ValueGeneratedOnAdd()
@@ -5213,7 +5213,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_FormUserControl", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsHelpTopic", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsHelpTopic", b =>
                 {
                     b.Property<int>("HelpTopicId")
                         .ValueGeneratedOnAdd()
@@ -5260,7 +5260,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_HelpTopic", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsLayout", b =>
                 {
                     b.Property<int>("LayoutId")
                         .ValueGeneratedOnAdd()
@@ -5337,7 +5337,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Layout", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsLicenseKey", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsLicenseKey", b =>
                 {
                     b.Property<int>("LicenseKeyId")
                         .ValueGeneratedOnAdd()
@@ -5375,7 +5375,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_LicenseKey", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMacroIdentity", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMacroIdentity", b =>
                 {
                     b.Property<int>("MacroIdentityId")
                         .ValueGeneratedOnAdd()
@@ -5410,7 +5410,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_MacroIdentity", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMacroRule", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMacroRule", b =>
                 {
                     b.Property<int>("MacroRuleId")
                         .ValueGeneratedOnAdd()
@@ -5489,7 +5489,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_MacroRule", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMembership", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMembership", b =>
                 {
                     b.Property<int>("MembershipId")
                         .ValueGeneratedOnAdd()
@@ -5529,7 +5529,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Membership", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMembershipUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMembershipUser", b =>
                 {
                     b.Property<int>("MembershipUserId")
                         .ValueGeneratedOnAdd()
@@ -5562,7 +5562,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_MembershipUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMetaFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMetaFile", b =>
                 {
                     b.Property<int>("MetaFileId")
                         .ValueGeneratedOnAdd()
@@ -5647,7 +5647,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_MetaFile", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsModuleLicenseKey", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsModuleLicenseKey", b =>
                 {
                     b.Property<int>("ModuleLicenseKeyId")
                         .ValueGeneratedOnAdd()
@@ -5681,7 +5681,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ModuleLicenseKey", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsModuleUsageCounter", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsModuleUsageCounter", b =>
                 {
                     b.Property<int>("ModuleUsageCounterId")
                         .ValueGeneratedOnAdd()
@@ -5708,7 +5708,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ModuleUsageCounter", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectSetting", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectSetting", b =>
                 {
                     b.Property<int>("ObjectSettingsId")
                         .ValueGeneratedOnAdd()
@@ -5774,7 +5774,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ObjectSettings", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectVersionHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectVersionHistory", b =>
                 {
                     b.Property<int>("VersionId")
                         .ValueGeneratedOnAdd()
@@ -5859,7 +5859,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ObjectVersionHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectWorkflowTrigger", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectWorkflowTrigger", b =>
                 {
                     b.Property<int>("TriggerId")
                         .ValueGeneratedOnAdd()
@@ -5917,7 +5917,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ObjectWorkflowTrigger", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsOpenIduser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsOpenIduser", b =>
                 {
                     b.Property<int>("OpenIduserId")
                         .ValueGeneratedOnAdd()
@@ -5951,7 +5951,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_OpenIDUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplate", b =>
                 {
                     b.Property<int>("PageTemplateId")
                         .ValueGeneratedOnAdd()
@@ -6107,7 +6107,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_PageTemplate", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateCategory", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -6174,7 +6174,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_PageTemplateCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateConfiguration", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateConfiguration", b =>
                 {
                     b.Property<int>("PageTemplateConfigurationId")
                         .ValueGeneratedOnAdd()
@@ -6226,7 +6226,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_PageTemplateConfiguration", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateScope", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateScope", b =>
                 {
                     b.Property<int>("PageTemplateScopeId")
                         .ValueGeneratedOnAdd()
@@ -6290,7 +6290,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_PageTemplateScope", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPermission", b =>
                 {
                     b.Property<int>("PermissionId")
                         .ValueGeneratedOnAdd()
@@ -6347,7 +6347,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Permission", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPersonalization", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPersonalization", b =>
                 {
                     b.Property<int>("PersonalizationId")
                         .ValueGeneratedOnAdd()
@@ -6403,7 +6403,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Personalization", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsQuery", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsQuery", b =>
                 {
                     b.Property<int>("QueryId")
                         .ValueGeneratedOnAdd()
@@ -6460,7 +6460,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Query", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRelationship", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRelationship", b =>
                 {
                     b.Property<int>("RelationshipId")
                         .ValueGeneratedOnAdd()
@@ -6501,7 +6501,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Relationship", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRelationshipName", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRelationshipName", b =>
                 {
                     b.Property<int>("RelationshipNameId")
                         .ValueGeneratedOnAdd()
@@ -6546,7 +6546,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_RelationshipName", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResource", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResource", b =>
                 {
                     b.Property<int>("ResourceId")
                         .ValueGeneratedOnAdd()
@@ -6626,7 +6626,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Resource", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResourceLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResourceLibrary", b =>
                 {
                     b.Property<int>("ResourceLibraryId")
                         .ValueGeneratedOnAdd()
@@ -6653,7 +6653,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ResourceLibrary", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResourceString", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResourceString", b =>
                 {
                     b.Property<int>("StringId")
                         .ValueGeneratedOnAdd()
@@ -6681,7 +6681,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ResourceString", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResourceTranslation", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResourceTranslation", b =>
                 {
                     b.Property<int>("TranslationId")
                         .ValueGeneratedOnAdd()
@@ -6710,7 +6710,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ResourceTranslation", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRole", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -6772,7 +6772,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Role", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsScheduledTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsScheduledTask", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -6904,7 +6904,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_ScheduledTask", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSearchEngine", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSearchEngine", b =>
                 {
                     b.Property<int>("SearchEngineId")
                         .ValueGeneratedOnAdd()
@@ -6948,7 +6948,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SearchEngine", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSearchIndex", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSearchIndex", b =>
                 {
                     b.Property<int>("IndexId")
                         .ValueGeneratedOnAdd()
@@ -7065,7 +7065,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SearchIndex", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSearchTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSearchTask", b =>
                 {
                     b.Property<int>("SearchTaskId")
                         .ValueGeneratedOnAdd()
@@ -7133,7 +7133,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SearchTask", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSearchTaskAzure", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSearchTaskAzure", b =>
                 {
                     b.Property<int>("SearchTaskAzureId")
                         .ValueGeneratedOnAdd()
@@ -7186,7 +7186,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SearchTaskAzure", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSession", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSession", b =>
                 {
                     b.Property<int>("SessionId")
                         .ValueGeneratedOnAdd()
@@ -7270,7 +7270,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Session", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSettingsCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSettingsCategory", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -7341,7 +7341,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SettingsCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSettingsKey", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSettingsKey", b =>
                 {
                     b.Property<int>("KeyId")
                         .ValueGeneratedOnAdd()
@@ -7438,7 +7438,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SettingsKey", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSite", b =>
                 {
                     b.Property<int>("SiteId")
                         .ValueGeneratedOnAdd()
@@ -7534,7 +7534,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Site", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSiteDomainAlias", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSiteDomainAlias", b =>
                 {
                     b.Property<int>("SiteDomainAliasId")
                         .ValueGeneratedOnAdd()
@@ -7582,7 +7582,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SiteDomainAlias", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSmtpserver", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSmtpserver", b =>
                 {
                     b.Property<int>("ServerId")
                         .ValueGeneratedOnAdd()
@@ -7638,7 +7638,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_SMTPServer", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsState", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsState", b =>
                 {
                     b.Property<int>("StateId")
                         .ValueGeneratedOnAdd()
@@ -7691,7 +7691,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_State", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTag", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTag", b =>
                 {
                     b.Property<int>("TagId")
                         .ValueGeneratedOnAdd()
@@ -7729,7 +7729,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Tag", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTagGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTagGroup", b =>
                 {
                     b.Property<int>("TagGroupId")
                         .ValueGeneratedOnAdd()
@@ -7782,7 +7782,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_TagGroup", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTemplateDeviceLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTemplateDeviceLayout", b =>
                 {
                     b.Property<int>("TemplateDeviceLayoutId")
                         .ValueGeneratedOnAdd()
@@ -7840,7 +7840,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_TemplateDeviceLayout", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTimeZone", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTimeZone", b =>
                 {
                     b.Property<int>("TimeZoneId")
                         .ValueGeneratedOnAdd()
@@ -7902,7 +7902,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_TimeZone", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTransformation", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTransformation", b =>
                 {
                     b.Property<int>("TransformationId")
                         .ValueGeneratedOnAdd()
@@ -7977,7 +7977,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Transformation", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationService", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationService", b =>
                 {
                     b.Property<int>("TranslationServiceId")
                         .ValueGeneratedOnAdd()
@@ -8052,7 +8052,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_TranslationService", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationSubmission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationSubmission", b =>
                 {
                     b.Property<int>("SubmissionId")
                         .ValueGeneratedOnAdd()
@@ -8143,7 +8143,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_TranslationSubmission", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationSubmissionItem", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationSubmissionItem", b =>
                 {
                     b.Property<int>("SubmissionItemId")
                         .ValueGeneratedOnAdd()
@@ -8213,7 +8213,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_TranslationSubmissionItem", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTree", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTree", b =>
                 {
                     b.Property<int>("NodeId")
                         .ValueGeneratedOnAdd()
@@ -8382,7 +8382,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Tree", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUielement", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUielement", b =>
                 {
                     b.Property<int>("ElementId")
                         .ValueGeneratedOnAdd()
@@ -8524,7 +8524,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_UIElement", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUser", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -8661,7 +8661,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_User", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserCulture", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserCulture", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int")
@@ -8684,7 +8684,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_UserCulture", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserMacroIdentity", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserMacroIdentity", b =>
                 {
                     b.Property<int>("UserMacroIdentityId")
                         .ValueGeneratedOnAdd()
@@ -8719,7 +8719,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_UserMacroIdentity", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserRole", b =>
                 {
                     b.Property<int>("UserRoleId")
                         .ValueGeneratedOnAdd()
@@ -8751,7 +8751,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_UserRole", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserSetting", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserSetting", b =>
                 {
                     b.Property<int>("UserSettingsId")
                         .ValueGeneratedOnAdd()
@@ -8961,7 +8961,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_UserSettings", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserSite", b =>
                 {
                     b.Property<int>("UserSiteId")
                         .ValueGeneratedOnAdd()
@@ -8988,7 +8988,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_UserSite", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsVersionHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsVersionHistory", b =>
                 {
                     b.Property<int>("VersionHistoryId")
                         .ValueGeneratedOnAdd()
@@ -9106,7 +9106,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_VersionHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmServer", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmServer", b =>
                 {
                     b.Property<int>("ServerId")
                         .ValueGeneratedOnAdd()
@@ -9158,7 +9158,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebFarmServer", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmServerLog", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmServerLog", b =>
                 {
                     b.Property<int>("WebFarmServerLogId")
                         .ValueGeneratedOnAdd()
@@ -9186,7 +9186,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebFarmServerLog", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmServerMonitoring", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmServerMonitoring", b =>
                 {
                     b.Property<int>("WebFarmServerMonitoringId")
                         .ValueGeneratedOnAdd()
@@ -9207,7 +9207,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebFarmServerMonitoring", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmServerTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmServerTask", b =>
                 {
                     b.Property<int>("ServerId")
                         .HasColumnType("int")
@@ -9227,7 +9227,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebFarmServerTask", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmTask", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -9283,7 +9283,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebFarmTask", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPart", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPart", b =>
                 {
                     b.Property<int>("WebPartId")
                         .ValueGeneratedOnAdd()
@@ -9385,7 +9385,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebPart", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartCategory", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -9448,7 +9448,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebPartCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartContainer", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartContainer", b =>
                 {
                     b.Property<int>("ContainerId")
                         .ValueGeneratedOnAdd()
@@ -9501,7 +9501,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebPartContainer", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartLayout", b =>
                 {
                     b.Property<int>("WebPartLayoutId")
                         .ValueGeneratedOnAdd()
@@ -9566,7 +9566,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebPartLayout", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebTemplate", b =>
                 {
                     b.Property<int>("WebTemplateId")
                         .ValueGeneratedOnAdd()
@@ -9637,7 +9637,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WebTemplate", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidget", b =>
                 {
                     b.Property<int>("WidgetId")
                         .ValueGeneratedOnAdd()
@@ -9740,7 +9740,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Widget", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidgetCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidgetCategory", b =>
                 {
                     b.Property<int>("WidgetCategoryId")
                         .ValueGeneratedOnAdd()
@@ -9801,7 +9801,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WidgetCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidgetRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidgetRole", b =>
                 {
                     b.Property<int>("WidgetId")
                         .HasColumnType("int")
@@ -9824,7 +9824,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WidgetRole", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflow", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflow", b =>
                 {
                     b.Property<int>("WorkflowId")
                         .ValueGeneratedOnAdd()
@@ -9941,7 +9941,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_Workflow", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowAction", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowAction", b =>
                 {
                     b.Property<int>("ActionId")
                         .ValueGeneratedOnAdd()
@@ -10022,7 +10022,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowAction", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowHistory", b =>
                 {
                     b.Property<int>("WorkflowHistoryId")
                         .ValueGeneratedOnAdd()
@@ -10116,7 +10116,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowScope", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowScope", b =>
                 {
                     b.Property<int>("ScopeId")
                         .ValueGeneratedOnAdd()
@@ -10180,7 +10180,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowScope", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStep", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStep", b =>
                 {
                     b.Property<int>("StepId")
                         .ValueGeneratedOnAdd()
@@ -10283,7 +10283,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowStep", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStepRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStepRole", b =>
                 {
                     b.Property<int>("WorkflowStepRoleId")
                         .ValueGeneratedOnAdd()
@@ -10318,7 +10318,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowStepRoles", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStepUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStepUser", b =>
                 {
                     b.Property<int>("WorkflowStepUserId")
                         .ValueGeneratedOnAdd()
@@ -10353,7 +10353,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowStepUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowTransition", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowTransition", b =>
                 {
                     b.Property<int>("TransitionId")
                         .ValueGeneratedOnAdd()
@@ -10397,7 +10397,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CMS_WorkflowTransition", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComAddress", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComAddress", b =>
                 {
                     b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
@@ -10482,7 +10482,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Address", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComBrand", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComBrand", b =>
                 {
                     b.Property<int>("BrandId")
                         .ValueGeneratedOnAdd()
@@ -10543,7 +10543,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Brand", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCarrier", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCarrier", b =>
                 {
                     b.Property<int>("CarrierId")
                         .ValueGeneratedOnAdd()
@@ -10600,7 +10600,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Carrier", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCollection", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCollection", b =>
                 {
                     b.Property<int>("CollectionId")
                         .ValueGeneratedOnAdd()
@@ -10653,7 +10653,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Collection", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCouponCode", b =>
                 {
                     b.Property<int>("CouponCodeId")
                         .ValueGeneratedOnAdd()
@@ -10693,7 +10693,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_CouponCode", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCurrency", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCurrency", b =>
                 {
                     b.Property<int>("CurrencyId")
                         .ValueGeneratedOnAdd()
@@ -10759,7 +10759,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Currency", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCurrencyExchangeRate", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCurrencyExchangeRate", b =>
                 {
                     b.Property<int>("ExchagneRateId")
                         .ValueGeneratedOnAdd()
@@ -10795,7 +10795,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_CurrencyExchangeRate", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCustomer", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCustomer", b =>
                 {
                     b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
@@ -10878,7 +10878,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Customer", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCustomerCreditHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCustomerCreditHistory", b =>
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
@@ -10931,7 +10931,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_CustomerCreditHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComDepartment", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComDepartment", b =>
                 {
                     b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
@@ -10984,7 +10984,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Department", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComDiscount", b =>
                 {
                     b.Property<int>("DiscountId")
                         .ValueGeneratedOnAdd()
@@ -11082,7 +11082,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Discount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComExchangeTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComExchangeTable", b =>
                 {
                     b.Property<int>("ExchangeTableId")
                         .ValueGeneratedOnAdd()
@@ -11131,7 +11131,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_ExchangeTable", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComGiftCard", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComGiftCard", b =>
                 {
                     b.Property<int>("GiftCardId")
                         .ValueGeneratedOnAdd()
@@ -11207,7 +11207,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_GiftCard", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComGiftCardCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComGiftCardCouponCode", b =>
                 {
                     b.Property<int>("GiftCardCouponCodeId")
                         .ValueGeneratedOnAdd()
@@ -11245,7 +11245,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_GiftCardCouponCode", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComInternalStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComInternalStatus", b =>
                 {
                     b.Property<int>("InternalStatusId")
                         .ValueGeneratedOnAdd()
@@ -11294,7 +11294,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_InternalStatus", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComManufacturer", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComManufacturer", b =>
                 {
                     b.Property<int>("ManufacturerId")
                         .ValueGeneratedOnAdd()
@@ -11357,7 +11357,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Manufacturer", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyCouponCode", b =>
                 {
                     b.Property<int>("MultiBuyCouponCodeId")
                         .ValueGeneratedOnAdd()
@@ -11399,7 +11399,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_MultiBuyCouponCode", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscount", b =>
                 {
                     b.Property<int>("MultiBuyDiscountId")
                         .ValueGeneratedOnAdd()
@@ -11507,7 +11507,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_MultiBuyDiscount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscountBrand", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscountBrand", b =>
                 {
                     b.Property<int>("MultiBuyDiscountId")
                         .HasColumnType("int")
@@ -11530,7 +11530,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_MultiBuyDiscountBrand", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscountCollection", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscountCollection", b =>
                 {
                     b.Property<int>("MultibuyDiscountId")
                         .HasColumnType("int")
@@ -11553,7 +11553,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_MultiBuyDiscountCollection", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscountTree", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscountTree", b =>
                 {
                     b.Property<int>("MultiBuyDiscountId")
                         .HasColumnType("int")
@@ -11576,7 +11576,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_MultiBuyDiscountTree", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroup", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -11681,7 +11681,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Community_Group", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroupMember", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroupMember", b =>
                 {
                     b.Property<int>("MemberId")
                         .ValueGeneratedOnAdd()
@@ -11748,7 +11748,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Community_GroupMember", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroupRolePermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroupRolePermission", b =>
                 {
                     b.Property<int>("GroupId")
                         .HasColumnType("int")
@@ -11771,7 +11771,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Community_GroupRolePermission", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityInvitation", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityInvitation", b =>
                 {
                     b.Property<int>("InvitationId")
                         .ValueGeneratedOnAdd()
@@ -11824,7 +11824,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Community_Invitation", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOptionCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOptionCategory", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -11914,7 +11914,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_OptionCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrder", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrder", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -12037,7 +12037,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Order", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderAddress", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderAddress", b =>
                 {
                     b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
@@ -12108,7 +12108,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_OrderAddress", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderItem", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderItem", b =>
                 {
                     b.Property<int>("OrderItemId")
                         .ValueGeneratedOnAdd()
@@ -12183,7 +12183,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_OrderItem", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderItemSkufile", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderItemSkufile", b =>
                 {
                     b.Property<int>("OrderItemSkufileId")
                         .ValueGeneratedOnAdd()
@@ -12212,7 +12212,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_OrderItemSKUFile", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderStatus", b =>
                 {
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
@@ -12274,7 +12274,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_OrderStatus", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderStatusUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderStatusUser", b =>
                 {
                     b.Property<int>("OrderStatusUserId")
                         .ValueGeneratedOnAdd()
@@ -12318,7 +12318,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_OrderStatusUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComPaymentOption", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComPaymentOption", b =>
                 {
                     b.Property<int>("PaymentOptionId")
                         .ValueGeneratedOnAdd()
@@ -12415,7 +12415,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_PaymentOption", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComPublicStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComPublicStatus", b =>
                 {
                     b.Property<int>("PublicStatusId")
                         .ValueGeneratedOnAdd()
@@ -12468,7 +12468,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_PublicStatus", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShippingCost", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShippingCost", b =>
                 {
                     b.Property<int>("ShippingCostId")
                         .ValueGeneratedOnAdd()
@@ -12502,7 +12502,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_ShippingCost", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShippingOption", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShippingOption", b =>
                 {
                     b.Property<int>("ShippingOptionId")
                         .ValueGeneratedOnAdd()
@@ -12580,7 +12580,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_ShippingOption", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCart", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCart", b =>
                 {
                     b.Property<int>("ShoppingCartId")
                         .ValueGeneratedOnAdd()
@@ -12669,7 +12669,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_ShoppingCart", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCartCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCartCouponCode", b =>
                 {
                     b.Property<int>("ShoppingCartCouponCodeId")
                         .ValueGeneratedOnAdd()
@@ -12696,7 +12696,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_ShoppingCartCouponCode", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCartSku", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCartSku", b =>
                 {
                     b.Property<int>("CartItemId")
                         .ValueGeneratedOnAdd()
@@ -12750,7 +12750,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_ShoppingCartSKU", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSku", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSku", b =>
                 {
                     b.Property<int>("Skuid")
                         .ValueGeneratedOnAdd()
@@ -13006,7 +13006,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_SKU", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSkufile", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSkufile", b =>
                 {
                     b.Property<int>("FileId")
                         .ValueGeneratedOnAdd()
@@ -13052,7 +13052,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_SKUFile", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSkuoptionCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSkuoptionCategory", b =>
                 {
                     b.Property<int>("SkucategoryId")
                         .ValueGeneratedOnAdd()
@@ -13085,7 +13085,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_SKUOptionCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSupplier", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSupplier", b =>
                 {
                     b.Property<int>("SupplierId")
                         .ValueGeneratedOnAdd()
@@ -13149,7 +13149,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Supplier", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClass", b =>
                 {
                     b.Property<int>("TaxClassId")
                         .ValueGeneratedOnAdd()
@@ -13204,7 +13204,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_TaxClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClassCountry", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClassCountry", b =>
                 {
                     b.Property<int>("TaxClassCountryId")
                         .ValueGeneratedOnAdd()
@@ -13234,7 +13234,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_TaxClassCountry", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClassState", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClassState", b =>
                 {
                     b.Property<int>("TaxClassStateId")
                         .ValueGeneratedOnAdd()
@@ -13264,7 +13264,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_TaxClassState", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComVolumeDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComVolumeDiscount", b =>
                 {
                     b.Property<int>("VolumeDiscountId")
                         .ValueGeneratedOnAdd()
@@ -13300,7 +13300,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_VolumeDiscount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComWishlist", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComWishlist", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int")
@@ -13323,7 +13323,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("COM_Wishlist", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentArticle", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentArticle", b =>
                 {
                     b.Property<int>("ArticleId")
                         .ValueGeneratedOnAdd()
@@ -13360,7 +13360,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_Article", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentBlog", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentBlog", b =>
                 {
                     b.Property<int>("BlogId")
                         .ValueGeneratedOnAdd()
@@ -13453,7 +13453,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_Blog", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentBlogMonth", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentBlogMonth", b =>
                 {
                     b.Property<int>("BlogMonthId")
                         .ValueGeneratedOnAdd()
@@ -13479,7 +13479,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_BlogMonth", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentBlogPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentBlogPost", b =>
                 {
                     b.Property<int>("BlogPostId")
                         .ValueGeneratedOnAdd()
@@ -13538,7 +13538,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_BlogPost", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentBookingEvent", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentBookingEvent", b =>
                 {
                     b.Property<int>("BookingEventId")
                         .ValueGeneratedOnAdd()
@@ -13598,7 +13598,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_BookingEvent", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentEvent", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentEvent", b =>
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
@@ -13631,7 +13631,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_Event", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentFaq", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentFaq", b =>
                 {
                     b.Property<int>("Faqid")
                         .ValueGeneratedOnAdd()
@@ -13660,7 +13660,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_FAQ", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentFile", b =>
                 {
                     b.Property<int>("FileId")
                         .ValueGeneratedOnAdd()
@@ -13688,7 +13688,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_File", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentImageGallery", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentImageGallery", b =>
                 {
                     b.Property<int>("ImageGalleryId")
                         .ValueGeneratedOnAdd()
@@ -13715,7 +13715,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_ImageGallery", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentJob", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentJob", b =>
                 {
                     b.Property<int>("JobId")
                         .ValueGeneratedOnAdd()
@@ -13754,7 +13754,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_Job", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentKbarticle", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentKbarticle", b =>
                 {
                     b.Property<int>("KbarticleId")
                         .ValueGeneratedOnAdd()
@@ -13800,7 +13800,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_KBArticle", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentMenuItem", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentMenuItem", b =>
                 {
                     b.Property<int>("MenuItemId")
                         .ValueGeneratedOnAdd()
@@ -13828,7 +13828,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_MenuItem", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentNews", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentNews", b =>
                 {
                     b.Property<int>("NewsId")
                         .ValueGeneratedOnAdd()
@@ -13866,7 +13866,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_News", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentOffice", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentOffice", b =>
                 {
                     b.Property<int>("OfficeId")
                         .ValueGeneratedOnAdd()
@@ -13949,7 +13949,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_Office", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentPressRelease", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentPressRelease", b =>
                 {
                     b.Property<int>("PressReleaseId")
                         .ValueGeneratedOnAdd()
@@ -13993,7 +13993,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_PressRelease", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentProduct", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentProduct", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -14011,7 +14011,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_Product", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ContentSimpleArticle", b =>
+            modelBuilder.Entity("HaveshApp.Model.ContentSimpleArticle", b =>
                 {
                     b.Property<int>("ArticleId")
                         .ValueGeneratedOnAdd()
@@ -14038,7 +14038,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("CONTENT_SimpleArticle", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CustomtableSampleTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.CustomtableSampleTable", b =>
                 {
                     b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
@@ -14078,7 +14078,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("customtable_SampleTable", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.EventsAttendee", b =>
+            modelBuilder.Entity("HaveshApp.Model.EventsAttendee", b =>
                 {
                     b.Property<int>("AttendeeId")
                         .ValueGeneratedOnAdd()
@@ -14138,7 +14138,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Events_Attendee", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ExportHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ExportHistory", b =>
                 {
                     b.Property<int>("ExportId")
                         .ValueGeneratedOnAdd()
@@ -14183,7 +14183,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Export_History", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ExportTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.ExportTask", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -14228,7 +14228,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Export_Task", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormAbbasarabzadehArabzadehContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormAbbasarabzadehArabzadehContact", b =>
                 {
                     b.Property<int>("ArabzadehContactId")
                         .ValueGeneratedOnAdd()
@@ -14277,7 +14277,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_abbasarabzadeh_ArabzadehContact", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhCenterBranchRequest", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhCenterBranchRequest", b =>
                 {
                     b.Property<int>("BranchRequestId")
                         .ValueGeneratedOnAdd()
@@ -14388,7 +14388,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhCenter_BranchRequest", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhCenterContactU", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhCenterContactU", b =>
                 {
                     b.Property<int>("ContactUsId")
                         .ValueGeneratedOnAdd()
@@ -14442,7 +14442,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhCenter_ContactUs", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhCenterHiring", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhCenterHiring", b =>
                 {
                     b.Property<int>("HiringCenterId")
                         .ValueGeneratedOnAdd()
@@ -14545,7 +14545,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhCenter_Hiring", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalContact", b =>
                 {
                     b.Property<int>("ContactId")
                         .ValueGeneratedOnAdd()
@@ -14597,7 +14597,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_Contact", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalHiring", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalHiring", b =>
                 {
                     b.Property<int>("HiringId")
                         .ValueGeneratedOnAdd()
@@ -14700,7 +14700,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_Hiring", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalStudentName", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalStudentName", b =>
                 {
                     b.Property<int>("StudentNameId")
                         .ValueGeneratedOnAdd()
@@ -14936,7 +14936,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_StudentName", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalStudentNameTel", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalStudentNameTel", b =>
                 {
                     b.Property<int>("StudentNameTelId")
                         .ValueGeneratedOnAdd()
@@ -15180,7 +15180,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_StudentName_Tel", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalStudentNameTelBackup", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalStudentNameTelBackup", b =>
                 {
                     b.Property<int>("StudentNameTelBackupId")
                         .ValueGeneratedOnAdd()
@@ -15424,7 +15424,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_StudentName_Tel_backup", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalWriting", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalWriting", b =>
                 {
                     b.Property<int>("WritingId")
                         .ValueGeneratedOnAdd()
@@ -15479,7 +15479,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_Writing", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.FormShokouhOnlinePortalWritingBackup", b =>
+            modelBuilder.Entity("HaveshApp.Model.FormShokouhOnlinePortalWritingBackup", b =>
                 {
                     b.Property<int>("WritingBackupId")
                         .ValueGeneratedOnAdd()
@@ -15534,7 +15534,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Form_ShokouhOnlinePortal_Writing_backup", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsAttachment", b =>
                 {
                     b.Property<int>("AttachmentId")
                         .ValueGeneratedOnAdd()
@@ -15595,7 +15595,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_Attachment", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForum", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForum", b =>
                 {
                     b.Property<int>("ForumId")
                         .ValueGeneratedOnAdd()
@@ -15767,7 +15767,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_Forum", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumGroup", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -15889,7 +15889,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_ForumGroup", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumPost", b =>
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
@@ -16040,7 +16040,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_ForumPost", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumRole", b =>
                 {
                     b.Property<int>("ForumId")
                         .HasColumnType("int")
@@ -16063,7 +16063,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_ForumRoles", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumSubscription", b =>
                 {
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd()
@@ -16119,7 +16119,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_ForumSubscription", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsUserFavorite", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsUserFavorite", b =>
                 {
                     b.Property<int>("FavoriteId")
                         .ValueGeneratedOnAdd()
@@ -16174,7 +16174,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Forums_UserFavorites", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationConnector", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationConnector", b =>
                 {
                     b.Property<int>("ConnectorId")
                         .ValueGeneratedOnAdd()
@@ -16225,7 +16225,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Integration_Connector", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationSynchronization", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationSynchronization", b =>
                 {
                     b.Property<int>("SynchronizationId")
                         .ValueGeneratedOnAdd()
@@ -16260,7 +16260,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Integration_Synchronization", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationSyncLog", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationSyncLog", b =>
                 {
                     b.Property<int>("SyncLogId")
                         .ValueGeneratedOnAdd()
@@ -16286,7 +16286,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Integration_SyncLog", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationTask", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -16363,7 +16363,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Integration_Task", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntranetPortalDepartment", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntranetPortalDepartment", b =>
                 {
                     b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
@@ -16399,7 +16399,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("IntranetPortal_Department", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntranetPortalWorkingEnvironment", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntranetPortalWorkingEnvironment", b =>
                 {
                     b.Property<int>("WorkingenvironmentId")
                         .ValueGeneratedOnAdd()
@@ -16437,7 +16437,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("IntranetPortal_WorkingEnvironment", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaFile", b =>
                 {
                     b.Property<int>("FileId")
                         .ValueGeneratedOnAdd()
@@ -16537,7 +16537,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Media_File", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaLibrary", b =>
                 {
                     b.Property<int>("LibraryId")
                         .ValueGeneratedOnAdd()
@@ -16609,7 +16609,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Media_Library", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaLibraryRolePermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaLibraryRolePermission", b =>
                 {
                     b.Property<int>("LibraryId")
                         .HasColumnType("int")
@@ -16632,7 +16632,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Media_LibraryRolePermission", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterAbtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterAbtest", b =>
                 {
                     b.Property<int>("TestId")
                         .ValueGeneratedOnAdd()
@@ -16689,7 +16689,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_ABTest", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterClickedLink", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterClickedLink", b =>
                 {
                     b.Property<int>("ClickedLinkId")
                         .ValueGeneratedOnAdd()
@@ -16722,7 +16722,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_ClickedLink", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmail", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmail", b =>
                 {
                     b.Property<int>("EmailId")
                         .ValueGeneratedOnAdd()
@@ -16780,7 +16780,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_Emails", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailTemplate", b =>
                 {
                     b.Property<int>("TemplateId")
                         .ValueGeneratedOnAdd()
@@ -16859,7 +16859,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_EmailTemplate", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailWidget", b =>
                 {
                     b.Property<int>("EmailWidgetId")
                         .ValueGeneratedOnAdd()
@@ -16920,7 +16920,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_EmailWidget", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailWidgetTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailWidgetTemplate", b =>
                 {
                     b.Property<int>("EmailWidgetTemplateId")
                         .ValueGeneratedOnAdd()
@@ -16946,7 +16946,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_EmailWidgetTemplate", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterIssueContactGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterIssueContactGroup", b =>
                 {
                     b.Property<int>("IssueContactGroupId")
                         .ValueGeneratedOnAdd()
@@ -16970,7 +16970,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_IssueContactGroup", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterLink", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterLink", b =>
                 {
                     b.Property<int>("LinkId")
                         .ValueGeneratedOnAdd()
@@ -17003,7 +17003,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_Link", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterNewsletter", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterNewsletter", b =>
                 {
                     b.Property<int>("NewsletterId")
                         .ValueGeneratedOnAdd()
@@ -17152,7 +17152,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_Newsletter", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterNewsletterIssue", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterNewsletterIssue", b =>
                 {
                     b.Property<int>("IssueId")
                         .ValueGeneratedOnAdd()
@@ -17278,7 +17278,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_NewsletterIssue", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterOpenedEmail", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterOpenedEmail", b =>
                 {
                     b.Property<int>("OpenedEmailId")
                         .ValueGeneratedOnAdd()
@@ -17311,7 +17311,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_OpenedEmail", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterSubscriber", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterSubscriber", b =>
                 {
                     b.Property<int>("SubscriberId")
                         .ValueGeneratedOnAdd()
@@ -17378,7 +17378,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_Subscriber", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterSubscriberNewsletter", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterSubscriberNewsletter", b =>
                 {
                     b.Property<int>("SubscriberNewsletterId")
                         .ValueGeneratedOnAdd()
@@ -17420,7 +17420,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_SubscriberNewsletter", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterUnsubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterUnsubscription", b =>
                 {
                     b.Property<int>("UnsubscriptionId")
                         .ValueGeneratedOnAdd()
@@ -17462,7 +17462,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Newsletter_Unsubscription", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationGateway", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationGateway", b =>
                 {
                     b.Property<int>("GatewayId")
                         .ValueGeneratedOnAdd()
@@ -17541,7 +17541,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Notification_Gateway", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationSubscription", b =>
                 {
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd()
@@ -17629,7 +17629,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Notification_Subscription", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationTemplate", b =>
                 {
                     b.Property<int>("TemplateId")
                         .ValueGeneratedOnAdd()
@@ -17676,7 +17676,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Notification_Template", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationTemplateText", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationTemplateText", b =>
                 {
                     b.Property<int>("TemplateTextId")
                         .ValueGeneratedOnAdd()
@@ -17723,7 +17723,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Notification_TemplateText", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NtmtnSocial", b =>
+            modelBuilder.Entity("HaveshApp.Model.NtmtnSocial", b =>
                 {
                     b.Property<int>("SocialId")
                         .ValueGeneratedOnAdd()
@@ -17755,7 +17755,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ntmtn_social", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbtest", b =>
                 {
                     b.Property<int>("AbtestId")
                         .ValueGeneratedOnAdd()
@@ -17842,7 +17842,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ABTest", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbvariant", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbvariant", b =>
                 {
                     b.Property<int>("AbvariantId")
                         .ValueGeneratedOnAdd()
@@ -17898,7 +17898,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ABVariant", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbvariantDatum", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbvariantDatum", b =>
                 {
                     b.Property<int>("AbvariantId")
                         .ValueGeneratedOnAdd()
@@ -17934,7 +17934,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ABVariantData", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccount", b =>
                 {
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
@@ -18041,7 +18041,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_Account", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccountContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccountContact", b =>
                 {
                     b.Property<int>("AccountContactId")
                         .ValueGeneratedOnAdd()
@@ -18073,7 +18073,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_AccountContact", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccountStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccountStatus", b =>
                 {
                     b.Property<int>("AccountStatusId")
                         .ValueGeneratedOnAdd()
@@ -18100,7 +18100,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_AccountStatus", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmActivity", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmActivity", b =>
                 {
                     b.Property<int>("ActivityId")
                         .ValueGeneratedOnAdd()
@@ -18208,7 +18208,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_Activity", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmActivityRecalculationQueue", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmActivityRecalculationQueue", b =>
                 {
                     b.Property<int>("ActivityRecalculationQueueId")
                         .ValueGeneratedOnAdd()
@@ -18226,7 +18226,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ActivityRecalculationQueue", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmActivityType", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmActivityType", b =>
                 {
                     b.Property<int>("ActivityTypeId")
                         .ValueGeneratedOnAdd()
@@ -18281,7 +18281,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ActivityType", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContact", b =>
                 {
                     b.Property<int>("ContactId")
                         .ValueGeneratedOnAdd()
@@ -18431,7 +18431,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_Contact", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactChangeRecalculationQueue", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactChangeRecalculationQueue", b =>
                 {
                     b.Property<int>("ContactChangeRecalculationQueueId")
                         .ValueGeneratedOnAdd()
@@ -18458,7 +18458,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ContactChangeRecalculationQueue", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactGroup", b =>
                 {
                     b.Property<int>("ContactGroupId")
                         .ValueGeneratedOnAdd()
@@ -18504,7 +18504,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ContactGroup", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactGroupMember", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactGroupMember", b =>
                 {
                     b.Property<int>("ContactGroupMemberId")
                         .ValueGeneratedOnAdd()
@@ -18549,7 +18549,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ContactGroupMember", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactRole", b =>
                 {
                     b.Property<int>("ContactRoleId")
                         .ValueGeneratedOnAdd()
@@ -18580,7 +18580,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ContactRole", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactStatus", b =>
                 {
                     b.Property<int>("ContactStatusId")
                         .ValueGeneratedOnAdd()
@@ -18611,7 +18611,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ContactStatus", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMembership", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMembership", b =>
                 {
                     b.Property<int>("MembershipId")
                         .ValueGeneratedOnAdd()
@@ -18647,7 +18647,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_Membership", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMvtcombination", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMvtcombination", b =>
                 {
                     b.Property<int>("MvtcombinationId")
                         .ValueGeneratedOnAdd()
@@ -18704,7 +18704,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_MVTCombination", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMvtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMvtest", b =>
                 {
                     b.Property<int>("MvtestId")
                         .ValueGeneratedOnAdd()
@@ -18792,7 +18792,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_MVTest", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMvtvariant", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMvtvariant", b =>
                 {
                     b.Property<int>("MvtvariantId")
                         .ValueGeneratedOnAdd()
@@ -18862,7 +18862,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_MVTVariant", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmPersonalizationVariant", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmPersonalizationVariant", b =>
                 {
                     b.Property<int>("VariantId")
                         .ValueGeneratedOnAdd()
@@ -18940,7 +18940,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_PersonalizationVariant", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmRule", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmRule", b =>
                 {
                     b.Property<int>("RuleId")
                         .ValueGeneratedOnAdd()
@@ -19016,7 +19016,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_Rule", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmScore", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmScore", b =>
                 {
                     b.Property<int>("ScoreId")
                         .ValueGeneratedOnAdd()
@@ -19070,7 +19070,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_Score", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmScoreContactRule", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmScoreContactRule", b =>
                 {
                     b.Property<int>("ScoreContactRuleId")
                         .ValueGeneratedOnAdd()
@@ -19111,7 +19111,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_ScoreContactRule", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmVisitorToContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmVisitorToContact", b =>
                 {
                     b.Property<int>("VisitorToContactId")
                         .ValueGeneratedOnAdd()
@@ -19138,7 +19138,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("OM_VisitorToContact", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OnlineTeacherLink", b =>
+            modelBuilder.Entity("HaveshApp.Model.OnlineTeacherLink", b =>
                 {
                     b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
@@ -19202,7 +19202,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Online_TeacherLink", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OnlineTermTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.OnlineTermTable", b =>
                 {
                     b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
@@ -19267,7 +19267,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Online_TermTable", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PageBookCalssRecord", b =>
+            modelBuilder.Entity("HaveshApp.Model.PageBookCalssRecord", b =>
                 {
                     b.Property<int>("BookCalssRecordId")
                         .ValueGeneratedOnAdd()
@@ -19298,7 +19298,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Page_BookCalssRecord", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PageBookPageType", b =>
+            modelBuilder.Entity("HaveshApp.Model.PageBookPageType", b =>
                 {
                     b.Property<int>("BookPageTypeId")
                         .ValueGeneratedOnAdd()
@@ -19329,7 +19329,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Page_BookPageType", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PersonasPersona", b =>
+            modelBuilder.Entity("HaveshApp.Model.PersonasPersona", b =>
                 {
                     b.Property<int>("PersonaId")
                         .ValueGeneratedOnAdd()
@@ -19385,7 +19385,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Personas_Persona", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PersonasPersonaContactHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.PersonasPersonaContactHistory", b =>
                 {
                     b.Property<int>("PersonaContactHistoryId")
                         .ValueGeneratedOnAdd()
@@ -19413,7 +19413,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Personas_PersonaContactHistory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PersonasPersonaNode", b =>
+            modelBuilder.Entity("HaveshApp.Model.PersonasPersonaNode", b =>
                 {
                     b.Property<int>("PersonaId")
                         .HasColumnType("int")
@@ -19432,7 +19432,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Personas_PersonaNode", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PollsPoll", b =>
+            modelBuilder.Entity("HaveshApp.Model.PollsPoll", b =>
                 {
                     b.Property<int>("PollId")
                         .ValueGeneratedOnAdd()
@@ -19519,7 +19519,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Polls_Poll", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PollsPollAnswer", b =>
+            modelBuilder.Entity("HaveshApp.Model.PollsPollAnswer", b =>
                 {
                     b.Property<int>("AnswerId")
                         .ValueGeneratedOnAdd()
@@ -19581,7 +19581,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Polls_PollAnswer", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReport", b =>
                 {
                     b.Property<int>("ReportId")
                         .ValueGeneratedOnAdd()
@@ -19653,7 +19653,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_Report", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportCategory", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -19720,7 +19720,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_ReportCategory", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportGraph", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportGraph", b =>
                 {
                     b.Property<int>("GraphId")
                         .ValueGeneratedOnAdd()
@@ -19806,7 +19806,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_ReportGraph", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportSubscription", b =>
                 {
                     b.Property<int>("ReportSubscriptionId")
                         .ValueGeneratedOnAdd()
@@ -19908,7 +19908,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_ReportSubscription", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportTable", b =>
                 {
                     b.Property<int>("TableId")
                         .ValueGeneratedOnAdd()
@@ -19962,7 +19962,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_ReportTable", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportValue", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportValue", b =>
                 {
                     b.Property<int>("ValueId")
                         .ValueGeneratedOnAdd()
@@ -20019,7 +20019,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_ReportValue", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingSavedGraph", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingSavedGraph", b =>
                 {
                     b.Property<int>("SavedGraphId")
                         .ValueGeneratedOnAdd()
@@ -20057,7 +20057,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_SavedGraph", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingSavedReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingSavedReport", b =>
                 {
                     b.Property<int>("SavedReportId")
                         .ValueGeneratedOnAdd()
@@ -20110,7 +20110,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Reporting_SavedReport", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SessionActivity", b =>
+            modelBuilder.Entity("HaveshApp.Model.SessionActivity", b =>
                 {
                     b.Property<int>("SessionActivityID")
                         .ValueGeneratedOnAdd()
@@ -20155,7 +20155,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_SessionActivity", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointConnection", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointConnection", b =>
                 {
                     b.Property<int>("SharePointConnectionId")
                         .ValueGeneratedOnAdd()
@@ -20223,7 +20223,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SharePoint_SharePointConnection", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointFile", b =>
                 {
                     b.Property<int>("SharePointFileId")
                         .ValueGeneratedOnAdd()
@@ -20297,7 +20297,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SharePoint_SharePointFile", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointLibrary", b =>
                 {
                     b.Property<int>("SharePointLibraryId")
                         .ValueGeneratedOnAdd()
@@ -20363,7 +20363,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SharePoint_SharePointLibrary", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhBranchNode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhBranchNode", b =>
                 {
                     b.Property<int>("BranchNodeId")
                         .ValueGeneratedOnAdd()
@@ -20416,7 +20416,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Shokouh_BranchNode", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisAccountingCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisAccountingCode", b =>
                 {
                     b.Property<int>("AccountingCodeId")
                         .ValueGeneratedOnAdd()
@@ -20463,7 +20463,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_AccountingCode", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisAccountingTransaction", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisAccountingTransaction", b =>
                 {
                     b.Property<int>("AccountingTransactionId")
                         .ValueGeneratedOnAdd()
@@ -20517,7 +20517,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_AccountingTransaction", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisBookClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisBookClass", b =>
                 {
                     b.Property<int>("BookClassId")
                         .ValueGeneratedOnAdd()
@@ -20551,7 +20551,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_BookClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisClassRoom", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisClassRoom", b =>
                 {
                     b.Property<int>("ClassRoomId")
                         .ValueGeneratedOnAdd()
@@ -20592,7 +20592,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_ClassRoom", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisCourse", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisCourse", b =>
                 {
                     b.Property<int>("CourseId")
                         .ValueGeneratedOnAdd()
@@ -20638,7 +20638,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_Course", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisCourseStudent", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisCourseStudent", b =>
                 {
                     b.Property<int>("CourseStudentId")
                         .ValueGeneratedOnAdd()
@@ -20668,7 +20668,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_CourseStudent", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisDailyJv", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisDailyJv", b =>
                 {
                     b.Property<int>("DailyJvid")
                         .ValueGeneratedOnAdd()
@@ -20747,7 +20747,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_DailyJV", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisDaySession", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisDaySession", b =>
                 {
                     b.Property<int>("DaySessionId")
                         .ValueGeneratedOnAdd()
@@ -20784,7 +20784,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_DaySession", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisEmployee", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisEmployee", b =>
                 {
                     b.Property<int>("EmployeeId")
                         .ValueGeneratedOnAdd()
@@ -20810,7 +20810,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_Employee", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisFileAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisFileAttachment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -20854,7 +20854,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_FileAttachment", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisFinanceFlat", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisFinanceFlat", b =>
                 {
                     b.Property<int>("FinanceFlatId")
                         .ValueGeneratedOnAdd()
@@ -20925,7 +20925,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_Finance_Flat", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisInterval", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisInterval", b =>
                 {
                     b.Property<int>("IntervalId")
                         .ValueGeneratedOnAdd()
@@ -20966,7 +20966,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_Interval", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisJvfromSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisJvfromSite", b =>
                 {
                     b.Property<int>("DailyJvid")
                         .ValueGeneratedOnAdd()
@@ -21056,7 +21056,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_JVFromSite", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisLessonPlan", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisLessonPlan", b =>
                 {
                     b.Property<int>("LessonPlanId")
                         .ValueGeneratedOnAdd()
@@ -21086,7 +21086,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_LessonPlan", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisLevelBookPrice", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisLevelBookPrice", b =>
                 {
                     b.Property<int>("LevelBookPriceId")
                         .ValueGeneratedOnAdd()
@@ -21126,7 +21126,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_LevelBookPrice", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisLevelClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisLevelClass", b =>
                 {
                     b.Property<int>("LevelClassId")
                         .ValueGeneratedOnAdd()
@@ -21172,7 +21172,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_LevelClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisProgram", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisProgram", b =>
                 {
                     b.Property<int>("ProgramId")
                         .ValueGeneratedOnAdd()
@@ -21208,7 +21208,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_Program", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisSchedule", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisSchedule", b =>
                 {
                     b.Property<int>("ScheduleId")
                         .ValueGeneratedOnAdd()
@@ -21240,7 +21240,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_schedule", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisStudentClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisStudentClass", b =>
                 {
                     b.Property<int>("StudentClassId")
                         .ValueGeneratedOnAdd()
@@ -21335,7 +21335,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_StudentClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisStudentClassDto", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisStudentClassDto", b =>
                 {
                     b.Property<int>("StudentClassId")
                         .ValueGeneratedOnAdd()
@@ -21406,7 +21406,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_StudentClass_Dto", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisStudentClassOnlineForm", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisStudentClassOnlineForm", b =>
                 {
                     b.Property<int>("StudentClassId")
                         .ValueGeneratedOnAdd()
@@ -21525,7 +21525,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_StudentClass_OnlineForm", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTeacherClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTeacherClass", b =>
                 {
                     b.Property<int>("TeacherClassId")
                         .ValueGeneratedOnAdd()
@@ -21585,7 +21585,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TeacherClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTeacherLevel", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTeacherLevel", b =>
                 {
                     b.Property<int>("TeacherLevelsId")
                         .ValueGeneratedOnAdd()
@@ -21618,7 +21618,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TeacherLevels", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTeacherTermClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTeacherTermClass", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -21650,7 +21650,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TeacherTermClass", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTeacherTimeSheet", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTeacherTimeSheet", b =>
                 {
                     b.Property<int>("TeacherTimeSheetId")
                         .ValueGeneratedOnAdd()
@@ -21699,7 +21699,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TeacherTimeSheet", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTermClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTermClass", b =>
                 {
                     b.Property<int>("TermClassId")
                         .ValueGeneratedOnAdd()
@@ -21737,7 +21737,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TermClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTimeTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTimeTable", b =>
                 {
                     b.Property<int>("TimeTableId")
                         .ValueGeneratedOnAdd()
@@ -21795,7 +21795,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TimeTable", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTimeTableStudent", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTimeTableStudent", b =>
                 {
                     b.Property<int>("TimeTableStudentsId")
                         .ValueGeneratedOnAdd()
@@ -21843,7 +21843,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TimeTableStudents", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisWeekDay", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisWeekDay", b =>
                 {
                     b.Property<int>("WeekDayId")
                         .ValueGeneratedOnAdd()
@@ -21869,7 +21869,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_WeekDay", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisYearClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisYearClass", b =>
                 {
                     b.Property<int>("YearClassId")
                         .ValueGeneratedOnAdd()
@@ -21895,7 +21895,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_YearClass", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookAccount", b =>
                 {
                     b.Property<int>("FacebookAccountId")
                         .ValueGeneratedOnAdd()
@@ -21958,7 +21958,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_FacebookAccount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookApplication", b =>
                 {
                     b.Property<int>("FacebookApplicationId")
                         .ValueGeneratedOnAdd()
@@ -22011,7 +22011,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_FacebookApplication", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookPost", b =>
                 {
                     b.Property<int>("FacebookPostId")
                         .ValueGeneratedOnAdd()
@@ -22119,7 +22119,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_FacebookPost", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsight", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsight", b =>
                 {
                     b.Property<int>("InsightId")
                         .ValueGeneratedOnAdd()
@@ -22155,7 +22155,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_Insight", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitDay", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitDay", b =>
                 {
                     b.Property<int>("InsightHitId")
                         .ValueGeneratedOnAdd()
@@ -22185,7 +22185,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_InsightHit_Day", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitMonth", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitMonth", b =>
                 {
                     b.Property<int>("InsightHitId")
                         .ValueGeneratedOnAdd()
@@ -22215,7 +22215,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_InsightHit_Month", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitWeek", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitWeek", b =>
                 {
                     b.Property<int>("InsightHitId")
                         .ValueGeneratedOnAdd()
@@ -22245,7 +22245,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_InsightHit_Week", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitYear", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitYear", b =>
                 {
                     b.Property<int>("InsightHitId")
                         .ValueGeneratedOnAdd()
@@ -22275,7 +22275,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_InsightHit_Year", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmLinkedInAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmLinkedInAccount", b =>
                 {
                     b.Property<int>("LinkedInAccountId")
                         .ValueGeneratedOnAdd()
@@ -22343,7 +22343,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_LinkedInAccount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmLinkedInApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmLinkedInApplication", b =>
                 {
                     b.Property<int>("LinkedInApplicationId")
                         .ValueGeneratedOnAdd()
@@ -22398,7 +22398,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_LinkedInApplication", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmLinkedInPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmLinkedInPost", b =>
                 {
                     b.Property<int>("LinkedInPostId")
                         .ValueGeneratedOnAdd()
@@ -22501,7 +22501,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_LinkedInPost", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterAccount", b =>
                 {
                     b.Property<int>("TwitterAccountId")
                         .ValueGeneratedOnAdd()
@@ -22576,7 +22576,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_TwitterAccount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterApplication", b =>
                 {
                     b.Property<int>("TwitterApplicationId")
                         .ValueGeneratedOnAdd()
@@ -22627,7 +22627,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_TwitterApplication", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterPost", b =>
                 {
                     b.Property<int>("TwitterPostId")
                         .ValueGeneratedOnAdd()
@@ -22710,7 +22710,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SM_TwitterPost", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SopBookFolderId", b =>
+            modelBuilder.Entity("HaveshApp.Model.SopBookFolderId", b =>
                 {
                     b.Property<int>("BookFolderIdid")
                         .ValueGeneratedOnAdd()
@@ -22754,7 +22754,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("SOP_BookFolderID", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingServer", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingServer", b =>
                 {
                     b.Property<int>("ServerId")
                         .ValueGeneratedOnAdd()
@@ -22842,7 +22842,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Staging_Server", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingSynchronization", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingSynchronization", b =>
                 {
                     b.Property<int>("SynchronizationId")
                         .ValueGeneratedOnAdd()
@@ -22874,7 +22874,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Staging_Synchronization", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTask", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -22945,7 +22945,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Staging_Task", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskGroup", b =>
                 {
                     b.Property<int>("TaskGroupId")
                         .ValueGeneratedOnAdd()
@@ -22972,7 +22972,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("staging_TaskGroup", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskGroupTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskGroupTask", b =>
                 {
                     b.Property<int>("TaskGroupTaskId")
                         .ValueGeneratedOnAdd()
@@ -22998,7 +22998,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("staging_TaskGroupTask", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskGroupUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskGroupUser", b =>
                 {
                     b.Property<int>("TaskGroupUserId")
                         .ValueGeneratedOnAdd()
@@ -23025,7 +23025,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("staging_TaskGroupUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskUser", b =>
                 {
                     b.Property<int>("TaskUserId")
                         .ValueGeneratedOnAdd()
@@ -23051,7 +23051,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Staging_TaskUser", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StatementMeliN", b =>
+            modelBuilder.Entity("HaveshApp.Model.StatementMeliN", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -23109,7 +23109,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("StatementMeliN", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StatementParsianM", b =>
+            modelBuilder.Entity("HaveshApp.Model.StatementParsianM", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -23158,7 +23158,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("StatementParsianM", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StudentSessionActivity", b =>
+            modelBuilder.Entity("HaveshApp.Model.StudentSessionActivity", b =>
                 {
                     b.Property<int>("StudentSessionActivityID")
                         .ValueGeneratedOnAdd()
@@ -23201,7 +23201,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_StudentSessionActivity", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TempFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.TempFile", b =>
                 {
                     b.Property<int>("FileId")
                         .ValueGeneratedOnAdd()
@@ -23278,7 +23278,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Temp_File", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TempPageBuilderWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.TempPageBuilderWidget", b =>
                 {
                     b.Property<int>("PageBuilderWidgetsId")
                         .ValueGeneratedOnAdd()
@@ -23306,7 +23306,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("Temp_PageBuilderWidgets", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TermSessionTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.TermSessionTemplate", b =>
                 {
                     b.Property<int>("TermSessionTemplateID")
                         .ValueGeneratedOnAdd()
@@ -23335,7 +23335,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TermSessionTemplate", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TermSessionTemplateDate", b =>
+            modelBuilder.Entity("HaveshApp.Model.TermSessionTemplateDate", b =>
                 {
                     b.Property<int>("TermSessionTemplateDateID")
                         .ValueGeneratedOnAdd()
@@ -23362,7 +23362,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TermSessionTemplateDate", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TimeTableSession", b =>
+            modelBuilder.Entity("HaveshApp.Model.TimeTableSession", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -23411,7 +23411,7 @@ namespace ShokouhApp.Migrations
                     b.ToTable("ShokouhPardis_TimeTableSession", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewBoardsBoardMessageJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewBoardsBoardMessageJoined", b =>
                 {
                     b.Property<int>("BoardAccess")
                         .HasColumnType("int");
@@ -23630,7 +23630,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Boards_BoardMessage_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsAclitemItemsAndOperator", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsAclitemItemsAndOperator", b =>
                 {
                     b.Property<int>("Aclid")
                         .HasColumnType("int")
@@ -23681,7 +23681,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_ACLItem_ItemsAndOperators", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsObjectVersionHistoryUserJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsObjectVersionHistoryUserJoined", b =>
                 {
                     b.Property<string>("Email")
                         .HasMaxLength(254)
@@ -23845,7 +23845,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_ObjectVersionHistoryUser_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsPageTemplateCategoryPageTemplateJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsPageTemplateCategoryPageTemplateJoined", b =>
                 {
                     b.Property<int?>("CategoryChildCount")
                         .HasColumnType("int");
@@ -23917,7 +23917,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_PageTemplateCategoryPageTemplate_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsRelationshipJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsRelationshipJoined", b =>
                 {
                     b.Property<int>("LeftClassId")
                         .HasColumnType("int")
@@ -23988,7 +23988,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_Relationship_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsResourceStringJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsResourceStringJoined", b =>
                 {
                     b.Property<string>("CultureCode")
                         .HasMaxLength(50)
@@ -24039,7 +24039,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_ResourceString_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsResourceTranslatedJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsResourceTranslatedJoined", b =>
                 {
                     b.Property<string>("CultureCode")
                         .IsRequired()
@@ -24070,7 +24070,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_ResourceTranslated_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsRoleResourcePermissionJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsRoleResourcePermissionJoined", b =>
                 {
                     b.Property<int>("PermissionId")
                         .HasColumnType("int")
@@ -24093,7 +24093,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_RoleResourcePermission_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsSiteDocumentCount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsSiteDocumentCount", b =>
                 {
                     b.Property<int?>("Documents")
                         .HasColumnType("int");
@@ -24155,7 +24155,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_Site_DocumentCount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsSiteRoleResourceUielementJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsSiteRoleResourceUielementJoined", b =>
                 {
                     b.Property<string>("ElementName")
                         .IsRequired()
@@ -24187,7 +24187,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_SiteRoleResourceUIElement_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsTreeJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsTreeJoined", b =>
                 {
                     b.Property<string>("ClassDisplayName")
                         .IsRequired()
@@ -24599,7 +24599,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_Tree_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsUser", b =>
                 {
                     b.Property<string>("AvatarFileName")
                         .HasMaxLength(200)
@@ -24887,7 +24887,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_User", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsUserDocument", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsUserDocument", b =>
                 {
                     b.Property<string>("ClassDisplayName")
                         .IsRequired()
@@ -24958,7 +24958,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_UserDocuments", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsUserRoleJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsUserRoleJoined", b =>
                 {
                     b.Property<string>("FullName")
                         .HasMaxLength(450)
@@ -25017,7 +25017,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_UserRole_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsUserRoleMembershipRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsUserRoleMembershipRole", b =>
                 {
                     b.Property<int>("RoleId")
                         .HasColumnType("int")
@@ -25042,7 +25042,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_UserRoleMembershipRole", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsUserRoleMembershipRoleValidOnlyJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsUserRoleMembershipRoleValidOnlyJoined", b =>
                 {
                     b.Property<int>("RoleId")
                         .HasColumnType("int")
@@ -25058,7 +25058,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_UserRole_MembershipRole_ValidOnly_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsUserSettingsRoleJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsUserSettingsRoleJoined", b =>
                 {
                     b.Property<string>("Email")
                         .HasMaxLength(254)
@@ -25109,7 +25109,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_UserSettingsRole_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsWebPartCategoryWebpartJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsWebPartCategoryWebpartJoined", b =>
                 {
                     b.Property<int?>("CategoryChildCount")
                         .HasColumnType("int");
@@ -25195,7 +25195,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_WebPartCategoryWebpart_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCmsWidgetCategoryWidgetJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCmsWidgetCategoryWidgetJoined", b =>
                 {
                     b.Property<string>("CodeName")
                         .IsRequired()
@@ -25277,7 +25277,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_CMS_WidgetCategoryWidget_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCommunityGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCommunityGroup", b =>
                 {
                     b.Property<string>("AvatarFileName")
                         .HasMaxLength(200)
@@ -25363,7 +25363,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Community_Group", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewCommunityMember", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewCommunityMember", b =>
                 {
                     b.Property<Guid?>("AvatarGuid")
                         .HasColumnType("uniqueidentifier")
@@ -25694,7 +25694,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Community_Member", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewComSkuoptionCategoryOptionCategoryJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewComSkuoptionCategoryOptionCategoryJoined", b =>
                 {
                     b.Property<bool?>("AllowAllOptions")
                         .HasColumnType("bit");
@@ -25775,7 +25775,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_COM_SKUOptionCategory_OptionCategory_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewForumsGroupForumPostJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewForumsGroupForumPostJoined", b =>
                 {
                     b.Property<int?>("ForumAccess")
                         .HasColumnType("int");
@@ -26091,7 +26091,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Forums_GroupForumPost_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewIntegrationTaskJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewIntegrationTaskJoined", b =>
                 {
                     b.Property<int?>("SynchronizationConnectorId")
                         .HasColumnType("int")
@@ -26173,7 +26173,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Integration_Task_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewMembershipMembershipUserJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewMembershipMembershipUserJoined", b =>
                 {
                     b.Property<string>("FullName")
                         .HasMaxLength(450)
@@ -26207,7 +26207,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Membership_MembershipUser_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewNewsletterSubscriptionsJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewNewsletterSubscriptionsJoined", b =>
                 {
                     b.Property<string>("NewsletterDisplayName")
                         .IsRequired()
@@ -26251,7 +26251,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Newsletter_Subscriptions_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewOmAccountContactAccountJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewOmAccountContactAccountJoined", b =>
                 {
                     b.Property<int>("AccountContactId")
                         .HasColumnType("int")
@@ -26285,7 +26285,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_OM_AccountContact_AccountJoined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewOmAccountContactContactJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewOmAccountContactContactJoined", b =>
                 {
                     b.Property<int>("AccountContactId")
                         .HasColumnType("int")
@@ -26330,7 +26330,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_OM_AccountContact_ContactJoined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewOmAccountJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewOmAccountJoined", b =>
                 {
                     b.Property<string>("AccountAddress1")
                         .HasMaxLength(100)
@@ -26461,7 +26461,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_OM_Account_Joined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewOmContactGroupMemberAccountJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewOmContactGroupMemberAccountJoined", b =>
                 {
                     b.Property<string>("AccountAddress1")
                         .HasMaxLength(100)
@@ -26557,7 +26557,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_OM_ContactGroupMember_AccountJoined", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewPollAnswerCount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewPollAnswerCount", b =>
                 {
                     b.Property<int?>("AnswerCount")
                         .HasColumnType("int");
@@ -26625,7 +26625,7 @@ namespace ShokouhApp.Migrations
                     b.ToView("View_Poll_AnswerCount", "dbo");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ViewReportingCategoryReportJoined", b =>
+            modelBuilder.Entity("HaveshApp.Model.ViewReportingCategoryReportJoined", b =>
                 {
                     b.Property<int?>("CategoryChildCount")
                         .HasColumnType("int");
@@ -26692,13 +26692,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("BadWordsWordCulture", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCulture", null)
+                    b.HasOne("HaveshApp.Model.CmsCulture", null)
                         .WithMany()
                         .HasForeignKey("CultureId")
                         .IsRequired()
                         .HasConstraintName("FK_BadWords_WordCulture_CultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.BadWordsWord", null)
+                    b.HasOne("HaveshApp.Model.BadWordsWord", null)
                         .WithMany()
                         .HasForeignKey("WordId")
                         .IsRequired()
@@ -26707,13 +26707,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("BoardModerator", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.BoardBoard", null)
+                    b.HasOne("HaveshApp.Model.BoardBoard", null)
                         .WithMany()
                         .HasForeignKey("BoardId")
                         .IsRequired()
                         .HasConstraintName("FK_Board_Moderator_BoardID_Board_Board");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", null)
+                    b.HasOne("HaveshApp.Model.CmsUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -26722,13 +26722,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("BoardRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.BoardBoard", null)
+                    b.HasOne("HaveshApp.Model.BoardBoard", null)
                         .WithMany()
                         .HasForeignKey("BoardId")
                         .IsRequired()
                         .HasConstraintName("FK_Board_Role_BoardID_Board_Board");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -26737,13 +26737,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsAllowedChildClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", null)
+                    b.HasOne("HaveshApp.Model.CmsClass", null)
                         .WithMany()
                         .HasForeignKey("ChildClassId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AllowedChildClasses_ChildClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsClass", null)
+                    b.HasOne("HaveshApp.Model.CmsClass", null)
                         .WithMany()
                         .HasForeignKey("ParentClassId")
                         .IsRequired()
@@ -26752,13 +26752,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsAttachmentForEmail", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsEmailAttachment", null)
+                    b.HasOne("HaveshApp.Model.CmsEmailAttachment", null)
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AttachmentForEmail_AttachmentID_CMS_EmailAttachment");
 
-                    b.HasOne("ShokouhApp.Model.CmsEmail", null)
+                    b.HasOne("HaveshApp.Model.CmsEmail", null)
                         .WithMany()
                         .HasForeignKey("EmailId")
                         .IsRequired()
@@ -26767,13 +26767,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsClassSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", null)
+                    b.HasOne("HaveshApp.Model.CmsClass", null)
                         .WithMany()
                         .HasForeignKey("ClassId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Class_ClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -26782,13 +26782,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsCssStylesheetSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_CssStylesheetSite_SiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsCssStylesheet", null)
+                    b.HasOne("HaveshApp.Model.CmsCssStylesheet", null)
                         .WithMany()
                         .HasForeignKey("StylesheetId")
                         .IsRequired()
@@ -26797,13 +26797,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsDocumentCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCategory", null)
+                    b.HasOne("HaveshApp.Model.CmsCategory", null)
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_DocumentCategory_CategoryID_CMS_Category");
 
-                    b.HasOne("ShokouhApp.Model.CmsDocument", null)
+                    b.HasOne("HaveshApp.Model.CmsDocument", null)
                         .WithMany()
                         .HasForeignKey("DocumentId")
                         .IsRequired()
@@ -26812,13 +26812,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsDocumentTag", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", null)
+                    b.HasOne("HaveshApp.Model.CmsDocument", null)
                         .WithMany()
                         .HasForeignKey("DocumentId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_DocumentTag_DocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsTag", null)
+                    b.HasOne("HaveshApp.Model.CmsTag", null)
                         .WithMany()
                         .HasForeignKey("TagId")
                         .IsRequired()
@@ -26827,13 +26827,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsDocumentTypeScopeClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", null)
+                    b.HasOne("HaveshApp.Model.CmsClass", null)
                         .WithMany()
                         .HasForeignKey("ClassId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_DocumentTypeScopeClass_ClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsDocumentTypeScope", null)
+                    b.HasOne("HaveshApp.Model.CmsDocumentTypeScope", null)
                         .WithMany()
                         .HasForeignKey("ScopeId")
                         .IsRequired()
@@ -26842,13 +26842,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsFormRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsForm", null)
+                    b.HasOne("HaveshApp.Model.CmsForm", null)
                         .WithMany()
                         .HasForeignKey("FormId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_FormRole_FormID_CMS_Form");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -26857,13 +26857,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsMembershipRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsMembership", null)
+                    b.HasOne("HaveshApp.Model.CmsMembership", null)
                         .WithMany()
                         .HasForeignKey("MembershipId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_MembershipRole_MembershipID_CMS_Membership");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -26872,13 +26872,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsPageTemplateSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", null)
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", null)
                         .WithMany()
                         .HasForeignKey("PageTemplateId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_PageTemplateSite_PageTemplateID_CMS_PageTemplate");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -26887,13 +26887,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsRelationshipNameSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsRelationshipName", null)
+                    b.HasOne("HaveshApp.Model.CmsRelationshipName", null)
                         .WithMany()
                         .HasForeignKey("RelationshipNameId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_RelationshipNameSite_RelationshipNameID_CMS_RelationshipName");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -26902,13 +26902,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsResourceSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsResource", null)
+                    b.HasOne("HaveshApp.Model.CmsResource", null)
                         .WithMany()
                         .HasForeignKey("ResourceId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_ResourceSite_ResourceID_CMS_Resource");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -26917,13 +26917,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsRoleApplication", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUielement", null)
+                    b.HasOne("HaveshApp.Model.CmsUielement", null)
                         .WithMany()
                         .HasForeignKey("ElementId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_RoleApplication_CMS_UIElement");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -26932,13 +26932,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsRolePermission", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPermission", null)
+                    b.HasOne("HaveshApp.Model.CmsPermission", null)
                         .WithMany()
                         .HasForeignKey("PermissionId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_RolePermission_PermissionID_CMS_Permission");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -26947,13 +26947,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsRoleUielement", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUielement", null)
+                    b.HasOne("HaveshApp.Model.CmsUielement", null)
                         .WithMany()
                         .HasForeignKey("ElementId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_RoleUIElement_ElementID_CMS_UIElement");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -26962,13 +26962,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsSearchIndexCulture", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCulture", null)
+                    b.HasOne("HaveshApp.Model.CmsCulture", null)
                         .WithMany()
                         .HasForeignKey("IndexCultureId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_SearchIndexCulture_IndexCultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.CmsSearchIndex", null)
+                    b.HasOne("HaveshApp.Model.CmsSearchIndex", null)
                         .WithMany()
                         .HasForeignKey("IndexId")
                         .IsRequired()
@@ -26977,13 +26977,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsSearchIndexSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSearchIndex", null)
+                    b.HasOne("HaveshApp.Model.CmsSearchIndex", null)
                         .WithMany()
                         .HasForeignKey("IndexId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_SearchIndexSite_IndexID_CMS_SearchIndex");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("IndexSiteId")
                         .IsRequired()
@@ -26992,13 +26992,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsSiteCulture", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCulture", null)
+                    b.HasOne("HaveshApp.Model.CmsCulture", null)
                         .WithMany()
                         .HasForeignKey("CultureId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_SiteCulture_CultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -27007,13 +27007,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsSmtpserverSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSmtpserver", null)
+                    b.HasOne("HaveshApp.Model.CmsSmtpserver", null)
                         .WithMany()
                         .HasForeignKey("ServerId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_SMTPServerSite_CMS_SMTPServer");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -27022,13 +27022,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsVersionAttachment", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsAttachmentHistory", null)
+                    b.HasOne("HaveshApp.Model.CmsAttachmentHistory", null)
                         .WithMany()
                         .HasForeignKey("AttachmentHistoryId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_VersionAttachment_AttachmentHistoryID_CMS_AttachmentHistory");
 
-                    b.HasOne("ShokouhApp.Model.CmsVersionHistory", null)
+                    b.HasOne("HaveshApp.Model.CmsVersionHistory", null)
                         .WithMany()
                         .HasForeignKey("VersionHistoryId")
                         .IsRequired()
@@ -27037,13 +27037,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsWebPartContainerSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWebPartContainer", null)
+                    b.HasOne("HaveshApp.Model.CmsWebPartContainer", null)
                         .WithMany()
                         .HasForeignKey("ContainerId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WebPartContainerSite_ContainerID_CMS_WebPartContainer");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -27052,13 +27052,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("CmsWorkflowUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", null)
+                    b.HasOne("HaveshApp.Model.CmsUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WorkflowUser_UserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", null)
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", null)
                         .WithMany()
                         .HasForeignKey("WorkflowId")
                         .IsRequired()
@@ -27067,13 +27067,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("ComBundle", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("BundleId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Bundle_BundleID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("Skuid")
                         .IsRequired()
@@ -27082,13 +27082,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("ComMultiBuyDiscountDepartment", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComDepartment", null)
+                    b.HasOne("HaveshApp.Model.ComDepartment", null)
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_MultiBuyDiscountDepartment_DepartmentID_COM_Department");
 
-                    b.HasOne("ShokouhApp.Model.ComMultiBuyDiscount", null)
+                    b.HasOne("HaveshApp.Model.ComMultiBuyDiscount", null)
                         .WithMany()
                         .HasForeignKey("MultiBuyDiscountId")
                         .IsRequired()
@@ -27097,13 +27097,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("ComMultiBuyDiscountSku", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComMultiBuyDiscount", null)
+                    b.HasOne("HaveshApp.Model.ComMultiBuyDiscount", null)
                         .WithMany()
                         .HasForeignKey("MultiBuyDiscountId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_MultiBuyDiscountSKU_MultiBuyDiscountID_COM_MultiBuyDiscount");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("Skuid")
                         .IsRequired()
@@ -27112,13 +27112,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("ComSkuallowedOption", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("OptionSkuid")
                         .IsRequired()
                         .HasConstraintName("FK_COM_SKUOption_OptionSKUID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("Skuid")
                         .IsRequired()
@@ -27127,13 +27127,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("ComVariantOption", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("OptionSkuid")
                         .IsRequired()
                         .HasConstraintName("FK_COM_VariantOption_OptionSKUID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", null)
+                    b.HasOne("HaveshApp.Model.ComSku", null)
                         .WithMany()
                         .HasForeignKey("VariantSkuid")
                         .IsRequired()
@@ -27142,13 +27142,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("ForumsForumModerator", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ForumsForum", null)
+                    b.HasOne("HaveshApp.Model.ForumsForum", null)
                         .WithMany()
                         .HasForeignKey("ForumId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_ForumModerators_ForumID_Forums_Forum");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", null)
+                    b.HasOne("HaveshApp.Model.CmsUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -27157,13 +27157,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("NewsletterEmailTemplateNewsletter", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletter", null)
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletter", null)
                         .WithMany()
                         .HasForeignKey("NewsletterId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_EmailTemplateNewsletter_Newsletter_Newsletter");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterEmailTemplate", null)
+                    b.HasOne("HaveshApp.Model.NewsletterEmailTemplate", null)
                         .WithMany()
                         .HasForeignKey("TemplateId")
                         .IsRequired()
@@ -27172,13 +27172,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("OmMvtcombinationVariation", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmMvtcombination", null)
+                    b.HasOne("HaveshApp.Model.OmMvtcombination", null)
                         .WithMany()
                         .HasForeignKey("MvtcombinationId")
                         .IsRequired()
                         .HasConstraintName("FK_OM_MVTCombinationVariation_OM_MVTCombination");
 
-                    b.HasOne("ShokouhApp.Model.OmMvtvariant", null)
+                    b.HasOne("HaveshApp.Model.OmMvtvariant", null)
                         .WithMany()
                         .HasForeignKey("MvtvariantId")
                         .IsRequired()
@@ -27187,13 +27187,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("PermissionRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Admin.MemberShip.Model.Permission", null)
+                    b.HasOne("HaveshApp.Admin.MemberShip.Model.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Admin.MemberShip.Model.Role", null)
+                    b.HasOne("HaveshApp.Admin.MemberShip.Model.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -27202,13 +27202,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("PollsPollRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.PollsPoll", null)
+                    b.HasOne("HaveshApp.Model.PollsPoll", null)
                         .WithMany()
                         .HasForeignKey("PollId")
                         .IsRequired()
                         .HasConstraintName("FK_Polls_PollRoles_PollID_Polls_Poll");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", null)
+                    b.HasOne("HaveshApp.Model.CmsRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -27217,13 +27217,13 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("PollsPollSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.PollsPoll", null)
+                    b.HasOne("HaveshApp.Model.PollsPoll", null)
                         .WithMany()
                         .HasForeignKey("PollId")
                         .IsRequired()
                         .HasConstraintName("FK_Polls_PollSite_PollID_Polls_Poll");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", null)
+                    b.HasOne("HaveshApp.Model.CmsSite", null)
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -27232,27 +27232,27 @@ namespace ShokouhApp.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Admin.MemberShip.Model.Role", null)
+                    b.HasOne("HaveshApp.Admin.MemberShip.Model.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Admin.MemberShip.Model.User", null)
+                    b.HasOne("HaveshApp.Admin.MemberShip.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaign", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaign", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsScheduledTask", "CampaignScheduledTask")
+                    b.HasOne("HaveshApp.Model.CmsScheduledTask", "CampaignScheduledTask")
                         .WithMany("AnalyticsCampaigns")
                         .HasForeignKey("CampaignScheduledTaskId")
                         .HasConstraintName("FK_Analytics_Campaign_CampaignScheduledTaskID_ScheduledTask");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CampaignSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CampaignSite")
                         .WithMany("AnalyticsCampaigns")
                         .HasForeignKey("CampaignSiteId")
                         .IsRequired()
@@ -27263,9 +27263,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CampaignSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignAsset", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignAsset", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaign", "CampaignAssetCampaign")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaign", "CampaignAssetCampaign")
                         .WithMany("AnalyticsCampaignAssets")
                         .HasForeignKey("CampaignAssetCampaignId")
                         .IsRequired()
@@ -27274,9 +27274,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CampaignAssetCampaign");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignAssetUrl", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignAssetUrl", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaignAsset", "CampaignAssetUrlCampaignAsset")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaignAsset", "CampaignAssetUrlCampaignAsset")
                         .WithMany("AnalyticsCampaignAssetUrls")
                         .HasForeignKey("CampaignAssetUrlCampaignAssetId")
                         .IsRequired()
@@ -27285,9 +27285,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CampaignAssetUrlCampaignAsset");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignConversion", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignConversion", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaign", "CampaignConversionCampaign")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaign", "CampaignConversionCampaign")
                         .WithMany("AnalyticsCampaignConversions")
                         .HasForeignKey("CampaignConversionCampaignId")
                         .IsRequired()
@@ -27296,9 +27296,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CampaignConversionCampaign");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignConversionHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignConversionHit", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaignConversion", "CampaignConversionHitsConversion")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaignConversion", "CampaignConversionHitsConversion")
                         .WithMany("AnalyticsCampaignConversionHits")
                         .HasForeignKey("CampaignConversionHitsConversionId")
                         .IsRequired()
@@ -27307,17 +27307,17 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CampaignConversionHitsConversion");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignObjective", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignObjective", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaignConversion", "CampaignObjectiveCampaignConversion")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaignConversion", "CampaignObjectiveCampaignConversion")
                         .WithMany("AnalyticsCampaignObjectives")
                         .HasForeignKey("CampaignObjectiveCampaignConversionId")
                         .IsRequired()
                         .HasConstraintName("FK_Analytics_CampaignObjective_CampaignObjectiveCampaignConversionID_Analytics_CampaignConversion");
 
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaign", "CampaignObjectiveCampaign")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaign", "CampaignObjectiveCampaign")
                         .WithOne("AnalyticsCampaignObjective")
-                        .HasForeignKey("ShokouhApp.Model.AnalyticsCampaignObjective", "CampaignObjectiveCampaignId")
+                        .HasForeignKey("HaveshApp.Model.AnalyticsCampaignObjective", "CampaignObjectiveCampaignId")
                         .IsRequired()
                         .HasConstraintName("FK_Analytics_CampaignObjective_CampaignObjectiveCampaignID_Analytics_Campaign");
 
@@ -27326,9 +27326,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CampaignObjectiveCampaignConversion");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsConversion", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsConversion", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ConversionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ConversionSite")
                         .WithMany("AnalyticsConversions")
                         .HasForeignKey("ConversionSiteId")
                         .IsRequired()
@@ -27337,9 +27337,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ConversionSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsDayHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsDayHit", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsStatistic", "HitsStatistics")
+                    b.HasOne("HaveshApp.Model.AnalyticsStatistic", "HitsStatistics")
                         .WithMany("AnalyticsDayHits")
                         .HasForeignKey("HitsStatisticsId")
                         .IsRequired()
@@ -27348,9 +27348,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HitsStatistics");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsHourHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsHourHit", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsStatistic", "HitsStatistics")
+                    b.HasOne("HaveshApp.Model.AnalyticsStatistic", "HitsStatistics")
                         .WithMany("AnalyticsHourHits")
                         .HasForeignKey("HitsStatisticsId")
                         .IsRequired()
@@ -27359,9 +27359,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HitsStatistics");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsMonthHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsMonthHit", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsStatistic", "HitsStatistics")
+                    b.HasOne("HaveshApp.Model.AnalyticsStatistic", "HitsStatistics")
                         .WithMany("AnalyticsMonthHits")
                         .HasForeignKey("HitsStatisticsId")
                         .IsRequired()
@@ -27370,9 +27370,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HitsStatistics");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsStatistic", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsStatistic", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "StatisticsSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "StatisticsSite")
                         .WithMany("AnalyticsStatistics")
                         .HasForeignKey("StatisticsSiteId")
                         .HasConstraintName("FK_Analytics_Statistics_StatisticsSiteID_CMS_Site");
@@ -27380,9 +27380,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StatisticsSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsWeekHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsWeekHit", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsStatistic", "HitsStatistics")
+                    b.HasOne("HaveshApp.Model.AnalyticsStatistic", "HitsStatistics")
                         .WithMany("AnalyticsWeekHits")
                         .HasForeignKey("HitsStatisticsId")
                         .IsRequired()
@@ -27391,9 +27391,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HitsStatistics");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsYearHit", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsYearHit", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsStatistic", "HitsStatistics")
+                    b.HasOne("HaveshApp.Model.AnalyticsStatistic", "HitsStatistics")
                         .WithMany("AnalyticsYearHits")
                         .HasForeignKey("HitsStatisticsId")
                         .IsRequired()
@@ -27402,20 +27402,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HitsStatistics");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BlogComment", b =>
+            modelBuilder.Entity("HaveshApp.Model.BlogComment", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "CommentApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "CommentApprovedByUser")
                         .WithMany("BlogCommentCommentApprovedByUsers")
                         .HasForeignKey("CommentApprovedByUserId")
                         .HasConstraintName("FK_Blog_Comment_CommentApprovedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "CommentPostDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "CommentPostDocument")
                         .WithMany("BlogComments")
                         .HasForeignKey("CommentPostDocumentId")
                         .IsRequired()
                         .HasConstraintName("FK_Blog_Comment_CommentPostDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "CommentUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "CommentUser")
                         .WithMany("BlogCommentCommentUsers")
                         .HasForeignKey("CommentUserId")
                         .HasConstraintName("FK_Blog_Comment_CommentUserID_CMS_User");
@@ -27427,15 +27427,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CommentUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BlogPostSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.BlogPostSubscription", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "SubscriptionPostDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "SubscriptionPostDocument")
                         .WithMany("BlogPostSubscriptions")
                         .HasForeignKey("SubscriptionPostDocumentId")
                         .IsRequired()
                         .HasConstraintName("FK_Blog_PostSubscription_SubscriptionPostDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SubscriptionUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SubscriptionUser")
                         .WithMany("BlogPostSubscriptions")
                         .HasForeignKey("SubscriptionUserId")
                         .HasConstraintName("FK_Blog_PostSubscription_SubscriptionUserID_CMS_User");
@@ -27445,26 +27445,26 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubscriptionUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardBoard", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardBoard", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "BoardDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "BoardDocument")
                         .WithMany("BoardBoards")
                         .HasForeignKey("BoardDocumentId")
                         .IsRequired()
                         .HasConstraintName("FK_Board_Board_BoardDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "BoardGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "BoardGroup")
                         .WithMany("BoardBoards")
                         .HasForeignKey("BoardGroupId")
                         .HasConstraintName("FK_Board_Board_BoardGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "BoardSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "BoardSite")
                         .WithMany("BoardBoards")
                         .HasForeignKey("BoardSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_Board_Board_BoardSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "BoardUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "BoardUser")
                         .WithMany("BoardBoards")
                         .HasForeignKey("BoardUserId")
                         .HasConstraintName("FK_Board_Board_BoardUserID_CMS_User");
@@ -27478,20 +27478,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("BoardUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardMessage", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardMessage", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "MessageApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "MessageApprovedByUser")
                         .WithMany("BoardMessageMessageApprovedByUsers")
                         .HasForeignKey("MessageApprovedByUserId")
                         .HasConstraintName("FK_Board_Message_MessageApprovedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.BoardBoard", "MessageBoard")
+                    b.HasOne("HaveshApp.Model.BoardBoard", "MessageBoard")
                         .WithMany("BoardMessagesNavigation")
                         .HasForeignKey("MessageBoardId")
                         .IsRequired()
                         .HasConstraintName("FK_Board_Message_MessageBoardID_Board_Board");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "MessageUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "MessageUser")
                         .WithMany("BoardMessageMessageUsers")
                         .HasForeignKey("MessageUserId")
                         .HasConstraintName("FK_Board_Message_MessageUserID_CMS_User");
@@ -27503,15 +27503,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MessageUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardSubscription", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.BoardBoard", "SubscriptionBoard")
+                    b.HasOne("HaveshApp.Model.BoardBoard", "SubscriptionBoard")
                         .WithMany("BoardSubscriptions")
                         .HasForeignKey("SubscriptionBoardId")
                         .IsRequired()
                         .HasConstraintName("FK_Board_Subscription_SubscriptionBoardID_Board_Board");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SubscriptionUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SubscriptionUser")
                         .WithMany("BoardSubscriptions")
                         .HasForeignKey("SubscriptionUserId")
                         .HasConstraintName("FK_Board_Subscription_SubscriptionUserID_CMS_User");
@@ -27521,21 +27521,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubscriptionUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatInitiatedChatRequest", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatInitiatedChatRequest", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "InitiatedChatRequestInitiatorChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "InitiatedChatRequestInitiatorChatUser")
                         .WithMany("ChatInitiatedChatRequests")
                         .HasForeignKey("InitiatedChatRequestInitiatorChatUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_InitiatedChatRequest_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.ChatRoom", "InitiatedChatRequestRoom")
+                    b.HasOne("HaveshApp.Model.ChatRoom", "InitiatedChatRequestRoom")
                         .WithOne("ChatInitiatedChatRequest")
-                        .HasForeignKey("ShokouhApp.Model.ChatInitiatedChatRequest", "InitiatedChatRequestRoomId")
+                        .HasForeignKey("HaveshApp.Model.ChatInitiatedChatRequest", "InitiatedChatRequestRoomId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_InitiatedChatRequest_Chat_Room");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "InitiatedChatRequestUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "InitiatedChatRequestUser")
                         .WithMany("ChatInitiatedChatRequests")
                         .HasForeignKey("InitiatedChatRequestUserId")
                         .HasConstraintName("FK_Chat_InitiatedChatRequest_CMS_User");
@@ -27547,20 +27547,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InitiatedChatRequestUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatMessage", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatMessage", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatMessageRecipient")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatMessageRecipient")
                         .WithMany("ChatMessageChatMessageRecipients")
                         .HasForeignKey("ChatMessageRecipientId")
                         .HasConstraintName("FK_Chat_Message_Chat_User_Recipient");
 
-                    b.HasOne("ShokouhApp.Model.ChatRoom", "ChatMessageRoom")
+                    b.HasOne("HaveshApp.Model.ChatRoom", "ChatMessageRoom")
                         .WithMany("ChatMessages")
                         .HasForeignKey("ChatMessageRoomId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_Message_Chat_Room");
 
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatMessageUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatMessageUser")
                         .WithMany("ChatMessageChatMessageUsers")
                         .HasForeignKey("ChatMessageUserId")
                         .HasConstraintName("FK_Chat_Message_Chat_User_Sender");
@@ -27572,26 +27572,26 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatMessageUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatNotification", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatNotification", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatNotificationReceiver")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatNotificationReceiver")
                         .WithMany("ChatNotificationChatNotificationReceivers")
                         .HasForeignKey("ChatNotificationReceiverId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_Notification_Chat_User_Receiver");
 
-                    b.HasOne("ShokouhApp.Model.ChatRoom", "ChatNotificationRoom")
+                    b.HasOne("HaveshApp.Model.ChatRoom", "ChatNotificationRoom")
                         .WithMany("ChatNotifications")
                         .HasForeignKey("ChatNotificationRoomId")
                         .HasConstraintName("FK_Chat_Notification_Chat_Room");
 
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatNotificationSender")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatNotificationSender")
                         .WithMany("ChatNotificationChatNotificationSenders")
                         .HasForeignKey("ChatNotificationSenderId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_Notification_Chat_User_Sender");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ChatNotificationSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ChatNotificationSite")
                         .WithMany("ChatNotifications")
                         .HasForeignKey("ChatNotificationSiteId")
                         .HasConstraintName("FK_Chat_Notification_CMS_Site");
@@ -27605,15 +27605,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatNotificationSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatOnlineSupport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatOnlineSupport", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatOnlineSupportChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatOnlineSupportChatUser")
                         .WithMany("ChatOnlineSupports")
                         .HasForeignKey("ChatOnlineSupportChatUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_OnlineSupport_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ChatOnlineSupportSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ChatOnlineSupportSite")
                         .WithMany("ChatOnlineSupports")
                         .HasForeignKey("ChatOnlineSupportSiteId")
                         .IsRequired()
@@ -27624,15 +27624,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatOnlineSupportSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatOnlineUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatOnlineUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatOnlineUserChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatOnlineUserChatUser")
                         .WithMany("ChatOnlineUsers")
                         .HasForeignKey("ChatOnlineUserChatUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_OnlineUser_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ChatOnlineUserSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ChatOnlineUserSite")
                         .WithMany("ChatOnlineUsers")
                         .HasForeignKey("ChatOnlineUserSiteId")
                         .IsRequired()
@@ -27643,14 +27643,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatOnlineUserSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatRoom", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatRoom", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatRoomCreatedByChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatRoomCreatedByChatUser")
                         .WithMany("ChatRooms")
                         .HasForeignKey("ChatRoomCreatedByChatUserId")
                         .HasConstraintName("FK_Chat_Room_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ChatRoomSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ChatRoomSite")
                         .WithMany("ChatRooms")
                         .HasForeignKey("ChatRoomSiteId")
                         .HasConstraintName("FK_Chat_Room_CMS_Site");
@@ -27660,15 +27660,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatRoomSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatRoomUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatRoomUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatRoomUserChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatRoomUserChatUser")
                         .WithMany("ChatRoomUsers")
                         .HasForeignKey("ChatRoomUserChatUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Chat_RoomUser_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.ChatRoom", "ChatRoomUserRoom")
+                    b.HasOne("HaveshApp.Model.ChatRoom", "ChatRoomUserRoom")
                         .WithMany("ChatRoomUsers")
                         .HasForeignKey("ChatRoomUserRoomId")
                         .IsRequired()
@@ -27679,14 +27679,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatRoomUserRoom");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatSupportCannedResponse", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatSupportCannedResponse", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatSupportCannedResponseChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatSupportCannedResponseChatUser")
                         .WithMany("ChatSupportCannedResponses")
                         .HasForeignKey("ChatSupportCannedResponseChatUserId")
                         .HasConstraintName("FK_Chat_SupportCannedResponse_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ChatSupportCannedResponseSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ChatSupportCannedResponseSite")
                         .WithMany("ChatSupportCannedResponses")
                         .HasForeignKey("ChatSupportCannedResponseSiteId")
                         .HasConstraintName("FK_Chat_SupportCannedResponse_CMS_Site");
@@ -27696,14 +27696,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatSupportCannedResponseSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatSupportTakenRoom", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatSupportTakenRoom", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ChatUser", "ChatSupportTakenRoomChatUser")
+                    b.HasOne("HaveshApp.Model.ChatUser", "ChatSupportTakenRoomChatUser")
                         .WithMany("ChatSupportTakenRooms")
                         .HasForeignKey("ChatSupportTakenRoomChatUserId")
                         .HasConstraintName("FK_Chat_SupportTakenRoom_Chat_User");
 
-                    b.HasOne("ShokouhApp.Model.ChatRoom", "ChatSupportTakenRoomRoom")
+                    b.HasOne("HaveshApp.Model.ChatRoom", "ChatSupportTakenRoomRoom")
                         .WithMany("ChatSupportTakenRooms")
                         .HasForeignKey("ChatSupportTakenRoomRoomId")
                         .IsRequired()
@@ -27714,9 +27714,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatSupportTakenRoomRoom");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ChatUserUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ChatUserUser")
                         .WithMany("ChatUsers")
                         .HasForeignKey("ChatUserUserId")
                         .HasConstraintName("FK_Chat_User_CMS_User");
@@ -27724,15 +27724,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatUserUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAbuseReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAbuseReport", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ReportSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ReportSite")
                         .WithMany("CmsAbuseReports")
                         .HasForeignKey("ReportSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AbuseReport_ReportSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ReportUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ReportUser")
                         .WithMany("CmsAbuseReports")
                         .HasForeignKey("ReportUserId")
                         .HasConstraintName("FK_CMS_AbuseReport_ReportUserID_CMS_User");
@@ -27742,9 +27742,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ReportUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAcl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAcl", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Aclsite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Aclsite")
                         .WithMany("CmsAcls")
                         .HasForeignKey("AclsiteId")
                         .HasConstraintName("FK_CMS_ACL_ACLSiteID_CMS_Site");
@@ -27752,25 +27752,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Aclsite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAclitem", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAclitem", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsAcl", "Acl")
+                    b.HasOne("HaveshApp.Model.CmsAcl", "Acl")
                         .WithMany("CmsAclitems")
                         .HasForeignKey("Aclid")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_ACLItem_ACLID_CMS_ACL");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "LastModifiedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "LastModifiedByUser")
                         .WithMany("CmsAclitemLastModifiedByUsers")
                         .HasForeignKey("LastModifiedByUserId")
                         .HasConstraintName("FK_CMS_ACLItem_LastModifiedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("CmsAclitems")
                         .HasForeignKey("RoleId")
                         .HasConstraintName("FK_CMS_ACLItem_RoleID_CMS_Role");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsAclitemUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_CMS_ACLItem_UserID_CMS_User");
@@ -27784,15 +27784,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAlternativeForm", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAlternativeForm", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "FormClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "FormClass")
                         .WithMany("CmsAlternativeFormFormClasses")
                         .HasForeignKey("FormClassId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AlternativeForm_FormClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsClass", "FormCoupledClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "FormCoupledClass")
                         .WithMany("CmsAlternativeFormFormCoupledClasses")
                         .HasForeignKey("FormCoupledClassId")
                         .HasConstraintName("FK_CMS_AlternativeForm_FormCoupledClassID_CMS_Class");
@@ -27802,15 +27802,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FormCoupledClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAlternativeUrl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAlternativeUrl", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "AlternativeUrlDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "AlternativeUrlDocument")
                         .WithMany("CmsAlternativeUrls")
                         .HasForeignKey("AlternativeUrlDocumentId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AlternativeUrl_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AlternativeUrlSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AlternativeUrlSite")
                         .WithMany("CmsAlternativeUrls")
                         .HasForeignKey("AlternativeUrlSiteId")
                         .IsRequired()
@@ -27821,20 +27821,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AlternativeUrlSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAttachment", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "AttachmentDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "AttachmentDocument")
                         .WithMany("CmsAttachments")
                         .HasForeignKey("AttachmentDocumentId")
                         .HasConstraintName("FK_CMS_Attachment_AttachmentDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AttachmentSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AttachmentSite")
                         .WithMany("CmsAttachments")
                         .HasForeignKey("AttachmentSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Attachment_AttachmentSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsAttachment", "AttachmentVariantParent")
+                    b.HasOne("HaveshApp.Model.CmsAttachment", "AttachmentVariantParent")
                         .WithMany("InverseAttachmentVariantParent")
                         .HasForeignKey("AttachmentVariantParentId")
                         .HasConstraintName("FK_CMS_Attachment_AttachmentVariantParentID_CMS_Attachment");
@@ -27846,15 +27846,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AttachmentVariantParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAttachmentHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAttachmentHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AttachmentSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AttachmentSite")
                         .WithMany("CmsAttachmentHistories")
                         .HasForeignKey("AttachmentSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AttachmentHistory_AttachmentSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsAttachmentHistory", "AttachmentVariantParent")
+                    b.HasOne("HaveshApp.Model.CmsAttachmentHistory", "AttachmentVariantParent")
                         .WithMany("InverseAttachmentVariantParent")
                         .HasForeignKey("AttachmentVariantParentId")
                         .HasConstraintName("FK_CMS_AttachmentHistory_AttachmentVariantParentID_CMS_AttachmentHistory");
@@ -27864,30 +27864,30 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AttachmentVariantParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAutomationHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAutomationHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "HistoryApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "HistoryApprovedByUser")
                         .WithMany("CmsAutomationHistories")
                         .HasForeignKey("HistoryApprovedByUserId")
                         .HasConstraintName("FK_CMS_AutomationHistory_HistoryApprovedByUserID");
 
-                    b.HasOne("ShokouhApp.Model.CmsAutomationState", "HistoryState")
+                    b.HasOne("HaveshApp.Model.CmsAutomationState", "HistoryState")
                         .WithMany("CmsAutomationHistories")
                         .HasForeignKey("HistoryStateId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AutomationHistory_HistoryStateID");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "HistoryStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "HistoryStep")
                         .WithMany("CmsAutomationHistoryHistorySteps")
                         .HasForeignKey("HistoryStepId")
                         .HasConstraintName("FK_CMS_AutomationHistory_HistoryStepID");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "HistoryTargetStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "HistoryTargetStep")
                         .WithMany("CmsAutomationHistoryHistoryTargetSteps")
                         .HasForeignKey("HistoryTargetStepId")
                         .HasConstraintName("FK_CMS_AutomationHistory_HistoryTargetStepID");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "HistoryWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "HistoryWorkflow")
                         .WithMany("CmsAutomationHistories")
                         .HasForeignKey("HistoryWorkflowId")
                         .IsRequired()
@@ -27904,25 +27904,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HistoryWorkflow");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAutomationState", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAutomationState", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "StateSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "StateSite")
                         .WithMany("CmsAutomationStates")
                         .HasForeignKey("StateSiteId")
                         .HasConstraintName("FK_CMS_AutomationState_StateSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "StateStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "StateStep")
                         .WithMany("CmsAutomationStates")
                         .HasForeignKey("StateStepId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_AutomationState_StateStepID");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "StateUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "StateUser")
                         .WithMany("CmsAutomationStates")
                         .HasForeignKey("StateUserId")
                         .HasConstraintName("FK_CMS_AutomationState_StateUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "StateWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "StateWorkflow")
                         .WithMany("CmsAutomationStates")
                         .HasForeignKey("StateWorkflowId")
                         .IsRequired()
@@ -27937,9 +27937,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StateWorkflow");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBannedIp", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBannedIp", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "IpaddressSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "IpaddressSite")
                         .WithMany("CmsBannedIps")
                         .HasForeignKey("IpaddressSiteId")
                         .HasConstraintName("FK_CMS_BannedIP_IPAddressSiteID_CMS_Site");
@@ -27947,15 +27947,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("IpaddressSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBanner", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBanner", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsBannerCategory", "BannerCategory")
+                    b.HasOne("HaveshApp.Model.CmsBannerCategory", "BannerCategory")
                         .WithMany("CmsBanners")
                         .HasForeignKey("BannerCategoryId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Banner_CMS_BannerCategory");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "BannerSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "BannerSite")
                         .WithMany("CmsBanners")
                         .HasForeignKey("BannerSiteId")
                         .HasConstraintName("FK_CMS_Banner_CMS_Site");
@@ -27965,9 +27965,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("BannerSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBannerCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBannerCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "BannerCategorySite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "BannerCategorySite")
                         .WithMany("CmsBannerCategories")
                         .HasForeignKey("BannerCategorySiteId")
                         .HasConstraintName("FK_CMS_BannerCategory_CMS_Site");
@@ -27975,14 +27975,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("BannerCategorySite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CategorySite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CategorySite")
                         .WithMany("CmsCategories")
                         .HasForeignKey("CategorySiteId")
                         .HasConstraintName("FK_CMS_Category_CategorySiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "CategoryUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "CategoryUser")
                         .WithMany("CmsCategories")
                         .HasForeignKey("CategoryUserId")
                         .HasConstraintName("FK_CMS_Category_CategoryUserID_CMS_User");
@@ -27992,19 +27992,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CategoryUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "ClassDefaultPageTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "ClassDefaultPageTemplate")
                         .WithMany("CmsClasses")
                         .HasForeignKey("ClassDefaultPageTemplateId")
                         .HasConstraintName("FK_CMS_Class_ClassDefaultPageTemplateID_CMS_PageTemplate");
 
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplateCategory", "ClassPageTemplateCategory")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplateCategory", "ClassPageTemplateCategory")
                         .WithMany("CmsClasses")
                         .HasForeignKey("ClassPageTemplateCategoryId")
                         .HasConstraintName("FK_CMS_Class_ClassPageTemplateCategoryID_CMS_PageTemplateCategory");
 
-                    b.HasOne("ShokouhApp.Model.CmsResource", "ClassResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "ClassResource")
                         .WithMany("CmsClasses")
                         .HasForeignKey("ClassResourceId")
                         .HasConstraintName("FK_CMS_Class_ClassResourceID_CMS_Resource");
@@ -28016,15 +28016,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ClassResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsConsentAgreement", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsConsentAgreement", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsConsent", "ConsentAgreementConsent")
+                    b.HasOne("HaveshApp.Model.CmsConsent", "ConsentAgreementConsent")
                         .WithMany("CmsConsentAgreements")
                         .HasForeignKey("ConsentAgreementConsentId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_ConsentAgreement_ConsentAgreementConsentID_CMS_Consent");
 
-                    b.HasOne("ShokouhApp.Model.OmContact", "ConsentAgreementContact")
+                    b.HasOne("HaveshApp.Model.OmContact", "ConsentAgreementContact")
                         .WithMany("CmsConsentAgreements")
                         .HasForeignKey("ConsentAgreementContactId")
                         .IsRequired()
@@ -28035,9 +28035,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ConsentAgreementContact");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsConsentArchive", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsConsentArchive", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsConsent", "ConsentArchiveConsent")
+                    b.HasOne("HaveshApp.Model.CmsConsent", "ConsentArchiveConsent")
                         .WithMany("CmsConsentArchives")
                         .HasForeignKey("ConsentArchiveConsentId")
                         .IsRequired()
@@ -28046,21 +28046,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ConsentArchiveConsent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDeviceProfileLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDeviceProfileLayout", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDeviceProfile", "DeviceProfile")
+                    b.HasOne("HaveshApp.Model.CmsDeviceProfile", "DeviceProfile")
                         .WithMany("CmsDeviceProfileLayouts")
                         .HasForeignKey("DeviceProfileId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_DeviceProfileLayout_DeviceProfileID_CMS_DeviceProfile");
 
-                    b.HasOne("ShokouhApp.Model.CmsLayout", "SourceLayout")
+                    b.HasOne("HaveshApp.Model.CmsLayout", "SourceLayout")
                         .WithMany("CmsDeviceProfileLayoutSourceLayouts")
                         .HasForeignKey("SourceLayoutId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_DeviceProfileLayout_SourceLayoutID_CMS_Layout");
 
-                    b.HasOne("ShokouhApp.Model.CmsLayout", "TargetLayout")
+                    b.HasOne("HaveshApp.Model.CmsLayout", "TargetLayout")
                         .WithMany("CmsDeviceProfileLayoutTargetLayouts")
                         .HasForeignKey("TargetLayoutId")
                         .IsRequired()
@@ -28073,55 +28073,55 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TargetLayout");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocument", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocument", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "DocumentCheckedOutByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "DocumentCheckedOutByUser")
                         .WithMany("CmsDocumentDocumentCheckedOutByUsers")
                         .HasForeignKey("DocumentCheckedOutByUserId")
                         .HasConstraintName("FK_CMS_Document_DocumentCheckedOutByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsVersionHistory", "DocumentCheckedOutVersionHistory")
+                    b.HasOne("HaveshApp.Model.CmsVersionHistory", "DocumentCheckedOutVersionHistory")
                         .WithMany("CmsDocumentDocumentCheckedOutVersionHistories")
                         .HasForeignKey("DocumentCheckedOutVersionHistoryId")
                         .HasConstraintName("FK_CMS_Document_DocumentCheckedOutVersionHistoryID_CMS_VersionHistory");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "DocumentCreatedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "DocumentCreatedByUser")
                         .WithMany("CmsDocumentDocumentCreatedByUsers")
                         .HasForeignKey("DocumentCreatedByUserId")
                         .HasConstraintName("FK_CMS_Document_DocumentCreatedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "DocumentModifiedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "DocumentModifiedByUser")
                         .WithMany("CmsDocumentDocumentModifiedByUsers")
                         .HasForeignKey("DocumentModifiedByUserId")
                         .HasConstraintName("FK_CMS_Document_DocumentModifiedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsTree", "DocumentNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "DocumentNode")
                         .WithMany("CmsDocuments")
                         .HasForeignKey("DocumentNodeId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Document_DocumentNodeID_CMS_Tree");
 
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "DocumentPageTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "DocumentPageTemplate")
                         .WithMany("CmsDocuments")
                         .HasForeignKey("DocumentPageTemplateId")
                         .HasConstraintName("FK_CMS_Document_DocumentPageTemplateID_CMS_Template");
 
-                    b.HasOne("ShokouhApp.Model.CmsVersionHistory", "DocumentPublishedVersionHistory")
+                    b.HasOne("HaveshApp.Model.CmsVersionHistory", "DocumentPublishedVersionHistory")
                         .WithMany("CmsDocumentDocumentPublishedVersionHistories")
                         .HasForeignKey("DocumentPublishedVersionHistoryId")
                         .HasConstraintName("FK_CMS_Document_DocumentPublishedVersionHistoryID_CMS_VersionHistory");
 
-                    b.HasOne("ShokouhApp.Model.CmsCssStylesheet", "DocumentStylesheet")
+                    b.HasOne("HaveshApp.Model.CmsCssStylesheet", "DocumentStylesheet")
                         .WithMany("CmsDocuments")
                         .HasForeignKey("DocumentStylesheetId")
                         .HasConstraintName("FK_CMS_Document_DocumentStylesheetID_CMS_CssStylesheet");
 
-                    b.HasOne("ShokouhApp.Model.CmsTagGroup", "DocumentTagGroup")
+                    b.HasOne("HaveshApp.Model.CmsTagGroup", "DocumentTagGroup")
                         .WithMany("CmsDocuments")
                         .HasForeignKey("DocumentTagGroupId")
                         .HasConstraintName("FK_CMS_Document_DocumentTagGroupID_CMS_TagGroup");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "DocumentWorkflowStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "DocumentWorkflowStep")
                         .WithMany("CmsDocuments")
                         .HasForeignKey("DocumentWorkflowStepId")
                         .HasConstraintName("FK_CMS_Document_DocumentWorkflowStepID_CMS_WorkflowStep");
@@ -28147,15 +28147,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("DocumentWorkflowStep");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocumentAlias", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocumentAlias", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTree", "AliasNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "AliasNode")
                         .WithMany("CmsDocumentAliases")
                         .HasForeignKey("AliasNodeId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_DocumentAlias_AliasNodeID_CMS_Tree");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AliasSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AliasSite")
                         .WithMany("CmsDocumentAliases")
                         .HasForeignKey("AliasSiteId")
                         .IsRequired()
@@ -28166,9 +28166,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AliasSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocumentTypeScope", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocumentTypeScope", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ScopeSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ScopeSite")
                         .WithMany("CmsDocumentTypeScopes")
                         .HasForeignKey("ScopeSiteId")
                         .HasConstraintName("FK_CMS_DocumentTypeScope_ScopeSiteID_CMS_Site");
@@ -28176,9 +28176,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ScopeSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmailTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmailTemplate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "EmailTemplateSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "EmailTemplateSite")
                         .WithMany("CmsEmailTemplates")
                         .HasForeignKey("EmailTemplateSiteId")
                         .HasConstraintName("FK_CMS_Email_EmailTemplateSiteID_CMS_Site");
@@ -28186,15 +28186,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("EmailTemplateSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmailUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmailUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsEmail", "Email")
+                    b.HasOne("HaveshApp.Model.CmsEmail", "Email")
                         .WithMany("CmsEmailUsers")
                         .HasForeignKey("EmailId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_EmailUser_EmailID_CMS_Email");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsEmailUsers")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -28205,9 +28205,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsExternalLogin", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsExternalLogin", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsExternalLogins")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -28216,15 +28216,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsForm", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsForm", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "FormClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "FormClass")
                         .WithMany("CmsForms")
                         .HasForeignKey("FormClassId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Form_FormClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "FormSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "FormSite")
                         .WithMany("CmsForms")
                         .HasForeignKey("FormSiteId")
                         .IsRequired()
@@ -28235,14 +28235,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FormSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsFormUserControl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsFormUserControl", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsFormUserControl", "UserControlParent")
+                    b.HasOne("HaveshApp.Model.CmsFormUserControl", "UserControlParent")
                         .WithMany("InverseUserControlParent")
                         .HasForeignKey("UserControlParentId")
                         .HasConstraintName("FK_CMS_FormUserControl_UserControlParentID_CMS_FormUserControl");
 
-                    b.HasOne("ShokouhApp.Model.CmsResource", "UserControlResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "UserControlResource")
                         .WithMany("CmsFormUserControls")
                         .HasForeignKey("UserControlResourceId")
                         .HasConstraintName("FK_CMS_FormUserControl_UserControlResourceID_CMS_Resource");
@@ -28252,9 +28252,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("UserControlResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsHelpTopic", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsHelpTopic", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUielement", "HelpTopicUielement")
+                    b.HasOne("HaveshApp.Model.CmsUielement", "HelpTopicUielement")
                         .WithMany("CmsHelpTopics")
                         .HasForeignKey("HelpTopicUielementId")
                         .IsRequired()
@@ -28263,9 +28263,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("HelpTopicUielement");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMacroIdentity", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMacroIdentity", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "MacroIdentityEffectiveUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "MacroIdentityEffectiveUser")
                         .WithMany("CmsMacroIdentities")
                         .HasForeignKey("MacroIdentityEffectiveUserId")
                         .HasConstraintName("FK_CMS_MacroIdentity_MacroIdentityEffectiveUserID_CMS_User");
@@ -28273,9 +28273,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MacroIdentityEffectiveUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMembership", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMembership", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "MembershipSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "MembershipSite")
                         .WithMany("CmsMemberships")
                         .HasForeignKey("MembershipSiteId")
                         .HasConstraintName("FK_CMS_Membership_MembershipSiteID_CMS_Site");
@@ -28283,15 +28283,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MembershipSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMembershipUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMembershipUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsMembership", "Membership")
+                    b.HasOne("HaveshApp.Model.CmsMembership", "Membership")
                         .WithMany("CmsMembershipUsers")
                         .HasForeignKey("MembershipId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_MembershipUser_MembershipID_CMS_Membership");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsMembershipUsers")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -28302,9 +28302,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMetaFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMetaFile", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "MetaFileSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "MetaFileSite")
                         .WithMany("CmsMetaFiles")
                         .HasForeignKey("MetaFileSiteId")
                         .HasConstraintName("FK_CMS_MetaFile_MetaFileSiteID_CMS_Site");
@@ -28312,9 +28312,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MetaFileSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsModuleLicenseKey", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsModuleLicenseKey", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsResource", "ModuleLicenseKeyResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "ModuleLicenseKeyResource")
                         .WithMany("CmsModuleLicenseKeys")
                         .HasForeignKey("ModuleLicenseKeyResourceId")
                         .IsRequired()
@@ -28323,24 +28323,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ModuleLicenseKeyResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectSetting", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectSetting", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ObjectCheckedOutByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ObjectCheckedOutByUser")
                         .WithMany("CmsObjectSettings")
                         .HasForeignKey("ObjectCheckedOutByUserId")
                         .HasConstraintName("FK_CMS_ObjectSettings_ObjectCheckedOutByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsObjectVersionHistory", "ObjectCheckedOutVersionHistory")
+                    b.HasOne("HaveshApp.Model.CmsObjectVersionHistory", "ObjectCheckedOutVersionHistory")
                         .WithMany("CmsObjectSettingObjectCheckedOutVersionHistories")
                         .HasForeignKey("ObjectCheckedOutVersionHistoryId")
                         .HasConstraintName("FK_CMS_ObjectSettings_ObjectCheckedOutVersionHistoryID_CMS_ObjectVersionHistory");
 
-                    b.HasOne("ShokouhApp.Model.CmsObjectVersionHistory", "ObjectPublishedVersionHistory")
+                    b.HasOne("HaveshApp.Model.CmsObjectVersionHistory", "ObjectPublishedVersionHistory")
                         .WithMany("CmsObjectSettingObjectPublishedVersionHistories")
                         .HasForeignKey("ObjectPublishedVersionHistoryId")
                         .HasConstraintName("FK_CMS_ObjectSettings_ObjectPublishedVersionHistoryID_CMS_ObjectVersionHistory");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "ObjectWorkflowStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "ObjectWorkflowStep")
                         .WithMany("CmsObjectSettings")
                         .HasForeignKey("ObjectWorkflowStepId")
                         .HasConstraintName("FK_CMS_ObjectSettings_ObjectWorkflowStepID_CMS_WorkflowStep");
@@ -28354,19 +28354,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ObjectWorkflowStep");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectVersionHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectVersionHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "VersionDeletedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "VersionDeletedByUser")
                         .WithMany("CmsObjectVersionHistoryVersionDeletedByUsers")
                         .HasForeignKey("VersionDeletedByUserId")
                         .HasConstraintName("FK_CMS_ObjectVersionHistory_VersionDeletedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "VersionModifiedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "VersionModifiedByUser")
                         .WithMany("CmsObjectVersionHistoryVersionModifiedByUsers")
                         .HasForeignKey("VersionModifiedByUserId")
                         .HasConstraintName("FK_CMS_ObjectVersionHistory_VersionModifiedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "VersionObjectSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "VersionObjectSite")
                         .WithMany("CmsObjectVersionHistories")
                         .HasForeignKey("VersionObjectSiteId")
                         .HasConstraintName("FK_CMS_ObjectVersionHistory_VersionObjectSiteID_CMS_Site");
@@ -28378,9 +28378,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("VersionObjectSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectWorkflowTrigger", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectWorkflowTrigger", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "TriggerWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "TriggerWorkflow")
                         .WithMany("CmsObjectWorkflowTriggers")
                         .HasForeignKey("TriggerWorkflowId")
                         .IsRequired()
@@ -28389,9 +28389,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TriggerWorkflow");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsOpenIduser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsOpenIduser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsOpenIdusers")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -28400,19 +28400,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplateCategory", "PageTemplateCategory")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplateCategory", "PageTemplateCategory")
                         .WithMany("CmsPageTemplates")
                         .HasForeignKey("PageTemplateCategoryId")
                         .HasConstraintName("FK_CMS_PageTemplate_PageTemplateCategoryID_CMS_PageTemplateCategory");
 
-                    b.HasOne("ShokouhApp.Model.CmsLayout", "PageTemplateLayoutNavigation")
+                    b.HasOne("HaveshApp.Model.CmsLayout", "PageTemplateLayoutNavigation")
                         .WithMany("CmsPageTemplates")
                         .HasForeignKey("PageTemplateLayoutId")
                         .HasConstraintName("FK_CMS_PageTemplate_PageTemplateLayoutID_CMS_Layout");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PageTemplateSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PageTemplateSite")
                         .WithMany("CmsPageTemplates")
                         .HasForeignKey("PageTemplateSiteId")
                         .HasConstraintName("FK_CMS_PageTemplate_PageTemplateSiteID_CMS_Site");
@@ -28424,9 +28424,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PageTemplateSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplateCategory", "CategoryParent")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplateCategory", "CategoryParent")
                         .WithMany("InverseCategoryParent")
                         .HasForeignKey("CategoryParentId")
                         .HasConstraintName("FK_CMS_PageTemplateCategory_CategoryParentID_CMS_PageTemplateCategory");
@@ -28434,9 +28434,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateConfiguration", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateConfiguration", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PageTemplateConfigurationSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PageTemplateConfigurationSite")
                         .WithMany("CmsPageTemplateConfigurations")
                         .HasForeignKey("PageTemplateConfigurationSiteId")
                         .IsRequired()
@@ -28445,24 +28445,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PageTemplateConfigurationSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateScope", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateScope", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "PageTemplateScopeClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "PageTemplateScopeClass")
                         .WithMany("CmsPageTemplateScopes")
                         .HasForeignKey("PageTemplateScopeClassId")
                         .HasConstraintName("FK_CMS_PageTemplateScope_PageTemplateScopeClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsCulture", "PageTemplateScopeCulture")
+                    b.HasOne("HaveshApp.Model.CmsCulture", "PageTemplateScopeCulture")
                         .WithMany("CmsPageTemplateScopes")
                         .HasForeignKey("PageTemplateScopeCultureId")
                         .HasConstraintName("FK_CMS_PageTemplateScope_PageTemplateScopeCultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PageTemplateScopeSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PageTemplateScopeSite")
                         .WithMany("CmsPageTemplateScopes")
                         .HasForeignKey("PageTemplateScopeSiteId")
                         .HasConstraintName("FK_CMS_PageTemplateScope_PageTemplateScopeSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "PageTemplateScopeTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "PageTemplateScopeTemplate")
                         .WithMany("CmsPageTemplateScopes")
                         .HasForeignKey("PageTemplateScopeTemplateId")
                         .IsRequired()
@@ -28477,14 +28477,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PageTemplateScopeTemplate");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPermission", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "Class")
+                    b.HasOne("HaveshApp.Model.CmsClass", "Class")
                         .WithMany("CmsPermissions")
                         .HasForeignKey("ClassId")
                         .HasConstraintName("FK_CMS_Permission_ClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsResource", "Resource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "Resource")
                         .WithMany("CmsPermissions")
                         .HasForeignKey("ResourceId")
                         .HasConstraintName("FK_CMS_Permission_ResourceID_CMS_Resource");
@@ -28494,19 +28494,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Resource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPersonalization", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPersonalization", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "PersonalizationDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "PersonalizationDocument")
                         .WithMany("CmsPersonalizations")
                         .HasForeignKey("PersonalizationDocumentId")
                         .HasConstraintName("FK_CMS_Personalization_PersonalizationDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PersonalizationSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PersonalizationSite")
                         .WithMany("CmsPersonalizations")
                         .HasForeignKey("PersonalizationSiteId")
                         .HasConstraintName("FK_CMS_Personalization_PersonalizationSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "PersonalizationUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "PersonalizationUser")
                         .WithMany("CmsPersonalizations")
                         .HasForeignKey("PersonalizationUserId")
                         .HasConstraintName("FK_CMS_Personalization_PersonalizationUserID_CMS_User");
@@ -28518,9 +28518,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PersonalizationUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsQuery", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsQuery", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "Class")
+                    b.HasOne("HaveshApp.Model.CmsClass", "Class")
                         .WithMany("CmsQueries")
                         .HasForeignKey("ClassId")
                         .HasConstraintName("FK_CMS_Query_ClassID_CMS_Class");
@@ -28528,21 +28528,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Class");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRelationship", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRelationship", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTree", "LeftNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "LeftNode")
                         .WithMany("CmsRelationshipLeftNodes")
                         .HasForeignKey("LeftNodeId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Relationship_LeftNodeID_CMS_Tree");
 
-                    b.HasOne("ShokouhApp.Model.CmsRelationshipName", "RelationshipName")
+                    b.HasOne("HaveshApp.Model.CmsRelationshipName", "RelationshipName")
                         .WithMany("CmsRelationships")
                         .HasForeignKey("RelationshipNameId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Relationship_RelationshipNameID_CMS_RelationshipName");
 
-                    b.HasOne("ShokouhApp.Model.CmsTree", "RightNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "RightNode")
                         .WithMany("CmsRelationshipRightNodes")
                         .HasForeignKey("RightNodeId")
                         .IsRequired()
@@ -28555,9 +28555,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("RightNode");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResourceLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResourceLibrary", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsResource", "ResourceLibraryResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "ResourceLibraryResource")
                         .WithMany("CmsResourceLibraries")
                         .HasForeignKey("ResourceLibraryResourceId")
                         .IsRequired()
@@ -28566,15 +28566,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ResourceLibraryResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResourceTranslation", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResourceTranslation", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCulture", "TranslationCulture")
+                    b.HasOne("HaveshApp.Model.CmsCulture", "TranslationCulture")
                         .WithMany("CmsResourceTranslations")
                         .HasForeignKey("TranslationCultureId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_ResourceTranslation_TranslationCultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.CmsResourceString", "TranslationString")
+                    b.HasOne("HaveshApp.Model.CmsResourceString", "TranslationString")
                         .WithMany("CmsResourceTranslations")
                         .HasForeignKey("TranslationStringId")
                         .IsRequired()
@@ -28585,14 +28585,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TranslationString");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "RoleGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "RoleGroup")
                         .WithMany("CmsRoles")
                         .HasForeignKey("RoleGroupId")
                         .HasConstraintName("FK_CMS_Role_RoleGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("CmsRoles")
                         .HasForeignKey("SiteId")
                         .HasConstraintName("FK_CMS_Role_SiteID_CMS_SiteID");
@@ -28602,19 +28602,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsScheduledTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsScheduledTask", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsResource", "TaskResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "TaskResource")
                         .WithMany("CmsScheduledTasks")
                         .HasForeignKey("TaskResourceId")
                         .HasConstraintName("FK_CMS_ScheduledTask_TaskResourceID_CMS_Resource");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TaskSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TaskSite")
                         .WithMany("CmsScheduledTasks")
                         .HasForeignKey("TaskSiteId")
                         .HasConstraintName("FK_CMS_ScheduledTask_TaskSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "TaskUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "TaskUser")
                         .WithMany("CmsScheduledTasks")
                         .HasForeignKey("TaskUserId")
                         .HasConstraintName("FK_CMS_ScheduledTask_TaskUserID_CMS_User");
@@ -28626,14 +28626,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaskUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSession", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSession", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SessionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SessionSite")
                         .WithMany("CmsSessions")
                         .HasForeignKey("SessionSiteId")
                         .HasConstraintName("FK_CMS_Session_SessionSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SessionUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SessionUser")
                         .WithMany("CmsSessions")
                         .HasForeignKey("SessionUserId")
                         .HasConstraintName("FK_CMS_Session_SessionUserID_CMS_User");
@@ -28643,14 +28643,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SessionUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSettingsCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSettingsCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSettingsCategory", "CategoryParent")
+                    b.HasOne("HaveshApp.Model.CmsSettingsCategory", "CategoryParent")
                         .WithMany("InverseCategoryParent")
                         .HasForeignKey("CategoryParentId")
                         .HasConstraintName("FK_CMS_SettingsCategory_CMS_SettingsCategory1");
 
-                    b.HasOne("ShokouhApp.Model.CmsResource", "CategoryResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "CategoryResource")
                         .WithMany("CmsSettingsCategories")
                         .HasForeignKey("CategoryResourceId")
                         .HasConstraintName("FK_CMS_SettingsCategory_CategoryResourceID_CMS_Resource");
@@ -28660,14 +28660,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CategoryResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSettingsKey", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSettingsKey", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSettingsCategory", "KeyCategory")
+                    b.HasOne("HaveshApp.Model.CmsSettingsCategory", "KeyCategory")
                         .WithMany("CmsSettingsKeys")
                         .HasForeignKey("KeyCategoryId")
                         .HasConstraintName("FK_CMS_SettingsKey_KeyCategoryID_CMS_SettingsCategory");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("CmsSettingsKeys")
                         .HasForeignKey("SiteId")
                         .HasConstraintName("FK_CMS_SettingsKey_SiteID_CMS_Site");
@@ -28677,14 +28677,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCssStylesheet", "SiteDefaultEditorStylesheetNavigation")
+                    b.HasOne("HaveshApp.Model.CmsCssStylesheet", "SiteDefaultEditorStylesheetNavigation")
                         .WithMany("CmsSiteSiteDefaultEditorStylesheetNavigations")
                         .HasForeignKey("SiteDefaultEditorStylesheet")
                         .HasConstraintName("FK_CMS_Site_SiteDefaultEditorStylesheet_CMS_CssStylesheet");
 
-                    b.HasOne("ShokouhApp.Model.CmsCssStylesheet", "SiteDefaultStylesheet")
+                    b.HasOne("HaveshApp.Model.CmsCssStylesheet", "SiteDefaultStylesheet")
                         .WithMany("CmsSiteSiteDefaultStylesheets")
                         .HasForeignKey("SiteDefaultStylesheetId")
                         .HasConstraintName("FK_CMS_Site_SiteDefaultStylesheetID_CMS_CssStylesheet");
@@ -28694,9 +28694,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SiteDefaultStylesheet");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSiteDomainAlias", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSiteDomainAlias", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("CmsSiteDomainAliases")
                         .HasForeignKey("SiteId")
                         .IsRequired()
@@ -28705,9 +28705,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsState", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsState", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCountry", "Country")
+                    b.HasOne("HaveshApp.Model.CmsCountry", "Country")
                         .WithMany("CmsStates")
                         .HasForeignKey("CountryId")
                         .IsRequired()
@@ -28716,9 +28716,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTag", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTag", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTagGroup", "TagGroup")
+                    b.HasOne("HaveshApp.Model.CmsTagGroup", "TagGroup")
                         .WithMany("CmsTags")
                         .HasForeignKey("TagGroupId")
                         .IsRequired()
@@ -28727,9 +28727,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TagGroup");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTagGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTagGroup", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TagGroupSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TagGroupSite")
                         .WithMany("CmsTagGroups")
                         .HasForeignKey("TagGroupSiteId")
                         .IsRequired()
@@ -28738,20 +28738,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TagGroupSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTemplateDeviceLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTemplateDeviceLayout", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsLayout", "Layout")
+                    b.HasOne("HaveshApp.Model.CmsLayout", "Layout")
                         .WithMany("CmsTemplateDeviceLayouts")
                         .HasForeignKey("LayoutId")
                         .HasConstraintName("FK_CMS_TemplateDeviceLayout_LayoutID_CMS_Layout");
 
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "PageTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "PageTemplate")
                         .WithMany("CmsTemplateDeviceLayouts")
                         .HasForeignKey("PageTemplateId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_TemplateDeviceLayout_PageTemplateID_CMS_PageTemplate");
 
-                    b.HasOne("ShokouhApp.Model.CmsDeviceProfile", "Profile")
+                    b.HasOne("HaveshApp.Model.CmsDeviceProfile", "Profile")
                         .WithMany("CmsTemplateDeviceLayouts")
                         .HasForeignKey("ProfileId")
                         .IsRequired()
@@ -28764,9 +28764,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTransformation", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTransformation", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "TransformationClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "TransformationClass")
                         .WithMany("CmsTransformations")
                         .HasForeignKey("TransformationClassId")
                         .IsRequired()
@@ -28775,15 +28775,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TransformationClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationSubmission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationSubmission", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTranslationService", "SubmissionService")
+                    b.HasOne("HaveshApp.Model.CmsTranslationService", "SubmissionService")
                         .WithMany("CmsTranslationSubmissions")
                         .HasForeignKey("SubmissionServiceId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_TranslationSubmission_CMS_TranslationService");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SubmissionSubmittedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SubmissionSubmittedByUser")
                         .WithMany("CmsTranslationSubmissions")
                         .HasForeignKey("SubmissionSubmittedByUserId")
                         .HasConstraintName("FK_CMS_TranslationSubmission_CMS_User");
@@ -28793,9 +28793,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubmissionSubmittedByUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationSubmissionItem", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationSubmissionItem", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTranslationSubmission", "SubmissionItemSubmission")
+                    b.HasOne("HaveshApp.Model.CmsTranslationSubmission", "SubmissionItemSubmission")
                         .WithMany("CmsTranslationSubmissionItems")
                         .HasForeignKey("SubmissionItemSubmissionId")
                         .IsRequired()
@@ -28804,61 +28804,61 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubmissionItemSubmission");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTree", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTree", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsAcl", "NodeAcl")
+                    b.HasOne("HaveshApp.Model.CmsAcl", "NodeAcl")
                         .WithMany("CmsTrees")
                         .HasForeignKey("NodeAclid")
                         .HasConstraintName("FK_CMS_Tree_NodeACLID_CMS_ACL");
 
-                    b.HasOne("ShokouhApp.Model.CmsClass", "NodeClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "NodeClass")
                         .WithMany("CmsTrees")
                         .HasForeignKey("NodeClassId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Tree_NodeClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "NodeGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "NodeGroup")
                         .WithMany("CmsTrees")
                         .HasForeignKey("NodeGroupId")
                         .HasConstraintName("FK_CMS_Tree_NodeGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsTree", "NodeLinkedNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "NodeLinkedNode")
                         .WithMany("InverseNodeLinkedNode")
                         .HasForeignKey("NodeLinkedNodeId")
                         .HasConstraintName("FK_CMS_Tree_NodeLinkedNodeID_CMS_Tree");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "NodeLinkedNodeSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "NodeLinkedNodeSite")
                         .WithMany("CmsTreeNodeLinkedNodeSites")
                         .HasForeignKey("NodeLinkedNodeSiteId")
                         .HasConstraintName("FK_CMS_Tree_NodeLinkedNodeSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsTree", "NodeOriginalNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "NodeOriginalNode")
                         .WithMany("InverseNodeOriginalNode")
                         .HasForeignKey("NodeOriginalNodeId")
                         .HasConstraintName("FK_CMS_Tree_NodeOriginalNodeID_CMS_Tree");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "NodeOwnerNavigation")
+                    b.HasOne("HaveshApp.Model.CmsUser", "NodeOwnerNavigation")
                         .WithMany("CmsTrees")
                         .HasForeignKey("NodeOwner")
                         .HasConstraintName("FK_CMS_Tree_NodeOwner_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsTree", "NodeParent")
+                    b.HasOne("HaveshApp.Model.CmsTree", "NodeParent")
                         .WithMany("InverseNodeParent")
                         .HasForeignKey("NodeParentId")
                         .HasConstraintName("FK_CMS_Tree_NodeParentID_CMS_Tree");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "NodeSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "NodeSite")
                         .WithMany("CmsTreeNodeSites")
                         .HasForeignKey("NodeSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Tree_NodeSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", "NodeSku")
+                    b.HasOne("HaveshApp.Model.ComSku", "NodeSku")
                         .WithMany("CmsTrees")
                         .HasForeignKey("NodeSkuid")
                         .HasConstraintName("FK_CMS_Tree_NodeSKUID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "NodeTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "NodeTemplate")
                         .WithMany("CmsTrees")
                         .HasForeignKey("NodeTemplateId")
                         .HasConstraintName("FK_CMS_Tree_NodeTemplateID_CMS_PageTemplate");
@@ -28886,19 +28886,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("NodeTemplate");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUielement", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUielement", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "ElementPageTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "ElementPageTemplate")
                         .WithMany("CmsUielements")
                         .HasForeignKey("ElementPageTemplateId")
                         .HasConstraintName("FK_CMS_UIElement_ElementPageTemplateID_CMS_PageTemplate");
 
-                    b.HasOne("ShokouhApp.Model.CmsUielement", "ElementParent")
+                    b.HasOne("HaveshApp.Model.CmsUielement", "ElementParent")
                         .WithMany("InverseElementParent")
                         .HasForeignKey("ElementParentId")
                         .HasConstraintName("FK_CMS_UIElement_ElementParentID_CMS_UIElement");
 
-                    b.HasOne("ShokouhApp.Model.CmsResource", "ElementResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "ElementResource")
                         .WithMany("CmsUielements")
                         .HasForeignKey("ElementResourceId")
                         .IsRequired()
@@ -28911,21 +28911,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ElementResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserCulture", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserCulture", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCulture", "Culture")
+                    b.HasOne("HaveshApp.Model.CmsCulture", "Culture")
                         .WithMany("CmsUserCultures")
                         .HasForeignKey("CultureId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserCulture_CultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("CmsUserCultures")
                         .HasForeignKey("SiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserCulture_SiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsUserCultures")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -28938,16 +28938,16 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserMacroIdentity", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserMacroIdentity", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsMacroIdentity", "UserMacroIdentityMacroIdentity")
+                    b.HasOne("HaveshApp.Model.CmsMacroIdentity", "UserMacroIdentityMacroIdentity")
                         .WithMany("CmsUserMacroIdentities")
                         .HasForeignKey("UserMacroIdentityMacroIdentityId")
                         .HasConstraintName("FK_CMS_UserMacroIdentity_UserMacroIdentityMacroIdentityID_CMS_MacroIdentity");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "UserMacroIdentityUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "UserMacroIdentityUser")
                         .WithOne("CmsUserMacroIdentity")
-                        .HasForeignKey("ShokouhApp.Model.CmsUserMacroIdentity", "UserMacroIdentityUserId")
+                        .HasForeignKey("HaveshApp.Model.CmsUserMacroIdentity", "UserMacroIdentityUserId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserMacroIdentity_UserMacroIdentityUserID_CMS_User");
 
@@ -28956,15 +28956,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("UserMacroIdentityUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("CmsUserRoles")
                         .HasForeignKey("RoleId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserRole_RoleID_CMS_Role");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsUserRoles")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -28975,37 +28975,37 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserSetting", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserSetting", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "UserActivatedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "UserActivatedByUser")
                         .WithMany("CmsUserSettingUserActivatedByUsers")
                         .HasForeignKey("UserActivatedByUserId")
                         .HasConstraintName("FK_CMS_UserSettings_UserActivatedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsAvatar", "UserAvatar")
+                    b.HasOne("HaveshApp.Model.CmsAvatar", "UserAvatar")
                         .WithMany("CmsUserSettings")
                         .HasForeignKey("UserAvatarId")
                         .HasConstraintName("FK_CMS_UserSettings_UserAvatarID_CMS_Avatar");
 
-                    b.HasOne("ShokouhApp.Model.CmsBadge", "UserBadge")
+                    b.HasOne("HaveshApp.Model.CmsBadge", "UserBadge")
                         .WithMany("CmsUserSettings")
                         .HasForeignKey("UserBadgeId")
                         .HasConstraintName("FK_CMS_UserSettings_UserBadgeID_CMS_Badge");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "UserSettingsUserGu")
+                    b.HasOne("HaveshApp.Model.CmsUser", "UserSettingsUserGu")
                         .WithMany("CmsUserSettingUserSettingsUserGus")
                         .HasForeignKey("UserSettingsUserGuid")
                         .HasPrincipalKey("UserGuid")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserSettings_UserSettingsUserGUID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "UserSettingsUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "UserSettingsUser")
                         .WithOne("CmsUserSettingUserSettingsUser")
-                        .HasForeignKey("ShokouhApp.Model.CmsUserSetting", "UserSettingsUserId")
+                        .HasForeignKey("HaveshApp.Model.CmsUserSetting", "UserSettingsUserId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserSettings_UserSettingsUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsTimeZone", "UserTimeZone")
+                    b.HasOne("HaveshApp.Model.CmsTimeZone", "UserTimeZone")
                         .WithMany("CmsUserSettings")
                         .HasForeignKey("UserTimeZoneId")
                         .HasConstraintName("FK_CMS_UserSettings_UserTimeZoneID_CMS_TimeZone");
@@ -29023,15 +29023,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("UserTimeZone");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUserSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUserSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("CmsUserSites")
                         .HasForeignKey("SiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_UserSite_SiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsUserSites")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -29042,35 +29042,35 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsVersionHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsVersionHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ModifiedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ModifiedByUser")
                         .WithMany("CmsVersionHistoryModifiedByUsers")
                         .HasForeignKey("ModifiedByUserId")
                         .HasConstraintName("FK_CMS_VersionHistory_ModifiedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "NodeSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "NodeSite")
                         .WithMany("CmsVersionHistories")
                         .HasForeignKey("NodeSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_VersionHistory_NodeSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsClass", "VersionClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "VersionClass")
                         .WithMany("CmsVersionHistories")
                         .HasForeignKey("VersionClassId")
                         .HasConstraintName("FK_CMS_VersionHistory_VersionClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "VersionDeletedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "VersionDeletedByUser")
                         .WithMany("CmsVersionHistoryVersionDeletedByUsers")
                         .HasForeignKey("VersionDeletedByUserId")
                         .HasConstraintName("FK_CMS_VersionHistory_DeletedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "VersionWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "VersionWorkflow")
                         .WithMany("CmsVersionHistories")
                         .HasForeignKey("VersionWorkflowId")
                         .HasConstraintName("FK_CMS_VersionHistory_VersionWorkflowID_CMS_Workflow");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "VersionWorkflowStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "VersionWorkflowStep")
                         .WithMany("CmsVersionHistories")
                         .HasForeignKey("VersionWorkflowStepId")
                         .HasConstraintName("FK_CMS_VersionHistory_VersionWorkflowStepID_CMS_WorkflowStep");
@@ -29088,15 +29088,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("VersionWorkflowStep");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmServerTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmServerTask", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWebFarmServer", "Server")
+                    b.HasOne("HaveshApp.Model.CmsWebFarmServer", "Server")
                         .WithMany("CmsWebFarmServerTasks")
                         .HasForeignKey("ServerId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WebFarmServerTask_ServerID_CMS_WebFarmServer");
 
-                    b.HasOne("ShokouhApp.Model.CmsWebFarmTask", "Task")
+                    b.HasOne("HaveshApp.Model.CmsWebFarmTask", "Task")
                         .WithMany("CmsWebFarmServerTasks")
                         .HasForeignKey("TaskId")
                         .IsRequired()
@@ -29107,20 +29107,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPart", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPart", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWebPartCategory", "WebPartCategory")
+                    b.HasOne("HaveshApp.Model.CmsWebPartCategory", "WebPartCategory")
                         .WithMany("CmsWebParts")
                         .HasForeignKey("WebPartCategoryId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WebPart_WebPartCategoryID_CMS_WebPartCategory");
 
-                    b.HasOne("ShokouhApp.Model.CmsWebPart", "WebPartParent")
+                    b.HasOne("HaveshApp.Model.CmsWebPart", "WebPartParent")
                         .WithMany("InverseWebPartParent")
                         .HasForeignKey("WebPartParentId")
                         .HasConstraintName("FK_CMS_WebPart_WebPartParentID_CMS_WebPart");
 
-                    b.HasOne("ShokouhApp.Model.CmsResource", "WebPartResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "WebPartResource")
                         .WithMany("CmsWebParts")
                         .HasForeignKey("WebPartResourceId")
                         .HasConstraintName("FK_CMS_WebPart_WebPartResourceID_CMS_Resource");
@@ -29132,9 +29132,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("WebPartResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWebPartCategory", "CategoryParent")
+                    b.HasOne("HaveshApp.Model.CmsWebPartCategory", "CategoryParent")
                         .WithMany("InverseCategoryParent")
                         .HasForeignKey("CategoryParentId")
                         .HasConstraintName("FK_CMS_WebPartCategory_CategoryParentID_CMS_WebPartCategory");
@@ -29142,9 +29142,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartLayout", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWebPart", "WebPartLayoutWebPart")
+                    b.HasOne("HaveshApp.Model.CmsWebPart", "WebPartLayoutWebPart")
                         .WithMany("CmsWebPartLayouts")
                         .HasForeignKey("WebPartLayoutWebPartId")
                         .IsRequired()
@@ -29153,20 +29153,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("WebPartLayoutWebPart");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidget", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWidgetCategory", "WidgetCategory")
+                    b.HasOne("HaveshApp.Model.CmsWidgetCategory", "WidgetCategory")
                         .WithMany("CmsWidgets")
                         .HasForeignKey("WidgetCategoryId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_Widget_WidgetCategoryID_CMS_WidgetCategory");
 
-                    b.HasOne("ShokouhApp.Model.CmsWebPartLayout", "WidgetLayout")
+                    b.HasOne("HaveshApp.Model.CmsWebPartLayout", "WidgetLayout")
                         .WithMany("CmsWidgets")
                         .HasForeignKey("WidgetLayoutId")
                         .HasConstraintName("FK_CMS_Widget_WidgetLayoutID_CMS_WebPartLayout");
 
-                    b.HasOne("ShokouhApp.Model.CmsWebPart", "WidgetWebPart")
+                    b.HasOne("HaveshApp.Model.CmsWebPart", "WidgetWebPart")
                         .WithMany("CmsWidgets")
                         .HasForeignKey("WidgetWebPartId")
                         .IsRequired()
@@ -29179,9 +29179,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("WidgetWebPart");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidgetCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidgetCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWidgetCategory", "WidgetCategoryParent")
+                    b.HasOne("HaveshApp.Model.CmsWidgetCategory", "WidgetCategoryParent")
                         .WithMany("InverseWidgetCategoryParent")
                         .HasForeignKey("WidgetCategoryParentId")
                         .HasConstraintName("FK_CMS_WidgetCategory_WidgetCategoryParentID_CMS_WidgetCategory");
@@ -29189,21 +29189,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("WidgetCategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidgetRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidgetRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPermission", "Permission")
+                    b.HasOne("HaveshApp.Model.CmsPermission", "Permission")
                         .WithMany("CmsWidgetRoles")
                         .HasForeignKey("PermissionId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WidgetRole_PermissionID_CMS_Permission");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("CmsWidgetRoles")
                         .HasForeignKey("RoleId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WidgetRole_RoleID_CMS_Role");
 
-                    b.HasOne("ShokouhApp.Model.CmsWidget", "Widget")
+                    b.HasOne("HaveshApp.Model.CmsWidget", "Widget")
                         .WithMany("CmsWidgetRoles")
                         .HasForeignKey("WidgetId")
                         .IsRequired()
@@ -29216,9 +29216,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Widget");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowAction", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowAction", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsResource", "ActionResource")
+                    b.HasOne("HaveshApp.Model.CmsResource", "ActionResource")
                         .WithMany("CmsWorkflowActions")
                         .HasForeignKey("ActionResourceId")
                         .HasConstraintName("FK_CMS_WorkflowAction_ActionResourceID");
@@ -29226,29 +29226,29 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ActionResource");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ApprovedByUser")
                         .WithMany("CmsWorkflowHistories")
                         .HasForeignKey("ApprovedByUserId")
                         .HasConstraintName("FK_CMS_WorkflowHistory_ApprovedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "HistoryWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "HistoryWorkflow")
                         .WithMany("CmsWorkflowHistories")
                         .HasForeignKey("HistoryWorkflowId")
                         .HasConstraintName("FK_CMS_WorkflowHistory_HistoryWorkflowID_CMS_Workflow");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "Step")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "Step")
                         .WithMany("CmsWorkflowHistorySteps")
                         .HasForeignKey("StepId")
                         .HasConstraintName("FK_CMS_WorkflowHistory_StepID_CMS_WorkflowStep");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "TargetStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "TargetStep")
                         .WithMany("CmsWorkflowHistoryTargetSteps")
                         .HasForeignKey("TargetStepId")
                         .HasConstraintName("FK_CMS_WorkflowHistory_TargetStepID_CMS_WorkflowStep");
 
-                    b.HasOne("ShokouhApp.Model.CmsVersionHistory", "VersionHistory")
+                    b.HasOne("HaveshApp.Model.CmsVersionHistory", "VersionHistory")
                         .WithMany("CmsWorkflowHistories")
                         .HasForeignKey("VersionHistoryId")
                         .IsRequired()
@@ -29265,25 +29265,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("VersionHistory");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowScope", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowScope", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsClass", "ScopeClass")
+                    b.HasOne("HaveshApp.Model.CmsClass", "ScopeClass")
                         .WithMany("CmsWorkflowScopes")
                         .HasForeignKey("ScopeClassId")
                         .HasConstraintName("FK_CMS_WorkflowScope_ScopeClassID_CMS_Class");
 
-                    b.HasOne("ShokouhApp.Model.CmsCulture", "ScopeCulture")
+                    b.HasOne("HaveshApp.Model.CmsCulture", "ScopeCulture")
                         .WithMany("CmsWorkflowScopes")
                         .HasForeignKey("ScopeCultureId")
                         .HasConstraintName("FK_CMS_WorkflowScope_ScopeCultureID_CMS_Culture");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ScopeSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ScopeSite")
                         .WithMany("CmsWorkflowScopes")
                         .HasForeignKey("ScopeSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WorkflowScope_ScopeSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "ScopeWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "ScopeWorkflow")
                         .WithMany("CmsWorkflowScopes")
                         .HasForeignKey("ScopeWorkflowId")
                         .IsRequired()
@@ -29298,14 +29298,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ScopeWorkflow");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStep", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStep", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowAction", "StepAction")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowAction", "StepAction")
                         .WithMany("CmsWorkflowSteps")
                         .HasForeignKey("StepActionId")
                         .HasConstraintName("FK_CMS_WorkflowStep_StepActionID");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "StepWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "StepWorkflow")
                         .WithMany("CmsWorkflowSteps")
                         .HasForeignKey("StepWorkflowId")
                         .IsRequired()
@@ -29316,15 +29316,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StepWorkflow");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStepRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStepRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("CmsWorkflowStepRoles")
                         .HasForeignKey("RoleId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WorkflowStepRoles_RoleID_CMS_Role");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "Step")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "Step")
                         .WithMany("CmsWorkflowStepRoles")
                         .HasForeignKey("StepId")
                         .IsRequired()
@@ -29335,15 +29335,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Step");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStepUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStepUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "Step")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "Step")
                         .WithMany("CmsWorkflowStepUsers")
                         .HasForeignKey("StepId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WorkflowStepUser_StepID_CMS_WorkflowStep");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("CmsWorkflowStepUsers")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -29354,21 +29354,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowTransition", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowTransition", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "TransitionEndStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "TransitionEndStep")
                         .WithMany("CmsWorkflowTransitionTransitionEndSteps")
                         .HasForeignKey("TransitionEndStepId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WorkflowTransition_TransitionEndStepID_CMS_WorkflowStep");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflowStep", "TransitionStartStep")
+                    b.HasOne("HaveshApp.Model.CmsWorkflowStep", "TransitionStartStep")
                         .WithMany("CmsWorkflowTransitionTransitionStartSteps")
                         .HasForeignKey("TransitionStartStepId")
                         .IsRequired()
                         .HasConstraintName("FK_CMS_WorkflowTransition_TransitionStartStepID_CMS_WorkflowStep");
 
-                    b.HasOne("ShokouhApp.Model.CmsWorkflow", "TransitionWorkflow")
+                    b.HasOne("HaveshApp.Model.CmsWorkflow", "TransitionWorkflow")
                         .WithMany("CmsWorkflowTransitions")
                         .HasForeignKey("TransitionWorkflowId")
                         .IsRequired()
@@ -29381,21 +29381,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TransitionWorkflow");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComAddress", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComAddress", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCountry", "AddressCountry")
+                    b.HasOne("HaveshApp.Model.CmsCountry", "AddressCountry")
                         .WithMany("ComAddresses")
                         .HasForeignKey("AddressCountryId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Address_AddressCountryID_CMS_Country");
 
-                    b.HasOne("ShokouhApp.Model.ComCustomer", "AddressCustomer")
+                    b.HasOne("HaveshApp.Model.ComCustomer", "AddressCustomer")
                         .WithMany("ComAddresses")
                         .HasForeignKey("AddressCustomerId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Address_AddressCustomerID_COM_Customer");
 
-                    b.HasOne("ShokouhApp.Model.CmsState", "AddressState")
+                    b.HasOne("HaveshApp.Model.CmsState", "AddressState")
                         .WithMany("ComAddresses")
                         .HasForeignKey("AddressStateId")
                         .HasConstraintName("FK_COM_Address_AddressStateID_CMS_State");
@@ -29407,9 +29407,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AddressState");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComBrand", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComBrand", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "BrandSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "BrandSite")
                         .WithMany("ComBrands")
                         .HasForeignKey("BrandSiteId")
                         .IsRequired()
@@ -29418,9 +29418,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("BrandSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCarrier", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCarrier", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CarrierSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CarrierSite")
                         .WithMany("ComCarriers")
                         .HasForeignKey("CarrierSiteId")
                         .IsRequired()
@@ -29429,9 +29429,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CarrierSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCollection", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCollection", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CollectionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CollectionSite")
                         .WithMany("ComCollections")
                         .HasForeignKey("CollectionSiteId")
                         .IsRequired()
@@ -29440,9 +29440,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CollectionSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCouponCode", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComDiscount", "CouponCodeDiscount")
+                    b.HasOne("HaveshApp.Model.ComDiscount", "CouponCodeDiscount")
                         .WithMany("ComCouponCodes")
                         .HasForeignKey("CouponCodeDiscountId")
                         .IsRequired()
@@ -29451,9 +29451,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CouponCodeDiscount");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCurrency", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCurrency", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CurrencySite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CurrencySite")
                         .WithMany("ComCurrencies")
                         .HasForeignKey("CurrencySiteId")
                         .HasConstraintName("FK_COM_Currency_CurrencySiteID_CMS_Site");
@@ -29461,15 +29461,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CurrencySite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCurrencyExchangeRate", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCurrencyExchangeRate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComCurrency", "ExchangeRateToCurrency")
+                    b.HasOne("HaveshApp.Model.ComCurrency", "ExchangeRateToCurrency")
                         .WithMany("ComCurrencyExchangeRates")
                         .HasForeignKey("ExchangeRateToCurrencyId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_CurrencyExchangeRate_ExchangeRateToCurrencyID_COM_Currency");
 
-                    b.HasOne("ShokouhApp.Model.ComExchangeTable", "ExchangeTable")
+                    b.HasOne("HaveshApp.Model.ComExchangeTable", "ExchangeTable")
                         .WithMany("ComCurrencyExchangeRates")
                         .HasForeignKey("ExchangeTableId")
                         .IsRequired()
@@ -29480,14 +29480,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ExchangeTable");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCustomer", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCustomer", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CustomerSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CustomerSite")
                         .WithMany("ComCustomers")
                         .HasForeignKey("CustomerSiteId")
                         .HasConstraintName("FK_COM_Customer_CustomerSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "CustomerUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "CustomerUser")
                         .WithMany("ComCustomers")
                         .HasForeignKey("CustomerUserId")
                         .HasConstraintName("FK_COM_Customer_CustomerUserID_CMS_User");
@@ -29497,15 +29497,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CustomerUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCustomerCreditHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCustomerCreditHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComCustomer", "EventCustomer")
+                    b.HasOne("HaveshApp.Model.ComCustomer", "EventCustomer")
                         .WithMany("ComCustomerCreditHistories")
                         .HasForeignKey("EventCustomerId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_CustomerCreditHistory_EventCustomerID_COM_Customer");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "EventSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "EventSite")
                         .WithMany("ComCustomerCreditHistories")
                         .HasForeignKey("EventSiteId")
                         .HasConstraintName("FK_COM_CustomerCreditHistory_EventSiteID_CMS_Site");
@@ -29515,14 +29515,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("EventSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComDepartment", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComDepartment", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComTaxClass", "DepartmentDefaultTaxClass")
+                    b.HasOne("HaveshApp.Model.ComTaxClass", "DepartmentDefaultTaxClass")
                         .WithMany("ComDepartments")
                         .HasForeignKey("DepartmentDefaultTaxClassId")
                         .HasConstraintName("FK_COM_Department_DepartmentDefaultTaxClassID_COM_TaxClass");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "DepartmentSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "DepartmentSite")
                         .WithMany("ComDepartments")
                         .HasForeignKey("DepartmentSiteId")
                         .HasConstraintName("FK_COM_Department_DepartmentSiteID_CMS_Site");
@@ -29532,9 +29532,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("DepartmentSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComDiscount", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "DiscountSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "DiscountSite")
                         .WithMany("ComDiscounts")
                         .HasForeignKey("DiscountSiteId")
                         .IsRequired()
@@ -29543,9 +29543,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("DiscountSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComExchangeTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComExchangeTable", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ExchangeTableSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ExchangeTableSite")
                         .WithMany("ComExchangeTables")
                         .HasForeignKey("ExchangeTableSiteId")
                         .HasConstraintName("FK_COM_ExchangeTable_ExchangeTableSiteID_CMS_Site");
@@ -29553,9 +29553,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ExchangeTableSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComGiftCard", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComGiftCard", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "GiftCardSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "GiftCardSite")
                         .WithMany("ComGiftCards")
                         .HasForeignKey("GiftCardSiteId")
                         .IsRequired()
@@ -29564,9 +29564,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("GiftCardSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComGiftCardCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComGiftCardCouponCode", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComGiftCard", "GiftCardCouponCodeGiftCard")
+                    b.HasOne("HaveshApp.Model.ComGiftCard", "GiftCardCouponCodeGiftCard")
                         .WithMany("ComGiftCardCouponCodes")
                         .HasForeignKey("GiftCardCouponCodeGiftCardId")
                         .IsRequired()
@@ -29575,9 +29575,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("GiftCardCouponCodeGiftCard");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComInternalStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComInternalStatus", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "InternalStatusSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "InternalStatusSite")
                         .WithMany("ComInternalStatuses")
                         .HasForeignKey("InternalStatusSiteId")
                         .HasConstraintName("FK_COM_InternalStatus_InternalStatusSiteID_CMS_Site");
@@ -29585,9 +29585,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InternalStatusSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComManufacturer", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComManufacturer", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ManufacturerSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ManufacturerSite")
                         .WithMany("ComManufacturers")
                         .HasForeignKey("ManufacturerSiteId")
                         .HasConstraintName("FK_COM_Manufacturer_ManufacturerSiteID_CMS_Site");
@@ -29595,9 +29595,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ManufacturerSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyCouponCode", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComMultiBuyDiscount", "MultiBuyCouponCodeMultiBuyDiscount")
+                    b.HasOne("HaveshApp.Model.ComMultiBuyDiscount", "MultiBuyCouponCodeMultiBuyDiscount")
                         .WithMany("ComMultiBuyCouponCodes")
                         .HasForeignKey("MultiBuyCouponCodeMultiBuyDiscountId")
                         .IsRequired()
@@ -29606,14 +29606,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MultiBuyCouponCodeMultiBuyDiscount");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscount", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSku", "MultiBuyDiscountApplyToSku")
+                    b.HasOne("HaveshApp.Model.ComSku", "MultiBuyDiscountApplyToSku")
                         .WithMany("ComMultiBuyDiscounts")
                         .HasForeignKey("MultiBuyDiscountApplyToSkuid")
                         .HasConstraintName("FK_COM_MultiBuyDiscount_MultiBuyDiscountApplyToSKUID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "MultiBuyDiscountSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "MultiBuyDiscountSite")
                         .WithMany("ComMultiBuyDiscounts")
                         .HasForeignKey("MultiBuyDiscountSiteId")
                         .IsRequired()
@@ -29624,15 +29624,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MultiBuyDiscountSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscountBrand", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscountBrand", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComBrand", "Brand")
+                    b.HasOne("HaveshApp.Model.ComBrand", "Brand")
                         .WithMany("ComMultiBuyDiscountBrands")
                         .HasForeignKey("BrandId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_MultiBuyDiscountBrand_BrandID_COM_Brand");
 
-                    b.HasOne("ShokouhApp.Model.ComMultiBuyDiscount", "MultiBuyDiscount")
+                    b.HasOne("HaveshApp.Model.ComMultiBuyDiscount", "MultiBuyDiscount")
                         .WithMany("ComMultiBuyDiscountBrands")
                         .HasForeignKey("MultiBuyDiscountId")
                         .IsRequired()
@@ -29643,15 +29643,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MultiBuyDiscount");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscountCollection", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscountCollection", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComCollection", "Collection")
+                    b.HasOne("HaveshApp.Model.ComCollection", "Collection")
                         .WithMany("ComMultiBuyDiscountCollections")
                         .HasForeignKey("CollectionId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_MultiBuyDiscountCollection_CollectionID_COM_Collection");
 
-                    b.HasOne("ShokouhApp.Model.ComMultiBuyDiscount", "MultibuyDiscount")
+                    b.HasOne("HaveshApp.Model.ComMultiBuyDiscount", "MultibuyDiscount")
                         .WithMany("ComMultiBuyDiscountCollections")
                         .HasForeignKey("MultibuyDiscountId")
                         .IsRequired()
@@ -29662,15 +29662,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MultibuyDiscount");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscountTree", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscountTree", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComMultiBuyDiscount", "MultiBuyDiscount")
+                    b.HasOne("HaveshApp.Model.ComMultiBuyDiscount", "MultiBuyDiscount")
                         .WithMany("ComMultiBuyDiscountTrees")
                         .HasForeignKey("MultiBuyDiscountId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_MultiBuyDiscountTree_MultiBuyDiscountID_COM_MultiBuyDiscount");
 
-                    b.HasOne("ShokouhApp.Model.CmsTree", "Node")
+                    b.HasOne("HaveshApp.Model.CmsTree", "Node")
                         .WithMany("ComMultiBuyDiscountTrees")
                         .HasForeignKey("NodeId")
                         .IsRequired()
@@ -29681,24 +29681,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Node");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroup", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "GroupApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "GroupApprovedByUser")
                         .WithMany("CommunityGroupGroupApprovedByUsers")
                         .HasForeignKey("GroupApprovedByUserId")
                         .HasConstraintName("FK_Community_Group_GroupApprovedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsAvatar", "GroupAvatar")
+                    b.HasOne("HaveshApp.Model.CmsAvatar", "GroupAvatar")
                         .WithMany("CommunityGroups")
                         .HasForeignKey("GroupAvatarId")
                         .HasConstraintName("FK_Community_Group_GroupAvatarID_CMS_Avatar");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "GroupCreatedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "GroupCreatedByUser")
                         .WithMany("CommunityGroupGroupCreatedByUsers")
                         .HasForeignKey("GroupCreatedByUserId")
                         .HasConstraintName("FK_Community_Group_GroupCreatedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "GroupSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "GroupSite")
                         .WithMany("CommunityGroups")
                         .HasForeignKey("GroupSiteId")
                         .IsRequired()
@@ -29713,25 +29713,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("GroupSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroupMember", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroupMember", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "MemberApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "MemberApprovedByUser")
                         .WithMany("CommunityGroupMemberMemberApprovedByUsers")
                         .HasForeignKey("MemberApprovedByUserId")
                         .HasConstraintName("FK_Community_GroupMember_MemberApprovedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "MemberGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "MemberGroup")
                         .WithMany("CommunityGroupMembers")
                         .HasForeignKey("MemberGroupId")
                         .IsRequired()
                         .HasConstraintName("FK_Community_GroupMember_MemberGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "MemberInvitedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "MemberInvitedByUser")
                         .WithMany("CommunityGroupMemberMemberInvitedByUsers")
                         .HasForeignKey("MemberInvitedByUserId")
                         .HasConstraintName("FK_Community_GroupMember_MemberInvitedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "MemberUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "MemberUser")
                         .WithMany("CommunityGroupMemberMemberUsers")
                         .HasForeignKey("MemberUserId")
                         .IsRequired()
@@ -29746,21 +29746,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MemberUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroupRolePermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroupRolePermission", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "Group")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "Group")
                         .WithMany("CommunityGroupRolePermissions")
                         .HasForeignKey("GroupId")
                         .IsRequired()
                         .HasConstraintName("FK_community_GroupRolePermission_GroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsPermission", "Permission")
+                    b.HasOne("HaveshApp.Model.CmsPermission", "Permission")
                         .WithMany("CommunityGroupRolePermissions")
                         .HasForeignKey("PermissionId")
                         .IsRequired()
                         .HasConstraintName("FK_community_GroupRolePermission_PermissionID_CMS_Permission");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("CommunityGroupRolePermissions")
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -29773,20 +29773,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityInvitation", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityInvitation", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "InvitationGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "InvitationGroup")
                         .WithMany("CommunityInvitations")
                         .HasForeignKey("InvitationGroupId")
                         .HasConstraintName("FK_Community_GroupInvitation_InvitationGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "InvitedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "InvitedByUser")
                         .WithMany("CommunityInvitationInvitedByUsers")
                         .HasForeignKey("InvitedByUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Community_GroupInvitation_InvitedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "InvitedUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "InvitedUser")
                         .WithMany("CommunityInvitationInvitedUsers")
                         .HasForeignKey("InvitedUserId")
                         .HasConstraintName("FK_Community_GroupInvitation_InvitedUserID_CMS_User");
@@ -29798,9 +29798,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InvitedUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOptionCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOptionCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "CategorySite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "CategorySite")
                         .WithMany("ComOptionCategories")
                         .HasForeignKey("CategorySiteId")
                         .HasConstraintName("FK_COM_OptionCategory_CategorySiteID_CMS_Site");
@@ -29808,41 +29808,41 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CategorySite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrder", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrder", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "OrderCreatedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "OrderCreatedByUser")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderCreatedByUserId")
                         .HasConstraintName("FK_COM_Order_OrderCreatedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.ComCurrency", "OrderCurrency")
+                    b.HasOne("HaveshApp.Model.ComCurrency", "OrderCurrency")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderCurrencyId")
                         .HasConstraintName("FK_COM_Order_OrderCurrencyID_COM_Currency");
 
-                    b.HasOne("ShokouhApp.Model.ComCustomer", "OrderCustomer")
+                    b.HasOne("HaveshApp.Model.ComCustomer", "OrderCustomer")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderCustomerId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Order_OrderCustomerID_COM_Customer");
 
-                    b.HasOne("ShokouhApp.Model.ComPaymentOption", "OrderPaymentOption")
+                    b.HasOne("HaveshApp.Model.ComPaymentOption", "OrderPaymentOption")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderPaymentOptionId")
                         .HasConstraintName("FK_COM_Order_OrderPaymentOptionID_COM_PaymentOption");
 
-                    b.HasOne("ShokouhApp.Model.ComShippingOption", "OrderShippingOption")
+                    b.HasOne("HaveshApp.Model.ComShippingOption", "OrderShippingOption")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderShippingOptionId")
                         .HasConstraintName("FK_COM_Order_OrderShippingOptionID_COM_ShippingOption");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "OrderSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "OrderSite")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Order_OrderSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ComOrderStatus", "OrderStatus")
+                    b.HasOne("HaveshApp.Model.ComOrderStatus", "OrderStatus")
                         .WithMany("ComOrders")
                         .HasForeignKey("OrderStatusId")
                         .HasConstraintName("FK_COM_Order_OrderStatusID_COM_Status");
@@ -29862,21 +29862,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OrderStatus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderAddress", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderAddress", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCountry", "AddressCountry")
+                    b.HasOne("HaveshApp.Model.CmsCountry", "AddressCountry")
                         .WithMany("ComOrderAddresses")
                         .HasForeignKey("AddressCountryId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_OrderAddress_AddressCountryID_CMS_Country");
 
-                    b.HasOne("ShokouhApp.Model.ComOrder", "AddressOrder")
+                    b.HasOne("HaveshApp.Model.ComOrder", "AddressOrder")
                         .WithMany("ComOrderAddresses")
                         .HasForeignKey("AddressOrderId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_OrderAddress_AddressOrderID_COM_Order");
 
-                    b.HasOne("ShokouhApp.Model.CmsState", "AddressState")
+                    b.HasOne("HaveshApp.Model.CmsState", "AddressState")
                         .WithMany("ComOrderAddresses")
                         .HasForeignKey("AddressStateId")
                         .HasConstraintName("FK_COM_OrderAddress_AddressStateID_CMS_State");
@@ -29888,15 +29888,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AddressState");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderItem", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderItem", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComOrder", "OrderItemOrder")
+                    b.HasOne("HaveshApp.Model.ComOrder", "OrderItemOrder")
                         .WithMany("ComOrderItems")
                         .HasForeignKey("OrderItemOrderId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_OrderItem_OrderItemOrderID_COM_Order");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", "OrderItemSku")
+                    b.HasOne("HaveshApp.Model.ComSku", "OrderItemSku")
                         .WithMany("ComOrderItems")
                         .HasForeignKey("OrderItemSkuid")
                         .IsRequired()
@@ -29907,15 +29907,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OrderItemSku");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderItemSkufile", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderItemSkufile", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSkufile", "File")
+                    b.HasOne("HaveshApp.Model.ComSkufile", "File")
                         .WithMany("ComOrderItemSkufiles")
                         .HasForeignKey("FileId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_OrderItemSKUFile_COM_SKUFile");
 
-                    b.HasOne("ShokouhApp.Model.ComOrderItem", "OrderItem")
+                    b.HasOne("HaveshApp.Model.ComOrderItem", "OrderItem")
                         .WithMany("ComOrderItemSkufiles")
                         .HasForeignKey("OrderItemId")
                         .IsRequired()
@@ -29926,9 +29926,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OrderItem");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderStatus", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "StatusSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "StatusSite")
                         .WithMany("ComOrderStatuses")
                         .HasForeignKey("StatusSiteId")
                         .HasConstraintName("FK_COM_OrderStatus_StatusSiteID_CMS_Site");
@@ -29936,25 +29936,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StatusSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderStatusUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderStatusUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ChangedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ChangedByUser")
                         .WithMany("ComOrderStatusUsers")
                         .HasForeignKey("ChangedByUserId")
                         .HasConstraintName("FK_COM_OrderStatusUser_ChangedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.ComOrderStatus", "FromStatus")
+                    b.HasOne("HaveshApp.Model.ComOrderStatus", "FromStatus")
                         .WithMany("ComOrderStatusUserFromStatuses")
                         .HasForeignKey("FromStatusId")
                         .HasConstraintName("FK_COM_OrderStatusUser_FromStatusID_COM_Status");
 
-                    b.HasOne("ShokouhApp.Model.ComOrder", "Order")
+                    b.HasOne("HaveshApp.Model.ComOrder", "Order")
                         .WithMany("ComOrderStatusUsers")
                         .HasForeignKey("OrderId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_OrderStatusUser_OrderID_COM_Order");
 
-                    b.HasOne("ShokouhApp.Model.ComOrderStatus", "ToStatus")
+                    b.HasOne("HaveshApp.Model.ComOrderStatus", "ToStatus")
                         .WithMany("ComOrderStatusUserToStatuses")
                         .HasForeignKey("ToStatusId")
                         .IsRequired()
@@ -29969,24 +29969,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ToStatus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComPaymentOption", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComPaymentOption", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComOrderStatus", "PaymentOptionAuthorizedOrderStatus")
+                    b.HasOne("HaveshApp.Model.ComOrderStatus", "PaymentOptionAuthorizedOrderStatus")
                         .WithMany("ComPaymentOptionPaymentOptionAuthorizedOrderStatuses")
                         .HasForeignKey("PaymentOptionAuthorizedOrderStatusId")
                         .HasConstraintName("FK_COM_PaymentOption_PaymentOptionAuthorizedOrderStatusID_COM_OrderStatus");
 
-                    b.HasOne("ShokouhApp.Model.ComOrderStatus", "PaymentOptionFailedOrderStatus")
+                    b.HasOne("HaveshApp.Model.ComOrderStatus", "PaymentOptionFailedOrderStatus")
                         .WithMany("ComPaymentOptionPaymentOptionFailedOrderStatuses")
                         .HasForeignKey("PaymentOptionFailedOrderStatusId")
                         .HasConstraintName("FK_COM_PaymentOption_PaymentOptionFailedOrderStatusID_COM_OrderStatus");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PaymentOptionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PaymentOptionSite")
                         .WithMany("ComPaymentOptions")
                         .HasForeignKey("PaymentOptionSiteId")
                         .HasConstraintName("FK_COM_PaymentOption_PaymentOptionSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ComOrderStatus", "PaymentOptionSucceededOrderStatus")
+                    b.HasOne("HaveshApp.Model.ComOrderStatus", "PaymentOptionSucceededOrderStatus")
                         .WithMany("ComPaymentOptionPaymentOptionSucceededOrderStatuses")
                         .HasForeignKey("PaymentOptionSucceededOrderStatusId")
                         .HasConstraintName("FK_COM_PaymentOption_PaymentOptionSucceededOrderStatusID_COM_OrderStatus");
@@ -30000,9 +30000,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PaymentOptionSucceededOrderStatus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComPublicStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComPublicStatus", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PublicStatusSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PublicStatusSite")
                         .WithMany("ComPublicStatuses")
                         .HasForeignKey("PublicStatusSiteId")
                         .HasConstraintName("FK_COM_PublicStatus_PublicStatusSiteID_CMS_Site");
@@ -30010,9 +30010,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PublicStatusSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShippingCost", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShippingCost", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComShippingOption", "ShippingCostShippingOption")
+                    b.HasOne("HaveshApp.Model.ComShippingOption", "ShippingCostShippingOption")
                         .WithMany("ComShippingCosts")
                         .HasForeignKey("ShippingCostShippingOptionId")
                         .IsRequired()
@@ -30021,19 +30021,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ShippingCostShippingOption");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShippingOption", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShippingOption", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComCarrier", "ShippingOptionCarrier")
+                    b.HasOne("HaveshApp.Model.ComCarrier", "ShippingOptionCarrier")
                         .WithMany("ComShippingOptions")
                         .HasForeignKey("ShippingOptionCarrierId")
                         .HasConstraintName("FK_COM_ShippingOption_ShippingOptionCarrierID_COM_Carrier");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ShippingOptionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ShippingOptionSite")
                         .WithMany("ComShippingOptions")
                         .HasForeignKey("ShippingOptionSiteId")
                         .HasConstraintName("FK_COM_ShippingOption_ShippingOptionSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ComTaxClass", "ShippingOptionTaxClass")
+                    b.HasOne("HaveshApp.Model.ComTaxClass", "ShippingOptionTaxClass")
                         .WithMany("ComShippingOptions")
                         .HasForeignKey("ShippingOptionTaxClassId")
                         .HasConstraintName("FK_COM_ShippingOption_ShippingOptionTaxClassID_COM_TaxClass");
@@ -30045,50 +30045,50 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ShippingOptionTaxClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCart", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCart", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComAddress", "ShoppingCartBillingAddress")
+                    b.HasOne("HaveshApp.Model.ComAddress", "ShoppingCartBillingAddress")
                         .WithMany("ComShoppingCartShoppingCartBillingAddresses")
                         .HasForeignKey("ShoppingCartBillingAddressId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartBillingAddressID_COM_Address");
 
-                    b.HasOne("ShokouhApp.Model.ComAddress", "ShoppingCartCompanyAddress")
+                    b.HasOne("HaveshApp.Model.ComAddress", "ShoppingCartCompanyAddress")
                         .WithMany("ComShoppingCartShoppingCartCompanyAddresses")
                         .HasForeignKey("ShoppingCartCompanyAddressId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartCompanyAddressID_COM_Address");
 
-                    b.HasOne("ShokouhApp.Model.ComCurrency", "ShoppingCartCurrency")
+                    b.HasOne("HaveshApp.Model.ComCurrency", "ShoppingCartCurrency")
                         .WithMany("ComShoppingCarts")
                         .HasForeignKey("ShoppingCartCurrencyId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartCurrencyID_COM_Currency");
 
-                    b.HasOne("ShokouhApp.Model.ComCustomer", "ShoppingCartCustomer")
+                    b.HasOne("HaveshApp.Model.ComCustomer", "ShoppingCartCustomer")
                         .WithMany("ComShoppingCarts")
                         .HasForeignKey("ShoppingCartCustomerId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartCustomerID_COM_Customer");
 
-                    b.HasOne("ShokouhApp.Model.ComPaymentOption", "ShoppingCartPaymentOption")
+                    b.HasOne("HaveshApp.Model.ComPaymentOption", "ShoppingCartPaymentOption")
                         .WithMany("ComShoppingCarts")
                         .HasForeignKey("ShoppingCartPaymentOptionId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartPaymentOptionID_COM_PaymentOption");
 
-                    b.HasOne("ShokouhApp.Model.ComAddress", "ShoppingCartShippingAddress")
+                    b.HasOne("HaveshApp.Model.ComAddress", "ShoppingCartShippingAddress")
                         .WithMany("ComShoppingCartShoppingCartShippingAddresses")
                         .HasForeignKey("ShoppingCartShippingAddressId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartShippingAddressID_COM_Address");
 
-                    b.HasOne("ShokouhApp.Model.ComShippingOption", "ShoppingCartShippingOption")
+                    b.HasOne("HaveshApp.Model.ComShippingOption", "ShoppingCartShippingOption")
                         .WithMany("ComShoppingCarts")
                         .HasForeignKey("ShoppingCartShippingOptionId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartShippingOptionID_COM_ShippingOption");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ShoppingCartSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ShoppingCartSite")
                         .WithMany("ComShoppingCarts")
                         .HasForeignKey("ShoppingCartSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ShoppingCartUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ShoppingCartUser")
                         .WithMany("ComShoppingCarts")
                         .HasForeignKey("ShoppingCartUserId")
                         .HasConstraintName("FK_COM_ShoppingCart_ShoppingCartUserID_CMS_User");
@@ -30112,9 +30112,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ShoppingCartUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCartCouponCode", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCartCouponCode", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComShoppingCart", "ShoppingCart")
+                    b.HasOne("HaveshApp.Model.ComShoppingCart", "ShoppingCart")
                         .WithMany("ComShoppingCartCouponCodes")
                         .HasForeignKey("ShoppingCartId")
                         .IsRequired()
@@ -30123,15 +30123,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ShoppingCart");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCartSku", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCartSku", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComShoppingCart", "ShoppingCart")
+                    b.HasOne("HaveshApp.Model.ComShoppingCart", "ShoppingCart")
                         .WithMany("ComShoppingCartSkus")
                         .HasForeignKey("ShoppingCartId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_ShoppingCartSKU_ShoppingCartID_COM_ShoppingCart");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", "Sku")
+                    b.HasOne("HaveshApp.Model.ComSku", "Sku")
                         .WithMany("ComShoppingCartSkus")
                         .HasForeignKey("Skuid")
                         .IsRequired()
@@ -30142,59 +30142,59 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Sku");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSku", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSku", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComBrand", "Skubrand")
+                    b.HasOne("HaveshApp.Model.ComBrand", "Skubrand")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkubrandId")
                         .HasConstraintName("FK_COM_SKU_SKUBrandID_COM_Brand");
 
-                    b.HasOne("ShokouhApp.Model.ComCollection", "Skucollection")
+                    b.HasOne("HaveshApp.Model.ComCollection", "Skucollection")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkucollectionId")
                         .HasConstraintName("FK_COM_SKU_SKUCollectionID_COM_Collection");
 
-                    b.HasOne("ShokouhApp.Model.ComDepartment", "Skudepartment")
+                    b.HasOne("HaveshApp.Model.ComDepartment", "Skudepartment")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkudepartmentId")
                         .HasConstraintName("FK_COM_SKU_SKUDepartmentID_COM_Department");
 
-                    b.HasOne("ShokouhApp.Model.ComInternalStatus", "SkuinternalStatus")
+                    b.HasOne("HaveshApp.Model.ComInternalStatus", "SkuinternalStatus")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkuinternalStatusId")
                         .HasConstraintName("FK_COM_SKU_SKUInternalStatusID_COM_InternalStatus");
 
-                    b.HasOne("ShokouhApp.Model.ComManufacturer", "Skumanufacturer")
+                    b.HasOne("HaveshApp.Model.ComManufacturer", "Skumanufacturer")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkumanufacturerId")
                         .HasConstraintName("FK_COM_SKU_SKUManufacturerID_COM_Manifacturer");
 
-                    b.HasOne("ShokouhApp.Model.ComOptionCategory", "SkuoptionCategory")
+                    b.HasOne("HaveshApp.Model.ComOptionCategory", "SkuoptionCategory")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkuoptionCategoryId")
                         .HasConstraintName("FK_COM_SKU_SKUOptionCategoryID_COM_OptionCategory");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", "SkuparentSku")
+                    b.HasOne("HaveshApp.Model.ComSku", "SkuparentSku")
                         .WithMany("InverseSkuparentSku")
                         .HasForeignKey("SkuparentSkuid")
                         .HasConstraintName("FK_COM_SKU_SKUParentSKUID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.ComPublicStatus", "SkupublicStatus")
+                    b.HasOne("HaveshApp.Model.ComPublicStatus", "SkupublicStatus")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkupublicStatusId")
                         .HasConstraintName("FK_COM_SKU_SKUPublicStatusID_COM_PublicStatus");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Skusite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Skusite")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkusiteId")
                         .HasConstraintName("FK_COM_SKU_SKUSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ComSupplier", "Skusupplier")
+                    b.HasOne("HaveshApp.Model.ComSupplier", "Skusupplier")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkusupplierId")
                         .HasConstraintName("FK_COM_SKU_SKUSupplierID_COM_Supplier");
 
-                    b.HasOne("ShokouhApp.Model.ComTaxClass", "SkutaxClass")
+                    b.HasOne("HaveshApp.Model.ComTaxClass", "SkutaxClass")
                         .WithMany("ComSkus")
                         .HasForeignKey("SkutaxClassId")
                         .HasConstraintName("FK_COM_SKU_SKUTaxClass_COM_TaxClass");
@@ -30222,9 +30222,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SkutaxClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSkufile", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSkufile", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSku", "FileSku")
+                    b.HasOne("HaveshApp.Model.ComSku", "FileSku")
                         .WithMany("ComSkufiles")
                         .HasForeignKey("FileSkuid")
                         .IsRequired()
@@ -30233,15 +30233,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FileSku");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSkuoptionCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSkuoptionCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComOptionCategory", "Category")
+                    b.HasOne("HaveshApp.Model.ComOptionCategory", "Category")
                         .WithMany("ComSkuoptionCategories")
                         .HasForeignKey("CategoryId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_SKUOptionCategory_CategoryID_COM_OptionCategory");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", "Sku")
+                    b.HasOne("HaveshApp.Model.ComSku", "Sku")
                         .WithMany("ComSkuoptionCategories")
                         .HasForeignKey("Skuid")
                         .IsRequired()
@@ -30252,9 +30252,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Sku");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSupplier", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSupplier", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SupplierSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SupplierSite")
                         .WithMany("ComSuppliers")
                         .HasForeignKey("SupplierSiteId")
                         .HasConstraintName("FK_COM_Supplier_SupplierSiteID_CMS_Site");
@@ -30262,9 +30262,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SupplierSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TaxClassSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TaxClassSite")
                         .WithMany("ComTaxClasses")
                         .HasForeignKey("TaxClassSiteId")
                         .HasConstraintName("FK_COM_TaxClass_TaxClassSiteID_CMS_Site");
@@ -30272,15 +30272,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaxClassSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClassCountry", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClassCountry", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCountry", "Country")
+                    b.HasOne("HaveshApp.Model.CmsCountry", "Country")
                         .WithMany("ComTaxClassCountries")
                         .HasForeignKey("CountryId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_TaxCategoryCountry_CountryID_CMS_Country");
 
-                    b.HasOne("ShokouhApp.Model.ComTaxClass", "TaxClass")
+                    b.HasOne("HaveshApp.Model.ComTaxClass", "TaxClass")
                         .WithMany("ComTaxClassCountries")
                         .HasForeignKey("TaxClassId")
                         .IsRequired()
@@ -30291,15 +30291,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaxClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClassState", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClassState", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsState", "State")
+                    b.HasOne("HaveshApp.Model.CmsState", "State")
                         .WithMany("ComTaxClassStates")
                         .HasForeignKey("StateId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_TaxClassState_StateID_CMS_State");
 
-                    b.HasOne("ShokouhApp.Model.ComTaxClass", "TaxClass")
+                    b.HasOne("HaveshApp.Model.ComTaxClass", "TaxClass")
                         .WithMany("ComTaxClassStates")
                         .HasForeignKey("TaxClassId")
                         .IsRequired()
@@ -30310,9 +30310,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaxClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComVolumeDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComVolumeDiscount", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ComSku", "VolumeDiscountSku")
+                    b.HasOne("HaveshApp.Model.ComSku", "VolumeDiscountSku")
                         .WithMany("ComVolumeDiscounts")
                         .HasForeignKey("VolumeDiscountSkuid")
                         .IsRequired()
@@ -30321,21 +30321,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("VolumeDiscountSku");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComWishlist", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComWishlist", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("ComWishlists")
                         .HasForeignKey("SiteId")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Wishlist_SiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ComSku", "Sku")
+                    b.HasOne("HaveshApp.Model.ComSku", "Sku")
                         .WithMany("ComWishlists")
                         .HasForeignKey("Skuid")
                         .IsRequired()
                         .HasConstraintName("FK_COM_Wishlist_SKUID_COM_SKU");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("ComWishlists")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -30348,9 +30348,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.EventsAttendee", b =>
+            modelBuilder.Entity("HaveshApp.Model.EventsAttendee", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTree", "AttendeeEventNode")
+                    b.HasOne("HaveshApp.Model.CmsTree", "AttendeeEventNode")
                         .WithMany("EventsAttendees")
                         .HasForeignKey("AttendeeEventNodeId")
                         .IsRequired()
@@ -30359,14 +30359,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AttendeeEventNode");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ExportHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ExportHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ExportSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ExportSite")
                         .WithMany("ExportHistories")
                         .HasForeignKey("ExportSiteId")
                         .HasConstraintName("FK_Export_History_ExportSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ExportUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ExportUser")
                         .WithMany("ExportHistories")
                         .HasForeignKey("ExportUserId")
                         .HasConstraintName("FK_Export_History_ExportUserID_CMS_User");
@@ -30376,9 +30376,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ExportUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ExportTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.ExportTask", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TaskSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TaskSite")
                         .WithMany("ExportTasks")
                         .HasForeignKey("TaskSiteId")
                         .HasConstraintName("FK_Export_Task_TaskSiteID_CMS_Site");
@@ -30386,15 +30386,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaskSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsAttachment", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ForumsForumPost", "AttachmentPost")
+                    b.HasOne("HaveshApp.Model.ForumsForumPost", "AttachmentPost")
                         .WithMany("ForumsAttachments")
                         .HasForeignKey("AttachmentPostId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_Attachment_AttachmentPostID_Forums_ForumPost");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AttachmentSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AttachmentSite")
                         .WithMany("ForumsAttachments")
                         .HasForeignKey("AttachmentSiteId")
                         .IsRequired()
@@ -30405,25 +30405,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AttachmentSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForum", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForum", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "ForumCommunityGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "ForumCommunityGroup")
                         .WithMany("ForumsForums")
                         .HasForeignKey("ForumCommunityGroupId")
                         .HasConstraintName("FK_Forums_Forum_ForumCommunityGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "ForumDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "ForumDocument")
                         .WithMany("ForumsForums")
                         .HasForeignKey("ForumDocumentId")
                         .HasConstraintName("FK_Forums_Forum_ForumDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.ForumsForumGroup", "ForumGroup")
+                    b.HasOne("HaveshApp.Model.ForumsForumGroup", "ForumGroup")
                         .WithMany("ForumsForums")
                         .HasForeignKey("ForumGroupId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_Forum_ForumGroupID_Forums_ForumGroup");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ForumSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ForumSite")
                         .WithMany("ForumsForums")
                         .HasForeignKey("ForumSiteId")
                         .IsRequired()
@@ -30438,14 +30438,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ForumSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumGroup", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "GroupGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "GroupGroup")
                         .WithMany("ForumsForumGroups")
                         .HasForeignKey("GroupGroupId")
                         .HasConstraintName("FK_Forums_ForumGroup_GroupGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "GroupSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "GroupSite")
                         .WithMany("ForumsForumGroups")
                         .HasForeignKey("GroupSiteId")
                         .IsRequired()
@@ -30456,25 +30456,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("GroupSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumPost", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "PostApprovedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "PostApprovedByUser")
                         .WithMany("ForumsForumPostPostApprovedByUsers")
                         .HasForeignKey("PostApprovedByUserId")
                         .HasConstraintName("FK_Forums_ForumPost_PostApprovedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.ForumsForum", "PostForum")
+                    b.HasOne("HaveshApp.Model.ForumsForum", "PostForum")
                         .WithMany("ForumsForumPosts")
                         .HasForeignKey("PostForumId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_ForumPost_PostForumID_Forums_Forum");
 
-                    b.HasOne("ShokouhApp.Model.ForumsForumPost", "PostParent")
+                    b.HasOne("HaveshApp.Model.ForumsForumPost", "PostParent")
                         .WithMany("InversePostParent")
                         .HasForeignKey("PostParentId")
                         .HasConstraintName("FK_Forums_ForumPost_PostParentID_Forums_ForumPost");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "PostUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "PostUser")
                         .WithMany("ForumsForumPostPostUsers")
                         .HasForeignKey("PostUserId")
                         .HasConstraintName("FK_Forums_ForumPost_PostUserID_CMS_User");
@@ -30488,21 +30488,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PostUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumRole", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ForumsForum", "Forum")
+                    b.HasOne("HaveshApp.Model.ForumsForum", "Forum")
                         .WithMany("ForumsForumRoles")
                         .HasForeignKey("ForumId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_ForumRoles_ForumID_Forums_Forum");
 
-                    b.HasOne("ShokouhApp.Model.CmsPermission", "Permission")
+                    b.HasOne("HaveshApp.Model.CmsPermission", "Permission")
                         .WithMany("ForumsForumRoles")
                         .HasForeignKey("PermissionId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_ForumRoles_PermissionID_CMS_Permission");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("ForumsForumRoles")
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -30515,20 +30515,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumSubscription", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ForumsForum", "SubscriptionForum")
+                    b.HasOne("HaveshApp.Model.ForumsForum", "SubscriptionForum")
                         .WithMany("ForumsForumSubscriptions")
                         .HasForeignKey("SubscriptionForumId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_ForumSubscription_SubscriptionForumID_Forums_Forum");
 
-                    b.HasOne("ShokouhApp.Model.ForumsForumPost", "SubscriptionPost")
+                    b.HasOne("HaveshApp.Model.ForumsForumPost", "SubscriptionPost")
                         .WithMany("ForumsForumSubscriptions")
                         .HasForeignKey("SubscriptionPostId")
                         .HasConstraintName("FK_Forums_ForumSubscription_SubscriptionPostID_Forums_ForumPost");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SubscriptionUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SubscriptionUser")
                         .WithMany("ForumsForumSubscriptions")
                         .HasForeignKey("SubscriptionUserId")
                         .HasConstraintName("FK_Forums_ForumSubscription_SubscriptionUserID_CMS_User");
@@ -30540,25 +30540,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubscriptionUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsUserFavorite", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsUserFavorite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ForumsForum", "Forum")
+                    b.HasOne("HaveshApp.Model.ForumsForum", "Forum")
                         .WithMany("ForumsUserFavorites")
                         .HasForeignKey("ForumId")
                         .HasConstraintName("FK_Forums_UserFavorites_ForumID_Forums_Forum");
 
-                    b.HasOne("ShokouhApp.Model.ForumsForumPost", "Post")
+                    b.HasOne("HaveshApp.Model.ForumsForumPost", "Post")
                         .WithMany("ForumsUserFavorites")
                         .HasForeignKey("PostId")
                         .HasConstraintName("FK_Forums_UserFavorites_PostID_Forums_ForumPost");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "Site")
+                    b.HasOne("HaveshApp.Model.CmsSite", "Site")
                         .WithMany("ForumsUserFavorites")
                         .HasForeignKey("SiteId")
                         .IsRequired()
                         .HasConstraintName("FK_Forums_UserFavorites_SiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("ForumsUserFavorites")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -30573,15 +30573,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationSynchronization", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationSynchronization", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.IntegrationConnector", "SynchronizationConnector")
+                    b.HasOne("HaveshApp.Model.IntegrationConnector", "SynchronizationConnector")
                         .WithMany("IntegrationSynchronizations")
                         .HasForeignKey("SynchronizationConnectorId")
                         .IsRequired()
                         .HasConstraintName("FK_Integration_Synchronization_SynchronizationConnectorID_Integration_Connector");
 
-                    b.HasOne("ShokouhApp.Model.IntegrationTask", "SynchronizationTask")
+                    b.HasOne("HaveshApp.Model.IntegrationTask", "SynchronizationTask")
                         .WithMany("IntegrationSynchronizations")
                         .HasForeignKey("SynchronizationTaskId")
                         .IsRequired()
@@ -30592,9 +30592,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SynchronizationTask");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationSyncLog", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationSyncLog", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.IntegrationSynchronization", "SyncLogSynchronization")
+                    b.HasOne("HaveshApp.Model.IntegrationSynchronization", "SyncLogSynchronization")
                         .WithMany("IntegrationSyncLogs")
                         .HasForeignKey("SyncLogSynchronizationId")
                         .IsRequired()
@@ -30603,9 +30603,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SyncLogSynchronization");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationTask", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TaskSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TaskSite")
                         .WithMany("IntegrationTasks")
                         .HasForeignKey("TaskSiteId")
                         .HasConstraintName("FK_IntegrationTask_TaskSiteID_CMS_Site");
@@ -30613,25 +30613,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaskSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaFile", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "FileCreatedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "FileCreatedByUser")
                         .WithMany("MediaFileFileCreatedByUsers")
                         .HasForeignKey("FileCreatedByUserId")
                         .HasConstraintName("FK_Media_File_FileCreatedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.MediaLibrary", "FileLibrary")
+                    b.HasOne("HaveshApp.Model.MediaLibrary", "FileLibrary")
                         .WithMany("MediaFiles")
                         .HasForeignKey("FileLibraryId")
                         .IsRequired()
                         .HasConstraintName("FK_Media_File_FileLibraryID_Media_Library");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "FileModifiedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "FileModifiedByUser")
                         .WithMany("MediaFileFileModifiedByUsers")
                         .HasForeignKey("FileModifiedByUserId")
                         .HasConstraintName("FK_Media_File_FileModifiedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "FileSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "FileSite")
                         .WithMany("MediaFiles")
                         .HasForeignKey("FileSiteId")
                         .IsRequired()
@@ -30646,14 +30646,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FileSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaLibrary", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "LibraryGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "LibraryGroup")
                         .WithMany("MediaLibraries")
                         .HasForeignKey("LibraryGroupId")
                         .HasConstraintName("FK_Media_Library_LibraryGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "LibrarySite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "LibrarySite")
                         .WithMany("MediaLibraries")
                         .HasForeignKey("LibrarySiteId")
                         .IsRequired()
@@ -30664,21 +30664,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("LibrarySite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaLibraryRolePermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaLibraryRolePermission", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.MediaLibrary", "Library")
+                    b.HasOne("HaveshApp.Model.MediaLibrary", "Library")
                         .WithMany("MediaLibraryRolePermissions")
                         .HasForeignKey("LibraryId")
                         .IsRequired()
                         .HasConstraintName("FK_Media_LibraryRolePermission_LibraryID_Media_Library");
 
-                    b.HasOne("ShokouhApp.Model.CmsPermission", "Permission")
+                    b.HasOne("HaveshApp.Model.CmsPermission", "Permission")
                         .WithMany("MediaLibraryRolePermissions")
                         .HasForeignKey("PermissionId")
                         .IsRequired()
                         .HasConstraintName("FK_Media_LibraryRolePermission_PermissionID_CMS_Permission");
 
-                    b.HasOne("ShokouhApp.Model.CmsRole", "Role")
+                    b.HasOne("HaveshApp.Model.CmsRole", "Role")
                         .WithMany("MediaLibraryRolePermissions")
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -30691,20 +30691,20 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterAbtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterAbtest", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "TestIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "TestIssue")
                         .WithOne("NewsletterAbtestTestIssue")
-                        .HasForeignKey("ShokouhApp.Model.NewsletterAbtest", "TestIssueId")
+                        .HasForeignKey("HaveshApp.Model.NewsletterAbtest", "TestIssueId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_ABTest_Newsletter_NewsletterIssue");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "TestWinnerIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "TestWinnerIssue")
                         .WithMany("NewsletterAbtestTestWinnerIssues")
                         .HasForeignKey("TestWinnerIssueId")
                         .HasConstraintName("FK_Newsletter_ABTest_TestWinnerIssueID_Newsletter_NewsletterIssue");
 
-                    b.HasOne("ShokouhApp.Model.CmsScheduledTask", "TestWinnerScheduledTask")
+                    b.HasOne("HaveshApp.Model.CmsScheduledTask", "TestWinnerScheduledTask")
                         .WithMany("NewsletterAbtests")
                         .HasForeignKey("TestWinnerScheduledTaskId")
                         .HasConstraintName("FK_Newsletter_ABTest_TestWinnerScheduledTaskID_CMS_ScheduledTask");
@@ -30716,9 +30716,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TestWinnerScheduledTask");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterClickedLink", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterClickedLink", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterLink", "ClickedLinkNewsletterLink")
+                    b.HasOne("HaveshApp.Model.NewsletterLink", "ClickedLinkNewsletterLink")
                         .WithMany("NewsletterClickedLinks")
                         .HasForeignKey("ClickedLinkNewsletterLinkId")
                         .IsRequired()
@@ -30727,21 +30727,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ClickedLinkNewsletterLink");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmail", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmail", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "EmailNewsletterIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "EmailNewsletterIssue")
                         .WithMany("NewsletterEmails")
                         .HasForeignKey("EmailNewsletterIssueId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_Emails_EmailNewsletterIssueID_Newsletter_NewsletterIssue");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "EmailSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "EmailSite")
                         .WithMany("NewsletterEmails")
                         .HasForeignKey("EmailSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_Emails_EmailSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterSubscriber", "EmailSubscriber")
+                    b.HasOne("HaveshApp.Model.NewsletterSubscriber", "EmailSubscriber")
                         .WithMany("NewsletterEmails")
                         .HasForeignKey("EmailSubscriberId")
                         .HasConstraintName("FK_Newsletter_Emails_EmailSubscriberID_Newsletter_Subscriber");
@@ -30753,9 +30753,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("EmailSubscriber");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailTemplate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TemplateSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TemplateSite")
                         .WithMany("NewsletterEmailTemplates")
                         .HasForeignKey("TemplateSiteId")
                         .IsRequired()
@@ -30764,9 +30764,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TemplateSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailWidget", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "EmailWidgetSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "EmailWidgetSite")
                         .WithMany("NewsletterEmailWidgets")
                         .HasForeignKey("EmailWidgetSiteId")
                         .IsRequired()
@@ -30775,15 +30775,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("EmailWidgetSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailWidgetTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailWidgetTemplate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterEmailWidget", "EmailWidget")
+                    b.HasOne("HaveshApp.Model.NewsletterEmailWidget", "EmailWidget")
                         .WithMany("NewsletterEmailWidgetTemplates")
                         .HasForeignKey("EmailWidgetId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_EmailWidgetTemplate_EmailWidgetID_Newsletter_EmailWidget");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterEmailTemplate", "Template")
+                    b.HasOne("HaveshApp.Model.NewsletterEmailTemplate", "Template")
                         .WithMany("NewsletterEmailWidgetTemplates")
                         .HasForeignKey("TemplateId")
                         .IsRequired()
@@ -30794,9 +30794,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Template");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterIssueContactGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterIssueContactGroup", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmContactGroup", "ContactGroup")
+                    b.HasOne("HaveshApp.Model.OmContactGroup", "ContactGroup")
                         .WithMany("NewsletterIssueContactGroups")
                         .HasForeignKey("ContactGroupId")
                         .IsRequired()
@@ -30805,9 +30805,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ContactGroup");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterLink", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterLink", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "LinkIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "LinkIssue")
                         .WithMany("NewsletterLinks")
                         .HasForeignKey("LinkIssueId")
                         .IsRequired()
@@ -30816,25 +30816,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("LinkIssue");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterNewsletter", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterNewsletter", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsScheduledTask", "NewsletterDynamicScheduledTask")
+                    b.HasOne("HaveshApp.Model.CmsScheduledTask", "NewsletterDynamicScheduledTask")
                         .WithMany("NewsletterNewsletters")
                         .HasForeignKey("NewsletterDynamicScheduledTaskId")
                         .HasConstraintName("FK_Newsletter_Newsletter_NewsletterDynamicScheduledTaskID_CMS_ScheduledTask");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterEmailTemplate", "NewsletterOptInTemplate")
+                    b.HasOne("HaveshApp.Model.NewsletterEmailTemplate", "NewsletterOptInTemplate")
                         .WithMany("NewsletterNewsletterNewsletterOptInTemplates")
                         .HasForeignKey("NewsletterOptInTemplateId")
                         .HasConstraintName("FK_Newsletter_Newsletter_NewsletterOptInTemplateID_EmailTemplate");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "NewsletterSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "NewsletterSite")
                         .WithMany("NewsletterNewsletters")
                         .HasForeignKey("NewsletterSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_Newsletter_NewsletterSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterEmailTemplate", "NewsletterUnsubscriptionTemplate")
+                    b.HasOne("HaveshApp.Model.NewsletterEmailTemplate", "NewsletterUnsubscriptionTemplate")
                         .WithMany("NewsletterNewsletterNewsletterUnsubscriptionTemplates")
                         .HasForeignKey("NewsletterUnsubscriptionTemplateId")
                         .IsRequired()
@@ -30849,26 +30849,26 @@ namespace ShokouhApp.Migrations
                     b.Navigation("NewsletterUnsubscriptionTemplate");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterNewsletterIssue", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterNewsletterIssue", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletter", "IssueNewsletter")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletter", "IssueNewsletter")
                         .WithMany("NewsletterNewsletterIssues")
                         .HasForeignKey("IssueNewsletterId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_NewsletterIssue_IssueNewsletterID_Newsletter_Newsletter");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "IssueSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "IssueSite")
                         .WithMany("NewsletterNewsletterIssues")
                         .HasForeignKey("IssueSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_NewsletterIssue_IssueSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterEmailTemplate", "IssueTemplate")
+                    b.HasOne("HaveshApp.Model.NewsletterEmailTemplate", "IssueTemplate")
                         .WithMany("NewsletterNewsletterIssues")
                         .HasForeignKey("IssueTemplateId")
                         .HasConstraintName("FK_Newsletter_NewsletterIssue_IssueTemplateID_Newsletter_EmailTemplate");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "IssueVariantOfIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "IssueVariantOfIssue")
                         .WithMany("InverseIssueVariantOfIssue")
                         .HasForeignKey("IssueVariantOfIssueId")
                         .HasConstraintName("FK_Newsletter_NewsletterIssue_IssueVariantOfIssue_NewsletterIssue");
@@ -30882,9 +30882,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("IssueVariantOfIssue");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterOpenedEmail", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterOpenedEmail", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "OpenedEmailIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "OpenedEmailIssue")
                         .WithMany("NewsletterOpenedEmails")
                         .HasForeignKey("OpenedEmailIssueId")
                         .IsRequired()
@@ -30893,9 +30893,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OpenedEmailIssue");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterSubscriber", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterSubscriber", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SubscriberSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SubscriberSite")
                         .WithMany("NewsletterSubscribers")
                         .HasForeignKey("SubscriberSiteId")
                         .IsRequired()
@@ -30904,15 +30904,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubscriberSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterSubscriberNewsletter", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterSubscriberNewsletter", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletter", "Newsletter")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletter", "Newsletter")
                         .WithMany("NewsletterSubscriberNewsletters")
                         .HasForeignKey("NewsletterId")
                         .IsRequired()
                         .HasConstraintName("FK_Newsletter_SubscriberNewsletter_NewsletterID_Newsletter_Newsletter");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterSubscriber", "Subscriber")
+                    b.HasOne("HaveshApp.Model.NewsletterSubscriber", "Subscriber")
                         .WithMany("NewsletterSubscriberNewsletters")
                         .HasForeignKey("SubscriberId")
                         .IsRequired()
@@ -30923,14 +30923,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Subscriber");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterUnsubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterUnsubscription", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletterIssue", "UnsubscriptionFromIssue")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletterIssue", "UnsubscriptionFromIssue")
                         .WithMany("NewsletterUnsubscriptions")
                         .HasForeignKey("UnsubscriptionFromIssueId")
                         .HasConstraintName("FK_Newsletter_Unsubscription_UnsubscriptionFromIssueID_Newsletter_NewsletterIssue");
 
-                    b.HasOne("ShokouhApp.Model.NewsletterNewsletter", "UnsubscriptionNewsletter")
+                    b.HasOne("HaveshApp.Model.NewsletterNewsletter", "UnsubscriptionNewsletter")
                         .WithMany("NewsletterUnsubscriptions")
                         .HasForeignKey("UnsubscriptionNewsletterId")
                         .HasConstraintName("FK_Newsletter_Unsubscription_UnsubscriptionNewsletterID_Newsletter_Newsletter");
@@ -30940,26 +30940,26 @@ namespace ShokouhApp.Migrations
                     b.Navigation("UnsubscriptionNewsletter");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationSubscription", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NotificationGateway", "SubscriptionGateway")
+                    b.HasOne("HaveshApp.Model.NotificationGateway", "SubscriptionGateway")
                         .WithMany("NotificationSubscriptions")
                         .HasForeignKey("SubscriptionGatewayId")
                         .IsRequired()
                         .HasConstraintName("FK_Notification_Subscription_SubscriptionGatewayID_Notification_Gateway");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SubscriptionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SubscriptionSite")
                         .WithMany("NotificationSubscriptions")
                         .HasForeignKey("SubscriptionSiteId")
                         .HasConstraintName("FK_Notification_Subscription_SubscriptionSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.NotificationTemplate", "SubscriptionTemplate")
+                    b.HasOne("HaveshApp.Model.NotificationTemplate", "SubscriptionTemplate")
                         .WithMany("NotificationSubscriptions")
                         .HasForeignKey("SubscriptionTemplateId")
                         .IsRequired()
                         .HasConstraintName("FK_Notification_Subscription_SubscriptionTemplateID_Notification_Template");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SubscriptionUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SubscriptionUser")
                         .WithMany("NotificationSubscriptions")
                         .HasForeignKey("SubscriptionUserId")
                         .IsRequired()
@@ -30974,9 +30974,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SubscriptionUser");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationTemplate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TemplateSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TemplateSite")
                         .WithMany("NotificationTemplates")
                         .HasForeignKey("TemplateSiteId")
                         .HasConstraintName("FK_Notification_Template_TemplateSiteID_CMS_Site");
@@ -30984,15 +30984,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TemplateSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationTemplateText", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationTemplateText", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.NotificationGateway", "Gateway")
+                    b.HasOne("HaveshApp.Model.NotificationGateway", "Gateway")
                         .WithMany("NotificationTemplateTexts")
                         .HasForeignKey("GatewayId")
                         .IsRequired()
                         .HasConstraintName("FK_Notification_TemplateText_GatewayID_Notification_Gateway");
 
-                    b.HasOne("ShokouhApp.Model.NotificationTemplate", "Template")
+                    b.HasOne("HaveshApp.Model.NotificationTemplate", "Template")
                         .WithMany("NotificationTemplateTexts")
                         .HasForeignKey("TemplateId")
                         .IsRequired()
@@ -31003,9 +31003,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Template");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbtest", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AbtestSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AbtestSite")
                         .WithMany("OmAbtests")
                         .HasForeignKey("AbtestSiteId")
                         .IsRequired()
@@ -31014,15 +31014,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AbtestSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbvariant", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbvariant", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "AbvariantSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "AbvariantSite")
                         .WithMany("OmAbvariants")
                         .HasForeignKey("AbvariantSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_OM_ABVariant_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.OmAbtest", "AbvariantTest")
+                    b.HasOne("HaveshApp.Model.OmAbtest", "AbvariantTest")
                         .WithMany("OmAbvariants")
                         .HasForeignKey("AbvariantTestId")
                         .IsRequired()
@@ -31033,9 +31033,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AbvariantTest");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbvariantDatum", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbvariantDatum", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmAbtest", "AbvariantTest")
+                    b.HasOne("HaveshApp.Model.OmAbtest", "AbvariantTest")
                         .WithMany("OmAbvariantData")
                         .HasForeignKey("AbvariantTestId")
                         .IsRequired()
@@ -31044,39 +31044,39 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AbvariantTest");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccount", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCountry", "AccountCountry")
+                    b.HasOne("HaveshApp.Model.CmsCountry", "AccountCountry")
                         .WithMany("OmAccounts")
                         .HasForeignKey("AccountCountryId")
                         .HasConstraintName("FK_OM_Account_CMS_Country");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "AccountOwnerUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "AccountOwnerUser")
                         .WithMany("OmAccounts")
                         .HasForeignKey("AccountOwnerUserId")
                         .HasConstraintName("FK_OM_Account_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.OmContact", "AccountPrimaryContact")
+                    b.HasOne("HaveshApp.Model.OmContact", "AccountPrimaryContact")
                         .WithMany("OmAccountAccountPrimaryContacts")
                         .HasForeignKey("AccountPrimaryContactId")
                         .HasConstraintName("FK_OM_Account_OM_Contact_PrimaryContact");
 
-                    b.HasOne("ShokouhApp.Model.OmContact", "AccountSecondaryContact")
+                    b.HasOne("HaveshApp.Model.OmContact", "AccountSecondaryContact")
                         .WithMany("OmAccountAccountSecondaryContacts")
                         .HasForeignKey("AccountSecondaryContactId")
                         .HasConstraintName("FK_OM_Account_OM_Contact_SecondaryContact");
 
-                    b.HasOne("ShokouhApp.Model.CmsState", "AccountState")
+                    b.HasOne("HaveshApp.Model.CmsState", "AccountState")
                         .WithMany("OmAccounts")
                         .HasForeignKey("AccountStateId")
                         .HasConstraintName("FK_OM_Account_CMS_State");
 
-                    b.HasOne("ShokouhApp.Model.OmAccountStatus", "AccountStatus")
+                    b.HasOne("HaveshApp.Model.OmAccountStatus", "AccountStatus")
                         .WithMany("OmAccounts")
                         .HasForeignKey("AccountStatusId")
                         .HasConstraintName("FK_OM_Account_OM_AccountStatus");
 
-                    b.HasOne("ShokouhApp.Model.OmAccount", "AccountSubsidiaryOf")
+                    b.HasOne("HaveshApp.Model.OmAccount", "AccountSubsidiaryOf")
                         .WithMany("InverseAccountSubsidiaryOf")
                         .HasForeignKey("AccountSubsidiaryOfId")
                         .HasConstraintName("FK_OM_Account_OM_Account_SubsidiaryOf");
@@ -31096,21 +31096,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AccountSubsidiaryOf");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccountContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccountContact", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmAccount", "Account")
+                    b.HasOne("HaveshApp.Model.OmAccount", "Account")
                         .WithMany("OmAccountContacts")
                         .HasForeignKey("AccountId")
                         .IsRequired()
                         .HasConstraintName("FK_OM_AccountContact_OM_Account");
 
-                    b.HasOne("ShokouhApp.Model.OmContact", "Contact")
+                    b.HasOne("HaveshApp.Model.OmContact", "Contact")
                         .WithMany("OmAccountContacts")
                         .HasForeignKey("ContactId")
                         .IsRequired()
                         .HasConstraintName("FK_OM_AccountContact_OM_Contact");
 
-                    b.HasOne("ShokouhApp.Model.OmContactRole", "ContactRole")
+                    b.HasOne("HaveshApp.Model.OmContactRole", "ContactRole")
                         .WithMany("OmAccountContacts")
                         .HasForeignKey("ContactRoleId")
                         .HasConstraintName("FK_OM_AccountContact_OM_ContactRole");
@@ -31122,24 +31122,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ContactRole");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContact", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsCountry", "ContactCountry")
+                    b.HasOne("HaveshApp.Model.CmsCountry", "ContactCountry")
                         .WithMany("OmContacts")
                         .HasForeignKey("ContactCountryId")
                         .HasConstraintName("FK_OM_Contact_CMS_Country");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ContactOwnerUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ContactOwnerUser")
                         .WithMany("OmContacts")
                         .HasForeignKey("ContactOwnerUserId")
                         .HasConstraintName("FK_OM_Contact_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.CmsState", "ContactState")
+                    b.HasOne("HaveshApp.Model.CmsState", "ContactState")
                         .WithMany("OmContacts")
                         .HasForeignKey("ContactStateId")
                         .HasConstraintName("FK_OM_Contact_CMS_State");
 
-                    b.HasOne("ShokouhApp.Model.OmContactStatus", "ContactStatus")
+                    b.HasOne("HaveshApp.Model.OmContactStatus", "ContactStatus")
                         .WithMany("OmContacts")
                         .HasForeignKey("ContactStatusId")
                         .HasConstraintName("FK_OM_Contact_OM_ContactStatus");
@@ -31153,9 +31153,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ContactStatus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactGroupMember", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactGroupMember", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmContactGroup", "ContactGroupMemberContactGroup")
+                    b.HasOne("HaveshApp.Model.OmContactGroup", "ContactGroupMemberContactGroup")
                         .WithMany("OmContactGroupMembers")
                         .HasForeignKey("ContactGroupMemberContactGroupId")
                         .IsRequired()
@@ -31164,9 +31164,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ContactGroupMemberContactGroup");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMembership", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMembership", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmContact", "Contact")
+                    b.HasOne("HaveshApp.Model.OmContact", "Contact")
                         .WithMany("OmMemberships")
                         .HasForeignKey("ContactId")
                         .IsRequired()
@@ -31175,9 +31175,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Contact");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMvtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMvtest", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "MvtestSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "MvtestSite")
                         .WithMany("OmMvtests")
                         .HasForeignKey("MvtestSiteId")
                         .IsRequired()
@@ -31186,9 +31186,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MvtestSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmMvtvariant", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmMvtvariant", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "MvtvariantPageTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "MvtvariantPageTemplate")
                         .WithMany("OmMvtvariants")
                         .HasForeignKey("MvtvariantPageTemplateId")
                         .IsRequired()
@@ -31197,14 +31197,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MvtvariantPageTemplate");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmPersonalizationVariant", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmPersonalizationVariant", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsDocument", "VariantDocument")
+                    b.HasOne("HaveshApp.Model.CmsDocument", "VariantDocument")
                         .WithMany("OmPersonalizationVariants")
                         .HasForeignKey("VariantDocumentId")
                         .HasConstraintName("FK_OM_PersonalizationVariant_VariantDocumentID_CMS_Document");
 
-                    b.HasOne("ShokouhApp.Model.CmsPageTemplate", "VariantPageTemplate")
+                    b.HasOne("HaveshApp.Model.CmsPageTemplate", "VariantPageTemplate")
                         .WithMany("OmPersonalizationVariants")
                         .HasForeignKey("VariantPageTemplateId")
                         .IsRequired()
@@ -31215,9 +31215,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("VariantPageTemplate");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmRule", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmRule", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmScore", "RuleScore")
+                    b.HasOne("HaveshApp.Model.OmScore", "RuleScore")
                         .WithMany("OmRules")
                         .HasForeignKey("RuleScoreId")
                         .IsRequired()
@@ -31226,21 +31226,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("RuleScore");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmScoreContactRule", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmScoreContactRule", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmContact", "Contact")
+                    b.HasOne("HaveshApp.Model.OmContact", "Contact")
                         .WithMany("OmScoreContactRules")
                         .HasForeignKey("ContactId")
                         .IsRequired()
                         .HasConstraintName("FK_OM_ScoreContactRule_OM_Contact");
 
-                    b.HasOne("ShokouhApp.Model.OmRule", "Rule")
+                    b.HasOne("HaveshApp.Model.OmRule", "Rule")
                         .WithMany("OmScoreContactRules")
                         .HasForeignKey("RuleId")
                         .IsRequired()
                         .HasConstraintName("FK_OM_ScoreContactRule_OM_Rule");
 
-                    b.HasOne("ShokouhApp.Model.OmScore", "Score")
+                    b.HasOne("HaveshApp.Model.OmScore", "Score")
                         .WithMany("OmScoreContactRules")
                         .HasForeignKey("ScoreId")
                         .IsRequired()
@@ -31253,9 +31253,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Score");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmVisitorToContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmVisitorToContact", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.OmContact", "VisitorToContactContact")
+                    b.HasOne("HaveshApp.Model.OmContact", "VisitorToContactContact")
                         .WithMany("OmVisitorToContacts")
                         .HasForeignKey("VisitorToContactContactId")
                         .IsRequired()
@@ -31264,9 +31264,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("VisitorToContactContact");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PersonasPersonaContactHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.PersonasPersonaContactHistory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.PersonasPersona", "PersonaContactHistoryPersona")
+                    b.HasOne("HaveshApp.Model.PersonasPersona", "PersonaContactHistoryPersona")
                         .WithMany("PersonasPersonaContactHistories")
                         .HasForeignKey("PersonaContactHistoryPersonaId")
                         .HasConstraintName("FK_Personas_PersonaContactHistory_Personas_Persona");
@@ -31274,9 +31274,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PersonaContactHistoryPersona");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PersonasPersonaNode", b =>
+            modelBuilder.Entity("HaveshApp.Model.PersonasPersonaNode", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsTree", "Node")
+                    b.HasOne("HaveshApp.Model.CmsTree", "Node")
                         .WithMany("PersonasPersonaNodes")
                         .HasForeignKey("NodeId")
                         .IsRequired()
@@ -31285,14 +31285,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Node");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PollsPoll", b =>
+            modelBuilder.Entity("HaveshApp.Model.PollsPoll", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CommunityGroup", "PollGroup")
+                    b.HasOne("HaveshApp.Model.CommunityGroup", "PollGroup")
                         .WithMany("PollsPolls")
                         .HasForeignKey("PollGroupId")
                         .HasConstraintName("FK_Polls_Poll_PollGroupID_Community_Group");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "PollSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "PollSite")
                         .WithMany("PollsPolls")
                         .HasForeignKey("PollSiteId")
                         .HasConstraintName("FK_Polls_Poll_PollSiteID_CMS_Site");
@@ -31302,9 +31302,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PollSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PollsPollAnswer", b =>
+            modelBuilder.Entity("HaveshApp.Model.PollsPollAnswer", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.PollsPoll", "AnswerPoll")
+                    b.HasOne("HaveshApp.Model.PollsPoll", "AnswerPoll")
                         .WithMany("PollsPollAnswers")
                         .HasForeignKey("AnswerPollId")
                         .IsRequired()
@@ -31313,9 +31313,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AnswerPoll");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReport", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingReportCategory", "ReportCategory")
+                    b.HasOne("HaveshApp.Model.ReportingReportCategory", "ReportCategory")
                         .WithMany("ReportingReports")
                         .HasForeignKey("ReportCategoryId")
                         .IsRequired()
@@ -31324,9 +31324,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ReportCategory");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportCategory", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingReportCategory", "CategoryParent")
+                    b.HasOne("HaveshApp.Model.ReportingReportCategory", "CategoryParent")
                         .WithMany("InverseCategoryParent")
                         .HasForeignKey("CategoryParentId")
                         .HasConstraintName("FK_Reporting_ReportCategory_CategoryID_Reporting_ReportCategory_ParentCategoryID");
@@ -31334,9 +31334,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportGraph", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportGraph", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingReport", "GraphReport")
+                    b.HasOne("HaveshApp.Model.ReportingReport", "GraphReport")
                         .WithMany("ReportingReportGraphs")
                         .HasForeignKey("GraphReportId")
                         .IsRequired()
@@ -31345,37 +31345,37 @@ namespace ShokouhApp.Migrations
                     b.Navigation("GraphReport");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportSubscription", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportSubscription", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingReportGraph", "ReportSubscriptionGraph")
+                    b.HasOne("HaveshApp.Model.ReportingReportGraph", "ReportSubscriptionGraph")
                         .WithMany("ReportingReportSubscriptions")
                         .HasForeignKey("ReportSubscriptionGraphId")
                         .HasConstraintName("FK_Reporting_ReportSubscription_ReportSubscriptionGraphID_Reporting_ReportGraph");
 
-                    b.HasOne("ShokouhApp.Model.ReportingReport", "ReportSubscriptionReport")
+                    b.HasOne("HaveshApp.Model.ReportingReport", "ReportSubscriptionReport")
                         .WithMany("ReportingReportSubscriptions")
                         .HasForeignKey("ReportSubscriptionReportId")
                         .IsRequired()
                         .HasConstraintName("FK_Reporting_ReportSubscription_ReportSubscriptionReportID_Reporting_Report");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ReportSubscriptionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ReportSubscriptionSite")
                         .WithMany("ReportingReportSubscriptions")
                         .HasForeignKey("ReportSubscriptionSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_Reporting_ReportSubscription_ReportSubscriptionSiteID_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.ReportingReportTable", "ReportSubscriptionTable")
+                    b.HasOne("HaveshApp.Model.ReportingReportTable", "ReportSubscriptionTable")
                         .WithMany("ReportingReportSubscriptions")
                         .HasForeignKey("ReportSubscriptionTableId")
                         .HasConstraintName("FK_Reporting_ReportSubscription_ReportSubscriptionTableID_Reporting_ReportTable");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "ReportSubscriptionUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "ReportSubscriptionUser")
                         .WithMany("ReportingReportSubscriptions")
                         .HasForeignKey("ReportSubscriptionUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Reporting_ReportSubscription_ReportSubscriptionUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.ReportingReportValue", "ReportSubscriptionValue")
+                    b.HasOne("HaveshApp.Model.ReportingReportValue", "ReportSubscriptionValue")
                         .WithMany("ReportingReportSubscriptions")
                         .HasForeignKey("ReportSubscriptionValueId")
                         .HasConstraintName("FK_Reporting_ReportSubscription_ReportSubscriptionValueID_Reporting_ReportValue");
@@ -31393,9 +31393,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ReportSubscriptionValue");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportTable", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingReport", "TableReport")
+                    b.HasOne("HaveshApp.Model.ReportingReport", "TableReport")
                         .WithMany("ReportingReportTables")
                         .HasForeignKey("TableReportId")
                         .IsRequired()
@@ -31404,9 +31404,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TableReport");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportValue", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportValue", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingReport", "ValueReport")
+                    b.HasOne("HaveshApp.Model.ReportingReport", "ValueReport")
                         .WithMany("ReportingReportValues")
                         .HasForeignKey("ValueReportId")
                         .IsRequired()
@@ -31415,9 +31415,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ValueReport");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingSavedGraph", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingSavedGraph", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ReportingSavedReport", "SavedGraphSavedReport")
+                    b.HasOne("HaveshApp.Model.ReportingSavedReport", "SavedGraphSavedReport")
                         .WithMany("ReportingSavedGraphs")
                         .HasForeignKey("SavedGraphSavedReportId")
                         .IsRequired()
@@ -31426,14 +31426,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SavedGraphSavedReport");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingSavedReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingSavedReport", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsUser", "SavedReportCreatedByUser")
+                    b.HasOne("HaveshApp.Model.CmsUser", "SavedReportCreatedByUser")
                         .WithMany("ReportingSavedReports")
                         .HasForeignKey("SavedReportCreatedByUserId")
                         .HasConstraintName("FK_Reporting_SavedReport_SavedReportCreatedByUserID_CMS_User");
 
-                    b.HasOne("ShokouhApp.Model.ReportingReport", "SavedReportReport")
+                    b.HasOne("HaveshApp.Model.ReportingReport", "SavedReportReport")
                         .WithMany("ReportingSavedReports")
                         .HasForeignKey("SavedReportReportId")
                         .IsRequired()
@@ -31444,9 +31444,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SavedReportReport");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointConnection", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointConnection", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SharePointConnectionSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SharePointConnectionSite")
                         .WithMany("SharePointSharePointConnections")
                         .HasForeignKey("SharePointConnectionSiteId")
                         .IsRequired()
@@ -31455,15 +31455,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SharePointConnectionSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointFile", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointFile", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SharePointSharePointLibrary", "SharePointFileSharePointLibrary")
+                    b.HasOne("HaveshApp.Model.SharePointSharePointLibrary", "SharePointFileSharePointLibrary")
                         .WithMany("SharePointSharePointFiles")
                         .HasForeignKey("SharePointFileSharePointLibraryId")
                         .IsRequired()
                         .HasConstraintName("FK_SharePoint_SharePointFile_SharePoint_SharePointLibrary");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SharePointFileSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SharePointFileSite")
                         .WithMany("SharePointSharePointFiles")
                         .HasForeignKey("SharePointFileSiteId")
                         .IsRequired()
@@ -31474,14 +31474,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SharePointFileSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointLibrary", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SharePointSharePointConnection", "SharePointLibrarySharePointConnection")
+                    b.HasOne("HaveshApp.Model.SharePointSharePointConnection", "SharePointLibrarySharePointConnection")
                         .WithMany("SharePointSharePointLibraries")
                         .HasForeignKey("SharePointLibrarySharePointConnectionId")
                         .HasConstraintName("FK_SharePoint_SharePointLibrary_SharePoint_SharePointConnection");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "SharePointLibrarySite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "SharePointLibrarySite")
                         .WithMany("SharePointSharePointLibraries")
                         .HasForeignKey("SharePointLibrarySiteId")
                         .IsRequired()
@@ -31492,21 +31492,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SharePointLibrarySite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisDailyJv", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisDailyJv", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisStudentClass", "Student")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisStudentClass", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTermClass", "Term")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTermClass", "Term")
                         .WithMany()
                         .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTimeTable", "TimeTable")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTimeTable", "TimeTable")
                         .WithMany()
                         .HasForeignKey("TimeTableFk");
 
@@ -31517,15 +31517,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TimeTable");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisDaySession", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisDaySession", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisInterval", "Interval")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisInterval", "Interval")
                         .WithMany()
                         .HasForeignKey("IntervalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisWeekDay", "WeekDay")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisWeekDay", "WeekDay")
                         .WithMany()
                         .HasForeignKey("WeekdayId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31536,18 +31536,18 @@ namespace ShokouhApp.Migrations
                     b.Navigation("WeekDay");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisJvfromSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisJvfromSite", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisFileAttachment", "FileAttachment")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisFileAttachment", "FileAttachment")
                         .WithMany()
                         .HasForeignKey("AttachmentFk");
 
                     b.Navigation("FileAttachment");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisLessonPlan", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisLessonPlan", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisLevelClass", "Level")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisLevelClass", "Level")
                         .WithMany()
                         .HasForeignKey("LevelFk")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31556,15 +31556,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Level");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisLevelBookPrice", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisLevelBookPrice", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisLevelClass", "Level")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisLevelClass", "Level")
                         .WithMany()
                         .HasForeignKey("LevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTermClass", "Term")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTermClass", "Term")
                         .WithMany()
                         .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31575,24 +31575,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Term");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisLevelClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisLevelClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisLevelClass", "LevelClass")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisLevelClass", "LevelClass")
                         .WithMany()
                         .HasForeignKey("NextLevelFk");
 
                     b.Navigation("LevelClass");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisProgram", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisProgram", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisDaySession", "DaySession")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisDaySession", "DaySession")
                         .WithMany()
                         .HasForeignKey("DaysessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisSchedule", "Schedule")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisSchedule", "Schedule")
                         .WithMany("Programs")
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31603,15 +31603,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Schedule");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTeacherTermClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTeacherTermClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTeacherClass", "Teacher")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTeacherClass", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTermClass", "Term")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTermClass", "Term")
                         .WithMany()
                         .HasForeignKey("TermFk")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31622,27 +31622,27 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Term");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTeacherTimeSheet", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTeacherTimeSheet", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisInterval", "Interval")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisInterval", "Interval")
                         .WithMany()
                         .HasForeignKey("IntervalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTeacherClass", "Teacher")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTeacherClass", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTermClass", "Term")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTermClass", "Term")
                         .WithMany()
                         .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisWeekDay", "WeekDay")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisWeekDay", "WeekDay")
                         .WithMany()
                         .HasForeignKey("WeekDayId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31657,9 +31657,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("WeekDay");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTermClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTermClass", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisYearClass", "Year")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisYearClass", "Year")
                         .WithMany("Terms")
                         .HasForeignKey("YearId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31668,33 +31668,33 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Year");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTimeTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTimeTable", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisClassRoom", "ClassRoom")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisClassRoom", "ClassRoom")
                         .WithMany()
                         .HasForeignKey("ClassRoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisLevelClass", "Level")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisLevelClass", "Level")
                         .WithMany()
                         .HasForeignKey("LevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisSchedule", "Schedule")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisSchedule", "Schedule")
                         .WithMany()
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTeacherClass", "Teacher")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTeacherClass", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTermClass", "Term")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTermClass", "Term")
                         .WithMany()
                         .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31711,15 +31711,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Term");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTimeTableStudent", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTimeTableStudent", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisStudentClass", "Student")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisStudentClass", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTimeTable", "TimeTable")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTimeTable", "TimeTable")
                         .WithMany()
                         .HasForeignKey("TimeTableId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -31730,15 +31730,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TimeTable");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookAccount", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SmFacebookApplication", "FacebookAccountFacebookApplication")
+                    b.HasOne("HaveshApp.Model.SmFacebookApplication", "FacebookAccountFacebookApplication")
                         .WithMany("SmFacebookAccounts")
                         .HasForeignKey("FacebookAccountFacebookApplicationId")
                         .IsRequired()
                         .HasConstraintName("FK_SM_FacebookAccount_SM_FacebookApplication");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "FacebookAccountSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "FacebookAccountSite")
                         .WithMany("SmFacebookAccounts")
                         .HasForeignKey("FacebookAccountSiteId")
                         .IsRequired()
@@ -31749,9 +31749,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FacebookAccountSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookApplication", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "FacebookApplicationSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "FacebookApplicationSite")
                         .WithMany("SmFacebookApplications")
                         .HasForeignKey("FacebookApplicationSiteId")
                         .IsRequired()
@@ -31760,19 +31760,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FacebookApplicationSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookPost", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaign", "FacebookPostCampaign")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaign", "FacebookPostCampaign")
                         .WithMany("SmFacebookPosts")
                         .HasForeignKey("FacebookPostCampaignId");
 
-                    b.HasOne("ShokouhApp.Model.SmFacebookAccount", "FacebookPostFacebookAccount")
+                    b.HasOne("HaveshApp.Model.SmFacebookAccount", "FacebookPostFacebookAccount")
                         .WithMany("SmFacebookPosts")
                         .HasForeignKey("FacebookPostFacebookAccountId")
                         .IsRequired()
                         .HasConstraintName("FK_SM_FacebookPost_SM_FacebookAccount");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "FacebookPostSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "FacebookPostSite")
                         .WithMany("SmFacebookPosts")
                         .HasForeignKey("FacebookPostSiteId")
                         .IsRequired()
@@ -31785,9 +31785,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("FacebookPostSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitDay", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitDay", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SmInsight", "InsightHitInsight")
+                    b.HasOne("HaveshApp.Model.SmInsight", "InsightHitInsight")
                         .WithMany("SmInsightHitDays")
                         .HasForeignKey("InsightHitInsightId")
                         .IsRequired();
@@ -31795,9 +31795,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InsightHitInsight");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitMonth", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitMonth", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SmInsight", "InsightHitInsight")
+                    b.HasOne("HaveshApp.Model.SmInsight", "InsightHitInsight")
                         .WithMany("SmInsightHitMonths")
                         .HasForeignKey("InsightHitInsightId")
                         .IsRequired();
@@ -31805,9 +31805,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InsightHitInsight");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitWeek", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitWeek", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SmInsight", "InsightHitInsight")
+                    b.HasOne("HaveshApp.Model.SmInsight", "InsightHitInsight")
                         .WithMany("SmInsightHitWeeks")
                         .HasForeignKey("InsightHitInsightId")
                         .IsRequired();
@@ -31815,9 +31815,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InsightHitInsight");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsightHitYear", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsightHitYear", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SmInsight", "InsightHitInsight")
+                    b.HasOne("HaveshApp.Model.SmInsight", "InsightHitInsight")
                         .WithMany("SmInsightHitYears")
                         .HasForeignKey("InsightHitInsightId")
                         .IsRequired();
@@ -31825,9 +31825,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InsightHitInsight");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmLinkedInApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmLinkedInApplication", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "LinkedInApplicationSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "LinkedInApplicationSite")
                         .WithMany("SmLinkedInApplications")
                         .HasForeignKey("LinkedInApplicationSiteId")
                         .IsRequired()
@@ -31836,19 +31836,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("LinkedInApplicationSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmLinkedInPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmLinkedInPost", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaign", "LinkedInPostCampaign")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaign", "LinkedInPostCampaign")
                         .WithMany("SmLinkedInPosts")
                         .HasForeignKey("LinkedInPostCampaignId");
 
-                    b.HasOne("ShokouhApp.Model.SmLinkedInAccount", "LinkedInPostLinkedInAccount")
+                    b.HasOne("HaveshApp.Model.SmLinkedInAccount", "LinkedInPostLinkedInAccount")
                         .WithMany("SmLinkedInPosts")
                         .HasForeignKey("LinkedInPostLinkedInAccountId")
                         .IsRequired()
                         .HasConstraintName("FK_SM_LinkedInPost_SM_LinkedInAccount");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "LinkedInPostSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "LinkedInPostSite")
                         .WithMany("SmLinkedInPosts")
                         .HasForeignKey("LinkedInPostSiteId")
                         .IsRequired()
@@ -31861,15 +31861,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("LinkedInPostSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterAccount", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TwitterAccountSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TwitterAccountSite")
                         .WithMany("SmTwitterAccounts")
                         .HasForeignKey("TwitterAccountSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_SM_TwitterAccount_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.SmTwitterApplication", "TwitterAccountTwitterApplication")
+                    b.HasOne("HaveshApp.Model.SmTwitterApplication", "TwitterAccountTwitterApplication")
                         .WithMany("SmTwitterAccounts")
                         .HasForeignKey("TwitterAccountTwitterApplicationId")
                         .IsRequired()
@@ -31880,9 +31880,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TwitterAccountTwitterApplication");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterApplication", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TwitterApplicationSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TwitterApplicationSite")
                         .WithMany("SmTwitterApplications")
                         .HasForeignKey("TwitterApplicationSiteId")
                         .IsRequired()
@@ -31891,19 +31891,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TwitterApplicationSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterPost", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.AnalyticsCampaign", "TwitterPostCampaign")
+                    b.HasOne("HaveshApp.Model.AnalyticsCampaign", "TwitterPostCampaign")
                         .WithMany("SmTwitterPosts")
                         .HasForeignKey("TwitterPostCampaignId");
 
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TwitterPostSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TwitterPostSite")
                         .WithMany("SmTwitterPosts")
                         .HasForeignKey("TwitterPostSiteId")
                         .IsRequired()
                         .HasConstraintName("FK_SM_TwitterPost_CMS_Site");
 
-                    b.HasOne("ShokouhApp.Model.SmTwitterAccount", "TwitterPostTwitterAccount")
+                    b.HasOne("HaveshApp.Model.SmTwitterAccount", "TwitterPostTwitterAccount")
                         .WithMany("SmTwitterPosts")
                         .HasForeignKey("TwitterPostTwitterAccountId")
                         .IsRequired()
@@ -31916,9 +31916,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TwitterPostTwitterAccount");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingServer", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingServer", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "ServerSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "ServerSite")
                         .WithMany("StagingServers")
                         .HasForeignKey("ServerSiteId")
                         .IsRequired()
@@ -31927,15 +31927,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ServerSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingSynchronization", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingSynchronization", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.StagingServer", "SynchronizationServer")
+                    b.HasOne("HaveshApp.Model.StagingServer", "SynchronizationServer")
                         .WithMany("StagingSynchronizations")
                         .HasForeignKey("SynchronizationServerId")
                         .IsRequired()
                         .HasConstraintName("FK_Staging_Synchronization_SynchronizationServerID_Staging_Server");
 
-                    b.HasOne("ShokouhApp.Model.StagingTask", "SynchronizationTask")
+                    b.HasOne("HaveshApp.Model.StagingTask", "SynchronizationTask")
                         .WithMany("StagingSynchronizations")
                         .HasForeignKey("SynchronizationTaskId")
                         .IsRequired()
@@ -31946,9 +31946,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SynchronizationTask");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTask", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.CmsSite", "TaskSite")
+                    b.HasOne("HaveshApp.Model.CmsSite", "TaskSite")
                         .WithMany("StagingTasks")
                         .HasForeignKey("TaskSiteId")
                         .HasConstraintName("FK_Staging_Task_TaskSiteID_CMS_Site");
@@ -31956,15 +31956,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaskSite");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskGroupTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskGroupTask", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.StagingTaskGroup", "TaskGroup")
+                    b.HasOne("HaveshApp.Model.StagingTaskGroup", "TaskGroup")
                         .WithMany("StagingTaskGroupTasks")
                         .HasForeignKey("TaskGroupId")
                         .IsRequired()
                         .HasConstraintName("FK_Staging_TaskGroupTask_Staging_TaskGroup");
 
-                    b.HasOne("ShokouhApp.Model.StagingTask", "Task")
+                    b.HasOne("HaveshApp.Model.StagingTask", "Task")
                         .WithMany("StagingTaskGroupTasks")
                         .HasForeignKey("TaskId")
                         .IsRequired()
@@ -31975,17 +31975,17 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TaskGroup");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskGroupUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskGroupUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.StagingTaskGroup", "TaskGroup")
+                    b.HasOne("HaveshApp.Model.StagingTaskGroup", "TaskGroup")
                         .WithMany("StagingTaskGroupUsers")
                         .HasForeignKey("TaskGroupId")
                         .IsRequired()
                         .HasConstraintName("FK_Staging_TaskGroupUser_Staging_TaskGroup");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithOne("StagingTaskGroupUser")
-                        .HasForeignKey("ShokouhApp.Model.StagingTaskGroupUser", "UserId")
+                        .HasForeignKey("HaveshApp.Model.StagingTaskGroupUser", "UserId")
                         .IsRequired()
                         .HasConstraintName("FK_Staging_TaskGroupUser_CMS_User");
 
@@ -31994,15 +31994,15 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskUser", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.StagingTask", "Task")
+                    b.HasOne("HaveshApp.Model.StagingTask", "Task")
                         .WithMany("StagingTaskUsers")
                         .HasForeignKey("TaskId")
                         .IsRequired()
                         .HasConstraintName("FK_Staging_TaskUser_StagingTask");
 
-                    b.HasOne("ShokouhApp.Model.CmsUser", "User")
+                    b.HasOne("HaveshApp.Model.CmsUser", "User")
                         .WithMany("StagingTaskUsers")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -32013,21 +32013,21 @@ namespace ShokouhApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StudentSessionActivity", b =>
+            modelBuilder.Entity("HaveshApp.Model.StudentSessionActivity", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.SessionActivity", "Activity")
+                    b.HasOne("HaveshApp.Model.SessionActivity", "Activity")
                         .WithMany()
                         .HasForeignKey("ActivityFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisStudentClass", "Student")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisStudentClass", "Student")
                         .WithMany()
                         .HasForeignKey("StudentFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.TimeTableSession", "TimeTableSession")
+                    b.HasOne("HaveshApp.Model.TimeTableSession", "TimeTableSession")
                         .WithMany()
                         .HasForeignKey("TimeTableSessionFk")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -32040,9 +32040,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TimeTableSession");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TermSessionTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.TermSessionTemplate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTermClass", "Term")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTermClass", "Term")
                         .WithMany()
                         .HasForeignKey("TermFk")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -32051,9 +32051,9 @@ namespace ShokouhApp.Migrations
                     b.Navigation("Term");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TermSessionTemplateDate", b =>
+            modelBuilder.Entity("HaveshApp.Model.TermSessionTemplateDate", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.TermSessionTemplate", "TermSessionTemplate")
+                    b.HasOne("HaveshApp.Model.TermSessionTemplate", "TermSessionTemplate")
                         .WithMany()
                         .HasForeignKey("TermSessionTemplateFk")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -32062,25 +32062,25 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TermSessionTemplate");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.TimeTableSession", b =>
+            modelBuilder.Entity("HaveshApp.Model.TimeTableSession", b =>
                 {
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisClassRoom", "ClassRoom")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisClassRoom", "ClassRoom")
                         .WithMany()
                         .HasForeignKey("ClassRoomFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.TimeTableSession", "ReplacementSession")
+                    b.HasOne("HaveshApp.Model.TimeTableSession", "ReplacementSession")
                         .WithMany()
                         .HasForeignKey("ReplacementTimeTableSessionFk");
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTeacherClass", "Teacher")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTeacherClass", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShokouhApp.Model.ShokouhPardisTimeTable", "TimeTable")
+                    b.HasOne("HaveshApp.Model.ShokouhPardisTimeTable", "TimeTable")
                         .WithMany("Sessions")
                         .HasForeignKey("TimeTableFk")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -32095,7 +32095,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("TimeTable");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaign", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaign", b =>
                 {
                     b.Navigation("AnalyticsCampaignAssets");
 
@@ -32110,19 +32110,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SmTwitterPosts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignAsset", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignAsset", b =>
                 {
                     b.Navigation("AnalyticsCampaignAssetUrls");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsCampaignConversion", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsCampaignConversion", b =>
                 {
                     b.Navigation("AnalyticsCampaignConversionHits");
 
                     b.Navigation("AnalyticsCampaignObjectives");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.AnalyticsStatistic", b =>
+            modelBuilder.Entity("HaveshApp.Model.AnalyticsStatistic", b =>
                 {
                     b.Navigation("AnalyticsDayHits");
 
@@ -32135,14 +32135,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("AnalyticsYearHits");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.BoardBoard", b =>
+            modelBuilder.Entity("HaveshApp.Model.BoardBoard", b =>
                 {
                     b.Navigation("BoardMessagesNavigation");
 
                     b.Navigation("BoardSubscriptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatRoom", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatRoom", b =>
                 {
                     b.Navigation("ChatInitiatedChatRequest");
 
@@ -32155,7 +32155,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatSupportTakenRooms");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ChatUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.ChatUser", b =>
                 {
                     b.Navigation("ChatInitiatedChatRequests");
 
@@ -32180,46 +32180,46 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ChatSupportTakenRooms");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAcl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAcl", b =>
                 {
                     b.Navigation("CmsAclitems");
 
                     b.Navigation("CmsTrees");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAttachment", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAttachment", b =>
                 {
                     b.Navigation("InverseAttachmentVariantParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAttachmentHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAttachmentHistory", b =>
                 {
                     b.Navigation("InverseAttachmentVariantParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAutomationState", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAutomationState", b =>
                 {
                     b.Navigation("CmsAutomationHistories");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsAvatar", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsAvatar", b =>
                 {
                     b.Navigation("CmsUserSettings");
 
                     b.Navigation("CommunityGroups");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBadge", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBadge", b =>
                 {
                     b.Navigation("CmsUserSettings");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsBannerCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsBannerCategory", b =>
                 {
                     b.Navigation("CmsBanners");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsClass", b =>
                 {
                     b.Navigation("CmsAlternativeFormFormClasses");
 
@@ -32242,14 +32242,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsWorkflowScopes");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsConsent", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsConsent", b =>
                 {
                     b.Navigation("CmsConsentAgreements");
 
                     b.Navigation("CmsConsentArchives");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCountry", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCountry", b =>
                 {
                     b.Navigation("CmsStates");
 
@@ -32264,7 +32264,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OmContacts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCssStylesheet", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCssStylesheet", b =>
                 {
                     b.Navigation("CmsDocuments");
 
@@ -32273,7 +32273,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsSiteSiteDefaultStylesheets");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsCulture", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsCulture", b =>
                 {
                     b.Navigation("CmsPageTemplateScopes");
 
@@ -32284,14 +32284,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsWorkflowScopes");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDeviceProfile", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDeviceProfile", b =>
                 {
                     b.Navigation("CmsDeviceProfileLayouts");
 
                     b.Navigation("CmsTemplateDeviceLayouts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsDocument", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsDocument", b =>
                 {
                     b.Navigation("BlogComments");
 
@@ -32310,17 +32310,17 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OmPersonalizationVariants");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsEmail", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsEmail", b =>
                 {
                     b.Navigation("CmsEmailUsers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsFormUserControl", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsFormUserControl", b =>
                 {
                     b.Navigation("InverseUserControlParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsLayout", b =>
                 {
                     b.Navigation("CmsDeviceProfileLayoutSourceLayouts");
 
@@ -32331,24 +32331,24 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsTemplateDeviceLayouts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMacroIdentity", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMacroIdentity", b =>
                 {
                     b.Navigation("CmsUserMacroIdentities");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsMembership", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsMembership", b =>
                 {
                     b.Navigation("CmsMembershipUsers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsObjectVersionHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsObjectVersionHistory", b =>
                 {
                     b.Navigation("CmsObjectSettingObjectCheckedOutVersionHistories");
 
                     b.Navigation("CmsObjectSettingObjectPublishedVersionHistories");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplate", b =>
                 {
                     b.Navigation("CmsClasses");
 
@@ -32367,7 +32367,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OmPersonalizationVariants");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPageTemplateCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPageTemplateCategory", b =>
                 {
                     b.Navigation("CmsClasses");
 
@@ -32376,7 +32376,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InverseCategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsPermission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsPermission", b =>
                 {
                     b.Navigation("CmsWidgetRoles");
 
@@ -32387,12 +32387,12 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MediaLibraryRolePermissions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRelationshipName", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRelationshipName", b =>
                 {
                     b.Navigation("CmsRelationships");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResource", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResource", b =>
                 {
                     b.Navigation("CmsClasses");
 
@@ -32415,12 +32415,12 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsWorkflowActions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsResourceString", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsResourceString", b =>
                 {
                     b.Navigation("CmsResourceTranslations");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsRole", b =>
                 {
                     b.Navigation("CmsAclitems");
 
@@ -32437,7 +32437,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("MediaLibraryRolePermissions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsScheduledTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsScheduledTask", b =>
                 {
                     b.Navigation("AnalyticsCampaigns");
 
@@ -32446,14 +32446,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("NewsletterNewsletters");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSettingsCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSettingsCategory", b =>
                 {
                     b.Navigation("CmsSettingsKeys");
 
                     b.Navigation("InverseCategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsSite", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsSite", b =>
                 {
                     b.Navigation("AnalyticsCampaigns");
 
@@ -32660,7 +32660,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StagingTasks");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsState", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsState", b =>
                 {
                     b.Navigation("ComAddresses");
 
@@ -32673,29 +32673,29 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OmContacts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTagGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTagGroup", b =>
                 {
                     b.Navigation("CmsDocuments");
 
                     b.Navigation("CmsTags");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTimeZone", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTimeZone", b =>
                 {
                     b.Navigation("CmsUserSettings");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationService", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationService", b =>
                 {
                     b.Navigation("CmsTranslationSubmissions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTranslationSubmission", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTranslationSubmission", b =>
                 {
                     b.Navigation("CmsTranslationSubmissionItems");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsTree", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsTree", b =>
                 {
                     b.Navigation("CmsDocumentAliases");
 
@@ -32718,14 +32718,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PersonasPersonaNodes");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUielement", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUielement", b =>
                 {
                     b.Navigation("CmsHelpTopics");
 
                     b.Navigation("InverseElementParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsUser", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsUser", b =>
                 {
                     b.Navigation("BlogCommentCommentApprovedByUsers");
 
@@ -32864,7 +32864,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StagingTaskUsers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsVersionHistory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsVersionHistory", b =>
                 {
                     b.Navigation("CmsDocumentDocumentCheckedOutVersionHistories");
 
@@ -32873,17 +32873,17 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsWorkflowHistories");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmServer", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmServer", b =>
                 {
                     b.Navigation("CmsWebFarmServerTasks");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebFarmTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebFarmTask", b =>
                 {
                     b.Navigation("CmsWebFarmServerTasks");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPart", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPart", b =>
                 {
                     b.Navigation("CmsWebPartLayouts");
 
@@ -32892,31 +32892,31 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InverseWebPartParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartCategory", b =>
                 {
                     b.Navigation("CmsWebParts");
 
                     b.Navigation("InverseCategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWebPartLayout", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWebPartLayout", b =>
                 {
                     b.Navigation("CmsWidgets");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidget", b =>
                 {
                     b.Navigation("CmsWidgetRoles");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWidgetCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWidgetCategory", b =>
                 {
                     b.Navigation("CmsWidgets");
 
                     b.Navigation("InverseWidgetCategoryParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflow", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflow", b =>
                 {
                     b.Navigation("CmsAutomationHistories");
 
@@ -32935,12 +32935,12 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsWorkflowTransitions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowAction", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowAction", b =>
                 {
                     b.Navigation("CmsWorkflowSteps");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CmsWorkflowStep", b =>
+            modelBuilder.Entity("HaveshApp.Model.CmsWorkflowStep", b =>
                 {
                     b.Navigation("CmsAutomationHistoryHistorySteps");
 
@@ -32967,7 +32967,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("CmsWorkflowTransitionTransitionStartSteps");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComAddress", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComAddress", b =>
                 {
                     b.Navigation("ComShoppingCartShoppingCartBillingAddresses");
 
@@ -32976,26 +32976,26 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComShoppingCartShoppingCartShippingAddresses");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComBrand", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComBrand", b =>
                 {
                     b.Navigation("ComMultiBuyDiscountBrands");
 
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCarrier", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCarrier", b =>
                 {
                     b.Navigation("ComShippingOptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCollection", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCollection", b =>
                 {
                     b.Navigation("ComMultiBuyDiscountCollections");
 
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCurrency", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCurrency", b =>
                 {
                     b.Navigation("ComCurrencyExchangeRates");
 
@@ -33004,7 +33004,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComShoppingCarts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComCustomer", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComCustomer", b =>
                 {
                     b.Navigation("ComAddresses");
 
@@ -33015,37 +33015,37 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComShoppingCarts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComDepartment", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComDepartment", b =>
                 {
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComDiscount", b =>
                 {
                     b.Navigation("ComCouponCodes");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComExchangeTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComExchangeTable", b =>
                 {
                     b.Navigation("ComCurrencyExchangeRates");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComGiftCard", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComGiftCard", b =>
                 {
                     b.Navigation("ComGiftCardCouponCodes");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComInternalStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComInternalStatus", b =>
                 {
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComManufacturer", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComManufacturer", b =>
                 {
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComMultiBuyDiscount", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComMultiBuyDiscount", b =>
                 {
                     b.Navigation("ComMultiBuyCouponCodes");
 
@@ -33056,7 +33056,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComMultiBuyDiscountTrees");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.CommunityGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.CommunityGroup", b =>
                 {
                     b.Navigation("BoardBoards");
 
@@ -33079,14 +33079,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("PollsPolls");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOptionCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOptionCategory", b =>
                 {
                     b.Navigation("ComSkuoptionCategories");
 
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrder", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrder", b =>
                 {
                     b.Navigation("ComOrderAddresses");
 
@@ -33095,12 +33095,12 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComOrderStatusUsers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderItem", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderItem", b =>
                 {
                     b.Navigation("ComOrderItemSkufiles");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComOrderStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComOrderStatus", b =>
                 {
                     b.Navigation("ComOrderStatusUserFromStatuses");
 
@@ -33115,19 +33115,19 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComPaymentOptionPaymentOptionSucceededOrderStatuses");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComPaymentOption", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComPaymentOption", b =>
                 {
                     b.Navigation("ComOrders");
 
                     b.Navigation("ComShoppingCarts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComPublicStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComPublicStatus", b =>
                 {
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShippingOption", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShippingOption", b =>
                 {
                     b.Navigation("ComOrders");
 
@@ -33136,14 +33136,14 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComShoppingCarts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComShoppingCart", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComShoppingCart", b =>
                 {
                     b.Navigation("ComShoppingCartCouponCodes");
 
                     b.Navigation("ComShoppingCartSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSku", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSku", b =>
                 {
                     b.Navigation("CmsTrees");
 
@@ -33164,17 +33164,17 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InverseSkuparentSku");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSkufile", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSkufile", b =>
                 {
                     b.Navigation("ComOrderItemSkufiles");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComSupplier", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComSupplier", b =>
                 {
                     b.Navigation("ComSkus");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ComTaxClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ComTaxClass", b =>
                 {
                     b.Navigation("ComDepartments");
 
@@ -33187,7 +33187,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ComTaxClassStates");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForum", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForum", b =>
                 {
                     b.Navigation("ForumsForumPosts");
 
@@ -33198,12 +33198,12 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ForumsUserFavorites");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumGroup", b =>
                 {
                     b.Navigation("ForumsForums");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ForumsForumPost", b =>
+            modelBuilder.Entity("HaveshApp.Model.ForumsForumPost", b =>
                 {
                     b.Navigation("ForumsAttachments");
 
@@ -33214,29 +33214,29 @@ namespace ShokouhApp.Migrations
                     b.Navigation("InversePostParent");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationConnector", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationConnector", b =>
                 {
                     b.Navigation("IntegrationSynchronizations");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationSynchronization", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationSynchronization", b =>
                 {
                     b.Navigation("IntegrationSyncLogs");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.IntegrationTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.IntegrationTask", b =>
                 {
                     b.Navigation("IntegrationSynchronizations");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.MediaLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.MediaLibrary", b =>
                 {
                     b.Navigation("MediaFiles");
 
                     b.Navigation("MediaLibraryRolePermissions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailTemplate", b =>
                 {
                     b.Navigation("NewsletterEmailWidgetTemplates");
 
@@ -33247,17 +33247,17 @@ namespace ShokouhApp.Migrations
                     b.Navigation("NewsletterNewsletterNewsletterUnsubscriptionTemplates");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterEmailWidget", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterEmailWidget", b =>
                 {
                     b.Navigation("NewsletterEmailWidgetTemplates");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterLink", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterLink", b =>
                 {
                     b.Navigation("NewsletterClickedLinks");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterNewsletter", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterNewsletter", b =>
                 {
                     b.Navigation("NewsletterNewsletterIssues");
 
@@ -33266,7 +33266,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("NewsletterUnsubscriptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterNewsletterIssue", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterNewsletterIssue", b =>
                 {
                     b.Navigation("InverseIssueVariantOfIssue");
 
@@ -33283,47 +33283,47 @@ namespace ShokouhApp.Migrations
                     b.Navigation("NewsletterUnsubscriptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NewsletterSubscriber", b =>
+            modelBuilder.Entity("HaveshApp.Model.NewsletterSubscriber", b =>
                 {
                     b.Navigation("NewsletterEmails");
 
                     b.Navigation("NewsletterSubscriberNewsletters");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationGateway", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationGateway", b =>
                 {
                     b.Navigation("NotificationSubscriptions");
 
                     b.Navigation("NotificationTemplateTexts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.NotificationTemplate", b =>
+            modelBuilder.Entity("HaveshApp.Model.NotificationTemplate", b =>
                 {
                     b.Navigation("NotificationSubscriptions");
 
                     b.Navigation("NotificationTemplateTexts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAbtest", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAbtest", b =>
                 {
                     b.Navigation("OmAbvariantData");
 
                     b.Navigation("OmAbvariants");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccount", b =>
                 {
                     b.Navigation("InverseAccountSubsidiaryOf");
 
                     b.Navigation("OmAccountContacts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmAccountStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmAccountStatus", b =>
                 {
                     b.Navigation("OmAccounts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContact", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContact", b =>
                 {
                     b.Navigation("CmsConsentAgreements");
 
@@ -33340,46 +33340,46 @@ namespace ShokouhApp.Migrations
                     b.Navigation("OmVisitorToContacts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactGroup", b =>
                 {
                     b.Navigation("NewsletterIssueContactGroups");
 
                     b.Navigation("OmContactGroupMembers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactRole", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactRole", b =>
                 {
                     b.Navigation("OmAccountContacts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmContactStatus", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmContactStatus", b =>
                 {
                     b.Navigation("OmContacts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmRule", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmRule", b =>
                 {
                     b.Navigation("OmScoreContactRules");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.OmScore", b =>
+            modelBuilder.Entity("HaveshApp.Model.OmScore", b =>
                 {
                     b.Navigation("OmRules");
 
                     b.Navigation("OmScoreContactRules");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PersonasPersona", b =>
+            modelBuilder.Entity("HaveshApp.Model.PersonasPersona", b =>
                 {
                     b.Navigation("PersonasPersonaContactHistories");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.PollsPoll", b =>
+            modelBuilder.Entity("HaveshApp.Model.PollsPoll", b =>
                 {
                     b.Navigation("PollsPollAnswers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReport", b =>
                 {
                     b.Navigation("ReportingReportGraphs");
 
@@ -33392,69 +33392,69 @@ namespace ShokouhApp.Migrations
                     b.Navigation("ReportingSavedReports");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportCategory", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportCategory", b =>
                 {
                     b.Navigation("InverseCategoryParent");
 
                     b.Navigation("ReportingReports");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportGraph", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportGraph", b =>
                 {
                     b.Navigation("ReportingReportSubscriptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportTable", b =>
                 {
                     b.Navigation("ReportingReportSubscriptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingReportValue", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingReportValue", b =>
                 {
                     b.Navigation("ReportingReportSubscriptions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ReportingSavedReport", b =>
+            modelBuilder.Entity("HaveshApp.Model.ReportingSavedReport", b =>
                 {
                     b.Navigation("ReportingSavedGraphs");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointConnection", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointConnection", b =>
                 {
                     b.Navigation("SharePointSharePointLibraries");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SharePointSharePointLibrary", b =>
+            modelBuilder.Entity("HaveshApp.Model.SharePointSharePointLibrary", b =>
                 {
                     b.Navigation("SharePointSharePointFiles");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisSchedule", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisSchedule", b =>
                 {
                     b.Navigation("Programs");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisTimeTable", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisTimeTable", b =>
                 {
                     b.Navigation("Sessions");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.ShokouhPardisYearClass", b =>
+            modelBuilder.Entity("HaveshApp.Model.ShokouhPardisYearClass", b =>
                 {
                     b.Navigation("Terms");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookAccount", b =>
                 {
                     b.Navigation("SmFacebookPosts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmFacebookApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmFacebookApplication", b =>
                 {
                     b.Navigation("SmFacebookAccounts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmInsight", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmInsight", b =>
                 {
                     b.Navigation("SmInsightHitDays");
 
@@ -33465,27 +33465,27 @@ namespace ShokouhApp.Migrations
                     b.Navigation("SmInsightHitYears");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmLinkedInAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmLinkedInAccount", b =>
                 {
                     b.Navigation("SmLinkedInPosts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterAccount", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterAccount", b =>
                 {
                     b.Navigation("SmTwitterPosts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.SmTwitterApplication", b =>
+            modelBuilder.Entity("HaveshApp.Model.SmTwitterApplication", b =>
                 {
                     b.Navigation("SmTwitterAccounts");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingServer", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingServer", b =>
                 {
                     b.Navigation("StagingSynchronizations");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTask", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTask", b =>
                 {
                     b.Navigation("StagingSynchronizations");
 
@@ -33494,7 +33494,7 @@ namespace ShokouhApp.Migrations
                     b.Navigation("StagingTaskUsers");
                 });
 
-            modelBuilder.Entity("ShokouhApp.Model.StagingTaskGroup", b =>
+            modelBuilder.Entity("HaveshApp.Model.StagingTaskGroup", b =>
                 {
                     b.Navigation("StagingTaskGroupTasks");
 

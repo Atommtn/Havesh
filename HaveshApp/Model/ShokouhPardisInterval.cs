@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class ShokouhPardisInterval
     {

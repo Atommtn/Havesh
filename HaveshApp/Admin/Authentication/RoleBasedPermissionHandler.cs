@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using ShokouhApp.Admin.MemberShip.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.MemberShip.Model;
+using HaveshApp.Services;
 
-namespace ShokouhApp.Admin.Authentication;
+namespace HaveshApp.Admin.Authentication;
 
 public class RoleBasedPermissionHandler : AuthorizationHandler<PermissionRequirement>
 {

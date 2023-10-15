@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mail;
 
-namespace ShokouhApp.Model;
+namespace HaveshApp.Model;
 
 [Table("ShokouhPardis_LessonPlan")]
 public partial class LessonPlan

@@ -5,9 +5,9 @@ using System;
 using System.Net;
 using System.Text;
 using Olive;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Admin
+namespace HaveshApp.Admin
 {
     public class SendSMS
     {

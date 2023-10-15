@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ShokouhApp.Classes
+namespace HaveshApp.Classes
 {
     public static class MyExtensionMethods
     {

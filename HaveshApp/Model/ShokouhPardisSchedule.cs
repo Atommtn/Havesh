@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class ShokouhPardisSchedule 
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class ComOrderStatus
     {

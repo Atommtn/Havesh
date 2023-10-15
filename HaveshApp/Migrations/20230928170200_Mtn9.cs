@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ShokouhApp.Migrations
+namespace HaveshApp.Migrations
 {
     public partial class Mtn9 : Migration
     {

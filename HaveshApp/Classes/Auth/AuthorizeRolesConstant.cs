@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Classes.Auth;
+﻿namespace HaveshApp.Classes.Auth;
 
 public class AuthorizeRolesConstant
 {

@@ -2,14 +2,14 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using MudBlazor;
 using Serilog;
-using ShokouhApp.Admin.Components;
-using ShokouhApp.Admin.Student;
-using ShokouhApp.Managment.Session;
-using ShokouhApp.Model;
-using ShokouhApp.Services;
+using HaveshApp.Admin.Components;
+using HaveshApp.Admin.Student;
+using HaveshApp.Managment.Session;
+using HaveshApp.Model;
+using HaveshApp.Services;
 
 
-namespace ShokouhApp.Admin.Planning
+namespace HaveshApp.Admin.Planning
 {
     public partial class TimeTablePage
     {

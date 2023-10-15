@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 using System.Globalization;
-using ShokouhApp.Services;
+using HaveshApp.Services;
 using Severity = MudBlazor.Severity;
 
-namespace ShokouhApp.Admin.CompleteForm
+namespace HaveshApp.Admin.CompleteForm
 {
     public partial class OnlineFormStudentComponent
     {

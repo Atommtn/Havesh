@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using ShokouhApp.Classes;
-using ShokouhApp.Model;
+using HaveshApp.Classes;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Admin.CompleteForm;
+namespace HaveshApp.Admin.CompleteForm;
 
 public class StudentFormValidator : AbstractValidator<ShokouhPardisStudentClassOnlineForm>
 {

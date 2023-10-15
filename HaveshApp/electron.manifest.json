@@ -1,15 +1,15 @@
 {
-  "executable": "ShokouhApp",
+  "executable": "HaveshApp",
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "ShokouhApp",
+  "name": "HaveshApp",
   "author": "",
   "singleInstance": false,
   "environment": "Production",
   "build": {
-    "appId": "com.ShokouhApp.app",
-    "productName": "ShokouhApp",
+    "appId": "com.HaveshApp.app",
+    "productName": "HaveshApp",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
     "compression": "maximum",

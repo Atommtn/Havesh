@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
-using ShokouhApp.Admin.Authentication;
+using HaveshApp.Admin.Authentication;
 
-namespace ShokouhApp.Admin.Audit
+namespace HaveshApp.Admin.Audit
 {
     public class LogMethodCallAttribute : ActionFilterAttribute
     {

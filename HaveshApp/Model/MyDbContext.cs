@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class MyDbContext : DbContext
     {

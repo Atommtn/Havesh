@@ -1,9 +1,9 @@
 ﻿using DNTPersianUtils.Core;
 using Olive;
 using RestSharp;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Services
+namespace HaveshApp.Services
 {
     public class SmsService
     {

@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Classes
+﻿namespace HaveshApp.Classes
 {
     public class SessionStatuses
     {

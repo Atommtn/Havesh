@@ -1,6 +1,6 @@
-﻿using ShokouhApp.Model;
+﻿using HaveshApp.Model;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class ShokouhPardisTeacherTimeSheet
     {

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using ShokouhApp.Admin.MemberShip.Model;
-using ShokouhApp.Model;
+using HaveshApp.Admin.MemberShip.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     public partial class PreRegistration
     {

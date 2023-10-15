@@ -1,4 +1,4 @@
-﻿namespace ShokouhApp.Admin.MemberShip.Model
+﻿namespace HaveshApp.Admin.MemberShip.Model
 {
     public class User
     {

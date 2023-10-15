@@ -1,9 +1,9 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Services;
+namespace HaveshApp.Services;
 
 public class CloneProviderService
 {

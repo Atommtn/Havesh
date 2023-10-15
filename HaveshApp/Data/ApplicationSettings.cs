@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShokouhApp.Data;
+namespace HaveshApp.Data;
 
 public partial class ApplicationSettings
 {

@@ -1,9 +1,9 @@
-﻿@using ShokouhApp.Admin.DailyJV.Components
-@using ShokouhApp.Services
-@using ShokouhApp.Model
+﻿@using HaveshApp.Admin.DailyJV.Components
+@using HaveshApp.Services
+@using HaveshApp.Model
 
 
-@inherits ShokouhApp.Classes.SizeSupportComponentBase
+@inherits HaveshApp.Classes.SizeSupportComponentBase
 <MudContainer Style="@($"max-height: {(FullHeight == true ? (BrowserHeight-140) : Height + 100)}px;overflow-y:scroll;")">
 <MudTable @ref="table"
           @attributes="@AdditionalAttributes"

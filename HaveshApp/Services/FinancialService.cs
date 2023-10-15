@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
-namespace ShokouhApp.Services
+namespace HaveshApp.Services
 {
     public class FinancialService
     {

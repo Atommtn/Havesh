@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShokouhApp.Model
+namespace HaveshApp.Model
 {
     [Table("ShokouhPardis_TermSessionTemplate")]
     public partial class TermSessionTemplate

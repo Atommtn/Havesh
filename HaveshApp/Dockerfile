@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["ShokouhApp/ShokouhApp.csproj", "ShokouhApp/"]
-RUN dotnet restore "ShokouhApp/ShokouhApp.csproj"
+COPY ["HaveshApp/HaveshApp.csproj", "HaveshApp/"]
+RUN dotnet restore "HaveshApp/HaveshApp.csproj"
 COPY . .
-WORKDIR "/src/ShokouhApp"
-RUN dotnet build "ShokouhApp.csproj" -c Release -o /app/build
+WORKDIR "/src/HaveshApp"
+RUN dotnet build "HaveshApp.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ShokouhApp.csproj" -c Release -o /app/publish
+RUN dotnet publish "HaveshApp.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ShokouhApp.dll"]
+ENTRYPOINT ["dotnet", "HaveshApp.dll"]

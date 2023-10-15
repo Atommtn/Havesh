@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using ShokouhApp.Model;
+using HaveshApp.Model;
 
 
-namespace ShokouhApp.Services
+namespace HaveshApp.Services
 {
     public class DataProviderAsyncService
     {
