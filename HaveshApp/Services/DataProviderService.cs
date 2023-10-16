@@ -2048,6 +2048,20 @@ public class DataProviderService
             .Where(x=>x.StudentId == student.StudentClassId)
             .Select(x=>x.TimeTable).ToList();
     }
+
+    public void StudentMove(ShokouhPardisTimeTable timeTableOrig, ShokouhPardisTimeTable TimeTabelNew, ShokouhPardisStudentClass student)
+    {
+        //add New
+        var FindTimeTableStudent= DbConntext.ShokouhPardisTimeTableStudents.FirstOrDefault(x=>x.TimeTableId == timeTableOrig.TimeTableId &&
+            x.StudentId == student.StudentClassId);
+        if (FindTimeTableStudent != null)
+        {
+            FindTimeTableStudent.TimeTableId = TimeTabelNew.TimeTableId;
+            DbConntext.Update(FindTimeTableStudent);
+            DbConntext.SaveChanges();
+        }
+
+    }
 }
 
   
