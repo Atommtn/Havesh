@@ -65,6 +65,7 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddScoped<DataProviderService>();
 builder.Services.AddScoped<TimeTableSessionService>();
 
+builder.Services.AddScoped<GlobalQueryFilterService>();
 builder.Services.AddScoped<CloneProviderService>();
 builder.Services.AddScoped<SmsService>();
 builder.Services.AddScoped<AwsS3Service>();

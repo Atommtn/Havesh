@@ -25,5 +25,7 @@ namespace HaveshApp.Model
         public string? MotherPhone { get; set; }
         public string? HomePhone { get; set; }
         public string? WhatsAppPhone { get; set; }
+
+        public bool? Gender { get; set; }
     }
 }

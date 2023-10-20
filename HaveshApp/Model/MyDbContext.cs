@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HaveshApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -12,12 +13,14 @@ namespace HaveshApp.Model
         public MyDbContext()
         {
         }
+        private readonly GlobalQueryFilterService _filterService;
 
-        public MyDbContext(DbContextOptions<MyDbContext> options , IConfiguration configuration)
+		public MyDbContext(DbContextOptions<MyDbContext> options , IConfiguration configuration, GlobalQueryFilterService filterService)
             : base(options)
         {
             _configuration = configuration;
-        }
+            _filterService = filterService;
+		}
 
 
         public virtual DbSet<OnlineTeacherLink> OnlineTeacherLinks { get; set; } = null!;

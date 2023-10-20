@@ -1,4 +1,7 @@
-﻿namespace HaveshApp.Admin.MemberShip.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using HaveshApp.Data;
+
+namespace HaveshApp.Admin.MemberShip.Model
 {
     public class User
     {
@@ -14,6 +17,7 @@
         public List<Role> Roles { get; } = new();
         public bool IsActive { get; set; }
 
+        public string BCode { get; set; }
     }
 
     public class Role
@@ -40,5 +44,22 @@ return Permissions.Any(x => x.Title.Equals(permission,StringComparison.OrdinalIg
         public string Title { get; set; }
         public List<Role> Roles { get; } = new();
         
+    }
+
+
+    public class AdvanceRegistration
+    {
+	    public int Id { get; set; }
+        public bool? Allow { get; set; }
+        public string? Title { get; set; }
+        public string? Code { get; set; }
+        public string UserName { get; set; }
+
+        public int BranchFk { get; set; }
+        
+        [ForeignKey(nameof(BranchFk))]
+        public Branch Branch { get; set; }
+        public DateTime DateTime { get; set; }
+
     }
 }

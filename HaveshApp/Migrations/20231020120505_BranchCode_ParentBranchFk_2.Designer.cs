@@ -4,6 +4,7 @@ using HaveshApp.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HaveshApp.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231020120505_BranchCode_ParentBranchFk_2")]
+    partial class BranchCode_ParentBranchFk_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,40 +26,6 @@ namespace HaveshApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.AdvanceRegistration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool?>("Allow")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("BranchFk")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchFk");
-
-                    b.ToTable("AdvanceRegistrations", "ShoukouhPardis12DBAdmin");
-                });
 
             modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.Permission", b =>
                 {
@@ -102,10 +71,6 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -1496,9 +1461,6 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool?>("Gender")
-                        .HasColumnType("bit");
-
                     b.Property<string>("HomePhone")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -2532,17 +2494,6 @@ namespace HaveshApp.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.AdvanceRegistration", b =>
-                {
-                    b.HasOne("HaveshApp.Data.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchFk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("HaveshApp.Data.ApplicationSettings", b =>
