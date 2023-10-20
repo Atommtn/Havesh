@@ -10,7 +10,25 @@
 
                 
             </MudBadge>
+
             <MudGrid>
+              @*  <MudItem md="12">
+                <MudSwitch @bind-Checked="@Student.Gender" ThumbIcon="@Icons.Filled.Girl" Color="Color.Error" UnCheckedColor="Color.Success" ThumbIconColor="Color.Default" >
+                        @if (Student.Gender == false)
+                    {
+                        <MudText Typo="Typo.caption" Color="Color.Error">
+                            Girl
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.caption" Color="Color.Success">
+                            Boy
+                        </MudText>
+
+                    }
+                </MudSwitch>
+                </MudItem>*@
                 <MudItem md="6">
                     <MudTextField @bind-Value="Student.StudentName" Label="نام زبان آموز" Clearable="true"/>
                 </MudItem>

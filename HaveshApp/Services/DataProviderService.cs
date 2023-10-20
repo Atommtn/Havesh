@@ -456,7 +456,15 @@ public class DataProviderService
             .Where(x => x.TimeTable.TimeTableId == timeTable.TimeTableId).ToList();
         return xx;
     }
-
+    public ShokouhPardisTimeTableStudent? GetTimeTableStudent(ShokouhPardisStudentClass student, ShokouhPardisTermClass term)
+    {
+        var tableStudent = DbConntext.ShokouhPardisTimeTableStudents
+            .Include(x => x.TimeTable)
+            .ThenInclude(x=>x.Term)
+            .FirstOrDefault(x => x.TimeTable.TermId == term.TermClassId
+                                 && x.StudentId == student.StudentClassId);
+        return tableStudent;
+    }
     public List<ShokouhPardisTimeTableStudent> GetTimeTableStudents(IEnumerable<ShokouhPardisTimeTable> timeTables)
     {
         var ids = timeTables.Select(z => z.TimeTableId).ToArray();

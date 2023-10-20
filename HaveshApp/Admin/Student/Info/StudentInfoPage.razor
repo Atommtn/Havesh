@@ -64,6 +64,11 @@
   
         
     </MudTabPanel>
+    <MudTabPanel Text="تخفیفات - توضیحات">
+        <TermSelectorComponent @bind-Term="TimeTableStudentTerm" />
+        <StudentSettingComponent TimeTableStudent="TimeTableStudent"></StudentSettingComponent>
+        
+    </MudTabPanel>
 </MudTabs>
 @code {
 
@@ -83,6 +88,23 @@
 
             GetStudentClassByTerm();
         }
+    }
+    private ShokouhPardisTermClass? TimeTableStudentTerm
+    {
+        get => _timeTableStudentTerm;
+        set
+        {
+            if (_timeTableStudentTerm == value) return;
+            _timeTableStudentTerm = value;
+
+            GetTimeTableStudentByTerm();
+        }
+    }
+
+    private void GetTimeTableStudentByTerm()
+    {
+        TimeTableStudent = _dataProvider.GetTimeTableStudent(Student, TimeTableStudentTerm);
+
     }
 
     private List<ShokouhPardisTermClass> Terms;
@@ -122,6 +144,7 @@
     ShokouhPardisLevelBookPrice? bookPrice;
     List<ShokouhPardisDailyJv> StudentDailyJvs;
     private ShokouhPardisTermClass? _term;
+    private ShokouhPardisTermClass _timeTableStudentTerm;
 
     void GetStudentClassByTerm()
     {
@@ -138,5 +161,7 @@
             bookPrice = DataProvider.GetLevelBookPrice(timeTable);
 
     }
+
+    public ShokouhPardisTimeTableStudent TimeTableStudent { get; set; }
 
 }
