@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using HaveshApp.Admin.MemberShip.Model;
 using HaveshApp.Data;
 using HaveshApp.Managment.Session.Activity;
@@ -9,6 +10,7 @@ namespace HaveshApp.Model;
 public partial class MyDbContext : DbContext
 {
     public virtual DbSet<User> Users{ get; set; } = null!;
+    public virtual DbSet<AdvanceRegistration> AdvanceRegistrations{ get; set; } = null!;
     public virtual DbSet<Role> Roles{ get; set; } = null!;
     public virtual DbSet<Permission> Permissions{ get; set; } = null!;
 
@@ -31,9 +33,9 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<ApplicationSettings> ApplicationSettings { get; set; } = null!;
     public virtual DbSet<ApplicationSettingsCategory> ApplicationSettingsCategory { get; set; } = null!;
 
+    public static bool EnableGlobalFilter { get; set; }
 
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
+	partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         ShokouhPardisTermClass.Setup(modelBuilder);
         ShokouhPardisSchedule.Setup(modelBuilder);
@@ -44,9 +46,21 @@ public partial class MyDbContext : DbContext
         ShokouhPardisLevelBookPrice.Setup(modelBuilder);
 
         LessonPlanAttachment.Setup(modelBuilder);
+        // Apply the global filter for all entities implementing ISoftDeletable
+        /*foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+	        //Expression<Func<YourEntity, bool>> filter = e => !EnableGlobalFilter || e.IsDeleted == false;
+			if (typeof(BranchBaseModel).IsAssignableFrom(entityType.ClrType))
+	        {
 
+		        var parameter = Expression.Parameter(entityType.ClrType, "e");
+		        var property = Expression.Property(parameter, "IsDeleted");
+		        var predicate = Expression.Lambda(
+			        Expression.Equal(property, Expression.Constant(false)),
+			        parameter);
 
-
-
+		        modelBuilder.Entity(entityType.ClrType).HasQueryFilter(predicate);
+	        }
+        }*/
 	}
 }

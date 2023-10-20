@@ -2062,6 +2062,12 @@ public class DataProviderService
         }
 
     }
+
+    public void RegisterAdvanceUser()
+    {
+	    
+
+    }
 }
 
   

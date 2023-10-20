@@ -4,6 +4,7 @@ using HaveshApp.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HaveshApp.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231020181445_AdvanceRegistration")]
+    partial class AdvanceRegistration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,14 +38,8 @@ namespace HaveshApp.Migrations
                     b.Property<bool?>("Allow")
                         .HasColumnType("bit");
 
-                    b.Property<int>("BranchFk")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -52,8 +49,6 @@ namespace HaveshApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BranchFk");
 
                     b.ToTable("AdvanceRegistrations", "ShoukouhPardis12DBAdmin");
                 });
@@ -1496,7 +1491,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool?>("Gender")
+                    b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
                     b.Property<string>("HomePhone")
@@ -2532,17 +2527,6 @@ namespace HaveshApp.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("HaveshApp.Admin.MemberShip.Model.AdvanceRegistration", b =>
-                {
-                    b.HasOne("HaveshApp.Data.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchFk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("HaveshApp.Data.ApplicationSettings", b =>

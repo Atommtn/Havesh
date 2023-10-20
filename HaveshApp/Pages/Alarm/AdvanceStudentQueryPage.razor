@@ -1,0 +1,18 @@
+﻿@page "/AdvanceStudentQuery"
+
+<MudStack Row="true" Spacing="1">
+	<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="RegisterAdvanceStudentClick">
+		ثبت نام زبان آموز
+	</MudButton>
+
+</MudStack>
+
+
+@code {
+
+	private void RegisterAdvanceStudentClick()
+	{
+		_dataProvider.RegisterAdvanceUser();
+	}
+
+}
