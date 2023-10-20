@@ -37,22 +37,31 @@
     <MudStack Row="true">
         <MudCard>
             <MudCardContent>
+                @if (PaymentSeries?.FirstOrDefault(p => p.Name == PaymentTypeStatuses.Pos)?.Data is { })
+            {
                 <MudText Typo="Typo.h4" Color="Color.Info" GutterBottom="true">
                     جمع پوز :
-                    @PaymentSeries.FirstOrDefault(p=>p.Name == PaymentTypeStatuses.Pos).Data.Sum().NumberToText(Language.Persian) تومان
+                    @PaymentSeries.FirstOrDefault(p => p.Name == PaymentTypeStatuses.Pos).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
-                <MudSpacer />
-                <br />
+                <MudSpacer/>
+                <br/>
+            }
+                @if (PaymentSeries?.FirstOrDefault(p => p.Name == PaymentTypeStatuses.Cash)?.Data is { })
+            {
                 <MudText Typo="Typo.h4" Color="Color.Success" GutterBottom="true">
                     جمع نقد :
-                    @PaymentSeries.FirstOrDefault(p=>p.Name == PaymentTypeStatuses.Cash).Data.Sum().NumberToText(Language.Persian) تومان
+                    @PaymentSeries.FirstOrDefault(p => p.Name == PaymentTypeStatuses.Cash).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
-                <MudSpacer />
-                <br />
+                <MudSpacer/>
+                <br/>
+            }
+                @if (PaymentSeries?.FirstOrDefault(p => p.Name == PaymentTypeStatuses.Debit)?.Data is { })
+            {
                 <MudText Typo="Typo.h4" Color="Color.Warning" GutterBottom="true">
                     جمع واریز :
-                    @PaymentSeries.FirstOrDefault(p=>p.Name == PaymentTypeStatuses.Debit).Data.Sum().NumberToText(Language.Persian) تومان
+                    @PaymentSeries.FirstOrDefault(p => p.Name == PaymentTypeStatuses.Debit).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
+            }
             </MudCardContent>
         </MudCard>
     </MudStack>
@@ -62,34 +71,53 @@
     <MudStack Row="true">
         <MudCard>
             <MudCardContent>
-                <MudText Typo="Typo.h4" Color="Color.Error" GutterBottom="true">
-                    جمع کتاب ها :
-                    @FeeForSeries.FirstOrDefault(p=>p.Name == FeeForStatuses.Book).Data.Sum().NumberToText(Language.Persian) تومان
-                </MudText>
-                <MudSpacer />
-                <br />
+                @if (FeeForSeries?.FirstOrDefault(p => p.Name == FeeForStatuses.Book)?.Data is {})
+                {
+                    <MudText Typo="Typo.h4" Color="Color.Error" GutterBottom="true">
+                        جمع کتاب ها :
+                        @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.Book).Data.Sum().NumberToText(Language.Persian) تومان
+                    </MudText>
+                
+                <MudSpacer/>
+                    <br />
+                }
+            @if (FeeForSeries?.FirstOrDefault(p => p.Name == FeeForStatuses.TuitionAmount)?.Data is {})
+            {
                 <MudText Typo="Typo.h4" Color="Color.Warning" GutterBottom="true">
                     جمع شهریه:
-                    @FeeForSeries.FirstOrDefault(p=>p.Name == FeeForStatuses.TuitionAmount).Data.Sum().NumberToText(Language.Persian) تومان
+                    @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.TuitionAmount).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
-                <MudSpacer />
-                <br />
+           
+                <MudSpacer/>
+                    <br />
+                }
+                @if (FeeForSeries?.FirstOrDefault(p => p.Name == FeeForStatuses.Final)?.Data is { })
+            {
                 <MudText Typo="Typo.h4" Color="Color.Dark" GutterBottom="true">
-                    جمع  فاینال:
-                    @FeeForSeries.FirstOrDefault(p=>p.Name == FeeForStatuses.Final).Data.Sum().NumberToText(Language.Persian) تومان
+                    جمع فاینال:
+                    @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.Final).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
-                <MudSpacer />
-                <br />
+           
+                <MudSpacer/>
+                <br/>
+            }
+                @if (FeeForSeries?.FirstOrDefault(p => p.Name == FeeForStatuses.Placement)?.Data is { })
+            {
                 <MudText Typo="Typo.h4" Color="Color.Info" GutterBottom="true">
-                    جمع  تعیین سطح:
-                    @FeeForSeries.FirstOrDefault(p=>p.Name == FeeForStatuses.Placement).Data.Sum().NumberToText(Language.Persian) تومان
+                    جمع تعیین سطح:
+                    @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.Placement).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
-                <MudSpacer />
-                <br />
+            
+                <MudSpacer/>
+                <br/>
+            }
+            @if (FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.PrivateCalss).Data is {})
+            {
                 <MudText Typo="Typo.h4" Color="Color.Primary" GutterBottom="true">
-                    جمع  خصوصی:
-                    @FeeForSeries.FirstOrDefault(p=>p.Name == FeeForStatuses.PrivateCalss).Data.Sum().NumberToText(Language.Persian) تومان
+                    جمع خصوصی:
+                    @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.PrivateCalss).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
+            }
             </MudCardContent>
         </MudCard>
     </MudStack>
@@ -106,6 +134,7 @@
     public ChartOptions ChartOp { get; set; }
     public List<ChartSeries> FeeForSeries { get; set; }
     public string FeeForBind { get; set; }
+    
 
 
 

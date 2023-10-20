@@ -1,11 +1,12 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisInterval
-    {
+    public partial class ShokouhPardisInterval : BranchBaseModel
+	{
         public int IntervalId { get; set; }
         public Guid IntervalGuid { get; set; }
         public DateTime IntervalLastModified { get; set; }

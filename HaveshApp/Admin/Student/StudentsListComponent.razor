@@ -53,6 +53,7 @@
         <MudTh></MudTh>
         <MudTh></MudTh>
         <MudTh></MudTh>
+        <MudTh></MudTh>
         <MudTh>نام</MudTh>
         <MudTh>نام خانوادگی</MudTh>
         <MudTh>کد ملی</MudTh>
@@ -91,6 +92,29 @@
             {
                 <MudIconButton Icon="@Icons.Filled.Money" Color="Color.Warning" Variant="Variant.Text" OnClick="() => { student.ShowDetail = !student.ShowDetail; }"/>
             }
+        </MudTd>
+        <MudTd>
+            
+            @if (student.Gender is false)
+            {
+                <MudChip
+                    Variant="Variant.Filled" Color="Color.Error"
+                    Icon="@Icons.Material.Filled.Female"
+                    >
+                    دختر
+                </MudChip>
+            }
+                else if (student.Gender is true)
+            {
+                <MudChip
+                    Variant="Variant.Filled" Color="Color.Info"
+                    Icon="@Icons.Material.Filled.Male"
+                >
+                    پسر
+                </MudChip>
+
+            }
+
         </MudTd>
         <MudTd>@student.StudentName</MudTd>
         <MudTd>@student.StudentFamily</MudTd>

@@ -59,16 +59,16 @@
     </GroupHeaderTemplate>
     <RowTemplate Context="dJV">
         <MudTd></MudTd>
-        <MudTd>@dJV.Student.StudentName @dJV.Student.StudentFamily</MudTd>
+            <MudTd DataLabel="نام زبان آموز">@dJV.Student.StudentName @dJV.Student.StudentFamily</MudTd>
         @if (Student is { })
         {
             <MudTh>@dJV.CurrentDate.Value.Date</MudTh>
         }
-        <MudTd>@dJV.PaymentType</MudTd>
-        <MudTd>@dJV.FeeFor</MudTd>
-        <MudTd>@dJV.Fee</MudTd>
-        <MudTd>@(dJV.BillNo is > 0 ? dJV.BillNo : dJV.DailyJvid)</MudTd>
-        <MudTd>
+        <MudTd DataLabel="شیوه پرداخت">@dJV.PaymentType</MudTd>
+        <MudTd DataLabel="بابت">@dJV.FeeFor</MudTd>
+        <MudTd DataLabel="مبلغ">@dJV.Fee</MudTd>
+        <MudTd DataLabel="شماره قبض">@(dJV.BillNo is > 0 ? dJV.BillNo : dJV.DailyJvid)</MudTd>
+            <MudTd DataLabel="اطلاعات پوز - واریز">
             @if (dJV.PaymentType.Contains("پوز"))
             {
                 @String.Format("شماره پوز {0}",dJV.PosCode)
@@ -82,8 +82,8 @@
 
             }
 
-        </MudTd>
-        <MudTd>@dJV.Description</MudTd>
+        </MudTd >
+        <MudTd DataLabel="توضیحات">@dJV.Description</MudTd>
         <MudTd>
 
             <AuthorizeView Roles="Admin,Modiator">

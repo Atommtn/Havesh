@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisDailyJv
-    {
+    public partial class ShokouhPardisDailyJv : BranchBaseModel
+	{
         public int DailyJvid { get; set; }
         public Guid DailyJvguid { get; set; }
         public DateTime DailyJvlastModified { get; set; }

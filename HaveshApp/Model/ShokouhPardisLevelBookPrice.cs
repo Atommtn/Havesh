@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisLevelBookPrice
-    {
+    public partial class ShokouhPardisLevelBookPrice : BranchBaseModel
+	{
         public int LevelBookPriceId { get; set; }
         public Guid LevelBookPriceGuid { get; set; }
         public DateTime LevelBookPriceLastModified { get; set; }

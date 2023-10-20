@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisAccountingTransaction
-    {
+    public partial class ShokouhPardisAccountingTransaction : BranchBaseModel
+	{
         public int AccountingTransactionId { get; set; }
         public Guid AccountingTransactionGuid { get; set; }
         public DateTime AccountingTransactionLastModified { get; set; }

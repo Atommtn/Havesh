@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisDaySession
-    {
+    public partial class ShokouhPardisDaySession : BranchBaseModel
+	{
         public int DaySessionId { get; set; }
         public Guid DaySessionGuid { get; set; }
         public DateTime DaySessionLastModified { get; set; }

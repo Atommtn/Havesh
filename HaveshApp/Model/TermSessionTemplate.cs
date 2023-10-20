@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HaveshApp.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HaveshApp.Model
 {
     [Table("ShokouhPardis_TermSessionTemplate")]
-    public partial class TermSessionTemplate
-    {
+    public partial class TermSessionTemplate : BranchBaseModel
+	{
         [Key]
         public int TermSessionTemplateID { get; set; }
         public int TermFk { get; set; }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisStudentClass
-    {
+    public partial class ShokouhPardisStudentClass : BranchBaseModel
+	{
         public int StudentClassId { get; set; }
         public Guid StudentClassGuid { get; set; }
         public DateTime StudentClassLastModified { get; set; }
@@ -24,5 +25,7 @@ namespace HaveshApp.Model
         public string? MotherPhone { get; set; }
         public string? HomePhone { get; set; }
         public string? WhatsAppPhone { get; set; }
+
+        public bool? Gender { get; set; }
     }
 }

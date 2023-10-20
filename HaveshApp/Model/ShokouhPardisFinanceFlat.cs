@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisFinanceFlat
-    {
+    public partial class ShokouhPardisFinanceFlat : BranchBaseModel
+	{
         public int FinanceFlatId { get; set; }
         public Guid FinanceFlatGuid { get; set; }
         public DateTime FinanceFlatLastModified { get; set; }

@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HaveshApp.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HaveshApp.Model
 {
     [Table("ShokouhPardis_PreRegistration")]
-    public partial class PreRegistration
-    {
+    public partial class PreRegistration : BranchBaseModel
+	{
 
         [Key]
         public int Id { get; set; }

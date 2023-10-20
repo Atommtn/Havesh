@@ -122,7 +122,8 @@
         foreach (var student in selectedStudents
             .Where(student => DataProvider.IsStudentInOtherClassesInTheTerm(timeTable, student)))
         {
-            await DialogService.ShowMessageBox("Warning", $"Student {student.StudentName} {student.StudentFamily} is in Another classes");
+            await DialogService.ShowMessageBox("Warning",
+                $"Student {student.StudentName} {student.StudentFamily} is in Another classes");
             return false;
         }
 
@@ -151,10 +152,36 @@
     }
 
 
-    private void ChangeStudentTimeTableClick(ShokouhPardisStudentClass student)
+    private async Task ChangeStudentTimeTableClick(ShokouhPardisStudentClass student)
     {
         //todo: move student time table
-        _snackBar.Add("Move Student");
+        var dialogReference = DialogService.Show<TimeTableSelectDialog>("انتقال کلاسی",
+            new DialogParameters()
+            {
+                ["TimeTable"] = TimeTableItem,
+                ["Student"] = student
+            },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraLarge,
+                FullWidth = true
+            });
+        var dialogReferenceResult = await dialogReference.Result;
+        
+        if (dialogReferenceResult.Canceled == false)
+        {
+            var SelectedTimeTable = (ShokouhPardisTimeTable)dialogReferenceResult.Data;
+            _dataProvider.StudentMove(TimeTableItem,SelectedTimeTable , student);
+            Log.Warning("User {UserName} Move Student '{StudentID}' and '{TimeTableID}' to new '{TimeTableID}'.", _userSession.Payload?.UserName, TimeTableItem.TimeTableId,SelectedTimeTable.TimeTableId);
+            _snackBar.Add("انتقال با موفقیت انجام شد.", Severity.Success);
+            await studentsTableComponent?.ReloadData()!;
+        }
+        else if (dialogReferenceResult.Canceled == true)
+        {
+            _snackBar.Add("عملیات انتقال کنسل گردید", Severity.Warning);
+        }
+        
     }
 
 
