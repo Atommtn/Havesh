@@ -14,6 +14,7 @@
         public List<Role> Roles { get; } = new();
         public bool IsActive { get; set; }
 
+        public string BCode { get; set; }
     }
 
     public class Role
