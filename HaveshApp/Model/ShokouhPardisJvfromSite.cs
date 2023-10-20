@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisJvfromSite
-    {
+    public partial class ShokouhPardisJvfromSite : BranchBaseModel
+	{
         public int DailyJvid { get; set; }
         public string StudentName { get; set; } = null!;
         public string StudentFamil { get; set; } = null!;

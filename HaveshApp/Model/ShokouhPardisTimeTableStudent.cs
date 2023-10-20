@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisTimeTableStudent
-    {
+    public partial class ShokouhPardisTimeTableStudent : BranchBaseModel
+	{
         public int TimeTableStudentsId { get; set; }
         public Guid TimeTableStudentsGuid { get; set; }
         public DateTime TimeTableStudentsLastModified { get; set; }

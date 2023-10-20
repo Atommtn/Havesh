@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisBookClass
-    {
+    public partial class ShokouhPardisBookClass : BranchBaseModel
+	{
         public int BookClassId { get; set; }
         public Guid BookClassGuid { get; set; }
         public DateTime BookClassLastModified { get; set; }

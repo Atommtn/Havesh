@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HaveshApp.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HaveshApp.Model
 {
     [Table("ShokouhPardis_SessionActivity")]
-    public partial class SessionActivity
-    {
+    public partial class SessionActivity : BranchBaseModel
+	{
         [Key]
         public int SessionActivityID { get; set; }
         public string ActivityTitle { get; set; }

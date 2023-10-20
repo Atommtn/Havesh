@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HaveshApp.Data;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mail;
@@ -6,7 +7,7 @@ using System.Net.Mail;
 namespace HaveshApp.Model;
 
 [Table("ShokouhPardis_LessonPlan")]
-public partial class LessonPlan
+public partial class LessonPlan : BranchBaseModel
 {
 	[Key]
 	public int LessonPlanId { get; set; }
@@ -54,14 +55,14 @@ public class LessonPlanAttachment
 
 
 [Table("ShokouhPardis_LessonPlanSectionType")]
-public class LessonPlanSectionType
+public class LessonPlanSectionType : BranchBaseModel
 {
 	public int Id { get; set; }
 	public string Title { get; set; }
 }
 
 [Table("ShokouhPardis_LessonPlanSection")]
-public partial class LessonPlanSection
+public partial class LessonPlanSection : BranchBaseModel
 {
 	public int Id { get; set; }
 
@@ -106,7 +107,7 @@ public class LessonPlanSectionItem
 }
 
 [Table("ShokouhPardis_MediaAttachment")]
-public class ShokouhPardisMediaAttachment
+public class ShokouhPardisMediaAttachment : BranchBaseModel
 {
 	public int Id { get; set; }
 

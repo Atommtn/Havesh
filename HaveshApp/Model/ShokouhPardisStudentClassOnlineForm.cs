@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisStudentClassOnlineForm
-    {
+    public partial class ShokouhPardisStudentClassOnlineForm : BranchBaseModel
+	{
         public int StudentClassId { get; set; }
         public string StudentIdno { get; set; } = null!;
         public string StudentName { get; set; } = null!;

@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HaveshApp.Data;
 using Microsoft.Extensions.Primitives;
 
 namespace HaveshApp.Model
 {
-    public partial class StudentSessionActivity
-    {
+    public partial class StudentSessionActivity : BranchBaseModel
+	{
         [ForeignKey(nameof(StudentFk))]
         public ShokouhPardisStudentClass Student { get; set; }
 

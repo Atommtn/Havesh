@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HaveshApp.Data;
+using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Model
 {
-    public partial class ShokouhPardisTermClass
-    {
+    public partial class ShokouhPardisTermClass : BranchBaseModel
+	{
         public int TermClassId { get; set; }
         public Guid TermClassGuid { get; set; }
         public DateTime TermClassLastModified { get; set; }

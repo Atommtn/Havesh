@@ -22,15 +22,10 @@ namespace HaveshApp.Model
 
         public virtual DbSet<OnlineTeacherLink> OnlineTeacherLinks { get; set; } = null!;
         public virtual DbSet<OnlineTermTable> OnlineTermTables { get; set; } = null!;
-        public virtual DbSet<PageBookCalssRecord> PageBookCalssRecords { get; set; } = null!;
-        public virtual DbSet<PageBookPageType> PageBookPageTypes { get; set; } = null!;
-        public virtual DbSet<ShokouhBranchNode> ShokouhBranchNodes { get; set; } = null!;
         public virtual DbSet<ShokouhPardisAccountingCode> ShokouhPardisAccountingCodes { get; set; } = null!;
         public virtual DbSet<ShokouhPardisAccountingTransaction> ShokouhPardisAccountingTransactions { get; set; } = null!;
         public virtual DbSet<ShokouhPardisBookClass> ShokouhPardisBookClasses { get; set; } = null!;
         public virtual DbSet<ShokouhPardisClassRoom> ShokouhPardisClassRooms { get; set; } = null!;
-        public virtual DbSet<ShokouhPardisCourse> ShokouhPardisCourses { get; set; } = null!;
-        public virtual DbSet<ShokouhPardisCourseStudent> ShokouhPardisCourseStudents { get; set; } = null!;
         public virtual DbSet<ShokouhPardisDailyJv> ShokouhPardisDailyJvs { get; set; } = null!;
         public virtual DbSet<ShokouhPardisDaySession> ShokouhPardisDaySessions { get; set; } = null!;
         public virtual DbSet<ShokouhPardisEmployee> ShokouhPardisEmployees { get; set; } = null!;
@@ -131,69 +126,6 @@ namespace HaveshApp.Model
                     .HasDefaultValueSql("(N'')");
             });
 
-            modelBuilder.Entity<PageBookCalssRecord>(entity =>
-            {
-                entity.HasKey(e => e.BookCalssRecordId);
-
-                entity.ToTable("Page_BookCalssRecord");
-
-                entity.Property(e => e.BookCalssRecordId).HasColumnName("BookCalssRecordID");
-
-                entity.Property(e => e.RecordUrl).HasDefaultValueSql("(N'')");
-
-                entity.Property(e => e.SessionNo).HasMaxLength(200);
-
-                entity.Property(e => e.TeacherName)
-                    .HasMaxLength(200)
-                    .HasDefaultValueSql("(N'')");
-            });
-
-            modelBuilder.Entity<PageBookPageType>(entity =>
-            {
-                entity.HasKey(e => e.BookPageTypeId);
-
-                entity.ToTable("Page_BookPageType");
-
-                entity.Property(e => e.BookPageTypeId).HasColumnName("BookPageTypeID");
-
-                entity.Property(e => e.BookName)
-                    .HasMaxLength(512)
-                    .HasDefaultValueSql("(N'')");
-
-                entity.Property(e => e.BookType).HasMaxLength(200);
-            });
-
-
-            modelBuilder.Entity<ShokouhBranchNode>(entity =>
-            {
-                entity.HasKey(e => e.BranchNodeId);
-
-                entity.ToTable("Shokouh_BranchNode");
-
-                entity.Property(e => e.BranchNodeId).HasColumnName("BranchNodeID");
-
-                entity.Property(e => e.BranchAdd).HasMaxLength(1024);
-
-                entity.Property(e => e.BranchManager).HasMaxLength(200);
-
-                entity.Property(e => e.BranchName)
-                    .HasMaxLength(200)
-                    .HasDefaultValueSql("(N'')");
-
-                entity.Property(e => e.BranchPicUrl)
-                    .HasMaxLength(1024)
-                    .HasColumnName("branchPicUrl");
-
-                entity.Property(e => e.BranchTel).HasMaxLength(200);
-
-                entity.Property(e => e.BranchType)
-                    .HasMaxLength(200)
-                    .HasDefaultValueSql("(N'شعبه')");
-
-                entity.Property(e => e.Latitude).HasColumnType("decimal(19, 6)");
-
-                entity.Property(e => e.Longitude).HasColumnType("decimal(19, 6)");
-            });
 
             modelBuilder.Entity<ShokouhPardisAccountingCode>(entity =>
             {
@@ -259,44 +191,6 @@ namespace HaveshApp.Model
                 entity.Property(e => e.ClassRoomName)
                     .HasMaxLength(200)
                     .HasDefaultValueSql("(N'')");
-            });
-
-            modelBuilder.Entity<ShokouhPardisCourse>(entity =>
-            {
-                entity.HasKey(e => e.CourseId);
-
-                entity.ToTable("ShokouhPardis_Course", "dbo");
-
-                entity.Property(e => e.CourseId).HasColumnName("CourseID");
-
-                entity.Property(e => e.ClassRoomId).HasColumnName("ClassRoomID");
-
-                entity.Property(e => e.CourseLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
-
-                entity.Property(e => e.CourseTitle).HasMaxLength(200);
-
-                entity.Property(e => e.LevelId).HasColumnName("LevelID");
-
-                entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
-
-                entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
-
-                entity.Property(e => e.TermId).HasColumnName("TermID");
-            });
-
-            modelBuilder.Entity<ShokouhPardisCourseStudent>(entity =>
-            {
-                entity.HasKey(e => e.CourseStudentId);
-
-                entity.ToTable("ShokouhPardis_CourseStudent", "dbo");
-
-                entity.Property(e => e.CourseStudentId).HasColumnName("CourseStudentID");
-
-                entity.Property(e => e.CourseId).HasColumnName("CourseID");
-
-                entity.Property(e => e.CourseStudentLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
-
-                entity.Property(e => e.StudentId).HasColumnName("StudentID");
             });
 
             modelBuilder.Entity<ShokouhPardisDailyJv>(entity =>
