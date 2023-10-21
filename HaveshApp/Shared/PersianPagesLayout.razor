@@ -28,27 +28,10 @@
 </HeadContent>
 
 <MudRTLProvider RightToLeft="true" Class="persian-content">
-
-    <MudToolBar>
-        <MudSpacer />
-        @if (Navigation.CanNavigateBack)
-        {
-            <MudButton Color="Color.Info" StartIcon="@Icons.Filled.ArrowBack" Variant="Variant.Outlined" OnClick="BackClick">
-                بازگشت
-            </MudButton>
-        }
-    </MudToolBar>
-
     @Body
 </MudRTLProvider>
 
 @code {
 
-    [Inject] Navigation Navigation { get; set; }
-
-    private void BackClick()
-    {
-        Navigation.NavigateBack();
-    }
 
 }

@@ -6,6 +6,16 @@
 	<DialogContent>
 		<MudGrid>
 			<MudItem md="6">
+				<MudAutocomplete T="User" Label="فرستنده" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person2"
+				                 @bind-Value="Message.From"
+				                 SearchFunc="SearchFunc">
+					<ItemTemplate>
+						<MudIcon Icon="@Icons.Material.Filled.Person2"></MudIcon>
+						<MudText Typo="Typo.body1">@context.ToString(true , true)</MudText>
+					</ItemTemplate>
+				</MudAutocomplete>
+			</MudItem>
+			<MudItem md="6">
 				<MudAutocomplete T="User" Label="گیرنده" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person"
 				                 @bind-Value="Message.To"
 				                 SearchFunc="SearchFunc">
@@ -69,13 +79,19 @@
 	protected override void OnInitialized()
 	{
 		_users = _dataProvider.GetUsers();
+		Message.From = _userSession.User!;
 		base.OnInitialized();
 	}
 
 	private async Task SendClick()
 	{
+		if (Message.To == null)
+		{
+			_snackBar.Add("گیرنده را وارد نکردید");
+			return;
+		}
+
 		Message.CreateDateTime = DateTime.Now;
-		Message.From = _userSession.User!;
 		await _messageService.SendMessageAsync(Message);
 		DialogInstance.Close();
 	}

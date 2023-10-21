@@ -20,28 +20,35 @@
 <HubConnectorComponent />
 
 <MudLayout>
-	<MudAppBar Fixed="false" Elevation="1">
+	<MudAppBar Fixed="true" Elevation="1">
 		<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
 		HAVESH Professional Academy Portal
 		<MudSpacer />
 		<AuthorizeView>
 			<Authorized>
-
-				<MudText Typo="Typo.caption" Color="Color.Default" Class="m-3">
-					سلام @_userSession.Payload.Gender @_userSession.Payload.FirstName @_userSession.Payload.LastName
-				</MudText>
-
-				<MudToolBar Dense="true" WrapContent="true" DisableGutters="true">
-					<MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Message" OnClick="ShowMessagesClick">
-						پیامها
-					</MudButton>
-
-					<MudButton Color="Color.Success" StartIcon="@Icons.Filled.Logout" Variant="Variant.Outlined" Size="Size.Small" Href="/LoginPage/Logout">
-						خروج
-					</MudButton>
-
-				</MudToolBar>
-
+				<MudMenu FullWidth="true" Size="Size.Large" StartIcon="@Icons.Material.Filled.Person2" Style="width: 250px;direction: rtl">
+					<ActivatorContent>
+						<MudChip Size="Size.Large" >
+							@_userSession.Payload?.FirstName @_userSession.Payload?.LastName
+							<MudAvatar Size="Size.Large" Variant="Variant.Filled" Elevation="1" Color="Color.Info">
+								@_userSession.Payload?.FirstName?[0]
+							</MudAvatar>
+						</MudChip>
+					</ActivatorContent>
+					<ChildContent>
+						<MudMenuItem>
+							سلام @_userSession.Payload.Gender @_userSession.Payload.FirstName @_userSession.Payload.LastName
+						</MudMenuItem>
+						<MudMenuItem OnClick="ShowMessagesClick">
+							<MudChip Icon="@Icons.Material.Filled.Message">
+								پیامها
+							</MudChip>
+						</MudMenuItem>
+						<MudMenuItem Href="/LoginPage/Logout">
+							خروج
+						</MudMenuItem>
+					</ChildContent>
+				</MudMenu>
 
 			</Authorized>
 			<NotAuthorized>
@@ -59,9 +66,10 @@
 		<NavMenu />
 	</MudDrawer>
 
-	<MudDrawer @bind-Open="@_messageDrawerOpen" Anchor="Anchor.Right" MiniWidth="450" ClipMode="DrawerClipMode.Docked">
-		<MudStack Row="false" Spacing="1">
-			<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Warning" Size="Size.Small" OnClick="CloseMessageDrawerClick"></MudIconButton>
+	<MudDrawer @bind-Open="@_messageDrawerOpen" Anchor="Anchor.Right" MiniWidth="500" ClipMode="DrawerClipMode.Docked">
+		<MudStack Row="true" Spacing="1">
+			<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Warning" Size="Size.Medium" Class="m-1" OnClick="CloseMessageDrawerClick"></MudIconButton>
+			<MudSpacer />
 		</MudStack>
 		<CascadingValue Value="this">
 			<IncommingMessageListComponent />
@@ -81,13 +89,7 @@
 
 @code {
 
-	// [Inject] UserSessionService UserSession { get; set; }
-	//
-	// [Inject] DataProviderService DataProvider { get; set; }
-	//
 	[Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-	//
-	// [Inject] public IJSRuntime JsRuntime { get; set; }
 
 
 	bool _drawerOpen = true;
