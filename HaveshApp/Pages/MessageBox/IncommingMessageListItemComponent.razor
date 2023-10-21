@@ -2,12 +2,13 @@
 @using Append.Blazor.Notifications
 @using DNTPersianUtils.Core
 @using HaveshApp.Model
+@using PersianDate.Standard
 
 
 <MudPaper Outlined="true" Class="p-2 m-1">
 	<MudStack Row="false" Spacing="2">
 		<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-			@MessageDto.SentDateTime.ToPersianDateTextify() @MessageDto.SentDateTime.ToShortTimeString()
+			@MessageDto.SentDateTime.ToFa("D") @MessageDto.SentDateTime.ToShortTimeString()
 		</MudChip>
 		<MudChip Color="Color.Info" Size="Size.Medium">
 			@MessageDto.FromUserFullName

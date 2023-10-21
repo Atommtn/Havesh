@@ -3,6 +3,7 @@
 @using HaveshApp.Classes
 @using HaveshApp.Model
 @using DNTPersianUtils.Core
+@using PersianDate.Standard
 @layout PrintLayout
 
 
@@ -148,7 +149,7 @@
                     <div >
                         <p>
                             <b>تاریخ صدور :</b>
-                            @_djv.CurrentDate.ToPersianDateTextify()
+                            @_djv.CurrentDate.ToFa("D")
 
                             <h4>با اسکن این کد میتوانید رسید خود را در سایت ما ملاحظه و آنرا برای خود ذخیره نمایید.</h4>
                             <div style="text-align:center">

@@ -1,4 +1,4 @@
-﻿@using DNTPersianUtils.Core;
+﻿@using PersianDate.Standard
 @using HaveshApp.Model
 <MtnDialog>
     <ChildComponent>
@@ -22,7 +22,7 @@
             </MudStack>
 
             <MudStack Row="false" Spacing="1">
-                <MudText Typo="Typo.caption">Session : @_currentSession?.SessionDate.ToPersianDateTextify() - @_currentSession?.SessionTime?.ToString("hh\\:mm") - جلسه : @_currentSession?.SessionNumber</MudText>
+                <MudText Typo="Typo.caption">Session : @_currentSession?.SessionDate.ToFa("D") - @_currentSession?.SessionTime?.ToString("hh\\:mm") - جلسه : @_currentSession?.SessionNumber</MudText>
                 <MudProgressLinear @ref="_progressbarSession" Striped="false" Size="Size.Medium" Min="0" Color="Color.Info"></MudProgressLinear>
             </MudStack>
 

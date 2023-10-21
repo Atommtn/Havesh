@@ -2,6 +2,7 @@
 using Olive;
 using RestSharp;
 using HaveshApp.Model;
+using PersianDate.Standard;
 
 namespace HaveshApp.Services
 {
@@ -42,7 +43,7 @@ namespace HaveshApp.Services
             else
                 y = "ساعت " + repl.SessionTime.ToString("hh\\:mm");
 
-            return $"جلسه مورخ {orig.SessionDate.ToPersianDateTextify()} {x} به تاریخ {repl.SessionDate.ToPersianDateTextify()} {y} موکول گردید";
+            return $"جلسه مورخ {orig.SessionDate.ToFa("D")} {x} به تاریخ {repl.SessionDate.ToFa("D")} {y} موکول گردید";
         }
 
         public string? GetSessionCancelText(DateTime? origSessionDate, TimeSpan? intervalStartTime,
@@ -63,7 +64,7 @@ namespace HaveshApp.Services
             else
                 y = "ساعت " + replSessionTime.ToString("hh\\:mm");
 
-            return $"جلسه مورخ {origSessionDate.ToPersianDateTextify()} {x} به تاریخ {replSessionDate.ToPersianDateTextify()} {y} موکول گردید";
+            return $"جلسه مورخ {origSessionDate.ToFa("D")} {x} به تاریخ {replSessionDate.ToFa("D")} {y} موکول گردید";
 
         }
     }

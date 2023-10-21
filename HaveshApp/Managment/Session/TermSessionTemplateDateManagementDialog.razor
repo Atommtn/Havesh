@@ -2,6 +2,7 @@
 @using HaveshApp.Model
 @using DNTPersianUtils.Core
 @using Olive
+@using PersianDate.Standard
 <MtnDialog>
     <ChildComponent>
         <MudTable Items="_dates">
@@ -21,7 +22,7 @@
             </HeaderContent>
             <RowTemplate>
                 <MudTd>@context.SessionNumber</MudTd>
-                <MudTd>@context.Date.ToPersianDateTextify()</MudTd>
+                <MudTd>@context.Date.ToFa("D")</MudTd>
                 <MudTd>@context.Description</MudTd>
                 <MudTd>
                     @if (_dates.LastOrDefault() == context)

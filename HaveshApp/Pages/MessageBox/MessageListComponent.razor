@@ -1,6 +1,7 @@
 ﻿@using HaveshApp.Model
 @using HaveshApp.Classes
 @using DNTPersianUtils.Core
+@using PersianDate.Standard
 @implements IAsyncDisposable
 
 <MudContainer>
@@ -40,21 +41,23 @@
 			</MudTd>
 			<MudTd>
 				<MudText Typo="Typo.body1" Color="Color.Default">
-					@context.CreateDateTime.ToPersianDateTextify()
+					@context.CreateDateTime.ToFa("F")
 				</MudText>
 			</MudTd>
 			<MudTd>
 				<MudText Typo="Typo.body1" Color="Color.Info">
-					@context.SentDateTime.ToPersianDateTextify()
+					@context.SentDateTime?.ToFa("F")
 				</MudText>
 			</MudTd>
 			<MudTd>
 				<MudText Typo="Typo.body1" Color="Color.Primary">
-					@context.DeliveredDateTime?.ToPersianDateTextify()
+					@context.DeliveredDateTime?.ToFa("F")
 				</MudText>
 			</MudTd>
 			<MudText Typo="Typo.body1" Color="Color.Secondary">
-				@context.ReadDateTime?.ToPersianDateTextify()
+				@context.ReadDateTime?.ToFa("D")
+			</MudText>
+			<MudText Typo="Typo.body1" Color="Color.Secondary">
 			</MudText>
 
 		</RowTemplate>

@@ -1,10 +1,11 @@
 ﻿@page "/RollCall/{SessionId:int}/{SessionActivityId:int}"
 @using HaveshApp.Model
 @using DNTPersianUtils.Core
+@using PersianDate.Standard
 @layout PersianPagesLayout
 
 <MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
-    جلسه @_sessionItem.SessionNumber - @_sessionItem.SessionDate.ToPersianDateTextify() - @_sessionItem.SessionTime
+    جلسه @_sessionItem.SessionNumber - @_sessionItem.SessionDate.ToFa("D") - @_sessionItem.SessionTime
 </MudText>
 
 <StudentListRollCallComponenets RowStyle="true" RowsPerPage="25" TimeTableSession="_sessionItem" SessionActivity="_sessionActivity" ></StudentListRollCallComponenets>

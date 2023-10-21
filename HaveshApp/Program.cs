@@ -27,6 +27,8 @@ using Log = Serilog.Log;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.ResponseCompression;
 using Append.Blazor.Notifications;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 // Configure logging to log to MSSqlServer database
 
@@ -117,11 +119,33 @@ builder.Services.AddResponseCompression(opts =>
 	opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
 		new[] { "application/octet-stream" });
 });
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+	var supportedCultures = new[]
+	{
+		new CultureInfo("fa-IR"), // Example: Persian
+		new CultureInfo("en-US"), // Example: English (United States)
+		// Add more supported cultures as needed
+	};
 
+	options.DefaultRequestCulture = new RequestCulture("fa-IR"); // Set your default culture here
+	options.SupportedCultures = supportedCultures;
+	options.SupportedUICultures = supportedCultures;
+});
 AuthorizationPolicies.AddAuthorizarionPolicies(builder.Services);
 
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+	var culture = new CultureInfo("fa-IR");// Set user culture here
+	CultureInfo.CurrentCulture = culture;
+	CultureInfo.CurrentUICulture = culture;
+
+	// Call the next delegate/middleware in the pipeline
+	await next();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -136,18 +160,14 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-//app.UseKentico();
-
 app.UseCookiePolicy();
 
 //app.UseCors();
 
 app.UseRouting();
 
-
 app.MapBlazorHub();
-app.MapHub<HaveshAppHub>("/apphub")
-	 ;
+app.MapHub<HaveshAppHub>("/apphub");
 app.MapFallbackToPage("/_Host");
 app.MapHealthChecks("/healthz");
 

@@ -4,6 +4,7 @@
 @using HaveshApp.Model
 @using DNTPersianUtils.Core
 @using Olive
+@using PersianDate.Standard
 @layout PrintLayout
 
 
@@ -104,7 +105,7 @@
                     <div style="text-align:center">
                         <p>
                             <b>تاریخ صدور :</b>
-                            @_djv.CurrentDate.ToPersianDateTextify()
+                            @_djv.CurrentDate.ToFa("D")
 
                             <h4>با اسکن این کد میتوانید رسید خود را ذخیره نمایید.</h4>
                             <div class="QrCo" >
