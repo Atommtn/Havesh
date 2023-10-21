@@ -12,8 +12,22 @@
 	{
 		var userId = UserSessionService.User?.Id ?? 0;
 		var absoluteUri = Navigation.ToAbsoluteUri($"/apphub?UserId={userId}");
+		Console.WriteLine(" ========== Hub URL ========== ");
+		Console.WriteLine(" ==================== " + absoluteUri);
+		Console.WriteLine(" ==================== ");
 		hubConnection = new HubConnectionBuilder()
-			.WithUrl(absoluteUri)
+			.WithUrl(absoluteUri, options =>
+			{
+				options.WebSocketConfiguration = conf =>
+				{
+					conf.RemoteCertificateValidationCallback = (message, cert, chain, errors) => true;
+				};
+				options.HttpMessageHandlerFactory = factory => new HttpClientHandler
+					{
+						ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+					};
+				//options.AccessTokenProvider = () => Task.FromResult(Token);
+			})
 			.Build();
 
 		hubConnection.On<MessageDto>("HandleIncomingMessage", (message) =>
@@ -26,16 +40,31 @@
 		{
 			await hubConnection.StartAsync();
 
+			Console.WriteLine($" @@@@@@@@@@@");
+			Console.WriteLine($" @@@@@@@@@@@ Connected : {hubConnection.ConnectionId}");
+			Console.WriteLine($" @@@@@@@@@@@");
+
 		}
 		catch (Exception e)
 		{
+			Console.WriteLine(new string('=', 80));
+			Console.WriteLine(new string('=', 80));
 			Console.WriteLine(e);
+			Console.WriteLine(new string('=', 80));
+			Console.WriteLine(new string('=', 80));
 		}
 	}
 
 	public async ValueTask DisposeAsync()
 	{
+
 		if (hubConnection != null)
+		{
+			Console.WriteLine($" *******");
+			Console.WriteLine($" ******* DISPOSED : {hubConnection.ConnectionId}");
+			Console.WriteLine($" *******");
 			await hubConnection.DisposeAsync();
+		}
+
 	}
 }
