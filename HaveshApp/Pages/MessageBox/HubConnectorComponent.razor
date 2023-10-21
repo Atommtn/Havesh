@@ -10,15 +10,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		int? userId = 2;
-		try
-		{
-			userId = UserSessionService.User?.Id;
-		}
-		catch (Exception e)
-		{
-			
-		}
+		var userId = UserSessionService.User?.Id ?? 0; 
 		hubConnection = new HubConnectionBuilder()
 			.WithUrl(Navigation.ToAbsoluteUri($"/apphub?UserId={userId}"))
 			.Build();

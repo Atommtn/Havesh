@@ -27,7 +27,7 @@ namespace HaveshApp.Admin.Authentication
                 }
 
                 _dataProviderService ??= _serviceProvider.GetService<DataProviderService>();
-                _user = _dataProviderService?.GetUserByUserName(Payload.UserName);
+                _user = _dataProviderService?.GetUserByUserName(Payload?.UserName);
                 return _user;
             }
         }
