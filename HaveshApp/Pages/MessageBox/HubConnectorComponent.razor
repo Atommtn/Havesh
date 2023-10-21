@@ -10,8 +10,17 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		int? userId = 2;
+		try
+		{
+			userId = UserSessionService.User?.Id;
+		}
+		catch (Exception e)
+		{
+			
+		}
 		hubConnection = new HubConnectionBuilder()
-			.WithUrl(Navigation.ToAbsoluteUri($"/apphub?UserId={UserSessionService.User?.Id}"))
+			.WithUrl(Navigation.ToAbsoluteUri($"/apphub?UserId={userId}"))
 			.Build();
 
 		hubConnection.On<MessageDto>("HandleIncomingMessage", (message) =>
