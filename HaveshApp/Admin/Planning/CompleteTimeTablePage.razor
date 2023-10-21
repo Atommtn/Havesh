@@ -69,7 +69,7 @@
         set
         {
             _timeTableId = value;
-            TimeTableItem = DataProvider.GetTimeTable(_timeTableId.ToInt32());
+            TimeTableItem = DataProvider.GetTimeTable(Convert.ToInt32(_timeTableId));
             /*InvokeAsync(async () =>
             {
                 await studentsTableComponent.ReloadData();

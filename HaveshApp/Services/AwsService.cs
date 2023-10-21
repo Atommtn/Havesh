@@ -30,7 +30,7 @@ namespace HaveshApp.Services
             _logger = logger;
             _region = _configuration["AWS:Region"];
             _bucketName = _configuration["AWS:BucketName"];
-            if (_bucketName.IsNullOrEmpty())
+            if (_bucketName.IsEmpty())
                 throw new Exception("FRZ: Invalid bucket name from config");
 
         }
@@ -45,7 +45,7 @@ namespace HaveshApp.Services
         public async Task<string> UploadFileAsync(IBrowserFile browserFile, Guid attachmentGuid, string s3Folder)
         {
             var bucketAddress = await CreateBucketAsync(_bucketName);
-            if (bucketAddress.IsNullOrEmpty())
+            if (bucketAddress.IsEmpty())
                 throw new Exception("FRZ:Error in S3 Connection");
 
 
@@ -79,7 +79,7 @@ namespace HaveshApp.Services
         public async Task<string> UploadPdfFileAsync(Stream fs, Guid attachmentGuid, string s3Folder)
         {
             var bucketAddress = await CreateBucketAsync(_bucketName);
-            if (bucketAddress.IsNullOrEmpty())
+            if (bucketAddress.IsEmpty())
                 throw new Exception("FRZ:Error in S3 Connection");
 
 
@@ -125,7 +125,7 @@ namespace HaveshApp.Services
 
         public async Task<bool> DeleteFileAsync(string fileName)
         {
-            var key = fileName.GetAfter(".amazonaws.com/");
+            var key = fileName.RemoveFromAfter(".amazonaws.com/");
             try
             {
                 var deleteObjectRequest = new DeleteObjectRequest

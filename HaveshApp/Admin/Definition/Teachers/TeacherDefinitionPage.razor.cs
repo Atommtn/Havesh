@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Serilog;
 using HaveshApp.Admin.MemberShip;
 using HaveshApp.Admin.MemberShip.Model;
 using HaveshApp.Model;
 using HaveshApp.Services;
+using Olive;
+using Log = Serilog.Log;
 
 namespace HaveshApp.Admin.Definition.Teachers
 {
@@ -130,7 +131,7 @@ namespace HaveshApp.Admin.Definition.Teachers
 
         private async Task UserInfoClick(ShokouhPardisTeacherClass teacher)
         {
-            if (teacher.TeacherNationalId.IsNullOrEmpty())
+            if (teacher.TeacherNationalId.IsEmpty())
             {
                 snackbar.Add("This teacher has not National Id so we can not assign or create User account.", Severity.Warning);
                 return;

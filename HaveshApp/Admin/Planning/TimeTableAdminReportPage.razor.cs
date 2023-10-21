@@ -87,7 +87,7 @@ namespace HaveshApp.Admin.Planning
             Series.Add(new ChartSeries()
             {
                 Name = "level",
-                Data = chartData1.Values.Select(x=>x.ToDouble()).ToArray()
+                Data = chartData1.Values.Select(Convert.ToDouble).ToArray()
             });
 
             XAxisLabels = chartData1.Keys.Select(x => x.LevelName.ToString()).ToArray();

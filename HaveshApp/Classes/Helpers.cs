@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Olive;
 
 namespace HaveshApp.Classes
 {
@@ -14,7 +15,7 @@ namespace HaveshApp.Classes
         /// <exception cref="System.Exception"></exception>
         public static bool IsValidNationalCode(this string? nationalCode)
         {
-            if(nationalCode.IsNullOrEmpty())
+            if(nationalCode.IsEmpty())
                 return false;
 
             nationalCode = nationalCode
@@ -65,7 +66,7 @@ namespace HaveshApp.Classes
 
         public static string NormalizeClearNumber(this string phone)
         {
-            if (phone.IsNullOrEmpty()) return phone;
+            if (phone.IsEmpty()) return phone;
             return phone.Replace(" ", "")
                 .Replace("-", "")
                 .Replace("(", "")
@@ -76,7 +77,7 @@ namespace HaveshApp.Classes
 
         public static string NormalizeFromFarsiNumber(this string phone)
         {
-            if (phone.IsNullOrEmpty()) return phone;
+            if (phone.IsEmpty()) return phone;
             return phone.Replace("۰", "0")
                 .Replace("۱", "1")
                 .Replace("۲", "2")

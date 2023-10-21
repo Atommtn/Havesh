@@ -2,12 +2,13 @@
 @using System.Collections
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
+@using Olive
 
 <MudPaper Elevation="1" Outlined="true">
     @switch (SessionActivity.ValueControl)
     {
         case "Buttons":
-            foreach (var btn in SessionActivity.ValueOptions.Where(x=>x.ShowByValue.IsNullOrEmpty()))
+            foreach (var btn in SessionActivity.ValueOptions.Where(x=>x.ShowByValue.IsEmpty()))
             {
                 <MudButton Class="mr-2" Color="@GetButtonColor(btn)" Variant="Variant.Filled" OnClick="()=>BtnClick(btn)">
                     @btn.Title

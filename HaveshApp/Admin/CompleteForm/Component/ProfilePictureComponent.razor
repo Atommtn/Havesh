@@ -17,7 +17,7 @@
             {
                 <MudProgressLinear Indeterminate="true" Size="Size.Medium" Striped="true"></MudProgressLinear>
             }
-            @if (Error.IsNotNullOrEmpty())
+            @if (!Error.IsEmpty())
             {
                 <MudText Class="ma-4" Typo="Typo.subtitle2" Color="Color.Error">
                     @Error

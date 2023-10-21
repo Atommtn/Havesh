@@ -1,6 +1,7 @@
 ﻿@using HaveshApp.Model
 @using HaveshApp.Admin.MemberShip.Model
 @using HaveshApp.Classes
+@using Olive
 <MudDialog>
 	<DialogContent>
 		<MudGrid>
@@ -87,7 +88,7 @@
 	private async Task<IEnumerable<User>> SearchFunc(string arg)
 	{
 
-		if (arg.IsNullOrEmpty()) return _users;
+		if (arg.IsEmpty()) return _users;
 		return _users.Where(x => (x.FirstName != null && (x.FirstName.Contains(arg)) ||
 		                          (x.LastName != null  && x.LastName.Contains(arg)) ||
 		                          (x.UserName.Contains(arg)) ||

@@ -5,8 +5,10 @@
 
 @using HaveshApp.Services
 @using HaveshApp.Classes
+@using Olive
 @using Serilog
 @using HaveshApp.Admin.MemberShip.Model
+@using Log = Serilog.Log
 
 <MudPaper Class="m-5 p-5" Elevation="3">
     <MudGrid Class="m-2">
@@ -62,7 +64,7 @@
 
     async Task LoginClick()
     {
-        if (UserName.IsNullOrEmpty() || Password.IsNullOrEmpty())
+        if (UserName.IsEmpty() || Password.IsEmpty())
         {
             _snackBar.Add("Please enter username and password.", Severity.Info);
             return;

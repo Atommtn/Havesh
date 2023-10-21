@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using HaveshApp.Model;
+using Olive;
 
 
 namespace HaveshApp.Services
@@ -58,7 +59,7 @@ namespace HaveshApp.Services
                 .Include(x => x.Teacher)
                 //.AsQueryable()
                 .Where(x => x.TermId == term.TermClassId);
-            if (searchText.IsNotNullOrEmpty())
+            if (searchText.IsEmpty())
             {
                 queryable = queryable.Where(x =>
                     x.Teacher.TeacherName.Contains(searchText) ||

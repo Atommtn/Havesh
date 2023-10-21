@@ -126,7 +126,14 @@ namespace HaveshApp.Managment.Session
             origTimeTableSession.SessionDescription += $"کنسل شده {x}";
 
             var allSessions = _dataProviderService.GetTimeTableSessions(origTimeTableSession.TimeTable).OrderBy(x => x.SessionDate);
-            allSessions.Where(x => x.SessionDate > origTimeTableSession.SessionDate).ForEach(x => x.SessionNumber--);
+            var timeTableSessions = allSessions
+                .Where(x => x.SessionDate > origTimeTableSession.SessionDate);
+            foreach (var z in timeTableSessions)
+            {
+                z.SessionNumber--;
+            }
+            //    .ForEach(x => x.SessionNumber--);
+
             foreach (var session in allSessions)
             {
                 if (replTimeTableSession.SessionDate < session.SessionDate)
@@ -183,7 +190,7 @@ namespace HaveshApp.Managment.Session
             if (students != null)
                 foreach (var student in students)
                 {
-                    if (student.WhatsAppPhone.IsNullOrEmpty())
+                    if (student.WhatsAppPhone.IsEmpty())
                     {
                         student.Tag = "عدم ارسال بدلیل عدم تعیین شماره همراه";
                     }

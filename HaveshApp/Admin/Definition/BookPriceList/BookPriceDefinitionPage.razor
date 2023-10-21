@@ -2,12 +2,13 @@
 @using HaveshApp.Model
 @using HaveshApp.Services
 @using HaveshApp.Admin.Clone
+@using Olive
 @layout PersianPagesLayout
 
 <h3>ویرایش قیمت کتاب و شهریه</h3>
 
 <TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"></TermSelectorComponent>
-@if (_emptyBookPriceTustion?.IsNotEmpty() is true)
+@if ((_emptyBookPriceTustion?.OrEmpty()).Any())
 {
     <MudAlert Severity="Severity.Error">
         لول های لیست زیر فاقد قیمت صحیح می باشند. لطفا پیگیری و اصلاح کنید

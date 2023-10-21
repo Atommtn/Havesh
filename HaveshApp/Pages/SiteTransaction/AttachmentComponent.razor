@@ -1,5 +1,6 @@
 ﻿@using HaveshApp.Services
 @using HaveshApp.Model
+@using Olive
 
 <InputFile id="@("x"+_controlGuid.ToString("N"))" OnChange="UploadFiles" hidden />
 
@@ -29,7 +30,7 @@
             {
                 <MudProgressCircular Indeterminate="true" Size="Size.Medium" />
             }
-            @if (Error.IsNotNullOrEmpty())
+            @if (!Error.IsEmpty())
             {
                 <MudText Class="ma-4" Typo="Typo.subtitle2" Color="Color.Error">
                     @Error

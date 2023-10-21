@@ -52,7 +52,7 @@
                                             dominant-baseline="middle" text-anchor="middle"
                                             fill="black" font-family="Helvetica" font-size="2"
                                             Color="Color.Default" GutterBottom="true">
-                                @chartData2.Values.Select(x => x.ToDouble()).ToArray().Sum().ToString()
+	                            @chartData2.Values.Select(Convert.ToDouble).ToArray().Sum().ToString()
                             </MudText>
                         </MudText>
                        
@@ -62,7 +62,7 @@
                                   ChartOptions="@ChartOP"
                                   LegendPosition="Position.End"
                                   XAxisLabels="@chartData2.Keys.Select(x => x.LevelName).ToArray()"
-                                  InputData="@chartData2.Values.Select(x => x.ToDouble()).ToArray()"
+                                  InputData="@chartData2.Values.Select(Convert.ToDouble).ToArray()"
                                   InputLabels="@chartData2.Keys.Select(x => x.LevelName).ToArray()">
                         </MudChart>
 

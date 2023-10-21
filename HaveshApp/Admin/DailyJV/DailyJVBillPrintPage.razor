@@ -3,6 +3,7 @@
 @using HaveshApp.Classes
 @using HaveshApp.Model
 @using DNTPersianUtils.Core
+@using Olive
 @layout PrintLayout
 
 
@@ -75,7 +76,7 @@
                             </td>
 
                         </tr>
-                            @if (!_djv.Description.IsNullOrEmpty())
+                            @if (!_djv.Description.IsEmpty())
                             {
                                 <tr>
                                     <td>

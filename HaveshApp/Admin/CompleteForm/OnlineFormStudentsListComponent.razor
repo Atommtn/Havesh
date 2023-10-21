@@ -1,6 +1,7 @@
 ﻿@using HaveshApp.Services
 @using HaveshApp.Classes
 @using HaveshApp.Model
+@using Olive
 
 <MudStack Row="true">
     <MudSpacer />
@@ -50,7 +51,7 @@
         {
             <MudListItem Value="stu" OnClick="() => SelectStudentClick(stu)">
                 <MudStack Row="true" AlignItems="AlignItems.Center">
-                    @if (stu.ProfilePicture.IsNullOrEmpty())
+                    @if (stu.ProfilePicture.IsEmpty())
                     {
                         <MudAvatar Size="Size.Large">
                             @stu.StudentName.FirstOrDefault()&nbsp;

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 using Serilog.Events;
 using HaveshApp.Admin.Authentication;
+using Olive;
 
 namespace HaveshApp.Classes.Serilog
 {
@@ -43,7 +44,7 @@ namespace HaveshApp.Classes.Serilog
             if (_userService == null)
                 return;
 
-            if (_userService.UserName.IsNullOrWhiteSpace())
+            if (_userService.UserName.IsEmpty())
                 return;
 
             var prop1 = new LogEventProperty("Username", new ScalarValue(_userService.UserName));

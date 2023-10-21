@@ -495,7 +495,7 @@ public class DataProviderService
     public int GetTotalTimeTablesCount(int termTermClassId, string? searchText = null, bool? isPrivate = false)
     {
         var dbConntextShokouhPardisTimeTables = DbConntext.ShokouhPardisTimeTables.AsQueryable();
-        if (searchText.IsNotNullOrEmpty())
+        if (searchText.IsEmpty())
             dbConntextShokouhPardisTimeTables =
                 dbConntextShokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
         if (isPrivate is true)
@@ -509,7 +509,7 @@ public class DataProviderService
         int? page = null, int? pageSize = null)
     {
         var shokouhPardisTimeTables = ShokouhPardisTimeTablesQuery(fromTerm);
-        if (!searchText.IsNullOrEmpty())
+        if (!searchText.IsEmpty())
         {
             shokouhPardisTimeTables = shokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
         }
@@ -566,7 +566,7 @@ public class DataProviderService
                 .Where(x => x.TermId == term.TermClassId && x.IsPrivate == isPrivate)
             ;
 
-        if (searchText.IsNotNullOrEmpty())
+        if (searchText.IsEmpty())
         {
             queryable = queryable.Where(x =>
                 x.Teacher.TeacherName.Contains(searchText) ||
@@ -755,7 +755,7 @@ public class DataProviderService
     IQueryable<ShokouhPardisJvfromSite> GetAllSiteJvQuery(string? search)
     {
         var data = DbConntext.ShokouhPardisJvfromSites.AsQueryable();
-        if (!search.IsNullOrEmpty())
+        if (!search.IsEmpty())
             data = data.Where(x => x.StudentName.Contains(search) ||
                                    x.StudentFamil.Contains(search) ||
                                    x.StudentIdNumber.Contains(search) ||
@@ -1456,7 +1456,7 @@ public class DataProviderService
 
     public User? GetUserByUserName(string? userName)
     {
-        if (userName.IsNullOrEmpty()) return null;
+        if (userName.IsEmpty()) return null;
         return DbConntext.Users.FirstOrDefault(x => x.UserName == userName);
     }
 
@@ -1894,7 +1894,10 @@ public class DataProviderService
         var preRegistrations = DbConntext.PreRegistrations.Where(x => studentsIds.Contains(x.StudentFk)).ToList();
         var dailyJvIds = preRegistrations.Select(x => x.DailyJVFk).ToArray();
         var shokouhPardisDailyJvs = DbConntext.ShokouhPardisDailyJvs.Where(x=> dailyJvIds.Contains(x.DailyJvid)).ToArray();
-        shokouhPardisDailyJvs.ForEach(x => x.TimeTableFk = tt.TimeTableId);
+        foreach (var x in shokouhPardisDailyJvs)
+        {
+            x.TimeTableFk = tt.TimeTableId;
+        }
         DbConntext.UpdateRange(shokouhPardisDailyJvs);
         DbConntext.SaveChanges();
     }
@@ -1978,7 +1981,7 @@ public class DataProviderService
             foreach (var date in Enumerable.Range(0, (dateTo - dateFrom).Days + 1).Select(d => dateFrom.AddDays(d)))
             {
                 var totalFee = paymentTypeData.FirstOrDefault(p => p.Day == date)?.TotalFee ?? 0;
-                x.AddRange(totalFee);
+                x.Add(totalFee);
             }
             chartSeries.Data = x.ToArray();
 
@@ -2020,7 +2023,7 @@ public class DataProviderService
             foreach (var date in Enumerable.Range(0, (dateTo - dateFrom).Days + 1).Select(d => dateFrom.AddDays(d)))
             {
                 var totalFee = paymentTypeData.FirstOrDefault(p => p.Day == date)?.TotalFee ?? 0;
-                x.AddRange(totalFee);
+                x.Add(totalFee);
             }
             chartSeries.Data = x.ToArray();
 

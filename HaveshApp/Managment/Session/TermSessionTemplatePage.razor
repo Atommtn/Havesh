@@ -111,7 +111,10 @@
         var str = "";
         var list = _dataProvider.GetWeekDays();
         var days = contextWeekdayIds.Split(',').Select(x => Convert.ToInt32(x));
-        days.ForEach(d => str += list.First(z => z.WeekDayId == d).Title + " ");
+        foreach (var d in days)
+        {
+	        str += list.First(z => z.WeekDayId == d).Title + " ";
+        }
         return str;
     }
 
@@ -141,7 +144,10 @@
         var days = tst.WeekdayIds.Split(',').Select(x => Convert.ToInt32(x));
         Dictionary<int, bool> bools = new();
         for (var i = 0; i < 7; i++) bools.Add(i + 1, false);
-        days.ForEach(x => bools[x] = true);
+        foreach (var x in days)
+        {
+	        bools[x] = true;
+        }
         Days = bools;
         TermSessionTemplate = tst;
     }

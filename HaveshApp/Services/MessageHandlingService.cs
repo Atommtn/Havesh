@@ -1,7 +1,6 @@
 ﻿using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes;
 using HaveshApp.Classes.SignalR;
-using Microsoft.AspNet.SignalR.Messaging;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HaveshApp.Services
