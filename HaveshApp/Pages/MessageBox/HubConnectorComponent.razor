@@ -21,7 +21,16 @@
 			MessageHandlingService.HandleIncomingMessage(message);
 		});
 
-		await hubConnection.StartAsync();
+
+		try
+		{
+			await hubConnection.StartAsync();
+
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+		}
 	}
 
 	public async ValueTask DisposeAsync()
