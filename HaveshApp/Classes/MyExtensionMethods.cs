@@ -20,6 +20,14 @@ namespace HaveshApp.Classes
 
             return tel;
         }
-
-    }
+        public static string? GetFirstNWords(this string? text, int n)
+        {
+	        if (text == null) return null;
+	        var words = text.Split(new char[] { ' ', '.', ',', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+	        var length = Math.Min(n, words.Length);
+	        var result = string.Join(" ", words.Take(length));
+	        if (result.Length < text.Length) result += "...";
+	        return result;
+        }
+	}
 }

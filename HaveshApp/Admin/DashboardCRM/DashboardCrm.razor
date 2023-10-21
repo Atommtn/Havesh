@@ -1,75 +1,78 @@
 ﻿@page "/"
 @layout PersianPagesLayout
 @using HaveshApp.Admin.Definition.LessonPlan
+@using HaveshApp.Pages.Chat
 @using HaveshApp.Services
 @using HaveshApp.Classes.Auth
 @using HaveshApp.Model
 @inherits HaveshApp.Classes.SizeSupportComponentBase
 
+
 <AuthorizeView Roles="Admin">
-    <Authorized>
-        <MudRTLProvider RightToLeft="true" Class="persian-content">
+	<Authorized>
 
-            <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-                <MudGrid>
-                    <MudItem xs="12" sm="6" md="12">
-                        <MudPaper Elevation="2" Class="pa-4" Style="">
-                            <MudAlert Severity="Severity.Normal" Style="direction:ltr">کارهای روزانه</MudAlert>
-                            @*<MudChart ChartType="ChartType.Bar" ChartSeries="@_UserDo" XAxisLabels="@_dataEnterBarChartXAxisLabels.Select(a => _localizer[a].Value).ToArray()" Width="100%" Height="300px"></MudChart>*@
-                        </MudPaper>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="12">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;background-color: #C8E6C9; color: #000;">
-                            <MudAlert Severity="Severity.Success" Style="direction:ltr">تماس های روزانه</MudAlert>
+		<MudRTLProvider RightToLeft="true" Class="persian-content">
 
-                        </MudPaper>
-                    </MudItem>
+			<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+				<MudGrid>
+					<MudItem xs="12" sm="6" md="12">
+						<MudPaper Elevation="2" Class="pa-4" Style="">
+							<MudAlert Severity="Severity.Normal" Style="direction:ltr">کارهای روزانه</MudAlert>
+							@*<MudChart ChartType="ChartType.Bar" ChartSeries="@_UserDo" XAxisLabels="@_dataEnterBarChartXAxisLabels.Select(a => _localizer[a].Value).ToArray()" Width="100%" Height="300px"></MudChart>*@
+						</MudPaper>
+					</MudItem>
+					<MudItem xs="12" sm="6" md="12">
+						<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;background-color: #C8E6C9; color: #000;">
+							<MudAlert Severity="Severity.Success" Style="direction:ltr">تماس های روزانه</MudAlert>
 
-                    <MudItem xs="12" sm="6">
-                        <MudGrid>
-                            <MudItem xs="12">
-                                <MudPaper Elevation="2" Style="height: 200px;background-color: #BBDEFB; color: #000;">
-                                    <MudAlert Severity="Severity.Info" Style="direction:ltr">
-                                        اساتید جایگزین
+						</MudPaper>
+					</MudItem>
 
-                                    </MudAlert>
-                                </MudPaper>
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-                                    <MudAlert Severity="Severity.Warning" Style="direction:ltr">
-                                        تقویم روز
-                                    </MudAlert>
+					<MudItem xs="12" sm="6">
+						<MudGrid>
+							<MudItem xs="12">
+								<MudPaper Elevation="2" Style="height: 200px;background-color: #BBDEFB; color: #000;">
+									<MudAlert Severity="Severity.Info" Style="direction:ltr">
+										اساتید جایگزین
 
-                                </MudPaper>
-                            </MudItem>
-                        </MudGrid>
-                    </MudItem>
-                    <MudItem xs="12" sm="6">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 100%;background-color: #FFCDD2; color: #000;">
+									</MudAlert>
+								</MudPaper>
+							</MudItem>
+							<MudItem xs="12">
+								<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+									<MudAlert Severity="Severity.Warning" Style="direction:ltr">
+										تقویم روز
+									</MudAlert>
 
-                            <MudAlert Severity="Severity.Error" Style="direction:ltr">
-                                یادآوری تماس های مهم
-                            </MudAlert>
+								</MudPaper>
+							</MudItem>
+						</MudGrid>
+					</MudItem>
+					<MudItem xs="12" sm="6">
+						<MudPaper Elevation="2" Class="pa-4" Style="height: 100%;background-color: #FFCDD2; color: #000;">
+
+							<MudAlert Severity="Severity.Error" Style="direction:ltr">
+								یادآوری تماس های مهم
+							</MudAlert>
 
 
-                        </MudPaper>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">6</MudPaper>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">7</MudPaper>
-                    </MudItem>
-                    <MudItem xs="12" sm="12" md="4">
-                        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">8</MudPaper>
-                    </MudItem>
-                </MudGrid>
+						</MudPaper>
+					</MudItem>
+					<MudItem xs="12" sm="6" md="4">
+						<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">6</MudPaper>
+					</MudItem>
+					<MudItem xs="12" sm="6" md="4">
+						<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">7</MudPaper>
+					</MudItem>
+					<MudItem xs="12" sm="12" md="4">
+						<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">8</MudPaper>
+					</MudItem>
+				</MudGrid>
 
-            </MudContainer>
-        </MudRTLProvider>
+			</MudContainer>
+		</MudRTLProvider>
 
-    </Authorized>
+	</Authorized>
 </AuthorizeView>
 
 <AuthorizeView Roles="Teacher">
@@ -104,7 +107,7 @@
 	</Authorized>
 </AuthorizeView>
 
-<MudText Typo="Typo.body1">Version 1.0.0</MudText>
+<MudText Typo="Typo.body1">Version 1.0.1</MudText>
 @code {
 
     List<SessionActivity> _activities;

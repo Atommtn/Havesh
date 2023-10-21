@@ -1,0 +1,91 @@
+﻿@using HaveshApp.Classes
+@using Append.Blazor.Notifications
+@using DNTPersianUtils.Core
+@using HaveshApp.Model
+
+
+<MudPaper Outlined="true" Class="p-2 m-1">
+	<MudStack Row="false" Spacing="2">
+		<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+			@MessageDto.SentDateTime.ToPersianDateTextify() @MessageDto.SentDateTime.ToShortTimeString()
+		</MudChip>
+		<MudChip Color="Color.Info" Size="Size.Medium">
+			@MessageDto.FromUserFullName
+		</MudChip>
+
+		@switch (MessageDto.MessageType)
+		{
+			case MessageTypeEnum.SimpleText:
+				<MudPaper Outlined="true" Elevation="1">
+					@MessageDto.Body
+				</MudPaper>
+				break;
+			case MessageTypeEnum.SimpleMessage:
+				<MudPaper Outlined="true" Elevation="1">
+					@MessageDto.Body
+				</MudPaper>
+				break;
+			case MessageTypeEnum.Alert:
+				<MudAlert Severity="@MessageDto.Severity">
+					<MudText Typo="Typo.body1">
+						@MessageDto.Body
+					</MudText>
+				</MudAlert>
+				break;
+			case MessageTypeEnum.Notification:
+				<MudAlert Severity="@MessageDto.Severity">
+					<MudChip Size="Size.Small" Label="true" Color="Color.Surface" Class="mr-2 ml-2">Notified</MudChip>
+					<MudText Typo="Typo.body2">
+						@MessageDto.Body
+					</MudText>
+				</MudAlert>
+				break;
+			case MessageTypeEnum.Command:
+				<MudChip Size="Size.Small" Label="true" Color="Color.Surface" Class="mr-2 ml-2">Executed Command</MudChip>
+				<MudChip Size="Size.Small" Label="false" Color="Color.Success" Class="mr-2 ml-2">@MessageDto.Command</MudChip>
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+
+		@if (!MessageDto.Replied)
+		{
+			<MudTextField Label="Message" @bind-Value="MessageText" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Message" Clearable="true" FullWidth="true" OnAdornmentClick="ReplyMessage" />
+		}
+		else
+		{
+			<MudText Typo="Typo.body1" Color="Color.Warning">
+				پاسخ: @MessageDto.ReplyText
+			</MudText>
+		}
+
+	</MudStack>
+
+
+</MudPaper>
+
+@code {
+	public string MessageText { get; set; }
+
+
+	private async Task ReplyMessage()
+	{
+		await _messageService.SendMessageAsync(new Message()
+			{
+				ReplyToMessageId = MessageDto.MessageId,
+				ReplyOriginalMessage = MessageDto.Body,
+				From = _dataProvider.GetUserByUseId(MessageDto.ToUserId),
+				To = _dataProvider.GetUserByUseId(MessageDto.FromUserId),
+				Severity = Severity.Normal,
+				Type = MessageTypeEnum.SimpleText,
+				Body = MessageText,
+				CreateDateTime = DateTime.Now,
+			});
+		MessageDto.Replied = true;
+		MessageDto.ReplyText = MessageText;
+		MessageText = "";
+	}
+
+	[Parameter]
+	public MessageDto MessageDto { get; set; }
+}

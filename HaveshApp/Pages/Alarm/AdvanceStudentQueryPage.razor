@@ -1,4 +1,5 @@
-﻿@page "/AdvanceStudentQuery"
+﻿@page "/AdvanceRegistration"
+@using HaveshApp.Admin.MemberShip.Model
 
 <MudStack Row="true" Spacing="1">
 	<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="RegisterAdvanceStudentClick">
@@ -10,9 +11,21 @@
 
 @code {
 
+	[Inject] public UserSessionService SessionService { get; set; }
+
 	private void RegisterAdvanceStudentClick()
 	{
-		_dataProvider.RegisterAdvanceUser();
+		const string filterCode = "0011";
+		var advanceRegistration = new AdvanceRegistration()
+		{
+			Title = "Do Action",
+			DateTime = DateTime.Now,
+			Allow = true,
+			UserName = SessionService.UserName!,
+			BranchFk = SessionService.User!.BranchFk,
+			Code = filterCode
+		};
+		_dataProvider.RegisterAdvanceUser(advanceRegistration);
 	}
 
 }

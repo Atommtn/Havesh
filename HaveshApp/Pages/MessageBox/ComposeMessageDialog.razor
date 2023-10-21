@@ -1,0 +1,98 @@
+﻿@using HaveshApp.Model
+@using HaveshApp.Admin.MemberShip.Model
+@using HaveshApp.Classes
+<MudDialog>
+	<DialogContent>
+		<MudGrid>
+			<MudItem md="6">
+				<MudAutocomplete T="User" Label="گیرنده" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person"
+				                 @bind-Value="Message.To"
+				                 SearchFunc="SearchFunc">
+					<ItemTemplate>
+						<MudIcon Icon="@Icons.Material.Filled.Person"></MudIcon>
+						<MudText Typo="Typo.body1">@context.ToString(true , true)</MudText>
+					</ItemTemplate>
+				</MudAutocomplete>
+			</MudItem>
+			<MudItem md="6">
+				<MudSelect Label="اهمیت" @bind-Value="Message.Severity" >
+					@foreach (var x in Enum.GetNames(typeof(Severity)))
+					{
+						<MudSelectItem Value="@(Enum.Parse<Severity>(x))"></MudSelectItem>
+					}
+				</MudSelect>
+			</MudItem>
+			<MudItem md="6">
+				<MudSelect Label="نوع" @bind-Value="Message.Type" >
+					@foreach (var x in Enum.GetNames(typeof(MessageTypeEnum)))
+					{
+						<MudSelectItem Value="@(Enum.Parse<MessageTypeEnum>(x))"></MudSelectItem>
+					}
+				</MudSelect>
+			</MudItem>
+				@if (Message.Type == MessageTypeEnum.Command)
+				{
+					<MudItem md="6">
+						<MudTextField Label="دستور" @bind-Value="Message.Command" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.RunCircle" Clearable="true" FullWidth="true"/>
+					</MudItem>
+				}
+			<MudItem md="6">
+				<MudTextField Label="عنوان" @bind-Value="Message.Title" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Title" Clearable="true" FullWidth="true"/>
+			</MudItem>
+			<MudItem md="12">
+				<MudTextField Label="پیام" @bind-Value="Message.Body" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Mail" Clearable="true" FullWidth="true"/>
+			</MudItem>
+			<MudItem md="6">
+
+			</MudItem>
+		</MudGrid>
+	</DialogContent>
+	<DialogActions>
+		<MudSpacer></MudSpacer>
+		<MudButton Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Send" OnClick="SendClick">
+			ارسال
+		</MudButton>
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseClick">
+			انصراف
+		</MudButton>
+
+	</DialogActions>
+</MudDialog>
+@code {
+
+	[CascadingParameter]
+	MudDialogInstance DialogInstance { get; set; }
+
+	List<User> _users;
+	public Message Message { get; set; } = new Message();
+	protected override void OnInitialized()
+	{
+		_users = _dataProvider.GetUsers();
+		base.OnInitialized();
+	}
+
+	private async Task SendClick()
+	{
+		Message.CreateDateTime = DateTime.Now;
+		Message.From = _userSession.User!;
+		await _messageService.SendMessageAsync(Message);
+		DialogInstance.Close();
+	}
+
+	private void CloseClick()
+	{
+		DialogInstance.Cancel();
+	}
+
+	private async Task<IEnumerable<User>> SearchFunc(string arg)
+	{
+
+		if (arg.IsNullOrEmpty()) return _users;
+		return _users.Where(x => (x.FirstName != null && (x.FirstName.Contains(arg)) ||
+		                          (x.LastName != null  && x.LastName.Contains(arg)) ||
+		                          (x.UserName.Contains(arg)) ||
+		                          (x.Email != null && x.Email.Contains(arg))));
+
+	}
+
+}

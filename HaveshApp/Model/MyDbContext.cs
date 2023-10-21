@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HaveshApp.Admin.Authentication;
 using HaveshApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -14,13 +15,18 @@ namespace HaveshApp.Model
         {
         }
         private readonly GlobalQueryFilterService _filterService;
+        private readonly UserSessionService _userSessionService;
 
-		public MyDbContext(DbContextOptions<MyDbContext> options , IConfiguration configuration, GlobalQueryFilterService filterService)
+        public MyDbContext(DbContextOptions<MyDbContext> options, 
+			IConfiguration configuration,
+			GlobalQueryFilterService filterService,
+			UserSessionService userSessionService)
             : base(options)
         {
             _configuration = configuration;
             _filterService = filterService;
-		}
+            _userSessionService = userSessionService;
+        }
 
 
         public virtual DbSet<OnlineTeacherLink> OnlineTeacherLinks { get; set; } = null!;

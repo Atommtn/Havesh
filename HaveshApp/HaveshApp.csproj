@@ -25,6 +25,7 @@
     <Content Remove="wwwroot\imageOptimize\OptimizerService.ts" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Append.Blazor.Notifications" Version="1.1.0" />
     <PackageReference Include="AspectCore.Core" Version="2.4.0" />
     <PackageReference Include="AspectCore.Extensions.LightInject" Version="2.4.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
@@ -35,6 +36,8 @@
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="DNTPersianUtils.Core" Version="5.7.1" />
     <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
       <PrivateAssets>all</PrivateAssets>

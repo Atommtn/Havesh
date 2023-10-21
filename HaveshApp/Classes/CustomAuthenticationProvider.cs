@@ -23,15 +23,7 @@ namespace HaveshApp.Classes
         }
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var jwtSection = _configuration.GetSection("JWT");
-
-            var tokenName = jwtSection["TokenName"]!;
-            var secretKey = jwtSection["Secret"]!;
-            var issuer = jwtSection["Issuer"]!;
-            var audience = jwtSection["Audience"]!;
-
-            var token = _accessor.HttpContext?.Request.Cookies[tokenName] ;//?? _tokenProviderService.Token;
-            var parser = new JwtTokenParser(secretKey);
+            var token = GetTokenParser(out var parser, _accessor.HttpContext, _configuration);
 
             if (parser.TryParseToken(token,out var payload,out var claims))
             {
@@ -50,6 +42,19 @@ namespace HaveshApp.Classes
             _sessionService.State = fromResult;
             return fromResult;
 
+        }
+
+        public static string? GetTokenParser(out JwtTokenParser parser, HttpContext? httpContext, IConfiguration configuration)
+        {
+	        var jwtSection = configuration.GetSection("JWT");
+
+	        var tokenName = jwtSection["TokenName"]!;
+	        var secretKey = jwtSection["Secret"]!;
+	        var issuer = jwtSection["Issuer"]!;
+	        var audience = jwtSection["Audience"]!;
+	        var token = httpContext?.Request.Cookies[tokenName]; //?? _tokenProviderService.Token;
+	        parser = new JwtTokenParser(secretKey);
+	        return token;
         }
     }
 }

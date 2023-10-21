@@ -37,6 +37,7 @@ public class JwtTokenParser
 
             payload = new Payload
             {
+                UserId = claimsPrincipal.FindFirst("HaveshApp:UserId")?.Value.ToInt32(),
                 UserName = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                 Gender = claimsPrincipal.FindFirst(ClaimTypes.Gender)?.Value,
                 FirstName = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value,

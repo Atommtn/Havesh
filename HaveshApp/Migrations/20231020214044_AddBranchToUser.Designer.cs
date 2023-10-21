@@ -4,6 +4,7 @@ using HaveshApp.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HaveshApp.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231020214044_AddBranchToUser")]
+    partial class AddBranchToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,7 +119,7 @@ namespace HaveshApp.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Gender")
+                    b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsActive")
@@ -354,143 +357,6 @@ namespace HaveshApp.Migrations
                     b.HasIndex("BranchFk");
 
                     b.ToTable("ShokouhPardis_LessonPlanSectionType", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Command")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeliveredDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FromId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MessageBoxId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ReadDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReplyOriginalMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReplyToMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("SentDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Severity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ToId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FromId");
-
-                    b.HasIndex("MessageBoxId");
-
-                    b.HasIndex("ReplyToMessageId");
-
-                    b.HasIndex("ToId");
-
-                    b.ToTable("Messages", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageAction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ActionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MessageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
-
-                    b.ToTable("MessageActions", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageActionOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ActionUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Icon")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MessageActionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageActionId");
-
-                    b.ToTable("MessageActionOptions", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageBox", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("MessageBoxes", "ShoukouhPardis12DBAdmin");
                 });
 
             modelBuilder.Entity("HaveshApp.Model.OnlineTeacherLink", b =>
@@ -1529,17 +1395,12 @@ namespace HaveshApp.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MessageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
-
-                    b.HasIndex("MessageId");
 
                     b.ToTable("ShokouhPardis_MediaAttachment", "ShoukouhPardis12DBAdmin");
                 });
@@ -2810,60 +2671,6 @@ namespace HaveshApp.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("HaveshApp.Model.Message", b =>
-                {
-                    b.HasOne("HaveshApp.Admin.MemberShip.Model.User", "From")
-                        .WithMany()
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HaveshApp.Model.MessageBox", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("MessageBoxId");
-
-                    b.HasOne("HaveshApp.Model.Message", "ReplyToMessage")
-                        .WithMany()
-                        .HasForeignKey("ReplyToMessageId");
-
-                    b.HasOne("HaveshApp.Admin.MemberShip.Model.User", "To")
-                        .WithMany()
-                        .HasForeignKey("ToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("From");
-
-                    b.Navigation("ReplyToMessage");
-
-                    b.Navigation("To");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageAction", b =>
-                {
-                    b.HasOne("HaveshApp.Model.Message", null)
-                        .WithMany("Actions")
-                        .HasForeignKey("MessageId");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageActionOption", b =>
-                {
-                    b.HasOne("HaveshApp.Model.MessageAction", null)
-                        .WithMany("Options")
-                        .HasForeignKey("MessageActionId");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageBox", b =>
-                {
-                    b.HasOne("HaveshApp.Admin.MemberShip.Model.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("HaveshApp.Model.PreRegistration", b =>
                 {
                     b.HasOne("HaveshApp.Data.Branch", "Branch")
@@ -3143,10 +2950,6 @@ namespace HaveshApp.Migrations
                         .HasForeignKey("BranchFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("HaveshApp.Model.Message", null)
-                        .WithMany("Attachments")
-                        .HasForeignKey("MessageId");
 
                     b.Navigation("Branch");
                 });
@@ -3557,23 +3360,6 @@ namespace HaveshApp.Migrations
             modelBuilder.Entity("HaveshApp.Model.LessonPlanSection", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.Message", b =>
-                {
-                    b.Navigation("Actions");
-
-                    b.Navigation("Attachments");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageAction", b =>
-                {
-                    b.Navigation("Options");
-                });
-
-            modelBuilder.Entity("HaveshApp.Model.MessageBox", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("HaveshApp.Model.SessionActivity", b =>

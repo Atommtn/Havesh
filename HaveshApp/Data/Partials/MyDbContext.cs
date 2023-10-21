@@ -4,6 +4,7 @@ using HaveshApp.Admin.MemberShip.Model;
 using HaveshApp.Data;
 using HaveshApp.Managment.Session.Activity;
 using HaveshApp.Services;
+using MudBlazor;
 
 namespace HaveshApp.Model;
 
@@ -13,6 +14,13 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<AdvanceRegistration> AdvanceRegistrations{ get; set; } = null!;
     public virtual DbSet<Role> Roles{ get; set; } = null!;
     public virtual DbSet<Permission> Permissions{ get; set; } = null!;
+    
+    public virtual DbSet<MessageBox> MessageBoxes{ get; set; } = null!;
+    public virtual DbSet<Message> Messages{ get; set; } = null!;
+    public virtual DbSet<MessageAction> MessageActions{ get; set; } = null!;
+    public virtual DbSet<MessageActionOption> MessageActionOptions{ get; set; } = null!;
+
+
 
     
     public virtual DbSet<ShokouhPardisMediaAttachment> MediaAttachments { get; set; } = null!;
@@ -37,7 +45,12 @@ public partial class MyDbContext : DbContext
 
 	partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
-        ShokouhPardisTermClass.Setup(modelBuilder);
+	    // Apply the filter condition to all queries for the entity
+	    /*modelBuilder.Entity<BranchBaseModel>().HasQueryFilter(
+		    (e => e.BCode != null && (!EnableGlobalFilter || e.BCode.Contains("01"))));*/
+			    
+
+		ShokouhPardisTermClass.Setup(modelBuilder);
         ShokouhPardisSchedule.Setup(modelBuilder);
         ShokouhPardisProgram.Setup(modelBuilder);
         ShokouhPardisDaySession.Setup(modelBuilder);

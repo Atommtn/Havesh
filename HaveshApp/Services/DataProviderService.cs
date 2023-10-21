@@ -1460,6 +1460,11 @@ public class DataProviderService
         return DbConntext.Users.FirstOrDefault(x => x.UserName == userName);
     }
 
+    public User GetUserByUseId(int userId)
+    {
+        return DbConntext.Users.First(x => x.Id == userId);
+    }
+
     public Role? GetRoleByName(string roleName)
     {
         var firstOrDefault = DbConntext.Roles.FirstOrDefault(x => x.Name == roleName);
@@ -2071,10 +2076,21 @@ public class DataProviderService
 
     }
 
-    public void RegisterAdvanceUser()
+    public void RegisterAdvanceUser(AdvanceRegistration advanceRegistration)
     {
-	    
 
+	    DbConntext.AdvanceRegistrations.Add(advanceRegistration);
+	    DbConntext.SaveChanges();
+
+    }
+
+    public void InactiveUser(string userName)
+    {
+        var user = DbConntext.Users.FirstOrDefault(x=>x.UserName == userName);
+        if (user is null) return;
+
+        user.IsActive = false;
+        DbConntext.SaveChanges();
     }
 }
 

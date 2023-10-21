@@ -19,10 +19,15 @@ using HaveshApp.Admin.Audit;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes;
 using HaveshApp.Classes.Serilog;
+using HaveshApp.Classes.SignalR;
 using HaveshApp.Managment.Session;
 using HaveshApp.Model;
 using HaveshApp.Services;
 using Log = Serilog.Log;
+using Microsoft.AspNetCore.Components.Server.Circuits;
+using Microsoft.AspNetCore.ResponseCompression;
+using Append.Blazor.Notifications;
+
 // Configure logging to log to MSSqlServer database
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,17 +38,16 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddElectron();
 
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<CircuitHandler, TrackingCircuitHandler>();
+builder.Services.AddNotifications();
 
 builder.Services.AddMudServices();
 //builder.Services.AddMudExtensions();
 //builder.Services.AddMudServicesWithExtensions();
 
-builder.Services.AddDbContext<MyDbContext>();
-
-builder.Services.AddScoped<Navigation>();
-builder.Services.AddScoped<UserSessionService>();
 var conStr = builder.Configuration["ConnectionStrings:ArvanConnection"];
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -62,7 +66,19 @@ Log.Logger = new LoggerConfiguration()
         restrictedToMinimumLevel: LogEventLevel.Information)
     .CreateLogger();
 
+builder.Services.AddDbContext<MyDbContext>();
+
+builder.Services.AddScoped<Navigation>();
+builder.Services.AddScoped<AuthenticationService>();
+builder.Services.AddScoped<UserSessionService>();
+builder.Services.AddScoped<MessageHandlingService>();
+builder.Services.AddSingleton<UserConnectionManagerService>();
+
 builder.Services.AddScoped<DataProviderService>();
+builder.Services.AddScoped<MessageService>();
+builder.Services.AddScoped<MessageDataProviderService>();
+builder.Services.AddScoped<RemoteCommandHandlerService>();
+
 builder.Services.AddScoped<TimeTableSessionService>();
 
 builder.Services.AddScoped<GlobalQueryFilterService>();
@@ -96,6 +112,12 @@ builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
     
 });
 
+builder.Services.AddResponseCompression(opts =>
+{
+	opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+		new[] { "application/octet-stream" });
+});
+
 AuthorizationPolicies.AddAuthorizarionPolicies(builder.Services);
 
 
@@ -104,7 +126,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+	app.UseResponseCompression();
+	app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -123,6 +146,8 @@ app.UseRouting();
 
 
 app.MapBlazorHub();
+app.MapHub<HaveshAppHub>("/apphub")
+	 ;
 app.MapFallbackToPage("/_Host");
 app.MapHealthChecks("/healthz");
 

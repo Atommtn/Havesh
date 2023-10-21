@@ -4,6 +4,7 @@ using HaveshApp.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HaveshApp.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231021093047_MessageBoxInit")]
+    partial class MessageBoxInit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,7 +119,7 @@ namespace HaveshApp.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Gender")
+                    b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsActive")
@@ -367,34 +370,13 @@ namespace HaveshApp.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Command")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeliveredDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("FromId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MessageBoxId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ReadDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReplyOriginalMessage")
+                    b.Property<string>("Header")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ReplyToMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("SentDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Severity")
+                    b.Property<int?>("MessageBoxId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -403,20 +385,15 @@ namespace HaveshApp.Migrations
                     b.Property<int>("ToId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FromId");
 
                     b.HasIndex("MessageBoxId");
 
-                    b.HasIndex("ReplyToMessageId");
-
                     b.HasIndex("ToId");
 
-                    b.ToTable("Messages", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Message", "ShoukouhPardis12DBAdmin");
                 });
 
             modelBuilder.Entity("HaveshApp.Model.MessageAction", b =>
@@ -438,7 +415,7 @@ namespace HaveshApp.Migrations
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("MessageActions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageAction", "ShoukouhPardis12DBAdmin");
                 });
 
             modelBuilder.Entity("HaveshApp.Model.MessageActionOption", b =>
@@ -472,7 +449,7 @@ namespace HaveshApp.Migrations
 
                     b.HasIndex("MessageActionId");
 
-                    b.ToTable("MessageActionOptions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageActionOption", "ShoukouhPardis12DBAdmin");
                 });
 
             modelBuilder.Entity("HaveshApp.Model.MessageBox", b =>
@@ -2822,10 +2799,6 @@ namespace HaveshApp.Migrations
                         .WithMany("Messages")
                         .HasForeignKey("MessageBoxId");
 
-                    b.HasOne("HaveshApp.Model.Message", "ReplyToMessage")
-                        .WithMany()
-                        .HasForeignKey("ReplyToMessageId");
-
                     b.HasOne("HaveshApp.Admin.MemberShip.Model.User", "To")
                         .WithMany()
                         .HasForeignKey("ToId")
@@ -2833,8 +2806,6 @@ namespace HaveshApp.Migrations
                         .IsRequired();
 
                     b.Navigation("From");
-
-                    b.Navigation("ReplyToMessage");
 
                     b.Navigation("To");
                 });

@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using HaveshApp.Classes
+@implements IAsyncDisposable
+
+@code {
+	private HubConnection? hubConnection;
+	[Inject] NavigationManager Navigation { get; set; }
+	[Inject] UserSessionService UserSessionService { get; set; }
+	[Inject] MessageHandlingService MessageHandlingService { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		hubConnection = new HubConnectionBuilder()
+			.WithUrl(Navigation.ToAbsoluteUri($"/apphub?UserId={UserSessionService.User?.Id}"))
+			.Build();
+
+		hubConnection.On<MessageDto>("HandleIncomingMessage", (message) =>
+		{
+			MessageHandlingService.HandleIncomingMessage(message);
+		});
+
+		await hubConnection.StartAsync();
+	}
+
+	public async ValueTask DisposeAsync()
+	{
+		if (hubConnection != null)
+			await hubConnection.DisposeAsync();
+	}
+}

@@ -1,0 +1,94 @@
+﻿@using HaveshApp.Classes
+@using Append.Blazor.Notifications
+@using HaveshApp.Model
+@implements IDisposable
+<MudStack Row="false" Spacing="4">
+	@foreach (var msg in _messageDtos.OrderByDescending(x => x.SentDateTime))
+	{
+		<IncommingMessageListItemComponent MessageDto="msg" />
+	}
+	<MudSpacer />
+	
+</MudStack>
+
+@code {
+	[Inject] INotificationService NotificationService { get; set; } = null!;
+	[Inject] RemoteCommandHandlerService CommandHandlerService { get; set; } = null!;
+
+
+	protected override void OnInitialized()
+	{
+		_userSession.MessageReceived += UserSessionOnMessageReceived;
+		base.OnInitialized();
+	}
+
+	public void Dispose()
+	{
+		_userSession.MessageReceived -= UserSessionOnMessageReceived;
+
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			var isSupportedByBrowser = await NotificationService.IsSupportedByBrowserAsync();
+			if (isSupportedByBrowser)
+			{
+				var permission = await NotificationService.RequestPermissionAsync();
+			}
+
+		}
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+	List<MessageDto> _messageDtos = new List<MessageDto>();
+
+	[CascadingParameter] MainLayout MainLayout { get; set; }
+
+	private async Task UserSessionOnMessageReceived(MessageDto message)
+	{
+		switch (message.MessageType)
+		{
+			case MessageTypeEnum.Command:
+				{
+					await CommandHandlerService.ExecuteCommand(message.Command!);
+					if (message.Severity == Severity.Error)
+						return;
+					break;
+				}
+			case MessageTypeEnum.Notification:
+				await NotifyMessage(message);
+				await MainLayout.ShowMessagesDrawer();
+				break;
+			case MessageTypeEnum.SimpleText:
+			case MessageTypeEnum.SimpleMessage:
+			case MessageTypeEnum.Alert:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+
+		if (message.Severity is Severity.Error or Severity.Warning)
+		{
+			await NotifyMessage(message);
+			await MainLayout.ShowMessagesDrawer();
+		}
+		_messageDtos.Add(message);
+		await InvokeAsync(StateHasChanged);
+		await MainLayout.ShowMessagesDrawer();
+	}
+
+	private async Task NotifyMessage(MessageDto message)
+	{
+		await NotificationService.CreateAsync(message.Title, new NotificationOptions()
+			{
+				Body = message.Body,
+				Sticky = true,
+				TimeOut = 5
+			});
+	}
+
+
+
+}
