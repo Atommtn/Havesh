@@ -1,19 +1,17 @@
-﻿using HaveshApp.Data;
-using static Amazon.S3.Util.S3EventNotification;
+﻿using static Amazon.S3.Util.S3EventNotification;
 
-namespace HaveshApp.Services
+namespace HaveshApp.Services;
+
+public class GlobalQueryFilterService
 {
-	public class GlobalQueryFilterService
+	/*
+	public IQueryable<TEntity> ApplyGlobalFilter<TEntity>
+		(IQueryable<TEntity> query)
+		where TEntity : class
 	{
-		/*
-		public IQueryable<TEntity> ApplyGlobalFilter<TEntity>
-			(IQueryable<TEntity> query) 
-			where TEntity : class
-		{
-			
-			// Add your filter logic here
-			//return query.Where(entity => { (BranchBaseModel)entity});
-		}
-	*/
+
+		// Add your filter logic here
+		//return query.Where(entity => { (BranchBaseModel)entity});
 	}
+*/
 }

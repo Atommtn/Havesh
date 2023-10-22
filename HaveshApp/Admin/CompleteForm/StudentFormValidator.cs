@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
+using Havesh.Model.Model;
 using HaveshApp.Classes;
-using HaveshApp.Model;
 
 namespace HaveshApp.Admin.CompleteForm;
 

@@ -1,10 +1,9 @@
-﻿namespace HaveshApp.Classes
+﻿namespace HaveshApp.Classes;
+
+public class SessionStatuses
 {
-    public class SessionStatuses
-    {
-        public const string Pending = "برگزار نشده";
-        public const string Completed = "برگزار شده";
-        public const string Canceled = "کنسل شده";
-        public const string Replaced = "جایگزین شده";
-    }
+	public const string Pending = "برگزار نشده";
+	public const string Completed = "برگزار شده";
+	public const string Canceled = "کنسل شده";
+	public const string Replaced = "جایگزین شده";
 }

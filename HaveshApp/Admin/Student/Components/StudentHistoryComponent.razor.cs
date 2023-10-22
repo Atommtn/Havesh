@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Havesh.Model.Model;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using HaveshApp.Model;
 
-namespace HaveshApp.Admin.Student.Components
+namespace HaveshApp.Admin.Student.Components;
+
+public partial class StudentHistoryComponent
 {
-    public partial class StudentHistoryComponent
-    {
-        [Parameter]
-        public ShokouhPardisStudentClass Student { get; set; }
+	[Parameter]
+	public ShokouhPardisStudentClass Student { get; set; }
 
-        public List<ShokouhPardisTimeTable> studentHisory { get; set; }
+	public List<ShokouhPardisTimeTable> studentHisory { get; set; }
 
 
-        private MudTable<ShokouhPardisTimeTable> _studentTables;
-        protected override void OnInitialized()
-        {
-            studentHisory = _dataProvider.GetStudentHistory(Student);
-            base.OnInitialized();
-        }
-    }
+	private MudTable<ShokouhPardisTimeTable> _studentTables;
+	protected override void OnInitialized()
+	{
+		studentHisory = _dataProvider.GetStudentHistory(Student);
+		base.OnInitialized();
+	}
 }

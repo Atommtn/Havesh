@@ -56,7 +56,8 @@
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Havesh.Model\Havesh.Model.csproj" />
+    <ProjectReference Include="..\Havesh.OrleansClient\Havesh.OrleansClient.csproj" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\imageOptimize\OptimizerService.ts" />
@@ -65,5 +66,8 @@
     <Content Update="alb-http-to-https-redirection.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Admin\MemberShip\Model\" />
   </ItemGroup>
 </Project>

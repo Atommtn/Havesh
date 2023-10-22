@@ -21,7 +21,6 @@ using HaveshApp.Classes;
 using HaveshApp.Classes.Serilog;
 using HaveshApp.Classes.SignalR;
 using HaveshApp.Managment.Session;
-using HaveshApp.Model;
 using HaveshApp.Services;
 using Log = Serilog.Log;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -29,6 +28,8 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Append.Blazor.Notifications;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Havesh.Model.Data;
+using Havesh.Model.Model;
 
 // Configure logging to log to MSSqlServer database
 

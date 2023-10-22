@@ -1,27 +1,26 @@
-﻿namespace HaveshApp.Classes.SignalR
+﻿namespace HaveshApp.Classes.SignalR;
+
+using Microsoft.AspNetCore.Components.Server.Circuits;
+
+public class TrackingCircuitHandler : CircuitHandler
 {
-	using Microsoft.AspNetCore.Components.Server.Circuits;
+	private HashSet<Circuit> circuits = new();
 
-	public class TrackingCircuitHandler : CircuitHandler
+	public override Task OnConnectionUpAsync(Circuit circuit,
+		CancellationToken cancellationToken)
 	{
-		private HashSet<Circuit> circuits = new();
+		circuits.Add(circuit);
 
-		public override Task OnConnectionUpAsync(Circuit circuit,
-			CancellationToken cancellationToken)
-		{
-			circuits.Add(circuit);
-
-			return Task.CompletedTask;
-		}
-
-		public override Task OnConnectionDownAsync(Circuit circuit,
-			CancellationToken cancellationToken)
-		{
-			circuits.Remove(circuit);
-
-			return Task.CompletedTask;
-		}
-
-		public int ConnectedCircuits => circuits.Count;
+		return Task.CompletedTask;
 	}
+
+	public override Task OnConnectionDownAsync(Circuit circuit,
+		CancellationToken cancellationToken)
+	{
+		circuits.Remove(circuit);
+
+		return Task.CompletedTask;
+	}
+
+	public int ConnectedCircuits => circuits.Count;
 }

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using HaveshApp.Admin.MemberShip.Model;
+﻿using Havesh.Model.Model;
+using Microsoft.AspNetCore.Authorization;
 using HaveshApp.Services;
 
 namespace HaveshApp.Admin.Authentication;
