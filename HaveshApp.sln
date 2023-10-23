@@ -5,15 +5,19 @@ VisualStudioVersion = 17.0.31825.309
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaveshApp", "HaveshApp\HaveshApp.csproj", "{2E71C458-A775-44C6-B4D2-8050B37F3E96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Silo", "Havesh.Silo\Havesh.Silo.csproj", "{4741A4FB-DB94-454C-B693-2AABB1420634}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Silo", "Havesh.Silo\Havesh.Silo.csproj", "{4741A4FB-DB94-454C-B693-2AABB1420634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Grains", "Havesh.Grains\Havesh.Grains.csproj", "{DFAA49AA-CB47-45A0-9E18-66C17ED65DDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Grains", "Havesh.Grains\Havesh.Grains.csproj", "{DFAA49AA-CB47-45A0-9E18-66C17ED65DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.GrainInterfaces", "Havesh.GrainInterfaces\Havesh.GrainInterfaces.csproj", "{69107155-CECD-424F-BD24-162931EAF4EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.GrainInterfaces", "Havesh.GrainInterfaces\Havesh.GrainInterfaces.csproj", "{69107155-CECD-424F-BD24-162931EAF4EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.OrleansClient", "Havesh.OrleansClient\Havesh.OrleansClient.csproj", "{BDCB60C1-6ED8-4AD7-A3DA-2015EC749B1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.OrleansClient", "Havesh.OrleansClient\Havesh.OrleansClient.csproj", "{BDCB60C1-6ED8-4AD7-A3DA-2015EC749B1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Model", "Havesh.Model\Havesh.Model.csproj", "{3D9D8A5D-830C-48E5-8ECF-0B5D96AD72DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Model", "Havesh.Model\Havesh.Model.csproj", "{3D9D8A5D-830C-48E5-8ECF-0B5D96AD72DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Domain", "Havesh.Domain\Havesh.Domain.csproj", "{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Workflow", "Havesh.Workflow\Havesh.Workflow.csproj", "{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{3D9D8A5D-830C-48E5-8ECF-0B5D96AD72DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D9D8A5D-830C-48E5-8ECF-0B5D96AD72DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D9D8A5D-830C-48E5-8ECF-0B5D96AD72DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

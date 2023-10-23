@@ -2,13 +2,11 @@
 using System.Globalization;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
-using MudBlazor;
 using Olive;
-using HaveshApp.Admin.Audit;
-using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes;
-using Log = Serilog.Log;
 using Havesh.Model.Model;
+using MudBlazor;
+
 /*
 using Havesh.Model.Model.MyDbContext;
 */
@@ -18,16 +16,11 @@ namespace HaveshApp.Services;
 public class DataProviderService
 {
     public MyDbContext DbConntext { get; }
-    readonly FinancialService _financialService;
 
 
-    public DataProviderService(
-        MyDbContext dbConntext,
-        FinancialService financialService
-    )
+    public DataProviderService(MyDbContext dbConntext)
     {
         DbConntext = dbConntext;
-        _financialService = financialService;
     }
 
     public List<ShokouhPardisYearClass> GetYears()
@@ -351,10 +344,10 @@ public class DataProviderService
             .ToList();
     }
 
-    [LogMethodCall]
+    
     public void SaveDailyJV(ShokouhPardisDailyJv dailyJv)
     {
-        _financialService.ApplyDailyJv(dailyJv);
+        //_financialService.ApplyDailyJv(dailyJv);
         SaveEditDailyJV(dailyJv);
         DbConntext.SaveChanges();
     }
@@ -1474,7 +1467,7 @@ public class DataProviderService
         return firstOrDefault;
     }
 
-    [LogMethodCall]
+    
     public User? CheckUserLogin(string userName, string password)
     {
         // Log.Information("THIS IS SAMPLE of CHECKING USER LOG");

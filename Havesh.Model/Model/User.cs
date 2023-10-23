@@ -4,7 +4,13 @@ using Olive;
 
 namespace Havesh.Model.Model;
 
-public class User
+[Serializable]
+public class BaseEntity
+{
+
+}
+
+public class User : BaseEntity
 {
 
 	public int Id { get; set; }
@@ -59,7 +65,7 @@ public class User
 	}
 }
 
-public class Role
+public class Role : BaseEntity
 {
 	public int Id { get; set; }
 	public string Name { get; set; }
@@ -75,7 +81,7 @@ public class Role
 }
 
 
-public class Permission
+public class Permission : BaseEntity
 {
 	public int Id { get; set; }
 
@@ -86,7 +92,7 @@ public class Permission
 }
 
 
-public class AdvanceRegistration
+public class AdvanceRegistration : BaseEntity
 {
 	public int Id { get; set; }
 	public bool? Allow { get; set; }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havesh.Model.Model;
 
 namespace Havesh.GrainInterfaces;
 
-internal interface IUser : IGrainWithIntegerKey
+public interface IUser : IGrainWithIntegerKey
 {
-	ValueTask<string> GetUserById(int userId);
+	ValueTask<User> GetUser();
+	ValueTask<User> SaveUser();
+
 }
