@@ -15,6 +15,7 @@ using System.Xml;
 using Amazon.Util;
 using Serilog;
 using HaveshApp.Admin.Authentication;
+using HaveshApp.Admin.Clone;
 using HaveshApp.Admin.DailyJV.Components;
 using HaveshApp.Classes;
 using MudBlazor.Charts.SVG.Models;
@@ -32,7 +33,7 @@ namespace HaveshApp.Admin.DailyJV
         PreRegistration preRegistration;
         public TimeSpan? ts { get; set; }
         public ShokouhPardisTermClass? NextTerm { get; set; }
-        public ShokouhPardisTermClass CurrentTerm { get; set; }
+        public ShokouhPardisTermClass LastTerm { get; set; }
         private ShokouhPardisLevelClass _nextLevel;
         private ShokouhPardisLevelBookPrice? _price;
         ShokouhPardisLevelClass? NextLevel
@@ -44,7 +45,7 @@ namespace HaveshApp.Admin.DailyJV
                 //_dailyJV.PaymentType = null;
 
                 if (_nextLevel != null)
-                    _price = _dataProvider.GetLevelBookPrice(NextTerm.TermClassId, _nextLevel.LevelClassId);
+                    _price = _dataProvider.GetLevelBookPrice(_dataProvider.GetTermsInRangeToday().TermClassId, _nextLevel.LevelClassId);
             }
         }
 
@@ -73,21 +74,41 @@ namespace HaveshApp.Admin.DailyJV
         }
         private async Task<Task> OnSelectStudentAction(List<ShokouhPardisStudentClass> arg)
         {
-
-            ShowStudent = true;
-            Student = arg.First();
-            NextTerm = _dataProvider.GetTermsInRangeToday();
-            FindStudentLastTimeTable = _dataProvider.FindStudentLastTimeTable(Student,30);
-            if (FindStudentLastTimeTable == null)
+            var dialogTerm = await _dialogService.ShowAsync<TermSelectorDialog>("انتخاب ترم پیش ثبت نام", new DialogParameters()
             {
-                CurrentTerm = _dataProvider.GetTermsbyTermId(30);
+                ["Term"] = NextTerm,
+                ["DialogTitle"] ="ترم مورد نظر برای پیش ثبت نام را انتخاب نمایید"
+
+            }, new DialogOptions()
+            {
+                FullWidth = true,
+                MaxWidth = MaxWidth.Large
+            });
+            var TermResult = await dialogTerm.Result;
+            if (!TermResult.Canceled)
+            {
+                
+                NextTerm = TermResult.Data as ShokouhPardisTermClass;
             }
             else
             {
-                CurrentTerm = FindStudentLastTimeTable.Term;
+                _snackBar.Add("ترم پیش ثبت نام انتخاب نگردید.", Severity.Success);
+                return Task.CompletedTask;
+            }
+            ShowStudent = true;
+            Student = arg.First();
+            //NextTerm = _dataProvider.GetTermsInRangeToday();
+            FindStudentLastTimeTable = _dataProvider.FindStudentLastTimeTable(Student);
+            if (FindStudentLastTimeTable == null)
+            {
+                LastTerm = _dataProvider.GetTermsInRangeToday();
+            }
+            else
+            {
+                LastTerm = FindStudentLastTimeTable.Term;
             }
             _dailyJV = ShokouhPardisDailyJv.CreateNewDailyJV();
-            _dailyJV.CurrentDate = _userSession.LastJvDate;
+            _dailyJV.CurrentDate = DateTime.Now.Date;
             if (FindStudentLastTimeTable is null)
             {
                 _snackBar.Add(arg.First().FullName + "در هیچ کلاسی تا بحال شرکت نکرده سیستم قادر به تعیین سطح نمی باشد", severity: Severity.Error);
@@ -110,6 +131,7 @@ namespace HaveshApp.Admin.DailyJV
                 }
                 else
                 {
+                    _snackBar.Add("سطحی برای پیش ثبت نام انتخاب نگردید.", Severity.Success);
                     return Task.CompletedTask;
                 }
                 

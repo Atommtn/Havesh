@@ -1763,7 +1763,7 @@ public class DataProviderService
 
     }
 
-    public ShokouhPardisTimeTable FindStudentLastTimeTable(ShokouhPardisStudentClass student, int i)
+    public ShokouhPardisTimeTable FindStudentLastTimeTable(ShokouhPardisStudentClass student)
     {
         var tts = DbConntext.ShokouhPardisTimeTableStudents
             .Include(x => x.TimeTable)
@@ -1774,8 +1774,7 @@ public class DataProviderService
             .ThenInclude(x => x.Teacher)
             .Include(x => x.Student)
             .OrderByDescending(x => x.TimeTableStudentsId)
-            .FirstOrDefault(x => x.Student.StudentClassId == student.StudentClassId
-            && x.TimeTable.TermId == i);
+            .LastOrDefault(x => x.Student.StudentClassId == student.StudentClassId);
         if (tts != null) return tts.TimeTable;
         return null;
 

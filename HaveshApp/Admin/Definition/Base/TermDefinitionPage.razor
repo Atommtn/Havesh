@@ -1,0 +1,14 @@
+﻿@page "/TermDefinition"
+@using HaveshApp.Model
+@using HaveshApp.Services
+@using HaveshApp.Admin.Clone
+@layout PersianPagesLayout
+<h3>تعریف ترم</h3>
+
+<TermSelectorComponent YearOnly="true"  Year="Year" ></TermSelectorComponent>
+
+@code {
+
+    public ShokouhPardisYearClass Year { get; set; }
+    
+}

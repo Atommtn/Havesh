@@ -29,18 +29,21 @@
                         <MudSelectItem Value="y">@y.YearName</MudSelectItem>
                     }
                 </MudSelect>
-                <MudIconButton Icon="@Icons.TwoTone.ArrowCircleDown" Color="Color.Info" OnClick="NextTermClick"></MudIconButton>
-                <MudSelect @bind-Value="Term" Label="ترم" Dense="true">
-                    @if (AllowAll)
-                    {
-                        <MudSelectItem Value="@(null as ShokouhPardisTermClass)">همه ترمها</MudSelectItem>
-                    }
-                    @foreach (var t in Terms)
-                    {
-                        <MudSelectItem Value="t">@t.TermName</MudSelectItem>
-                    }
-                </MudSelect>
-                <MudIconButton Icon="@Icons.TwoTone.ArrowCircleUp" Color="Color.Info" OnClick="PrevTermClick"></MudIconButton>
+                @if (!YearOnly)
+                {
+                    <MudIconButton Icon="@Icons.TwoTone.ArrowCircleDown" Color="Color.Info" OnClick="NextTermClick"></MudIconButton>
+                    <MudSelect @bind-Value="Term" Label="ترم" Dense="true">
+                        @if (AllowAll)
+                        {
+                            <MudSelectItem Value="@(null as ShokouhPardisTermClass)">همه ترمها</MudSelectItem>
+                        }
+                        @foreach (var t in Terms)
+                        {
+                            <MudSelectItem Value="t">@t.TermName</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudIconButton Icon="@Icons.TwoTone.ArrowCircleUp" Color="Color.Info" OnClick="PrevTermClick"></MudIconButton>
+                }
             }
         </MudStack>
 
@@ -54,6 +57,7 @@
     public IEnumerable<ShokouhPardisYearClass> Years;
     private bool initComplete = false;
 
+    [Parameter]
     public ShokouhPardisYearClass Year
     {
         get => _year;
@@ -61,6 +65,7 @@
         {
             if (_year == value) return;
             _year = value;
+            YearChanged?.InvokeAsync(_year);
             if (_year == null)
             {
                 Term = null;
@@ -79,6 +84,9 @@
     public string Title { get; set; }
 
     [Parameter]
+    public bool YearOnly { get; set; }
+
+    [Parameter]
     public ShokouhPardisTermClass? Term
     {
         get => _term;
@@ -95,6 +103,8 @@
 
     [Parameter]
     public EventCallback<ShokouhPardisTermClass>? TermChanged { get; set; }
+    [Parameter]
+    public EventCallback<ShokouhPardisYearClass>? YearChanged { get; set; }
 
     [Inject] IDialogService DialogService { get; set; }
     private List<ShokouhPardisTermClass> Terms;
