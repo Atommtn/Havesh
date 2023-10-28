@@ -106,38 +106,8 @@
 		}
 	</Authorized>
 </AuthorizeView>
-<AuthorizeView Roles="Supervisor">
-    <Authorized>
-        @if (_session is not null)
-        {
-            @_session.TimeTable.Title
-            <TimeTableItemComponent TimeTable="_session.TimeTable" Dense="false" ShowRecordId="false" ShowSessionCount="false" IsSessionCanceler="false">
-                <ChildContent>
 
-                </ChildContent>
-                <NoContent>
-
-                </NoContent>
-            </TimeTableItemComponent>
-
-            <TeacherLessonPlanComponent Session="_session" >
-
-            </TeacherLessonPlanComponent>
-
-            @foreach (var act in _activities)
-            {
-                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Class" Variant="Variant.Outlined" OnClick="() => ClassSessionClick(_session,act)">
-                    <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
-                        @act.ActivityTitle - جلسه @_session?.SessionNumber
-                    </MudText>
-                </MudButton>
-
-            }
-
-        }
-    </Authorized>
-</AuthorizeView>
-<MudText Typo="Typo.body1">Version 1.0.3</MudText>
+<MudText Typo="Typo.body1">Version 1.0.2</MudText>
 @code {
 
     List<SessionActivity> _activities;
