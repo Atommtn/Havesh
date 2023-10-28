@@ -24,8 +24,10 @@ public class User : BaseEntity
 	public List<Role> Roles { get; } = new();
 	public bool IsActive { get; set; }
 
-	public string BCode { get; set; }
+	public string? BCode { get; set; }
 	public int BranchFk { get; set; }
+
+	[NotMapped] public string FullName => FirstName + " " + LastName;
 
 	[ForeignKey(nameof(BranchFk))]
 	public Branch Branch { get; set; }

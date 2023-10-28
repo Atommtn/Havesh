@@ -54,9 +54,11 @@
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
+    <PackageReference Include="Syncfusion.Blazor.Core" Version="23.1.42" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havesh.Domain\Havesh.Domain.csproj" />
+    <ProjectReference Include="..\Havesh.Model\Havesh.Model.csproj" />
     <ProjectReference Include="..\Havesh.OrleansClient\Havesh.OrleansClient.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -62,7 +62,7 @@ public class MessageDataProviderService : DataProviderService
 {
 	public MessageDataProviderService(MyDbContext dbConntext, 
 		FinancialService financialService) 
-		: base(dbConntext, financialService)
+		: base(dbConntext)
 	{
 
 	}

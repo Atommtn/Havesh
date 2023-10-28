@@ -1,41 +1,45 @@
 ﻿@using Havesh.Model.Model
 <MudCard Outlined="true" Elevation="1" Square="false" Class="m-4">
-	<MudCardHeader>
-		Lesson Plan for Session @_lessonPlan.SessionNumber - @Session.TimeTable.Level.LevelName
-	</MudCardHeader>
+	@if (_lessonPlan is { })
+	{
+	    <MudCardHeader>
 
-	<MudCardContent >
-		@foreach (var lps in _lessonPlan.Sections)
-		{
-			<MudPaper Elevation="1">
-				<MudStack Spacing="2">
-					<MudText Typo="Typo.h4" Class="m-2">
-						@lps.SectionType.Title - @lps.SectionTitle
-					</MudText>
-					<ul class="m-3">
-						<li>
-							<MudText Typo="Typo.caption">Objective: </MudText>
-							<MudText Typo="Typo.body2">
-								@lps.SectionObjective
-							</MudText>
-						</li>
-						@foreach (var lpsi in lps.Items)
-						{
-							<li>
-								@lpsi.SectionItemTitle
-							</li>
-						}
-					</ul>
+            Lesson Plan for Session @_lessonPlan.SessionNumber - @Session.TimeTable.Level.LevelName
+        </MudCardHeader>
 
-				</MudStack>
+	    <MudCardContent >
+            @foreach (var lps in _lessonPlan.Sections)
+            {
+                <MudPaper Elevation="1">
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.h4" Class="m-2">
+                            @lps.SectionType.Title - @lps.SectionTitle
+                        </MudText>
+                        <ul class="m-3">
+                            <li>
+                                <MudText Typo="Typo.caption">Objective: </MudText>
+                                <MudText Typo="Typo.body2">
+                                    @lps.SectionObjective
+                                </MudText>
+                            </li>
+                            @foreach (var lpsi in lps.Items)
+                            {
+                                <li>
+                                    @lpsi.SectionItemTitle
+                                </li>
+                            }
+                        </ul>
 
-			</MudPaper>
+                    </MudStack>
 
-			<MudDivider DividerType="DividerType.FullWidth" Class="mt-2"></MudDivider>
+                </MudPaper>
 
-		}
+                <MudDivider DividerType="DividerType.FullWidth" Class="mt-2"></MudDivider>
 
-	</MudCardContent>
+            }
+
+        </MudCardContent>
+	}
 </MudCard>
 
 

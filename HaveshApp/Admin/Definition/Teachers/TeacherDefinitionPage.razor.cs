@@ -138,7 +138,7 @@ public partial class TeacherDefinitionPage
             
 		var teacherRole = GetTeacherRole();
 
-		var user = DataProvider.GetUserByUserName(teacher.TeacherNationalId);
+		User? user = DataProvider.GetUserByUserName(teacher.TeacherNationalId);
 		if (user == null)
 		{
 			snackbar.Add("This teacher does not have an account,So we create one.");

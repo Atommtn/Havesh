@@ -17,7 +17,7 @@
             <MudNavGroup Title="Data Import" Icon="@Icons.Filled.CopyAll">
                 <MudNavLink Href="/BookPriceClone" Match="NavLinkMatch.Prefix">Clone BookPrice</MudNavLink>
                 <MudNavLink Href="/ClonePage" Match="NavLinkMatch.Prefix">Clone TERM</MudNavLink>
-                
+
             </MudNavGroup>
             <MudNavGroup Title="Definition" Icon="@Icons.Filled.AddModerator">
                 <MudNavLink Href="/TeacherDefinition" Match="NavLinkMatch.Prefix">Teacher Definition</MudNavLink>
@@ -26,8 +26,8 @@
                 <MudNavLink Href="/ScheduleDefinition" Match="NavLinkMatch.Prefix">Schedule Definition</MudNavLink>
                 <MudNavLink Href="/LevelPriceDefinition" Match="NavLinkMatch.Prefix">Level Price Definition</MudNavLink>
                 <MudNavLink Href="/LessonPlanDefinition" Match="NavLinkMatch.Prefix">Lesson Plan Definition</MudNavLink>
-            <MudNavGroup Title="Sessions" Icon="@Icons.Filled.MeetingRoom">
-                <MudNavLink Href="/TermSessionTemplate" Match="NavLinkMatch.Prefix">Term Session Template Definition</MudNavLink>
+                <MudNavGroup Title="Sessions" Icon="@Icons.Filled.MeetingRoom">
+                    <MudNavLink Href="/TermSessionTemplate" Match="NavLinkMatch.Prefix">Term Session Template Definition</MudNavLink>
                     <MudNavLink Href="/SessionActiviy" Match="NavLinkMatch.Prefix">Session Activity</MudNavLink>
                     <MudNavLink Href="/ClassProgram/SessionGenerator" Match="NavLinkMatch.Prefix">Term Session Generator</MudNavLink>
                     <MudNavLink Href="/ClassProgram/SessionCancel" Match="NavLinkMatch.Prefix">Term Session Cancelation</MudNavLink>
@@ -56,11 +56,11 @@
             </MudNavGroup>
         </Authorized>
     </AuthorizeView>
-    @*
+
     <AuthorizeView Roles="Teacher">
-    <Authorized>
-    Only Teachers can view this Item
-    </Authorized>
+        <Authorized>
+            <MudNavLink Href="/" Match="NavLinkMatch.All">Class List</MudNavLink>
+        </Authorized>
     </AuthorizeView>
-    *@
+
 </MudNavMenu>

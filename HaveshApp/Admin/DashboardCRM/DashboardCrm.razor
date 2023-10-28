@@ -135,17 +135,17 @@
 
         var teacher = _dataProvider.GetTeacherByUserId(UserSessionService.User?.Id);
         // TODO: Should be remark -> var startTime = DateTime.Now.TimeOfDay; //TimeSpan.Parse("11:15");// DateTime.Now;
-        var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
+        var startTime = DateTime.Now.TimeOfDay;
         var fromMinutes = TimeSpan.FromMinutes(3);
         var interval = _dataProvider.GetInterval(term, startTime, offset: fromMinutes);
         if (interval is null || teacher is null)
             return;
 
-        // TODO: Should be remarked -> var weekday = _dataProvider.GetTodayWeekday();
-        var weekday = _dataProvider.GetTodayWeekday(7);
+        var weekday = _dataProvider.GetTodayWeekday();
+        //var weekday = _dataProvider.GetTodayWeekday(7);
         var timetable = _dataProvider.GetTeacherTimeTable(term, teacher, weekday, interval);
-        // TODO:Should be remark to work well -> _session = _dataProvider.GetTimeTableSession(timetable, DateTime.Today);
-        var dateTime = DateTime.Today.Date.AddDays(2);
+        _session = _dataProvider.GetTimeTableSession(timetable, DateTime.Today);
+        var dateTime = DateTime.Today;
         _session = _dataProvider.GetTimeTableSession(timetable, dateTime);
         if (_session != null)
             _activities = _dataProvider.GetSessionActivities(_session);

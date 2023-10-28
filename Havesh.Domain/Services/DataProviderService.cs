@@ -7,6 +7,7 @@ using HaveshApp.Classes;
 using Havesh.Model.Model;
 using MudBlazor;
 
+
 /*
 using Havesh.Model.Model.MyDbContext;
 */
@@ -491,9 +492,8 @@ public class DataProviderService
     public int GetTotalTimeTablesCount(int termTermClassId, string? searchText = null, bool? isPrivate = false)
     {
         var dbConntextShokouhPardisTimeTables = DbConntext.ShokouhPardisTimeTables.AsQueryable();
-        if (searchText.IsEmpty())
-            dbConntextShokouhPardisTimeTables =
-                dbConntextShokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
+        if (!string.IsNullOrEmpty(searchText))
+            dbConntextShokouhPardisTimeTables = dbConntextShokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
         if (isPrivate is true)
             dbConntextShokouhPardisTimeTables = dbConntextShokouhPardisTimeTables.Where(x => x.IsPrivate == true);
 
@@ -505,7 +505,7 @@ public class DataProviderService
         int? page = null, int? pageSize = null)
     {
         var shokouhPardisTimeTables = ShokouhPardisTimeTablesQuery(fromTerm);
-        if (!searchText.IsEmpty())
+        if (!string.IsNullOrEmpty(searchText))
         {
             shokouhPardisTimeTables = shokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
         }
@@ -562,7 +562,7 @@ public class DataProviderService
                 .Where(x => x.TermId == term.TermClassId && x.IsPrivate == isPrivate)
             ;
 
-        if (searchText.IsEmpty())
+        if (!string.IsNullOrEmpty(searchText))
         {
             queryable = queryable.Where(x =>
                 x.Teacher.TeacherName.Contains(searchText) ||

@@ -32,8 +32,8 @@ public class UserGrain : IGrainBase, IUser
 
 	public async ValueTask<User> GetUser()
 	{
-
-	}
+        throw new NotImplementedException();
+    }
 
 	public ValueTask<User> SaveUser()
 	{
