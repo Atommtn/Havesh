@@ -19,16 +19,16 @@
 
             <MudItem md="6">
                 
-                <MudSwitch @bind-Checked="@Teacher.TeacherSex" ThumbIcon="@Icons.Filled.Girl" Color="Color.Error" UnCheckedColor="Color.Success" ThumbIconColor="Color.Default">
-                    @if (Teacher.TeacherSex == true)
+                <MudSwitch @bind-Checked="@Teacher.TeacherSex" ThumbIcon="@Icons.Filled.Girl" Color="Color.Info" UnCheckedColor="Color.Error" ThumbIconColor="Color.Default">
+                    @if (Teacher.TeacherSex is false)
                     {
                         <MudText Typo="Typo.caption" Color="Color.Error">
                             خانم
                         </MudText>
                     }
-                    else
+                    else if (Teacher.TeacherSex is true)
                     {
-                        <MudText Typo="Typo.caption" Color="Color.Success">
+                        <MudText Typo="Typo.caption" Color="Color.Info">
                             آقا
                         </MudText>
 

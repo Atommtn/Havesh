@@ -90,6 +90,7 @@ public partial class TeacherDefinitionPage
 		{
 			var retData = (ShokouhPardisTeacherClass)dialogResult.Data;
 			var result = DataProvider.SaveEditTeacher(retData);
+			//TODO: check if- if edit dont say teacher is duplicate
 			if (result)
 			{
 				var parameters = new DialogParameters();
@@ -117,9 +118,9 @@ public partial class TeacherDefinitionPage
 		switch (teacher.TeacherSex)
 		{
 			case true:
-				return "background-color:rgba(247, 32, 32, 0.2);";
+				return "background-color:rgba(32, 156, 247, 0.2);";
 			case false:
-				return "background-color:rgba(34, 177, 76, 0.2);";
+				return "background-color:rgba(243, 4, 4, 0.2);";
 			default: return "background-color:white";
 
 		}
@@ -144,8 +145,11 @@ public partial class TeacherDefinitionPage
 			snackbar.Add("This teacher does not have an account,So we create one.");
 			user = new User()
 			{
+				FirstName = teacher.TeacherName,
+				LastName = teacher.TeacherFamily,
 				UserName = teacher.TeacherNationalId!,
 				Password = teacher.TeacherNationalId + "000",
+				Gender = teacher.TeacherSex,
 				IsActive = true
 			};
 			user.Roles.Add(teacherRole);

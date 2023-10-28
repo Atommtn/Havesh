@@ -2090,6 +2090,37 @@ public class DataProviderService
         user.IsActive = false;
         DbConntext.SaveChanges();
     }
+
+    public TimeTableSession GetSession(int sessionId)
+    {
+        return DbConntext.TimeTableSessions
+            .Include(x => x.TimeTable)
+            .ThenInclude(x => x.Term)
+            .ThenInclude(x => x.Year)
+            .ThenInclude(x => x.Terms)
+
+            .Include(x => x.TimeTable)
+            .ThenInclude(x => x.Schedule)
+            .ThenInclude(x => x.Programs)
+            .ThenInclude(x => x.DaySession)
+            .ThenInclude(x => x.Interval)
+
+            .Include(x => x.TimeTable)
+            .ThenInclude(x => x.Schedule)
+            .ThenInclude(x => x.Programs)
+            .ThenInclude(x => x.DaySession)
+            .ThenInclude(x => x.WeekDay)
+
+            .Include(x => x.TimeTable)
+            .ThenInclude(x => x.Level)
+
+            .Include(x => x.TimeTable)
+            .ThenInclude(x => x.ClassRoom)
+            .Include(x => x.TimeTable)
+            .ThenInclude(x => x.Teacher)
+
+            .FirstOrDefault(x => x.ID == sessionId);
+    }
 }
 
   

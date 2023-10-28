@@ -41,36 +41,45 @@
                     <MudTh>وضعیت</MudTh>
                     <MudTh>توضیحات</MudTh>
                     <MudTh></MudTh>
+                    <MudTh></MudTh>
                 </HeaderContent>
-                <RowTemplate>
-                    <MudTd>@context.SessionNumber</MudTd>
+                <RowTemplate Context="Session">
+                    <MudTd>@Session.SessionNumber</MudTd>
                     <MudTd>
-                        @context.SessionDate.ToFa("D")
+                        @Session.SessionDate.ToFa("D")
                         <MudText Typo="Typo.caption">
-                            @context.SessionTime?.ToString("hh\\:mm")
+                            @Session.SessionTime?.ToString("hh\\:mm")
                         </MudText>
 
                     </MudTd>
-                    <MudTd>@context.TimeTable.Title</MudTd>
-                    <MudTd>@context.Teacher.FullName</MudTd>
-                    <MudTd>@context.ClassRoom.ClassRoomName</MudTd>
-                    <MudTd>@context.SessionStatus</MudTd>
-                    <MudTd>@context.SessionDescription</MudTd>
+                    <MudTd>@Session.TimeTable.Title</MudTd>
+                    <MudTd>@Session.Teacher.FullName</MudTd>
+                    <MudTd>@Session.ClassRoom.ClassRoomName</MudTd>
+                    <MudTd>@Session.SessionStatus</MudTd>
+                    <MudTd>@Session.SessionDescription</MudTd>
+
                     <MudTd>
-                        @if (context.SessionDate >= DateTime.Today)
+                        @if (Session.SessionDate >= DateTime.Today)
                         {
                             <AuthorizeView Roles="Admin">
                                 <Authorized Context="authContext">
-                                    <MudIconButton Icon="@Icons.TwoTone.Edit" Color="Color.Success" OnClick="() => EditSessionClick(context)"></MudIconButton>
+                                    <MudIconButton Icon="@Icons.TwoTone.Edit" Color="Color.Success" OnClick="() => EditSessionClick(Session)"></MudIconButton>
                                 </Authorized>
                             </AuthorizeView>
-                            @if (context.SessionStatus == SessionStatuses.Pending && ShowCancle)
+                            @if (Session.SessionStatus == SessionStatuses.Pending && ShowCancle)
                             {
-                                <MudIconButton Icon="@Icons.TwoTone.Cancel" Color="Color.Warning" OnClick="() => SessionCancelClick(context)"></MudIconButton>
+                                <MudIconButton Icon="@Icons.TwoTone.Cancel" Color="Color.Warning" OnClick="() => SessionCancelClick(Session)"></MudIconButton>
                             }
 
                         }
 
+                    </MudTd>
+                    <MudTd >
+                        <AuthorizeView  Roles="Supervisor">
+                            <Authorized>
+                                <MudIconButton Icon="@Icons.Material.Filled.Checkroom" Color="Color.Error" OnClick="()=>SupervisorControl(Session)"></MudIconButton>
+                            </Authorized>
+                        </AuthorizeView>
                     </MudTd>
                 </RowTemplate>
             </MudTable>
@@ -211,6 +220,11 @@
             return "background-color:rgba(119, 240, 87, 0.5);";
         }
         return "background-color:rgba(108, 156, 199, 0.5);";
-       
+
+    }
+    [Inject] public BrowserService BrowserService { get; set; }
+    private async Task SupervisorControl(TimeTableSession timeTableSession)
+    {
+        await BrowserService.OpenInNewTabAsync($"/SupervisorClassAction/{timeTableSession.ID}");
     }
 }

@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.OrleansClient", "Hav
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Model", "Havesh.Model\Havesh.Model.csproj", "{3D9D8A5D-830C-48E5-8ECF-0B5D96AD72DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Domain", "Havesh.Domain\Havesh.Domain.csproj", "{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Domain", "Havesh.Domain\Havesh.Domain.csproj", "{CC7373D8-7FB2-463F-9DE0-DC2EC90F4126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Workflow", "Havesh.Workflow\Havesh.Workflow.csproj", "{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Workflow", "Havesh.Workflow\Havesh.Workflow.csproj", "{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

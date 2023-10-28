@@ -162,8 +162,10 @@
                 @* <MudChip Style="@($"background-color: darkred")">
 
         </MudChip>*@
-               
-                    @ChildContent
+               @if (ChildContent is not null)
+               {
+                   @ChildContent
+               }
                
             </MudStack>
         </MudPaper>

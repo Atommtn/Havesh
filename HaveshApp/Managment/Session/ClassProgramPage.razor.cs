@@ -346,4 +346,6 @@ public partial class ClassProgramPage : ICanChangeComponentState
 			StateHasChanged();
 		});
 	}
+
+ 
 }
