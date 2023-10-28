@@ -1,4 +1,5 @@
-﻿using HaveshApp.Model;
+﻿using Havesh.Model.Data;
+using Havesh.Model.Model;
 
 namespace HaveshApp.Services;
 

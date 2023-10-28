@@ -1,0 +1,37 @@
+﻿@page "/messages"
+
+<h3>AdminMessagesPage</h3>
+
+<MudGrid>
+	<MudItem md="6">
+		<MudCard Outlined="true">
+			<MudCardHeader>
+				Send Message
+			</MudCardHeader>
+			<MudCardContent>
+				<MudGrid>
+					<MudItem md="6" >
+						<MudSelect Label="Message Type" @bind-Value="MessageType">
+							<MudSelectItem Value="@("Simple")"></MudSelectItem>
+							<MudSelectItem Value="@("Alert-Info")"></MudSelectItem>
+							<MudSelectItem Value="@("Alert-Warning")"></MudSelectItem>
+							<MudSelectItem Value="@("Alert-Error")"></MudSelectItem>
+						</MudSelect>
+					</MudItem>
+					<MudItem md="6"></MudItem>
+				</MudGrid>
+
+			</MudCardContent>
+		</MudCard>
+
+	</MudItem>
+	<MudItem md="6">
+
+	</MudItem>
+</MudGrid>
+
+
+@code {
+
+	public string MessageType { get; set; }
+}

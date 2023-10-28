@@ -1,7 +1,7 @@
 ﻿using System.Data;
+using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using HaveshApp.Model;
 
 namespace HaveshApp.Services;
 

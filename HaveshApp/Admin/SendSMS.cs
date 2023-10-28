@@ -5,12 +5,11 @@ using System;
 using System.Net;
 using System.Text;
 using Olive;
-using HaveshApp.Model;
 
-namespace HaveshApp.Admin
+namespace HaveshApp.Admin;
+
+public class SendSMS
 {
-    public class SendSMS
-    {
 //        string SendSms(ShokouhPardisStudentClass student)
 //        {
 
@@ -60,5 +59,4 @@ namespace HaveshApp.Admin
 //            return result;
 //        }
 
-    }
 }

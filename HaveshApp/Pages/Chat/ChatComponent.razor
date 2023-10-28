@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using Append.Blazor.Notifications
+@implements IAsyncDisposable
+
+@if (AllowResponse)
+{
+	<MudStack Row="true" Spacing="2">
+		<MudTextField @bind-Value="messageInput"></MudTextField>
+		<MudButton Variant="Variant.Filled" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Send" OnClick="Send" Disabled="@(!IsConnected)">
+			Send
+		</MudButton>
+
+	</MudStack>
+}
+
+	@foreach (var message in messages)
+	{
+		<MudAlert CloseIcon="@Icons.Material.Filled.Close" Severity="Severity.Warning" ShowCloseIcon="true">
+			<MudText Typo="Typo.body1">@message</MudText>
+		</MudAlert>
+	}
+
+@code {
+	[Parameter]
+	public bool AllowResponse { get; set; }
+	private HubConnection? hubConnection;
+	private List<string> messages = new List<string>();
+	private string? userInput;
+	private string? messageInput;
+	[Inject] public UserSessionService UserSessionService { get; set; }
+	[Inject] NavigationManager Navigation{ get; set; }
+	[Inject] INotificationService NotificationService { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			var IsSupportedByBrowser = await NotificationService.IsSupportedByBrowserAsync();
+			if (IsSupportedByBrowser)
+			{
+				var permission = await NotificationService.RequestPermissionAsync();
+
+			}
+
+		}
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		hubConnection = new HubConnectionBuilder()
+			.WithUrl(Navigation.ToAbsoluteUri("/apphub"))
+			.Build();
+
+		hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+		{
+			if(user == UserSessionService.UserName)
+				return;
+
+			var encodedMsg = $"{user} : {message}";
+			
+			messages.Add(encodedMsg);
+			InvokeAsync(async () =>
+			{
+				var options = new NotificationOptions
+				{
+					Badge = user,
+					Body = message,
+				};
+
+				await NotificationService.CreateAsync(user, options);
+				StateHasChanged();
+			});
+
+		});
+
+		await hubConnection.StartAsync();
+	}
+
+	private async Task Send()
+	{
+		if (hubConnection is not null)
+		{
+			await hubConnection.SendAsync("SendMessage", UserSessionService.UserName, messageInput);
+		}
+	}
+
+	public bool IsConnected =>
+		hubConnection?.State == HubConnectionState.Connected;
+
+	public async ValueTask DisposeAsync()
+	{
+		if (hubConnection is not null)
+		{
+			await hubConnection.DisposeAsync();
+		}
+	}
+}

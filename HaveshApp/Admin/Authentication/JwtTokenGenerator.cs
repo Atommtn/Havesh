@@ -26,6 +26,7 @@ public class JwtTokenGenerator
     /// <exception cref="ArgumentNullException">if 'algorithm' is null or empty.</exception>
     /// <exception cref="ArgumentException">If 'expires' &lt;= 'notbefore'.</exception>
     public string GenerateToken(
+        int userId,
         string userName,
         IEnumerable<string> roles,
         bool? gender = null,
@@ -35,6 +36,7 @@ public class JwtTokenGenerator
         string? mobileNumber = null)
     {
         var claims = roles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+        claims.Add(new Claim("HaveshApp:UserId", userId.ToString()));
         claims.Add(new Claim(ClaimTypes.NameIdentifier, userName));
         if (gender != null) claims.Add(new Claim(ClaimTypes.Gender, gender is true ? "آقای" : "خانم"));
         if (firstName != null) claims.Add(new Claim(ClaimTypes.Name, firstName));

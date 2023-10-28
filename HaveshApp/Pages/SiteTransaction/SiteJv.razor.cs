@@ -4,236 +4,235 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using HaveshApp.Admin.CompleteForm;
 using HaveshApp.Classes;
-using HaveshApp.Model;
 using HaveshApp.Services;
 using System.Globalization;
+using Havesh.Model.Model;
 
-namespace HaveshApp.Pages.SiteTransaction
+namespace HaveshApp.Pages.SiteTransaction;
+
+public partial class SiteJv
 {
-    public partial class SiteJv
-    {
 
-        bool _disbaleSave = false;
-        public ShokouhPardisFileAttachment? Attachment { get; set; }
-        //string? SelectedFeeFor;
+	bool _disbaleSave = false;
+	public ShokouhPardisFileAttachment? Attachment { get; set; }
+	//string? SelectedFeeFor;
 
-        readonly string[] _options = {
-        "شهریه",
-        "کتاب",
-        "شهریه و کتاب",
-        "کلاس خصوصی",
-    };
+	readonly string[] _options = {
+		"شهریه",
+		"کتاب",
+		"شهریه و کتاب",
+		"کلاس خصوصی",
+	};
 
-        TimeSpan? _ts;
-        string? _guid;
+	TimeSpan? _ts;
+	string? _guid;
 
-        [Inject] DataProviderService DataProvider { get; set; }
-        [Inject] ISnackbar Snackbar { get; set; }
-        [Inject] NavigationManager NavigationManager { get; set; }
+	[Inject] DataProviderService DataProvider { get; set; }
+	[Inject] ISnackbar Snackbar { get; set; }
+	[Inject] NavigationManager NavigationManager { get; set; }
 
 
 
-        [Parameter]
-        public string? guid
-        {
-            get => _guid;
-            set
-            {
-                _guid = value;
-                if (_guid is { })
-                {
-                    JvfromSite = DataProvider.GetSiteJvByGuid(_guid);
-                    Attachment = JvfromSite?.FileAttachment;
-                }
-            }
-        }
+	[Parameter]
+	public string? guid
+	{
+		get => _guid;
+		set
+		{
+			_guid = value;
+			if (_guid is { })
+			{
+				JvfromSite = DataProvider.GetSiteJvByGuid(_guid);
+				Attachment = JvfromSite?.FileAttachment;
+			}
+		}
+	}
 
-        [Parameter]
-        public string? Cat { get; set; }
+	[Parameter]
+	public string? Cat { get; set; }
 
-        [Parameter]
-        public ShokouhPardisJvfromSite? JvfromSite { get; set; }
+	[Parameter]
+	public ShokouhPardisJvfromSite? JvfromSite { get; set; }
 
-        protected override void OnAfterRender(bool firstRender)
-        {
-            if (firstRender)
-            {
-                JvfromSite ??= new ShokouhPardisJvfromSite()
-                {
-                    DailyJvguid = Guid.NewGuid(),
-                    CreateDate = DateTime.Now
-                };
-                StateHasChanged();
-            }
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			JvfromSite ??= new ShokouhPardisJvfromSite()
+			{
+				DailyJvguid = Guid.NewGuid(),
+				CreateDate = DateTime.Now
+			};
+			StateHasChanged();
+		}
 
-            base.OnAfterRender(firstRender);
-        }
+		base.OnAfterRender(firstRender);
+	}
 
-        public TimeSpan? Ts
-        {
-            get => _ts;
-            set
-            {
-                _ts = value;
-                JvfromSite.DateOfSettle += _ts;
-            }
-        }
+	public TimeSpan? Ts
+	{
+		get => _ts;
+		set
+		{
+			_ts = value;
+			JvfromSite.DateOfSettle += _ts;
+		}
+	}
 
-        CultureInfo GetPersianCulture()
-        {
-            var culture = new CultureInfo("fa-IR");
-            return culture;
-        }
-
-
-        SiteJvValidation JvValidation = new SiteJvValidation();
-
-        List<string> _errors = new List<string>();
-
-        [Inject]
-        Navigation Navigation { get; set; }
-
-        [Inject]
-        TokenProviderService TokenProviderService { get; set; }
-
-        [Inject]
-        BrowserService BrowserService { get; set; }
-
-        async Task SaveClick(bool? navigate = false)
-        {
-
-            JvfromSite.AttachmentFk = Attachment?.Id;
-            var validationResult = await JvValidation.ValidateAsync(JvfromSite);
-            if (validationResult.Errors.Any())
-            {
-                _errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
-                return;
-            }
-            _errors.Clear();
-
-            DataProvider.SaveJvfromSite(JvfromSite);
-            Snackbar.Add("اطلاعات واریز وجه شما با موفقیت ثبت گردید");
-
-            var stu = DataProvider.StudentExistInOnlineForm(JvfromSite.StudentIdNumber);
-            if (stu is null)
-            {
-                var t = await TokenProviderService.TryGetUniqueKey(BrowserService);
-                stu = new ShokouhPardisStudentClassOnlineForm
-                {
-                    StudentName = JvfromSite.StudentName,
-                    StudentFamily = JvfromSite.StudentFamil,
-                    StudentIdno = JvfromSite.StudentIdNumber,
-                    CreatedAt = DateTime.Now,
-                    FatherPhone = JvfromSite.PhoneNumber,
-                    StudentClassGuid = Guid.NewGuid(),
-                    UniqueKey = t.Item1
-                };
-
-                DataProvider.SaveOnlineFormStudent(stu);
-            }
-
-            if (navigate is true)
-            {
-                var validator = new StudentFormValidator();
-                var validateResult = await validator.ValidateAsync(stu);
-                NavigationManager.NavigateTo(validateResult.IsValid
-                    ? "/main"
-                    : $"/SiteJvRequireFillForm/{stu.StudentClassGuid:N}");
-            }
-        }
+	CultureInfo GetPersianCulture()
+	{
+		var culture = new CultureInfo("fa-IR");
+		return culture;
+	}
 
 
-        void UploadStarted()
-        {
-            _disbaleSave = true;
-            StateHasChanged();
-        }
+	SiteJvValidation JvValidation = new SiteJvValidation();
 
-        void UploadComplete(int obj)
-        {
-            _disbaleSave = false;
-            StateHasChanged();
-        }
+	List<string> _errors = new List<string>();
 
-        string Version { get { return "?v=" + DateTime.Now.Ticks.ToString(); } }
-        [Inject] IJSRuntime JsRuntime { get; set; }
+	[Inject]
+	Navigation Navigation { get; set; }
+
+	[Inject]
+	TokenProviderService TokenProviderService { get; set; }
+
+	[Inject]
+	BrowserService BrowserService { get; set; }
+
+	async Task SaveClick(bool? navigate = false)
+	{
+
+		JvfromSite.AttachmentFk = Attachment?.Id;
+		var validationResult = await JvValidation.ValidateAsync(JvfromSite);
+		if (validationResult.Errors.Any())
+		{
+			_errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+			return;
+		}
+		_errors.Clear();
+
+		DataProvider.SaveJvfromSite(JvfromSite);
+		Snackbar.Add("اطلاعات واریز وجه شما با موفقیت ثبت گردید");
+
+		var stu = DataProvider.StudentExistInOnlineForm(JvfromSite.StudentIdNumber);
+		if (stu is null)
+		{
+			var t = await TokenProviderService.TryGetUniqueKey(BrowserService);
+			stu = new ShokouhPardisStudentClassOnlineForm
+			{
+				StudentName = JvfromSite.StudentName,
+				StudentFamily = JvfromSite.StudentFamil,
+				StudentIdno = JvfromSite.StudentIdNumber,
+				CreatedAt = DateTime.Now,
+				FatherPhone = JvfromSite.PhoneNumber,
+				StudentClassGuid = Guid.NewGuid(),
+				UniqueKey = t.Item1
+			};
+
+			DataProvider.SaveOnlineFormStudent(stu);
+		}
+
+		if (navigate is true)
+		{
+			var validator = new StudentFormValidator();
+			var validateResult = await validator.ValidateAsync(stu);
+			NavigationManager.NavigateTo(validateResult.IsValid
+				? "/main"
+				: $"/SiteJvRequireFillForm/{stu.StudentClassGuid:N}");
+		}
+	}
 
 
-        async Task TestFileUploadClick()
-        {
-            var jsObjectReference = await JsRuntime.InvokeAsync<IJSObjectReference>("Optimize");
-            var blob = await jsObjectReference.InvokeAsync<IJSObjectReference>("handleImageUpload", "frz");
-        }
+	void UploadStarted()
+	{
+		_disbaleSave = true;
+		StateHasChanged();
+	}
 
-        [Inject] public IDialogService DialogService { get; set; }
+	void UploadComplete(int obj)
+	{
+		_disbaleSave = false;
+		StateHasChanged();
+	}
 
-        async Task NextClick()
-        {
-            //All,
-            //Approved,
-            //PendingToApprive,
-            //Invesigate
-            ShokouhPardisJvfromSite? rec = null;
-            switch (Cat)
-            {
-                case "All":
-                     rec = DataProvider.GetAllSiteJvNext(JvfromSite);
+	string Version { get { return "?v=" + DateTime.Now.Ticks.ToString(); } }
+	[Inject] IJSRuntime JsRuntime { get; set; }
 
-                    break;  
-                case "Approved":
-                    rec = DataProvider.GetApprovedSiteJvNext(JvfromSite);
-                    break; 
-                case "PendingToApprive":
-                    rec = DataProvider.GetPendingToApproveSiteJvNext(JvfromSite);
-                    break;       
-                case "Invesigate":
-                    rec = DataProvider.GetRequireInvestigateSiteJvNext(JvfromSite);
-                    break;
-            }
 
-            if (rec == null)
-            {
-                await DialogService.ShowMessageBox("No Next record found", "There is not next record");
-                return;
-            }
-            Navigation.NavigateTo($"/sitejv/{rec.DailyJvguid:N}/{Cat}");
-        }
+	async Task TestFileUploadClick()
+	{
+		var jsObjectReference = await JsRuntime.InvokeAsync<IJSObjectReference>("Optimize");
+		var blob = await jsObjectReference.InvokeAsync<IJSObjectReference>("handleImageUpload", "frz");
+	}
 
-        async Task PreviuseClick()
-        {
-            //All,
-            //Approved,
-            //PendingToApprive,
-            //Invesigate
-            ShokouhPardisJvfromSite? rec = null;
-            switch (Cat)
-            {
-                case "All":
-                    rec = DataProvider.GetAllSiteJvPrev(JvfromSite);
+	[Inject] public IDialogService DialogService { get; set; }
 
-                    break;
-                case "Approved":
-                    rec = DataProvider.GetApprovedSiteJvPrev(JvfromSite);
-                    break;
-                case "PendingToApprive":
-                    rec = DataProvider.GetPendingToApproveSiteJvPrev(JvfromSite);
-                    break;
-                case "Invesigate":
-                    rec = DataProvider.GetRequireInvestigateSiteJvPrev(JvfromSite);
-                    break;
-            }
+	async Task NextClick()
+	{
+		//All,
+		//Approved,
+		//PendingToApprive,
+		//Invesigate
+		ShokouhPardisJvfromSite? rec = null;
+		switch (Cat)
+		{
+			case "All":
+				rec = DataProvider.GetAllSiteJvNext(JvfromSite);
 
-            if (rec == null)
-            {
-                await DialogService.ShowMessageBox("No Previuse record found", "There is not previuse record");
-                return;
-            }
-            Navigation.NavigateTo($"/sitejv/{rec.DailyJvguid:N}/{Cat}");
-        }
+				break;  
+			case "Approved":
+				rec = DataProvider.GetApprovedSiteJvNext(JvfromSite);
+				break; 
+			case "PendingToApprive":
+				rec = DataProvider.GetPendingToApproveSiteJvNext(JvfromSite);
+				break;       
+			case "Invesigate":
+				rec = DataProvider.GetRequireInvestigateSiteJvNext(JvfromSite);
+				break;
+		}
 
-        async Task SaveAdminStatusClick()
-        {
-            await SaveClick();
-        }
-    }
+		if (rec == null)
+		{
+			await DialogService.ShowMessageBox("No Next record found", "There is not next record");
+			return;
+		}
+		Navigation.NavigateTo($"/sitejv/{rec.DailyJvguid:N}/{Cat}");
+	}
+
+	async Task PreviuseClick()
+	{
+		//All,
+		//Approved,
+		//PendingToApprive,
+		//Invesigate
+		ShokouhPardisJvfromSite? rec = null;
+		switch (Cat)
+		{
+			case "All":
+				rec = DataProvider.GetAllSiteJvPrev(JvfromSite);
+
+				break;
+			case "Approved":
+				rec = DataProvider.GetApprovedSiteJvPrev(JvfromSite);
+				break;
+			case "PendingToApprive":
+				rec = DataProvider.GetPendingToApproveSiteJvPrev(JvfromSite);
+				break;
+			case "Invesigate":
+				rec = DataProvider.GetRequireInvestigateSiteJvPrev(JvfromSite);
+				break;
+		}
+
+		if (rec == null)
+		{
+			await DialogService.ShowMessageBox("No Previuse record found", "There is not previuse record");
+			return;
+		}
+		Navigation.NavigateTo($"/sitejv/{rec.DailyJvguid:N}/{Cat}");
+	}
+
+	async Task SaveAdminStatusClick()
+	{
+		await SaveClick();
+	}
 }

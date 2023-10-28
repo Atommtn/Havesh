@@ -1,0 +1,112 @@
+﻿@using HaveshApp.Classes
+@using DNTPersianUtils.Core
+@using Havesh.Model.Model
+@using PersianDate.Standard
+@implements IAsyncDisposable
+
+<MudContainer>
+	<MudTable T="Message" ServerData="FetchData" @ref="table">
+		<ToolBarContent>
+			<MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Send" OnClick="ComposeMessageClick">
+				ارسال پیام
+			</MudButton>
+
+		</ToolBarContent>
+		<HeaderContent>
+			<MudTh>اهمیت</MudTh>
+			<MudTh>از طرف</MudTh>
+			<MudTh>عنوان</MudTh>
+			<MudTh>پیام</MudTh>
+			<MudTh>ایجاد</MudTh>
+			<MudTh>ارسال</MudTh>
+			<MudTh>دریافت</MudTh>
+			<MudTh>خوانده شدن</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd>
+				@context.Severity
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.caption">
+					@context.From.ToString(true, true)
+				</MudText>
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.subtitle1">
+					@context.Title
+				</MudText>
+			</MudTd>
+			<MudTd>
+				@context.Body.GetFirstNWords(10)
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.body1" Color="Color.Default">
+					@context.CreateDateTime.ToFa("F")
+				</MudText>
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.body1" Color="Color.Info">
+					@context.SentDateTime?.ToFa("F")
+				</MudText>
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.body1" Color="Color.Primary">
+					@context.DeliveredDateTime?.ToFa("F")
+				</MudText>
+			</MudTd>
+			<MudText Typo="Typo.body1" Color="Color.Secondary">
+				@context.ReadDateTime?.ToFa("D")
+			</MudText>
+			<MudText Typo="Typo.body1" Color="Color.Secondary">
+			</MudText>
+
+		</RowTemplate>
+	</MudTable>
+</MudContainer>
+
+@code {
+	[Inject] MessageService MessageService { get; set; }
+	[Inject] UserSessionService SessionService { get; set; }
+
+	MudTable<Message> table;
+
+	protected override void OnInitialized()
+	{
+		SessionService.MessageReceived += SessionServiceOnMessageReceived;
+		base.OnInitialized();
+	}
+
+	private async Task SessionServiceOnMessageReceived(MessageDto arg)
+	{
+		await InvokeAsync(async () =>
+		{
+			await table.ReloadServerData();
+			StateHasChanged();
+		});
+	}
+
+	private async Task<TableData<Message>> FetchData(TableState arg)
+	{
+		var messagesForUser = await MessageService.GetMessagesForUserAsync(SessionService.Payload?.UserId);
+		return new TableData<Message>()
+			{
+				Items = messagesForUser,
+				TotalItems = messagesForUser?.Count ?? 0
+			};
+	}
+
+	
+	private async Task ComposeMessageClick()
+	{
+		
+		await _dialogService.ShowAsync<ComposeMessageDialog>("ارسال پیام", 
+			new DialogParameters() , 
+			new DialogOptions());
+	}
+
+	public async ValueTask DisposeAsync()
+	{
+		SessionService.MessageReceived -= SessionServiceOnMessageReceived;
+	}
+
+}

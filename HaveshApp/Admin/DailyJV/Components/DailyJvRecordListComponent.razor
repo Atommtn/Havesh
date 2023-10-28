@@ -1,5 +1,4 @@
-﻿@using HaveshApp.Model
-@using HaveshApp.Services
+﻿@using HaveshApp.Services
 @using DNTPersianUtils.Core
 <MudTable @ref="table"
           RowsPerPage="1000"
@@ -71,13 +70,13 @@
             <MudTd DataLabel="اطلاعات پوز - واریز">
             @if (dJV.PaymentType.Contains("پوز"))
             {
-                @String.Format("شماره پوز {0}",dJV.PosCode)
+                @string.Format("شماره پوز {0}",dJV.PosCode)
                 ;
 
             }
             @if (dJV.PaymentType.Contains("واریز"))
             {
-                @String.Format("شناسه واریز {0} چهار رقم آخر شماره کارت{1}",dJV.Txcode,dJV.CardPostfix)
+                @string.Format("شناسه واریز {0} چهار رقم آخر شماره کارت{1}",dJV.Txcode,dJV.CardPostfix)
                 ;
 
             }

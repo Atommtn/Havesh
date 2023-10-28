@@ -2,8 +2,9 @@
 @page "/TeacherScheduler/{TermIdParam}/{TeacherIdParam}"
 @using HaveshApp.Admin.Components
 @using HaveshApp.Services
-@using HaveshApp.Model
 @using HaveshApp.Admin.Clone
+@using Olive
+@using Havesh.Model.Model
 @layout PersianPagesLayout
 
 @attribute [Authorize]
@@ -39,7 +40,7 @@
     </MudItem>
     <MudItem md="6">
         <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveClick">
-            @if (TeacherIdParam.IsNullOrEmpty())
+            @if (TeacherIdParam.IsEmpty())
             {
                 <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
                     Save
@@ -95,7 +96,7 @@
         
         if (anyExist)
         {
-            if (TermIdParam.IsNullOrEmpty() && TeacherIdParam.IsNotNullOrEmpty())
+            if (TermIdParam.IsEmpty() && !TeacherIdParam.IsEmpty())
             {
                 GoToEdit(pageName, Term.TermClassId, Teacher.TeacherClassId);
             }
@@ -165,7 +166,7 @@
 
     protected override void OnInitialized()
     {
-        if (TermIdParam.IsNotNullOrEmpty() && TeacherIdParam.IsNotNullOrEmpty())
+        if (!TermIdParam.IsEmpty() && !TeacherIdParam.IsEmpty())
         {
             Refresh();
             Term = _teacherTimeSheets.First().Term;
@@ -176,7 +177,7 @@
 
     private void Refresh()
     {
-        _teacherTimeSheets = DataProvider.GetTermTeacherTimeSheets(TermIdParam.ToInt32(), TeacherIdParam.ToInt32());
+        _teacherTimeSheets = DataProvider.GetTermTeacherTimeSheets( Convert.ToInt32(TermIdParam), Convert.ToInt32( TeacherIdParam));
     }
 
     [Inject] NavigationManager NavigationManager { get; set; }
@@ -184,7 +185,7 @@
     {
         DataProvider.SaveTeacherTimeSheets(_teacherTimeSheets, _delTeacherTimeSheets);
         Snackbar.Add("Data has been saved successfully ...");
-        if (TermIdParam.IsNullOrEmpty())
+        if (TermIdParam.IsEmpty())
         {
             var pageName = NavigationManager.Uri.Replace(NavigationManager.BaseUri,null);
             NavigationManager.NavigateTo($"{pageName}/{Term.TermClassId}/{Teacher.TeacherClassId}");

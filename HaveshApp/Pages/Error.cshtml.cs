@@ -2,26 +2,25 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 
-namespace HaveshApp.Pages
+namespace HaveshApp.Pages;
+
+[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+[IgnoreAntiforgeryToken]
+public class ErrorModel : PageModel
 {
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    [IgnoreAntiforgeryToken]
-    public class ErrorModel : PageModel
-    {
-        public string? RequestId { get; set; }
+	public string? RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+	public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        readonly ILogger<ErrorModel> _logger;
+	readonly ILogger<ErrorModel> _logger;
 
-        public ErrorModel(ILogger<ErrorModel> logger)
-        {
-            _logger = logger;
-        }
+	public ErrorModel(ILogger<ErrorModel> logger)
+	{
+		_logger = logger;
+	}
 
-        public void OnGet()
-        {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-        }
-    }
+	public void OnGet()
+	{
+		RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+	}
 }

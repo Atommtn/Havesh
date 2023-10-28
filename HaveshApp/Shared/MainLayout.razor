@@ -1,9 +1,11 @@
 ﻿@using HaveshApp.Admin.Setting;
+@using HaveshApp.Pages.Chat
+@using HaveshApp.Pages.MessageBox
 @using HaveshApp.Services
-@using HaveshApp.Model
 @using Olive
 @using System.Security.Claims
 @using HaveshApp.Admin.Authentication
+@using HaveshApp.Classes
 @inherits LayoutComponentBase
 
 
@@ -14,75 +16,124 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
+<HubConnectorComponent />
+
 <MudLayout>
-    <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        HAVESH Professional Academy Portal
-        <MudSpacer />
-        <AuthorizeView>
-            <Authorized>
-               
-                <MudText Typo="Typo.caption" Color="Color.Default" Class="m-3">
-                    سلام @UserSession.Payload.Gender @UserSession.Payload.FirstName @UserSession.Payload.LastName
-                </MudText>
+	<MudAppBar Fixed="true" Elevation="1">
+		<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+		HAVESH Professional Academy Portal
+		<MudSpacer />
+		<AuthorizeView>
+			<Authorized>
+				<MudMenu FullWidth="true" Size="Size.Large" StartIcon="@Icons.Material.Filled.Person2" Style="width: 250px;direction: rtl">
+					<ActivatorContent>
+						<MudChip Size="Size.Large" >
+							@_userSession.Payload?.FirstName @_userSession.Payload?.LastName
+							<MudAvatar Size="Size.Large" Variant="Variant.Filled" Elevation="1" Color="Color.Info">
+								@_userSession.Payload?.FirstName?[0]
+							</MudAvatar>
+						</MudChip>
+					</ActivatorContent>
+					<ChildContent>
+						<MudMenuItem>
+							سلام @_userSession.Payload.Gender @_userSession.Payload.FirstName @_userSession.Payload.LastName
+						</MudMenuItem>
+						<MudMenuItem OnClick="ShowMessagesClick">
+							<MudChip Icon="@Icons.Material.Filled.Message">
+								پیامها
+							</MudChip>
+						</MudMenuItem>
+						<MudMenuItem Href="/LoginPage/Logout">
+							خروج
+						</MudMenuItem>
+					</ChildContent>
+				</MudMenu>
 
-                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Logout" Variant="Variant.Outlined" Size="Size.Small" Href="/LoginPage/Logout">
-                    خروج
-                </MudButton>
+			</Authorized>
+			<NotAuthorized>
 
-            </Authorized>
-            <NotAuthorized>
+				@*<MudButton Color="Color.Success" StartIcon="@Icons.Filled.Login" Variant="Variant.Text" Href="/LoginPage">
+				Login
+				</MudButton>*@
 
-                @*<MudButton Color="Color.Success" StartIcon="@Icons.Filled.Login" Variant="Variant.Text" Href="/LoginPage">
-                    Login
-                </MudButton>*@
+			</NotAuthorized>
+		</AuthorizeView>
 
-            </NotAuthorized>
-        </AuthorizeView>
-        
-    </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-                    @Body
-        </MudContainer>
-    </MudMainContent>
+	</MudAppBar>
+	
+	<MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Docked">
+		<NavMenu />
+	</MudDrawer>
+
+	<MudDrawer @bind-Open="@_messageDrawerOpen" Anchor="Anchor.Right" MiniWidth="500" ClipMode="DrawerClipMode.Docked">
+		<MudStack Row="true" Spacing="1">
+			<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Warning" Size="Size.Medium" Class="m-1" OnClick="CloseMessageDrawerClick"></MudIconButton>
+			<MudSpacer />
+		</MudStack>
+		<CascadingValue Value="this">
+			<IncommingMessageListComponent />
+		</CascadingValue>
+
+
+	</MudDrawer>
+	<MudMainContent>
+		<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+			@Body
+		</MudContainer>
+	</MudMainContent>
+
+
 </MudLayout>
 
 
 @code {
 
-    [Inject] UserSessionService UserSession { get; set; }
-
-    [Inject] DataProviderService DataProvider { get; set; }
-
-    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-
-    bool _drawerOpen = true;
-
-    ClaimsPrincipal? _user;
-    
-    [Inject]
-    public IJSRuntime JsRuntime { get; set; }
-    private MudTheme _currentTheme;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // await JsRuntime.InitializeMudBlazorExtensionsAsync();
-             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-             _user = state.User;
-             StateHasChanged();
-        }
-        await base.OnAfterRenderAsync(firstRender);
-    }
+	[Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+	bool _drawerOpen = true;
+	bool _messageDrawerOpen = false;
+
+	private MudTheme _currentTheme;
+
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			// await JsRuntime.InitializeMudBlazorExtensionsAsync();
+			var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+			StateHasChanged();
+		}
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+
+	void DrawerToggle()
+	{
+		_drawerOpen = !_drawerOpen;
+	}
+
+	private void ShowMessagesClick()
+	{
+		_messageDrawerOpen = true;
+	}
+
+	private void CloseMessageDrawerClick()
+	{
+		_messageDrawerOpen = false;
+	}
+
+	public async Task ShowMessagesDrawer()
+	{
+		_messageDrawerOpen = true;
+		await InvokeAsync(StateHasChanged);
+	}
+
+	public async Task DoStateHasChanged()
+	{
+		await InvokeAsync(StateHasChanged);
+		
+	}
 
 }

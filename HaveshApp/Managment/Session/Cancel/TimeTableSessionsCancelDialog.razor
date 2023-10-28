@@ -1,5 +1,6 @@
-﻿@using HaveshApp.Model
-@using DNTPersianUtils.Core
+﻿@using DNTPersianUtils.Core
+@using Havesh.Model.Model
+@using PersianDate.Standard
 <h3>TimeTableSessionsCancelDialog</h3>
 <MtnDialog>
     <ChildComponent>
@@ -11,7 +12,7 @@
             <MudProgressLinear @ref="_progressbarSession" Rounded="true" Striped="true" Color="Color.Error"></MudProgressLinear>
 
             <MudText Typo="Typo.caption">
-                جلسه :  @_currentTimeTableSession?.SessionDate.ToPersianDateTextify()  جبرانی به : @ReplSessionDate?.ToPersianDateTextify()
+                جلسه :  @_currentTimeTableSession?.SessionDate.ToFa("D")  جبرانی به : @ReplSessionDate?.ToFa("D")
             </MudText>
 
         </MudStack>
@@ -69,7 +70,7 @@
             canceledSessionsCount++;
             if (timeTable.Tag != _valid)
             {
-                _snackBar.Add($"برنامه : {timeTable.Title} در تاریخ {OrigSessionDate.ToPersianDateTextify()} هیچ جلسه برگزار نشده ای ندارد", Severity.Error);
+                _snackBar.Add($"برنامه : {timeTable.Title} در تاریخ {OrigSessionDate.ToFa("D")} هیچ جلسه برگزار نشده ای ندارد", Severity.Error);
                 continue;
             }
             

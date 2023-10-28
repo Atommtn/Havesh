@@ -1,8 +1,8 @@
 ﻿@page "/TimeTable/{TimeTableId}"
 @using Microsoft.AspNetCore.Components
 @using HaveshApp.Admin.Student
-@using HaveshApp.Model
 @using HaveshApp.Services
+@using Havesh.Model.Model
 @layout PersianPagesLayout
 
 
@@ -69,7 +69,7 @@
         set
         {
             _timeTableId = value;
-            TimeTableItem = DataProvider.GetTimeTable(_timeTableId.ToInt32());
+            TimeTableItem = DataProvider.GetTimeTable(Convert.ToInt32(_timeTableId));
             /*InvokeAsync(async () =>
             {
                 await studentsTableComponent.ReloadData();

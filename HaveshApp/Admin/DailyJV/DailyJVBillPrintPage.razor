@@ -1,8 +1,10 @@
 ﻿@page "/BillPrint/{DalyJVID:int}"
 @using Blazor.QRCode
 @using HaveshApp.Classes
-@using HaveshApp.Model
 @using DNTPersianUtils.Core
+@using Havesh.Model.Model
+@using Olive
+@using PersianDate.Standard
 @layout PrintLayout
 
 
@@ -75,7 +77,7 @@
                             </td>
 
                         </tr>
-                            @if (!_djv.Description.IsNullOrEmpty())
+                            @if (!_djv.Description.IsEmpty())
                             {
                                 <tr>
                                     <td>
@@ -103,7 +105,7 @@
                     <div style="text-align:center">
                         <p>
                             <b>تاریخ صدور :</b>
-                            @_djv.CurrentDate.ToPersianDateTextify()
+                            @_djv.CurrentDate.ToFa("D")
 
                             <h4>با اسکن این کد میتوانید رسید خود را ذخیره نمایید.</h4>
                             <div class="QrCo" >

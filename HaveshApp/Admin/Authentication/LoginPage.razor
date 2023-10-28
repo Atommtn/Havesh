@@ -5,7 +5,10 @@
 
 @using HaveshApp.Services
 @using HaveshApp.Classes
+@using Olive
 @using Serilog
+@using Log = Serilog.Log
+@using Havesh.Model.Model
 
 <MudPaper Class="m-5 p-5" Elevation="3">
     <MudGrid Class="m-2">
@@ -39,23 +42,11 @@
 
 @code {
     bool _loginCheck = false;
-    [Inject] DataProviderService DataProviderService { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
 
-    [Inject] BrowserService BrowserService { get; set; }
-
-    [Inject]
-    ISnackbar Snackbar { get; set; }
-
-    [Inject] NavigationManager NavigationManager { get; set; }
-
-    [Inject] IConfiguration Configuration { get; set; }
-
-    [Parameter]
-    public string? LogOutString { get; set; }
-    [Inject] UserSessionService UserSession { get; set; }
-    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Parameter] public string? LogOutString { get; set; }
+    [Inject] AuthenticationService AuthenticationService { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -63,18 +54,8 @@
         {
             if (LogOutString is  "Logout")
             {
-                UserSession.Token = null;
-                var jwtSection = Configuration.GetSection("JWT");
-
-                var tokenName = jwtSection["TokenName"]!;
-                
-                await BrowserService.EraseCookieAsync(tokenName);
-                await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
-                //Snackbar.Add("User Logged-out !");
-                NavigationManager.NavigateTo("/LoginPage",true);
-
+	            await AuthenticationService.LogOut();
             }
-
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -83,53 +64,37 @@
 
     async Task LoginClick()
     {
-        if (UserName.IsNullOrEmpty() || Password.IsNullOrEmpty())
+        if (UserName.IsEmpty() || Password.IsEmpty())
         {
-            Snackbar.Add("Please enter username and password.", Severity.Info);
+            _snackBar.Add("Please enter username and password.", Severity.Info);
             return;
         }
 
         _loginCheck = true;
         StateHasChanged();
         await Task.Delay(100);
+	    User user;
 
-        var user = DataProviderService.CheckUserLogin(UserName , Password);
-        if (user == null)
-        {
-            Log.Error("Someone tried to login by user: {UserName} with Password: {Password}",UserName,Password);
-            Snackbar.Add("Invalid username or password",Severity.Error);
-            _loginCheck = false;
-            return;
-        }
+	    try
+	    {
+		    user = await AuthenticationService.Login(UserName, Password);
+	    }
+	    catch (AuthenticationService.InvalidUserCredentialException e)
+	    {
+		    Log.Error("Someone tried to login by user: {UserName} with Password: {Password}", UserName, Password);
+            _snackBar.Add(e.Message, Severity.Error);
+		    _loginCheck = false;
+		    return;
+	    }
+	    catch (AuthenticationService.UserIsNotActiveException ex)
+	    {
+		    Log.Error("User {UserName} is Inactive but he(she) tried to login !",UserName);
+            _snackBar.Add(ex.Message, Severity.Warning);
+		    _loginCheck = false;
+		    return;
+	    }
 
-        if (user.IsActive == false)
-        {
-            Log.Error("User {UserName} is Inactive but he(she) tried to login !",UserName);
-            Snackbar.Add("User is not ACTIVE, Please Contact Administrator.", Severity.Warning);
-            _loginCheck = false;
-            return;
-
-        }
-        var jwtSection = Configuration.GetSection("JWT");
-
-        var tokenName = jwtSection["TokenName"]!;
-        var secretKey = jwtSection["Secret"]!;
-        var issuer = jwtSection["Issuer"]!;
-        var audience = jwtSection["Audience"]!;
-
-        var expiryMinutes = 60 * 24 * 30; // Token expiration time in minutes
-        var generator = new JwtTokenGenerator(secretKey,issuer,audience , expiryMinutes);
-        var jwt = generator.GenerateToken(
-            user.UserName, 
-            user.Roles.Select(x => x.Name).ToArray(),
-            user.Gender,
-            user.FirstName ,
-            user.LastName,
-            user.Email,
-            user.Phone);
-        await BrowserService.SetCookieAsync(tokenName, jwt, 30);
         Log.Information("User {UserName} Successfully logged-in to application.",UserName);
-        NavigationManager.NavigateTo("/" , true);
     }
 
 }

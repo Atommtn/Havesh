@@ -1,5 +1,5 @@
 ﻿@page "/SessionActiviy"
-@using HaveshApp.Model
+@using Havesh.Model.Model
 
 <MudTable T="SessionActivity" Items="_allActivities">
     <ToolBarContent>
@@ -25,7 +25,7 @@
         <MudTd>@context.LevelGroups</MudTd>
         <MudTd>@context.SessionNo</MudTd>
         <MudTd>@context.ValueType</MudTd>
-        <MudTd>@string.Join(",", context.ValueOptions.Select(x=>x.Title))</MudTd>
+        <MudTd>@String.Join(",", context.ValueOptions.Select(x=>x.Title))</MudTd>
         <MudTd>@context.ValueOptionsCanMultiple</MudTd>
         <MudTd>@context.ValueControl</MudTd>
         <MudTd>

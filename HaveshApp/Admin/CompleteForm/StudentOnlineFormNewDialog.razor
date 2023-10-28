@@ -1,7 +1,8 @@
 ﻿@page "/NewStu"
 @using HaveshApp.Classes
-@using HaveshApp.Model
 @using HaveshApp.Services
+@using Olive
+@using Havesh.Model.Model
 @layout PersianPagesLayout
 
 <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Icon="@Icons.Filled.Person">
@@ -62,8 +63,8 @@
             return;
         }
 
-        if (Student.Name.IsNullOrEmpty() ||
-            Student.Famil.IsNullOrEmpty())
+        if (Student.Name.IsEmpty() ||
+            Student.Famil.IsEmpty())
         {
             await DialogService.ShowMessageBox("خطا", " لطفاً نام و نام خانوادگی زبان آموز را با دقت وارد کنید.");
             return;

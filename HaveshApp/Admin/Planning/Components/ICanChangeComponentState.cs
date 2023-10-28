@@ -1,7 +1,6 @@
-﻿namespace HaveshApp.Admin.Planning.Components
+﻿namespace HaveshApp.Admin.Planning.Components;
+
+public interface ICanChangeComponentState
 {
-    public interface ICanChangeComponentState
-    {
-        void ChangeYourState();
-    }
+	void ChangeYourState();
 }

@@ -1,4 +1,4 @@
-﻿using HaveshApp.Model;
+﻿using Havesh.Model.Model;
 
 namespace HaveshApp.Admin.Student;
 

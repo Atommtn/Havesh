@@ -1,9 +1,10 @@
 ﻿@using HaveshApp.Services
-@using HaveshApp.Model
 @using HaveshApp.Admin.Components
 @using System.Globalization
 @using DNTPersianUtils.Core
+@using Havesh.Model.Model
 @using HaveshApp.Classes
+@using PersianDate.Standard
 
 <MtnDialog>
 
@@ -44,7 +45,7 @@
                 <RowTemplate>
                     <MudTd>@context.SessionNumber</MudTd>
                     <MudTd>
-                        @context.SessionDate.ToPersianDateTextify()
+                        @context.SessionDate.ToFa("D")
                         <MudText Typo="Typo.caption">
                             @context.SessionTime?.ToString("hh\\:mm")
                         </MudText>

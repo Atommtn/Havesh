@@ -1,8 +1,12 @@
 ﻿@page "/"
-@namespace HaveshApp.Pages
+@namespace HaveshApp.Pages ;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    Layout = "_Layout";
+	Layout = "_Layout";
 }
 
 <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+<div id="components-reconnect-modal">
+	There was a problem with the connection!
+</div>

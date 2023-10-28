@@ -1,17 +1,19 @@
 ﻿using Microsoft.JSInterop;
 
+namespace HaveshApp.Pages.SiteTransaction;
+
 public class MessageUpdateInvokeHelper
 {
-    Action action;
+	Action action;
 
-    public MessageUpdateInvokeHelper(Action action)
-    {
-        this.action = action;
-    }
+	public MessageUpdateInvokeHelper(Action action)
+	{
+		this.action = action;
+	}
 
-    [JSInvokable("BlazorSample")]
-    public void UpdateMessageCaller()
-    {
-        action.Invoke();
-    }
+	[JSInvokable("BlazorSample")]
+	public void UpdateMessageCaller()
+	{
+		action.Invoke();
+	}
 }
