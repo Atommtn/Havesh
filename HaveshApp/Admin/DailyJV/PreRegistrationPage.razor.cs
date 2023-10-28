@@ -46,7 +46,7 @@ namespace HaveshApp.Admin.DailyJV
                 //_dailyJV.PaymentType = null;
 
                 if (_nextLevel != null)
-                    _price = _dataProvider.GetLevelBookPrice(LastTerm.TermClassId,
+                    _price = _dataProvider.GetLevelBookPrice(NextTerm.TermClassId,
                         _nextLevel.LevelClassId);
             }
         }
