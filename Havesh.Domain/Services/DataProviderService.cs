@@ -1775,7 +1775,7 @@ public class DataProviderService
             .ThenInclude(x => x.Teacher)
             .Include(x => x.Student)
             .OrderByDescending(x => x.TimeTableStudentsId)
-            .LastOrDefault(x => x.Student.StudentClassId == student.StudentClassId);
+            .FirstOrDefault(x => x.Student.StudentClassId == student.StudentClassId);
         if (tts != null) return tts.TimeTable;
         return null;
 
