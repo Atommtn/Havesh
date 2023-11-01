@@ -7,16 +7,8 @@
             </MudItem>
 
             <MudItem md="12">
-                <LevelSelectorComponenet LevelsString="@SessionActivity.Levels" LevelGroups="@SessionActivity.LevelGroups" LevelGroupShow="true"></LevelSelectorComponenet>
-                @*<MudSelect MultiSelection="true" @bind-Value="" Label="سطوح" Clearable="true">
-                    @foreach (var level in Levels)
-                    {
-                        <MudSelectItem Value="level.LevelName"></MudSelectItem>
-                    }
-                </MudSelect>*@
+                <LevelSelectorComponenet MultiSelect="true" LevelsString="@SessionActivity.Levels" LevelGroups="@SessionActivity.LevelGroups" LevelGroupShow="true"></LevelSelectorComponenet>
             </MudItem>
-
-          
 
             <MudItem md="9">
                 <MudSelect @bind-Value="SessionActivity.ValueType" Label="نوع ">
