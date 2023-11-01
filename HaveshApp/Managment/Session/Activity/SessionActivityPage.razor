@@ -74,7 +74,8 @@
                 FullWidth = true,
                 MaxWidth = MaxWidth.Large
             });
-        if (reference.Result.Result.Canceled == false)
+         var x= await reference.Result;
+        if (x.Canceled == false)
         {
             StateHasChanged();
         }
