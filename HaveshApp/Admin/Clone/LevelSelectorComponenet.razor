@@ -14,16 +14,40 @@
     }
     <MudCardContent>
 
-        <MudStack Class="pb-4" Row="true">
-            <MudSelect @bind-Value="Level" Label="سطح کلاس" Dense="true">
-                @foreach (var _lev in Levels)
-                {
-                    <MudSelectItem Value="_lev">@_lev.LevelName</MudSelectItem>
-                }
-            </MudSelect>
-        </MudStack>
 
-
+        @if (MultiSelect)
+        {
+            <MudStack Class="pb-4" Row="true">
+                <MudSelect @bind-Value="LevelsString" Label="سطح کلاس" Dense="true" MultiSelection="MultiSelect" Clearable="true">
+                    @foreach (var _lev in Levels)
+                    {
+                        <MudSelectItem Value="_lev.LevelName"></MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
+        }
+        else
+        {
+            <MudStack Class="pb-4" Row="true">
+                <MudSelect @bind-Value="Level" Label="سطح کلاس" Dense="true">
+                    @foreach (var _lev in Levels)
+                    {
+                        <MudSelectItem Value="_lev">@_lev.LevelName</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
+        }
+        @if (LevelGroupShow)
+        {
+            <MudStack Class="pb-4" Row="true">
+                <MudSelect @bind-Value="LevelGroups" Label="گروه" Dense="true" MultiSelection="true" Clearable="true">
+                    @foreach (var lGroup in LevelGroupingDistinct)
+                    {
+                        <MudSelectItem Value="lGroup" />
+                    }
+                </MudSelect>
+            </MudStack>
+        }
     </MudCardContent>
 </MudCard>
 
@@ -31,7 +55,7 @@
 
     private bool initComplete = false;
 
-   
+
     [Parameter]
     public string Title { get; set; }
 
@@ -46,16 +70,43 @@
             LevelChanged?.InvokeAsync(_level);
         }
     }
-    
+
+    [Parameter]
+    public string LevelGroups
+    {
+        get => _levelGroups;
+        set
+        {
+            if (_levelGroups == value) return; ;
+            _levelGroups = value;
+            LevelGroupsChanged?.InvokeAsync(_levelGroups);
+        }
+    }
 
     [Parameter]
     public EventCallback<ShokouhPardisLevelClass>? LevelChanged { get; set; }
 
-    [Inject] IDialogService DialogService { get; set; }
+    [Parameter]
+    public EventCallback<string>? LevelGroupsChanged { get; set; }
 
+    [Parameter]
+    public bool LevelGroupShow { get; set; } = false;
+
+    [Inject] IDialogService DialogService { get; set; }
+    [Parameter]
+    public bool MultiSelect { get; set; } = false;
+
+    [Parameter]
+    public string LevelsString { get; set; }
+
+    private List<string> LevelGroupingDistinct = new List<string>();
     private List<ShokouhPardisLevelClass> Levels;
     ShokouhPardisLevelClass _level;
+    private string _levelGroups;
     public bool DataLoading { get; set; }
+    
+
+
     private void Init()
     {
         if (initComplete)
@@ -63,6 +114,7 @@
         DataLoading = true;
         StateHasChanged();
         Levels = _dataProvider.GetLevels().ToList();
+        LevelGroupingDistinct = Levels.Select(x => x.Grouping).Distinct().ToList();
         initComplete = true;
         StateHasChanged();
     }

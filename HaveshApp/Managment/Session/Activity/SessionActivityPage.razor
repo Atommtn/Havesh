@@ -61,7 +61,8 @@
 
     private async Task OpenDialog(SessionActivity sa)
     {
-        var reference = await DialogService.ShowAsync<SessionActivityDialog>("New Activity"
+        var reference = await DialogService.ShowAsync<SessionActivityDialog>(
+            (sa.SessionActivityID > 0 ? "Edit " : "New ") + "Activity"
             , new DialogParameters
             {
                 ["SessionActivity"] = sa
@@ -73,7 +74,8 @@
                 FullWidth = true,
                 MaxWidth = MaxWidth.Large
             });
-        if (reference.Result.Result.Canceled == false)
+         var x= await reference.Result;
+        if (x.Canceled == false)
         {
             StateHasChanged();
         }
