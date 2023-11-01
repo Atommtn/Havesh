@@ -29,7 +29,7 @@
 					<ActivatorContent>
 						<MudChip Size="Size.Large" >
 							@_userSession.Payload?.FirstName @_userSession.Payload?.LastName
-							<MudAvatar Size="Size.Large" Variant="Variant.Filled" Elevation="1" Color="Color.Info">
+							<MudAvatar Size="Size.Large" Variant="Variant.Filled" Class="mr-8" Elevation="1" Color="Color.Info">
 								@_userSession.Payload?.FirstName?[0]
 							</MudAvatar>
 						</MudChip>

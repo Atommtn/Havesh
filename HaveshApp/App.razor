@@ -1,4 +1,5 @@
-﻿
+﻿@using HaveshApp.Classes
+
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
@@ -10,10 +11,53 @@
                     </MudText>
                 </Authorizing>
                 <NotAuthorized>
-                    You are not authorized to this page
-                    <MudButton Color="Color.Error" StartIcon="@Icons.Filled.Login" Variant="Variant.Text" Href="/LoginPage">
-                        Login
-                    </MudButton>
+                    <WebPageComponent></WebPageComponent>
+                    @*
+                    <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+                        <MudCarouselItem Transition="transition" Color="@Color.Primary">
+                            <div class="d-flex" style="height:100%">
+                                برای دیدن وب سایت رسمی آکادمی تخصصی هاوِش کلیک کنید
+                                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Web" Variant="Variant.Text" OnClick="WebsiteClick">
+                                    وب سایت رسمی
+                                </MudButton>
+
+                            </div>
+                        </MudCarouselItem>
+                        <MudCarouselItem Transition="transition" Color="@Color.Secondary">
+                            <div class="d-flex" style="height:100%">
+                                وب سایت مدیریت آموزشی آکادمی تخصصی هاوِش
+
+                                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Web" Variant="Variant.Text" OnClick="MoreInfo">
+                                    اطلاعات بیشتر
+                                </MudButton>
+
+                            </div>
+                        </MudCarouselItem>
+                        <MudCarouselItem Transition="transition">
+                            <div class="d-flex" style="height:100%">
+                                موبایل اپلیکیشن آموزش زبان انگلیسی بزودی ارائه میگردد
+
+                                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Web" Variant="Variant.Text" OnClick="AboutAppClick">
+                                    اطلاعات بیشتر
+                                </MudButton>
+
+                            </div>
+                        </MudCarouselItem>
+                    </MudCarousel>
+                    <MudCard>
+                        <MudCardHeader>
+                            Sign in
+                        </MudCardHeader>
+                        <MudCardContent>
+                            شما مجوز دیدن اطلاعات این صفحه را ندارید
+                            اگر نام کاربری و رمز عبور دارید لطفا وارد شوید.
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Color="Color.Error" StartIcon="@Icons.Filled.Login" Variant="Variant.Text" Href="/LoginPage">
+                                ورود
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>*@
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>
@@ -26,3 +70,28 @@
     </Router>
 </CascadingAuthenticationState>
 
+@code {
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    
+    [Inject] public BrowserService BrowserService { get; set; }
+
+    private async Task WebsiteClick()
+    {
+        await BrowserService.OpenInNewTabAsync($"http://www.havesh.com");
+    }
+
+    private void MoreInfo()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void AboutAppClick()
+    {
+        throw new NotImplementedException();
+    }
+
+}

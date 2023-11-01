@@ -6,23 +6,17 @@
                 <MudTextField @bind-Value="SessionActivity.ActivityTitle" Label="Title" />
             </MudItem>
 
-            <MudItem md="6">
-                <MudSelect MultiSelection="true" @bind-Value="_levels" Label="سطوح"  Clearable="true">
+            <MudItem md="12">
+                <LevelSelectorComponenet LevelsString="@SessionActivity.Levels" LevelGroups="@SessionActivity.LevelGroups" LevelGroupShow="true"></LevelSelectorComponenet>
+                @*<MudSelect MultiSelection="true" @bind-Value="" Label="سطوح" Clearable="true">
                     @foreach (var level in Levels)
                     {
                         <MudSelectItem Value="level.LevelName"></MudSelectItem>
-                    } 
-                </MudSelect>
+                    }
+                </MudSelect>*@
             </MudItem>
 
-            <MudItem md="6">
-                <MudSelect @bind-Value="SessionActivity.LevelGroups" Label="گروه" Dense="true" MultiSelection="true" Clearable="true">
-                    @foreach (var lGroup in LevelGroupingDistinct)
-                    {
-                        <MudSelectItem Value="lGroup" />
-                    }
-                </MudSelect>
-            </MudItem>
+          
 
             <MudItem md="9">
                 <MudSelect @bind-Value="SessionActivity.ValueType" Label="نوع ">
@@ -78,14 +72,7 @@
     public SessionActivity SessionActivity { get; set; }
 
     public List<ShokouhPardisLevelClass> Levels { get; set; }
-    private List<string> LevelGroupingDistinct = new List<string>();
-
-    protected override void OnInitialized()
-    {
-        Levels = _dataProvider.GetLevels().ToList();
-        LevelGroupingDistinct = Levels.Select(x=>x.Grouping).Distinct().ToList();
-        base.OnInitialized();
-    }
+    
 
     private void SaveSessionActivityClick()
     {

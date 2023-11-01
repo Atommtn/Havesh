@@ -1348,6 +1348,7 @@ public class DataProviderService
             x.StudentId == dailyJv.StudentId &&
             x.FeeFor == dailyJv.FeeFor &&
             x.PaymentType == dailyJv.PaymentType &&
+            x.TermId == dailyJv.TermId &&
             x.BillNo == dailyJv.BillNo);
         return result;
     }
