@@ -18,10 +18,10 @@
         @if (MultiSelect)
         {
             <MudStack Class="pb-4" Row="true">
-                <MudSelect @bind-Value="LevelsString" Label="سطح کلاس" Dense="true" MultiSelection="MultiSelect">
+                <MudSelect @bind-Value="LevelsString" Label="سطح کلاس" Dense="true" MultiSelection="MultiSelect" Clearable="true">
                     @foreach (var _lev in Levels)
                     {
-                        <MudSelectItem Value="_lev">@_lev.LevelName</MudSelectItem>
+                        <MudSelectItem Value="_lev.LevelName"></MudSelectItem>
                     }
                 </MudSelect>
             </MudStack>
