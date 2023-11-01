@@ -7,7 +7,11 @@
             </MudItem>
 
             <MudItem md="12">
-                <LevelSelectorComponenet  LevelsString="@SessionActivity.Levels" LevelGroups="@SessionActivity.LevelGroups" LevelGroupShow="true"></LevelSelectorComponenet>
+                <LevelSelectorComponenet 
+                    
+                    LevelsString="@SessionActivity.Levels" 
+                    LevelGroups="@SessionActivity.LevelGroups" 
+                    LevelGroupShow="true"></LevelSelectorComponenet>
             </MudItem>
 
             <MudItem md="9">
@@ -18,6 +22,7 @@
                     <MudSelectItem Value="@("date")"></MudSelectItem>
                 </MudSelect>
             </MudItem>
+
             <MudItem md="3">
                 <MudNumericField @bind-Value="SessionActivity.SessionNo" Label="جلسه" Clearable="true" />
             </MudItem>
