@@ -4,7 +4,7 @@ using Havesh.Model.Model;
 using Olive;
 
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class DataProviderAsyncService
 {

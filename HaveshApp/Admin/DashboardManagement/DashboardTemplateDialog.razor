@@ -1,0 +1,45 @@
+﻿@using Havesh.Model.Model
+@using Havesh.Model.Data.Dashboard
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="DashboardTemplate.Name" Label="Name"/>
+            </MudItem>
+            <MudItem md="6">
+                <RoleSelectorComponent @bind-Role="DashboardTemplate.BelongsToRole" />
+            </MudItem>
+        </MudGrid>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDashboardTemplateClick">
+            Save
+        </MudButton>
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseClick">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public DashboardTemplate DashboardTemplate { get; set; }
+
+    private void SaveDashboardTemplateClick()
+    {
+        _dashboardProvider.UpdateDashboardTemplate(DashboardTemplate);
+        DialogInstance.Close(DashboardTemplate);
+    }
+
+    private void CloseClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+}

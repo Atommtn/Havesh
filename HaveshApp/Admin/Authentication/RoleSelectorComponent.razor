@@ -1,0 +1,34 @@
+﻿@using Havesh.Model.Model
+<MudSelect Text="Role" @bind-Value="Role">
+    @foreach (var role in _roles)
+    {
+        <MudSelectItem Value="role">@role.Name</MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+    private List<Role> _roles;
+    private Role? _role;
+
+    protected override void OnInitialized()
+    {
+        _roles = _dataProvider.GetRoles();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public Role? Role
+    {
+        get => _role;
+        set
+        {
+            if (_role == value) return;
+            _role = value;
+            RoleChanged?.InvokeAsync(_role);
+
+        }
+    }
+
+    [Parameter]
+    public EventCallback<Role>? RoleChanged { get; set; }
+}

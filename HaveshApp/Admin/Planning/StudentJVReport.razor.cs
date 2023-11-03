@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MudBlazor;
 using HaveshApp.Admin.DailyJV.Components;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using System;
 using System.Linq;
 using System.Xml;

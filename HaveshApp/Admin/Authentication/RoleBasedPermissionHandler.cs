@@ -1,6 +1,6 @@
 ﻿using Havesh.Model.Model;
 using Microsoft.AspNetCore.Authorization;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 
 namespace HaveshApp.Admin.Authentication;
 

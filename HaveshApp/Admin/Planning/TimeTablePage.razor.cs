@@ -6,7 +6,7 @@ using Serilog;
 using HaveshApp.Admin.Components;
 using HaveshApp.Admin.Student;
 using HaveshApp.Managment.Session;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 
 
 namespace HaveshApp.Admin.Planning;

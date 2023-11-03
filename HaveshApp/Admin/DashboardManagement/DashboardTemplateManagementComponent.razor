@@ -1,0 +1,193 @@
+﻿@using Havesh.Model.Data.Dashboard
+@using Olive
+<style>
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+
+        .selected > td {
+            color: white !important;
+        }
+
+            .selected > td .mud-input {
+                color: white !important;
+            }
+</style>
+
+<MudGrid>
+    <MudItem md="12">
+        <MudTable T="DashboardTemplate" 
+                  Items="_dashboardTemplates"
+                  OnRowClick="SelectDashboardTemplate"
+                  Dense="true"
+                  SelectOnRowClick="true"
+                  Hover="true"
+                  RowClassFunc="@SelectedRowClassFunc">
+            <ToolBarContent>
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" OnClick="AddNewDashboardTemplate">
+                    Add New Dashboard Temlate
+                </MudButton>
+
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                <MudTh>Name</MudTh>
+                <MudTh>Belongs To Role</MudTh>
+                <MudTh>Widgets Count</MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Id</MudTd>
+                <MudTd>@context.Name</MudTd>
+                <MudTd>@context.BelongsToRole</MudTd>
+                <MudTd>@context.DashboardTemplateWidgets.OrEmpty().Count()</MudTd>
+                <MudTd>
+                    @if (!context.DashboardTemplateWidgets.OrEmpty().Any())
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Success" Variant="Variant.Filled" OnClick="() => AddNewWidgetToDashboardTemplateClick(context)" />
+                    }
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Info" Variant="Variant.Filled" OnClick="()=>EditDashboardTemplateClick(context)" />
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="()=>DeleteDashboardTemplateClick(context)" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+    <MudItem md="12">
+        <MudTable Items="SelectedDashboardTemplate?.DashboardTemplateWidgets">
+            <ToolBarContent>
+                <MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="()=>AddNewWidgetToDashboardTemplateClick(SelectedDashboardTemplate)">
+                    Add New Widget To @SelectedDashboardTemplate?.Name
+                </MudButton>
+
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                <MudTh>Icon</MudTh>
+                <MudTh>Title</MudTh>
+                <MudTh>Break Points</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Widget.Id</MudTd>
+                <MudTd>
+                    <MudIcon Icon="@context.Widget.Icon" Color="context.Widget.IconColor" Size="Size.Medium"></MudIcon>
+                </MudTd>
+                <MudTd>@context.Widget.Title</MudTd>
+                <MudTd>@context.Widget.BreakPoints</MudTd>
+                <MudTd>
+                    
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="()=>RemoveWidgetFromDashboardTemplateClick(context)" />
+
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private DashboardTemplate? SelectedDashboardTemplate { get; set; }
+
+    private List<DashboardTemplate> _dashboardTemplates;
+    private List<Widget>? _dashboardWidgets;
+
+
+    protected override void OnInitialized()
+    {
+        UpdateDashboardTemplates();
+
+        base.OnInitialized();
+    }
+
+    private void UpdateDashboardTemplates()
+    {
+        _dashboardTemplates = _dashboardProvider.GetDashboardTemplates();
+        StateHasChanged();
+    }
+
+    private void UpdateDashboardTemplateWidgets(DashboardTemplate dashboardTemplate)
+    {
+        //_dashboardTemplates = _dashboardProvider.GetDashboardTemplateWidgets(dashboardTemplate);
+        StateHasChanged();
+    }
+
+    private async Task AddNewDashboardTemplate()
+    {
+        var dashboardTemplate = new DashboardTemplate();
+        await AddEditDashboardTemplate(dashboardTemplate);
+    }
+
+    private async Task AddEditDashboardTemplate(DashboardTemplate dashboardTemplate)
+    {
+        var dialogReference = await _dialogService.ShowAsync<DashboardTemplateDialog>("New Dashboard Template",
+            new DialogParameters()
+                {
+                    ["DashboardTemplate"] = dashboardTemplate
+                });
+        var result = await dialogReference.Result;
+        if (!result.Canceled)
+        {
+            UpdateDashboardTemplates();
+        }
+    }
+
+    private void RemoveWidgetFromDashboardTemplateClick(DashboardTemplateWidget context)
+    {
+        _dashboardProvider.RemoveWidgetFromDashboardTemplate(context);
+    }
+
+
+    private async Task EditDashboardTemplateClick(DashboardTemplate dashboardTemplate)
+    {
+        await AddEditDashboardTemplate(dashboardTemplate);
+    }
+
+    private async Task DeleteDashboardTemplateClick(DashboardTemplate context)
+    {
+        var box = await _dialogService.ShowMessageBox("Are you sure", $"Are you sure to delete Dashboard Template {context.Name} ?", "YES", "No !");
+        if (box is true)
+        {
+            _dashboardProvider.DeleteDashboardTemplate(context);
+            UpdateDashboardTemplates();
+        }
+    }
+
+    private string SelectedRowClassFunc(DashboardTemplate arg1, int rowNumber)
+    {
+        return SelectedDashboardTemplate != null && SelectedDashboardTemplate.Equals(arg1)
+            ? "selected"
+            : string.Empty;
+    }
+
+    private async Task AddNewWidgetToDashboardTemplateClick(DashboardTemplate? dashboardTemplate = null)
+    {
+        if (dashboardTemplate != null)
+            SelectedDashboardTemplate = dashboardTemplate;
+        var dialogReference = await _dialogService.ShowAsync<SelectWidgetDialog>();
+        var result = await dialogReference.Result;
+        if (!result.Canceled)
+        {
+            if (result.Data is Widget widget && SelectedDashboardTemplate is not null)
+            {
+                SelectedDashboardTemplate.DashboardTemplateWidgets ??= new List<DashboardTemplateWidget>();
+                SelectedDashboardTemplate.DashboardTemplateWidgets.Add(new DashboardTemplateWidget()
+                {
+                    Widget = widget,
+                    DashboardTemplate = SelectedDashboardTemplate
+                });
+                _dashboardProvider.UpdateDashboardTemplate(SelectedDashboardTemplate);
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void SelectDashboardTemplate(TableRowClickEventArgs<DashboardTemplate> arg)
+    {
+        SelectedDashboardTemplate = arg.Item;
+    }
+
+}

@@ -70,6 +70,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Admin\Dashboard\Class\" />
     <Folder Include="Admin\MemberShip\Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Admin\Dashboard\Personal\Widgets\ItemContainerWidget.razor" />
+    <None Include="Admin\Dashboard\Personal\Widgets\LargWidgetContainer.razor" />
+    <None Include="Admin\Dashboard\Personal\Widgets\SmallWidget.razor" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ using System.Xml;
 using System.Linq;
 using Havesh.Model.Model;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class StudentService
 {

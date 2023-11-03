@@ -1,6 +1,6 @@
 ﻿using static Amazon.S3.Util.S3EventNotification;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class GlobalQueryFilterService
 {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using System.Configuration;
 using Havesh.Model.Model;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class AuthenticationService
 {

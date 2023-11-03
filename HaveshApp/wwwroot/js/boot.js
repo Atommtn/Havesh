@@ -28,7 +28,7 @@
 
                     // Successfully reconnected to the server.
                     return;
-                } catch {
+                } catch(ex){
                     // Didn't reach the server; try again.
                 }
             }

@@ -5,7 +5,7 @@ using MudBlazor;
 using MudBlazor.Extensions;
 using HaveshApp.Admin.Definition.Teachers;
 using HaveshApp.Admin.Student;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using System.ComponentModel;
 using Havesh.Model.Model;
 using Serilog;

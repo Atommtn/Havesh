@@ -6,7 +6,9 @@
 	<DialogContent>
 		<MudGrid>
 			<MudItem md="6">
-				<MudAutocomplete T="User" Label="فرستنده" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person2"
+                <MudAutocomplete T="User" Label="فرستنده" 
+                                 Adornment="Adornment.Start" 
+                                 AdornmentIcon="@Icons.Material.Filled.Person2"
 				                 @bind-Value="Message.From"
 				                 SearchFunc="SearchFunc">
 					<ItemTemplate>

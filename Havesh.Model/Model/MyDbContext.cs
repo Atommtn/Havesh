@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 
 namespace Havesh.Model.Model;
@@ -62,7 +63,11 @@ public partial class MyDbContext : DbContext
 			var conStr = _configuration["ConnectionStrings:ArvanConnection"];
 			//optionsBuilder.UseSqlServer("Data Source=94.101.189.165;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;");
 			optionsBuilder.UseSqlServer(conStr);
-		}
+            optionsBuilder.ConfigureWarnings(warnings =>
+            {
+                warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
+            });
+        }
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

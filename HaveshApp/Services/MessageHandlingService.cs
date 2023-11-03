@@ -1,9 +1,9 @@
 ﻿using HaveshApp.Admin.Authentication;
-using HaveshApp.Classes;
+using HaveshApp.Classes.ExtensionMethods;
 using HaveshApp.Classes.SignalR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class MessageHandlingService
 {

@@ -1,11 +1,14 @@
 ﻿@using HaveshApp.Admin.DailyJV.Components
 @using HaveshApp.Managment.Session.Activity
-@using HaveshApp.Services
-
+@using PersianDate.Standard
 
 @inherits HaveshApp.Classes.SizeSupportComponentBase
 
-<MudContainer Style="@($"max-height: {BrowserHeight-140}px;overflow-y:scroll; direction:RTL")">
+<MudContainer Style="@($"max-height: {BrowserHeight - 140}px;overflow-y:scroll; direction:RTL")">
+    <MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
+        جلسه @TimeTableSession?.SessionNumber - @TimeTableSession?.SessionDate.ToFa("D") - @TimeTableSession?.SessionTime
+    </MudText>
+
     <MudTable @ref="table"
               @attributes="@AdditionalAttributes"
               RowStyleFunc="RowStyleFunc"
@@ -39,7 +42,6 @@
 
             <MudTh>نام</MudTh>
             <MudTh>نام خانوادگی</MudTh>
-            <MudTh>کد ملی</MudTh>
 
 
             <MudTh></MudTh>
@@ -49,25 +51,24 @@
 
             <MudTd>@student.StudentName</MudTd>
             <MudTd>@student.StudentFamily</MudTd>
-            <MudTd>@student.StudentIdno</MudTd>
 
             <MudTd>
-                @if (_stuActiv != null && 
-                     _stuActiv.TryGetValue(student.StudentClassId,out var xx) && 
-                     xx.Any(x => x.ActivityFk == SessionActivity.SessionActivityID && 
-													x.ActivityDeletedDateTime == null))
+                @if (_stuActiv != null &&
+                     _stuActiv.TryGetValue(student.StudentClassId, out var xx) &&
+                     xx.Any(x => x.ActivityFk == SessionActivity.SessionActivityID &&
+                                 x.ActivityDeletedDateTime == null))
                 {
                     @foreach (var sac in xx.Where(x => x.ActivityFk == SessionActivity.SessionActivityID && x.ActivityDeletedDateTime == null))
                     {
-	                    <MudChip Size="Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)" >
-		                    @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
-	                    </MudChip>
-                        
-	                    <DependentSessionActivityItemComponent Student="student" SessionActivity="SessionActivity" AllStudentSessionActivities="xx" StudentSessionActivity="sac" ActivityExec="Exec" />
+                        <MudChip Size="Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)">
+                            @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
+                        </MudChip>
+
+                        <DependentSessionActivityItemComponent Student="student" SessionActivity="SessionActivity" AllStudentSessionActivities="xx" StudentSessionActivity="sac" ActivityExec="Exec"/>
                     }
                     @if (SessionActivity.ValueOptionsCanMultiple is true)
                     {
-	                    <SessionActivityItemComponent Student="student" SessionActivity="SessionActivity" ActivityExec="Exec"></SessionActivityItemComponent>
+                        <SessionActivityItemComponent Student="student" SessionActivity="SessionActivity" ActivityExec="Exec"></SessionActivityItemComponent>
                     }
                 }
                 else

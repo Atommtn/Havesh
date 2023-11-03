@@ -1,0 +1,59 @@
+﻿@using Havesh.Model.Data.Dashboard
+<MudDialog>
+    <DialogContent>
+        <MudTable Items="_widgets">
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                <MudTh>Icon</MudTh>
+                <MudTh>Title</MudTh>
+                <MudTh>Break Points</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Id</MudTd>
+                <MudTd>
+                    <MudIcon Icon="@context.Icon" Color="@context.IconColor" Size="Size.Medium"></MudIcon>
+                </MudTd>
+                <MudTd>@context.Title</MudTd>
+                <MudTd>@context.BreakPoints</MudTd>
+                <MudTd>
+                    <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="()=>AddWidgetToDashboardTemplateClick(context)">
+                        Add To Template
+                    </MudButton>
+
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseClick">
+            Close
+        </MudButton>
+
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private List<Widget> _widgets;
+    protected override void OnInitialized()
+    {
+        _widgets = _dashboardProvider.GetWidgets();
+
+        base.OnInitialized();
+    }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    private void AddWidgetToDashboardTemplateClick(Widget context)
+    {
+        DialogInstance.Close(context);
+    }
+
+    private void CloseClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+}

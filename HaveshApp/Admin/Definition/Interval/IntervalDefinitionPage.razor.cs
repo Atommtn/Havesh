@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 
 namespace HaveshApp.Admin.Definition.Interval;
 

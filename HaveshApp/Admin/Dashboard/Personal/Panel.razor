@@ -1,0 +1,98 @@
+﻿@page "/dashboard/{DashboardTemplateId:int}"
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@using HaveshApp.Admin.Dashboard.Widgets
+
+<MudGrid Class="mt-4">
+    @if (_ds is { DashboardWidgets.Count: > 0 })
+    {
+        @foreach (var ws in _ds.DashboardWidgets.OrderBy(x=>x.Order))
+        {
+          <WidgetRender WidgetSetting="ws"></WidgetRender>
+        }
+    }
+    
+
+    <MudItem xs="12" sm="8">
+        <MudPaper Class="pa-4" Style="height:300px;">
+            Charts coming soon ish...
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="4">
+        <MudPaper Class="pa-4" Style="height:300px;">
+            Charts coming soon ish...
+        </MudPaper>
+    </MudItem>
+
+    <LargWidgetContainer Title="Earning Report" BreakPoints="xs=12,sm=12,md=6">
+    </LargWidgetContainer>
+
+
+    <LargWidgetContainer Title="Recent incidents" BreakPoints="xs=12,sm=12,md=6">
+        <MudList Clickable="true">
+            <MudListItem>
+                <div class="d-flex flex-row">
+                    <MudAvatar Class="mud-elevation-25">
+                        <MudIcon Icon="@Icons.Custom.Brands.GitHub" Class="mx-4" />
+                    </MudAvatar>
+                    <div class="ml-6">
+                        <MudText Typo="Typo.subtitle2">Issues rising</MudText>
+                        <MudText Typo="Typo.body2">Issues is almost reaching 100</MudText>
+                    </div>
+                    <MudChip Label="true" Color="Color.Error" Size="Size.Small" Class="ml-auto mud-elevation-25">Danger</MudChip>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="d-flex flex-row">
+                    <MudAvatar Class="mud-elevation-25">
+                        <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Class="mx-4" />
+                    </MudAvatar>
+                    <div class="ml-6">
+                        <MudText Typo="Typo.subtitle2">Incident in plant number 4</MudText>
+                        <MudText Typo="Typo.body2">Fire in reactor core</MudText>
+                    </div>
+                    <MudChip Label="true" Color="Color.Info" Size="Size.Small" Class="ml-auto mud-elevation-25">Minor</MudChip>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="d-flex flex-row">
+                    <MudAvatar Class="mud-elevation-25">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" Class="mx-4" />
+                    </MudAvatar>
+                    <div class="ml-6">
+                        <MudText Typo="Typo.subtitle2">Occupational injury</MudText>
+                        <MudText Typo="Typo.body2">Employee broke a finger while writing some code</MudText>
+                    </div>
+                    <MudChip Label="true" Color="Color.Success" Size="Size.Small" Class="ml-auto mud-elevation-25">Dismissed</MudChip>
+                </div>
+            </MudListItem>
+        </MudList>
+    </LargWidgetContainer>
+
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int DashboardTemplateId
+    {
+        get => _dashboardTemplateId;
+        set
+        {
+            _dashboardTemplateId = value;
+
+            if (DashboardTemplateId == 0 )
+                Console.Beep();
+
+            _ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User)
+                  ?? _dashboardProvider.GenerateUserDashboardByDashboardId(_dashboardTemplateId, _userSession.User);
+
+            StateHasChanged();
+        }
+    }
+
+    Dashboard? _ds;
+    private int _dashboardTemplateId;
+
+
+}

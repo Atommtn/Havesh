@@ -5,10 +5,14 @@
 @layout PersianPagesLayout
 
 <MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
-    جلسه @_sessionItem.SessionNumber - @_sessionItem.SessionDate.ToFa("D") - @_sessionItem.SessionTime
+    جلسه @_sessionItem?.SessionNumber - @_sessionItem?.SessionDate.ToFa("D") - @_sessionItem?.SessionTime
 </MudText>
 
-<StudentListRollCallComponenets RowStyle="true" RowsPerPage="25" TimeTableSession="_sessionItem" SessionActivity="_sessionActivity" ></StudentListRollCallComponenets>
+<StudentListRollCallComponenets 
+    RowStyle="true" 
+    RowsPerPage="25" 
+    TimeTableSession="_sessionItem" 
+    SessionActivity="_sessionActivity" />
 
 @code {
     private int _sessionId;

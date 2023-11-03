@@ -7,7 +7,7 @@ using Olive;
 using System.Net;
 using Amazon;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class AwsS3Service
 {

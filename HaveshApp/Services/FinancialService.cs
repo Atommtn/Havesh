@@ -1,7 +1,7 @@
 ﻿using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class FinancialService
 {

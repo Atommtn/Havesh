@@ -4,7 +4,7 @@ using Olive;
 using RestSharp;
 using PersianDate.Standard;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class SmsService
 {

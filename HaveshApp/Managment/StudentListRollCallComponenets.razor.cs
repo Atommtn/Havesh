@@ -6,7 +6,7 @@ using HaveshApp.Admin;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Admin.Student;
 using HaveshApp.Managment.Session.Activity;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using static HaveshApp.Admin.Planning.CompleteTimeTablePage;
 
 namespace HaveshApp.Managment;

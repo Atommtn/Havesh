@@ -1,0 +1,157 @@
+﻿@using Havesh.Model.Model
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using HaveshApp.Admin.Definition.LessonPlan
+@using HaveshApp.Classes.Auth
+<AuthorizeView Roles="Supervisor">
+    <Authorized>
+        <MudText Typo="Typo.h6" Color="Color.Default" GutterBottom="true" Class="m-4">
+            مدیریت کلاس ها و زبان آموزان
+        </MudText>
+
+        <MudGrid Class="mt-3">
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.Album"
+                                Title="جلسه از ترم"
+                                IconColor="Color.Primary"
+                                Value="@model?.classTitle"
+                                BreakPoints="xs=12,sm=6,md=4"/>
+
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.Numbers"
+                                Title="کلاسهای امروز"
+                                IconColor="Color.Info"
+                                Value="@model?.totalStudents.ToString()"
+                                BreakPoints="xs=12,sm=6,md=4"/>
+
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.AdsClick"
+                                Title="سانس جاری"
+                                IconColor="Color.Success"
+                                Value="@model?.levelTitle"
+                                BreakPoints="xs=12,sm=6,md=4"/>
+                                
+            
+
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.AdsClick"
+                                Title="کلاس های این سانس"
+                                IconColor="Color.Success"
+                                Value="@model?.levelTitle"
+                                BreakPoints="xs=12,sm=6,md=3"/>
+
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.Info"
+                                Title="کنسلی این سانس"
+                                Value="@model?.status"
+                                BreakPoints="xs=12,sm=6,md=3"/>
+
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.Info"
+                                Title="غایبین سانس"
+                                Value="@model?.status"
+                                BreakPoints="xs=12,sm=6,md=3"/>
+
+            <SmallWidget Height="100px"
+                                Icon="@Icons.Material.Filled.Info"
+                                Title="غایبین سانس"
+                                Value="@model?.status"
+                                BreakPoints="xs=12,sm=6,md=3"/>
+
+            <LargWidgetContainer Title="معلمین جایگزین" BreakPoints="xs=12,md=6">
+                <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                    TEST
+                </MudText>
+            </LargWidgetContainer>
+
+            <LargWidgetContainer Title="معلمین جایگزین" BreakPoints="xs=12,md=6">
+                <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                    TEST
+                </MudText>
+            </LargWidgetContainer>
+
+        </MudGrid>
+        @if (_session is not null)
+        {
+            @_session.TimeTable.Title
+            <TimeTableItemComponent TimeTable="_session.TimeTable" Dense="false" ShowRecordId="false" ShowSessionCount="false" IsSessionCanceler="false">
+                <ChildContent>
+
+                </ChildContent>
+                <NoContent>
+
+                </NoContent>
+            </TimeTableItemComponent>
+
+            <TeacherLessonPlanComponent Session="_session">
+
+            </TeacherLessonPlanComponent>
+
+            @foreach (var act in _activities)
+            {
+                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Class" Variant="Variant.Outlined" OnClick="() => ClassSessionClick(_session, act)">
+                    <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                        @act.ActivityTitle - جلسه @_session?.SessionNumber
+                    </MudText>
+                </MudButton>
+
+            }
+
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    record DashboardModel(int? totalStudents, string? classTitle, string? levelTitle, string? status);
+    
+    List<SessionActivity> _activities;
+    private List<ChartSeries> _UserDo;
+
+    TimeTableSession? _session;
+
+    [Inject]
+    UserSessionService UserSessionService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var term = _dataProvider.GetTermsInRangeToday();
+
+        if (term is null)
+        {
+            _snackBar.Add("There is not any Term in today range");
+            return;
+        }
+
+        //_UserDo = ProviderService.GetLog();
+        var payload = UserSessionService.Payload;
+        if (!(payload?.Roles?.Contains(AuthorizeRolesConstant.Teacher) ?? false))
+            return;
+
+        var teacher = _dataProvider.GetTeacherByUserId(UserSessionService.User?.Id);
+        // TODO: Should be remark -> var startTime = DateTime.Now.TimeOfDay; //TimeSpan.Parse("11:15");// DateTime.Now;
+        var startTime = DateTime.Now.TimeOfDay;
+        var fromMinutes = TimeSpan.FromMinutes(3);
+        var interval = _dataProvider.GetInterval(term, startTime, offset: fromMinutes);
+        if (interval is null || teacher is null)
+            return;
+
+        var weekday = _dataProvider.GetTodayWeekday();
+        //var weekday = _dataProvider.GetTodayWeekday(7);
+        var timetable = _dataProvider.GetTeacherTimeTable(term, teacher, weekday, interval);
+        _session = _dataProvider.GetTimeTableSession(timetable, DateTime.Today);
+        var dateTime = DateTime.Today;
+        _session = _dataProvider.GetTimeTableSession(timetable, dateTime);
+        if (_session != null)
+            _activities = _dataProvider.GetSessionActivities(_session);
+
+        model = new DashboardModel(timetable?.StudentsCount,timetable?.ClassRoom.ClassRoomName , timetable?.Level.LevelName , _session?.SessionStatus);
+    }
+
+    private void ClassSessionClick(TimeTableSession session, SessionActivity sessionActivity)
+    {
+        _navigationManager.NavigateTo($"/RollCall/{session?.ID}/{sessionActivity.SessionActivityID}");
+    }
+
+    DashboardModel? model = new DashboardModel(0 , "" , "" ,"");
+
+}
