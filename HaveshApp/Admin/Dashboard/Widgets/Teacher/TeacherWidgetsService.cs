@@ -49,7 +49,7 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
             ReloadData();
         }
 
-        readonly DateTime _dateTime = DateTime.Today.AddDays(-1);
+        readonly DateTime _dateTime = DateTime.Today.AddDays(-2);
 
         private void ReloadData()
         {
