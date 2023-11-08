@@ -1,0 +1,88 @@
+﻿<MudAutocomplete T="Type"
+                 @bind-Value="Type"
+                 SearchFunc="GetResolverList"
+                 Label="Widget Resolver"
+                 ToStringFunc="ToStringFunc"
+                 MaxItems="100">
+    <ItemTemplate>
+        <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+            @context.Name
+        </MudText>
+
+    </ItemTemplate>
+</MudAutocomplete>
+
+@code {
+
+    List<Type>? _types;
+
+    private Type? _type;
+    private string? _typeName;
+
+    protected override void OnInitialized()
+    {
+        _types ??= InitTypes();
+        base.OnInitialized();
+    }
+
+    private List<Type> InitTypes()
+    {
+        return ResolverDiscovery.DiscoverResolverTypes();
+    }
+
+    [Parameter]
+    public string? TypeName
+    {
+        get => _typeName;
+        set
+        {
+            if(_typeName == value) return;
+            
+            _typeName = value;
+            TypeNameChanged.InvokeAsync(_typeName);
+            _types ??= InitTypes();
+
+            _type = _types.FirstOrDefault(x => x.FullName == _typeName);
+            TypeChanged.InvokeAsync(_type);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> TypeNameChanged { get; set; }
+
+    [Parameter]
+    public Type? Type
+    {
+        get => _type;
+        set
+        {
+            if(_type == value) return;
+            
+            _type = value;
+            TypeChanged.InvokeAsync(_type);
+
+            TypeName = _type?.FullName ?? String.Empty;
+            
+        }
+    }
+
+    [Parameter]
+    public EventCallback<Type> TypeChanged { get; set; }
+
+    private async Task<IEnumerable<Type>> GetResolverList(string arg)
+    {
+        if (string.IsNullOrEmpty(arg))
+            return _types;
+
+        var types = _types.Where(x => x.FullName?.Contains(arg) ?? true).ToList();
+        return types;
+    }
+
+    private string ToStringFunc(Type arg)
+    {
+        if (arg == null)
+            return null;
+        return arg.Name;
+    }
+
+}

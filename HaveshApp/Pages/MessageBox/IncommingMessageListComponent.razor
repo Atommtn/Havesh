@@ -1,6 +1,7 @@
 ﻿@using HaveshApp.Classes
 @using Append.Blazor.Notifications
 @using Havesh.Model.Data
+@using HaveshApp.Classes.ExtensionMethods
 @implements IDisposable
 <MudStack Row="false" Spacing="4">
 	@foreach (var msg in _messageDtos.OrderByDescending(x => x.SentDateTime))

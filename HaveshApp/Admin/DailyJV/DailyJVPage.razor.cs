@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 using HaveshApp.Admin.Student;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using System.Globalization;
 using System.Linq;
 using HaveshApp.Admin.Components;
@@ -44,8 +44,8 @@ public partial class DailyJVPage
 
 	private bool IsOutOfIns
 	{
-		get { return _isOutOfIns; }
-		set
+		get => _isOutOfIns;
+        set
 		{
            
 			_isOutOfIns = value;

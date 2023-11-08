@@ -96,6 +96,221 @@ namespace HaveshApp.Migrations
                     b.ToTable("AppBranch", "ShoukouhPardis12DBAdmin");
                 });
 
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DashboardTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DashboardTemplateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Dashboards", "ShoukouhPardis12DBAdmin");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BelongsToRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BelongsToRoleId");
+
+                    b.ToTable("DashboardTemplates", "ShoukouhPardis12DBAdmin");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplateWidget", b =>
+                {
+                    b.Property<int>("DashboardTemplateId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("WidgetId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<int?>("WidgetGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DashboardTemplateId", "WidgetId");
+
+                    b.HasIndex("WidgetGroupId");
+
+                    b.HasIndex("WidgetId");
+
+                    b.ToTable("DashboardTemplateWidgets", "ShoukouhPardis12DBAdmin");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardWidgetSetting", b =>
+                {
+                    b.Property<int>("DashboardId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("WidgetId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("BreakPoints")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Height")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Hidden")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("WidgetGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DashboardId", "WidgetId");
+
+                    b.HasIndex("WidgetGroupId");
+
+                    b.HasIndex("WidgetId");
+
+                    b.ToTable("DashboardWidgetSettings", "ShoukouhPardis12DBAdmin");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Widget", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AllowHidden")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowRemove")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BelongToRoles")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BreakPoints")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Height")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Widgets", "ShoukouhPardis12DBAdmin");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.WidgetGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BelongToRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DashboardTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BelongToRoleId");
+
+                    b.HasIndex("DashboardTemplateId");
+
+                    b.ToTable("WidgetGroup", "ShoukouhPardis12DBAdmin");
+                });
+
             modelBuilder.Entity("Havesh.Model.Model.AdvanceRegistration", b =>
                 {
                     b.Property<int>("Id")
@@ -640,6 +855,24 @@ namespace HaveshApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Color")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconSize")
                         .HasColumnType("int");
 
                     b.Property<string>("LevelGroups")
@@ -2700,6 +2933,101 @@ namespace HaveshApp.Migrations
                     b.Navigation("ParentBranch");
                 });
 
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Dashboard.DashboardTemplate", "DashboardTemplate")
+                        .WithMany()
+                        .HasForeignKey("DashboardTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Havesh.Model.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DashboardTemplate");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplate", b =>
+                {
+                    b.HasOne("Havesh.Model.Model.Role", "BelongsToRole")
+                        .WithMany()
+                        .HasForeignKey("BelongsToRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BelongsToRole");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplateWidget", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Dashboard.DashboardTemplate", "DashboardTemplate")
+                        .WithMany("DashboardTemplateWidgets")
+                        .HasForeignKey("DashboardTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.WidgetGroup", "WidgetGroup")
+                        .WithMany()
+                        .HasForeignKey("WidgetGroupId");
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.Widget", "Widget")
+                        .WithMany("DashboardTemplateWidgets")
+                        .HasForeignKey("WidgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DashboardTemplate");
+
+                    b.Navigation("Widget");
+
+                    b.Navigation("WidgetGroup");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardWidgetSetting", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Dashboard.Dashboard", "Dashboard")
+                        .WithMany("DashboardWidgets")
+                        .HasForeignKey("DashboardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.WidgetGroup", "WidgetGroup")
+                        .WithMany()
+                        .HasForeignKey("WidgetGroupId");
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.Widget", "Widget")
+                        .WithMany("DashboardWidgets")
+                        .HasForeignKey("WidgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dashboard");
+
+                    b.Navigation("Widget");
+
+                    b.Navigation("WidgetGroup");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.WidgetGroup", b =>
+                {
+                    b.HasOne("Havesh.Model.Model.Role", "BelongToRole")
+                        .WithMany()
+                        .HasForeignKey("BelongToRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.DashboardTemplate", null)
+                        .WithMany("WidgetGroups")
+                        .HasForeignKey("DashboardTemplateId");
+
+                    b.Navigation("BelongToRole");
+                });
+
             modelBuilder.Entity("Havesh.Model.Model.AdvanceRegistration", b =>
                 {
                     b.HasOne("Havesh.Model.Data.Branch", "Branch")
@@ -3544,6 +3872,25 @@ namespace HaveshApp.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
+                {
+                    b.Navigation("DashboardWidgets");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplate", b =>
+                {
+                    b.Navigation("DashboardTemplateWidgets");
+
+                    b.Navigation("WidgetGroups");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Widget", b =>
+                {
+                    b.Navigation("DashboardTemplateWidgets");
+
+                    b.Navigation("DashboardWidgets");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>

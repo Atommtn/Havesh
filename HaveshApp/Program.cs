@@ -21,7 +21,7 @@ using HaveshApp.Classes;
 using HaveshApp.Classes.Serilog;
 using HaveshApp.Classes.SignalR;
 using HaveshApp.Managment.Session;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using Log = Serilog.Log;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.Localization;
 using Havesh.Model.Data;
 using Havesh.Model.Model;
 using Syncfusion.Blazor;
+using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 
 // Configure logging to log to MSSqlServer database
 
@@ -72,11 +73,15 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddDbContext<MyDbContext>();
 
+builder.Services.AddScoped<TeacherWidgetsService>();
+
 builder.Services.AddScoped<Navigation>();
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserSessionService>();
 builder.Services.AddScoped<MessageHandlingService>();
 builder.Services.AddSingleton<UserConnectionManagerService>();
+
+builder.Services.AddScoped<DashboardService>();
 
 builder.Services.AddScoped<DataProviderService>();
 builder.Services.AddScoped<MessageService>();
@@ -139,6 +144,7 @@ AuthorizationPolicies.AddAuthorizarionPolicies(builder.Services);
 
 var app = builder.Build();
 
+/*
 app.Use(async (context, next) =>
 {
 	var culture = new CultureInfo("fa-IR");// Set user culture here
@@ -148,6 +154,7 @@ app.Use(async (context, next) =>
 	// Call the next delegate/middleware in the pipeline
 	await next();
 });
+*/
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

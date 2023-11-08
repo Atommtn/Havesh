@@ -1,0 +1,58 @@
+﻿@using Havesh.Model.Data.Dashboard
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem md="6">
+                <MudNumericField @bind-Value="WidgetGroup.Order" Label="Order" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="WidgetGroup.Title" Label="Title" />
+            </MudItem>
+            <MudItem md="6">
+                <IconSelectorComponent @bind-Icon="WidgetGroup.Icon" @bind-IconName="WidgetGroup.IconName"></IconSelectorComponent>
+            </MudItem>
+            <MudItem md="6">
+                <MudNumericField @bind-Value="WidgetGroup.IconSize" Label="IconSize"></MudNumericField>
+            </MudItem>
+            <MudItem md="6">
+                <MudSelect T="GroupTypeEnum" Label="Group Type" @bind-Value="WidgetGroup.GroupType">
+                    @foreach (var typ in Enum.GetValues<GroupTypeEnum>())
+                    {
+                        <MudSelectItem Value="@typ">@typ</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+
+        </MudGrid>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDashboardGroupClick">
+            Save
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [Parameter]
+    public WidgetGroup WidgetGroup { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();        
+    }
+
+    private void SaveDashboardGroupClick()
+    {
+        DialogInstance.Close(WidgetGroup);
+    }
+
+}

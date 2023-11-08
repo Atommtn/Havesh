@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Havesh.Model.Model;
 using HaveshApp.Classes.SignalR;
-using HaveshApp.Classes;
 using Microsoft.AspNetCore.SignalR;
+using HaveshApp.Classes.ExtensionMethods;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class MessageService
 {
@@ -60,15 +60,15 @@ public class MessageService
 
 public class MessageDataProviderService : DataProviderService
 {
-	public MessageDataProviderService(MyDbContext dbConntext, 
+	public MessageDataProviderService(MyDbContext dbContext, 
 		FinancialService financialService) 
-		: base(dbConntext)
+		: base(dbContext)
 	{
 
 	}
 	public async Task<List<Message>> GetMessagesAsync()
 	{
-		return await DbConntext.Messages
+		return await DbContext.Messages
 			.Include(m => m.From)
 			.Include(m => m.To)
 			.Include(m => m.Attachments)
@@ -78,7 +78,7 @@ public class MessageDataProviderService : DataProviderService
 
 	public async Task<Message?> GetMessageByIdAsync(int messageId)
 	{
-		return await DbConntext.Messages
+		return await DbContext.Messages
 			.Include(m => m.From)
 			.Include(m => m.To)
 			.Include(m => m.Attachments)
@@ -89,7 +89,7 @@ public class MessageDataProviderService : DataProviderService
 	public async Task<List<Message>?> GetMessagesForUserAsync(int? userId)
 	{
 		if (userId == null) return null;
-		return await DbConntext.Messages
+		return await DbContext.Messages
 			.Where(m => m.To.Id == userId)
 			.Include(m => m.From)
 			.Include(m => m.To)
@@ -100,7 +100,7 @@ public class MessageDataProviderService : DataProviderService
 
 	public async Task SendMessageAsync(Message message)
 	{
-		DbConntext.Messages.Add(message);
-		await DbConntext.SaveChangesAsync();
+		DbContext.Messages.Add(message);
+		await DbContext.SaveChangesAsync();
 	}
 }

@@ -15,13 +15,14 @@
 @using HaveshApp.Admin.Planning.Components
 @using HaveshApp.Admin.Components
 @using HaveshApp.Admin.Clone
-@using HaveshApp.Services
+@using Havesh.Domain.Services
 
 @using Serilog
 @using HaveshApp.Admin.Authentication
 
 @attribute [Authorize]
 @inject DataProviderService _dataProvider
+@inject DashboardService _dashboardProvider
 @inject MessageService _messageService
 @inject NavigationManager _navigationManager
 @inject IAuthorizationService _authorizationService

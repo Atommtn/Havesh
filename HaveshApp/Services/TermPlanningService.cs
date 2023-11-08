@@ -1,7 +1,7 @@
 ﻿using Havesh.Model.Data;
 using Havesh.Model.Model;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class TermPlanningService
 {

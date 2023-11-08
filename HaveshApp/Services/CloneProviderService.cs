@@ -3,7 +3,7 @@ using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class CloneProviderService
 {
@@ -18,7 +18,7 @@ public class CloneProviderService
     public void CreateTransaction()
     {
 
-        _transaction ??= _dataService.DbConntext.Database.BeginTransaction();
+        _transaction ??= _dataService.DbContext.Database.BeginTransaction();
     }
 
     public void CommitTransaction()

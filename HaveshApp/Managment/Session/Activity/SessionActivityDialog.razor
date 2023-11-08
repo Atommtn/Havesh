@@ -1,9 +1,14 @@
 ﻿@using Havesh.Model.Model
+@using HaveshApp.Admin.DashboardManagement
 <MtnDialog>
     <ChildComponent>
         <MudGrid>
-            <MudItem md="12">
+            <MudItem md="6">
                 <MudTextField @bind-Value="SessionActivity.ActivityTitle" Label="Title" />
+            </MudItem>
+
+            <MudItem md="6">
+                <MudTextField @bind-Value="SessionActivity.Description" Label="Description" />
             </MudItem>
 
             <MudItem md="12">
@@ -45,6 +50,17 @@
                     <MudSelectItem Value="@("Slider")"></MudSelectItem>
                 </MudSelect>
             </MudItem>
+
+            <MudItem md="6">
+                <IconSelectorComponent @bind-IconName="SessionActivity.IconName" @bind-Icon="SessionActivity.Icon"></IconSelectorComponent>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="SessionActivity.IconColor" Label="Icon Color" />
+            </MudItem>
+            <MudItem md="6">
+                <MudNumericField @bind-Value="SessionActivity.IconSize" Label="Icon Size" />
+            </MudItem>
+
 
         </MudGrid>
 

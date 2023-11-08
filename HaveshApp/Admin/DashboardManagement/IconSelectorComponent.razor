@@ -1,0 +1,85 @@
+﻿<MudAutocomplete T="IconSet" Label="Select an Icon" @bind-Value="SelectedIcon" SearchFunc="SelectIcon" Adornment="Adornment.Start" AdornmentIcon="@SelectedIcon?.Icon">
+    <ItemTemplate >
+        <MudIcon Icon="@context?.Icon" Color="Color.Default" Size="Size.Medium"></MudIcon>
+        <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+            @context?.Name
+        </MudText>
+    </ItemTemplate>
+</MudAutocomplete>
+
+@code {
+
+    [Parameter]
+    public string? IconName
+    {
+        get => _iconName;
+        set
+        {
+            if(_iconName == value) return;
+            _iconName = value;
+            IconNameChanged.InvokeAsync(_iconName);
+            _icons ??= GetMudBlazorIcons();
+            _selectedIcon ??= _icons?.FirstOrDefault(x => x.Name == _iconName);
+            
+            Icon = _selectedIcon?.Icon;
+            IconChanged.InvokeAsync(Icon);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> IconNameChanged { get; set; }
+
+    [Parameter]
+    public string? Icon { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> IconChanged { get; set; }
+
+    record IconSet(string Name, string Icon)
+    {
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
+    private IconSet? SelectedIcon
+    {
+        get => _selectedIcon;
+        set
+        {
+            _selectedIcon = value;
+            IconName = _selectedIcon?.Name;
+        }
+    }
+
+    private List<IconSet>? _icons;
+    private string? _iconName;
+    private IconSet? _selectedIcon;
+
+    protected override void OnInitialized()
+    {
+        _icons ??= GetMudBlazorIcons();
+    }
+
+    private List<IconSet> GetMudBlazorIcons()
+    {
+        
+        var iconFields = typeof(Icons.Material.Filled).GetFields();
+
+        return (from field in iconFields 
+                let icon = field.GetValue(null)?.ToString() 
+                where !string.IsNullOrEmpty(icon) 
+                select new IconSet(field.Name, icon))
+            .ToList();
+    }
+
+    private Task<IEnumerable<IconSet>> SelectIcon(string arg)
+    {
+        return 
+            Task.FromResult(string.IsNullOrEmpty(arg) 
+                ? _icons?.AsEnumerable() 
+                : _icons?.Where(x => x.Name.Contains(arg)).AsEnumerable()) ?? Task.FromResult(new List<IconSet>().AsEnumerable());
+    }
+
+}

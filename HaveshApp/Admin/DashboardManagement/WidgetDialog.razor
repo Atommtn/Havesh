@@ -1,0 +1,70 @@
+﻿@using Havesh.Model.Data.Dashboard
+@using HaveshApp.Admin.DashboardManagement.WidgetResolvers
+@using MudBlazor.Utilities
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Widget.Title" Label="Title"/>
+            </MudItem>
+            <MudItem md="6">
+                <WidgetResolverSelector @bind-TypeName="Widget.Type"></WidgetResolverSelector>
+            </MudItem>
+            <MudItem md="6">
+                <IconSelectorComponent @bind-IconName="Widget.IconName" @bind-Icon="Widget.Icon"></IconSelectorComponent>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Widget.IconColor" Label="Icon Color"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudNumericField @bind-Value="Widget.IconSize" Label="Icon Size" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Widget.Height" Label="Height (px,%)"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Widget.TitleClass" Label="Title Class" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="Widget.BreakPoints" Label="Break Points"/>
+            </MudItem>
+            <MudItem md="6">
+                <RoleSelectorComponent MultiSelection="true" @bind-SelectedText="Widget.BelongToRoles" ></RoleSelectorComponent>
+            </MudItem>
+
+        </MudGrid>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveWidgetClick">
+            Save
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+
+    [Parameter]
+    public Widget Widget { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance? DialogInstance { get; set; }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance?.Cancel();
+    }
+
+    private void SaveWidgetClick()
+    {
+        _dashboardProvider.UpdateWidget(Widget);
+        DialogInstance?.Close();
+    }
+
+}

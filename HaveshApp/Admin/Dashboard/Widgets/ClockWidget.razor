@@ -1,0 +1,33 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@implements IDisposable
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+<SmallWidgetContainer WidgetSetting="WidgetSetting">
+    @_time
+</SmallWidgetContainer>
+
+@code {
+
+    string _time = DateTime.Now.ToString("HH:mm:ss");
+    System.Timers.Timer? _timer;
+
+    protected override void OnInitialized()
+    {
+        _timer = new System.Timers.Timer(1000);
+        _timer.Elapsed += (sender, args) =>
+        {
+            _time = DateTime.Now.ToString("HH:mm:ss");
+            InvokeAsync(StateHasChanged);
+            
+        };
+        _timer.Start();
+
+        base.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+
+}

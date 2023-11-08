@@ -1,0 +1,16 @@
+﻿@using Havesh.Model.Data.Dashboard
+@inherits WidgetContainerBase
+
+<SmallWidget Title="@(WidgetSetting.Title ?? WidgetSetting.Widget.Title )"
+             Icon="@(WidgetSetting.Icon ?? WidgetSetting.Widget.Icon)"
+             IconColor="@(WidgetSetting.IconColor ?? WidgetSetting.Widget.IconColor)"
+             Height="@(WidgetSetting.Height ?? WidgetSetting.Widget.Height)"
+             IconSize="@(WidgetSetting.IconSize ?? WidgetSetting.Widget.IconSize)"
+             TitleClass="@(WidgetSetting.TitleClass ?? WidgetSetting.Widget.TitleClass)"
+             BreakPoints="@(WidgetSetting.BreakPoints ?? WidgetSetting.Widget.BreakPoints)">
+    @ChildContent
+</SmallWidget>
+@code {
+
+
+}

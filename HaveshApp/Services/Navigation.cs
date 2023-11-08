@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class Navigation : IDisposable
 {

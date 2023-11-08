@@ -1,0 +1,63 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+<AuthorizeView Roles="Admin">
+    <Authorized>
+
+        <MudGrid>
+
+            <SmallWidget Height="100px"
+                         Icon="@Icons.Material.Filled.Euro"
+                         Title="Total Income"
+                         Value="12,000"
+                         BreakPoints="xs=12,sm=6,md=3"/>
+
+            <SmallWidget Height="100px"
+                         Icon="@Icons.Material.Filled.Layers"
+                         Title="Total Stocke"
+                         Value="150,000"
+                         BreakPoints="xs=12,sm=6,md=3"/>
+
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Global Sales</MudText>
+                        <MudText Typo="Typo.h5">46,000</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                    <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Roentgen</MudText>
+                        <MudText Typo="Typo.h5">3,6</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" sm="8">
+                <MudPaper Class="pa-4" Style="height:300px;">
+                    Charts coming soon ish...
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudPaper Class="pa-4" Style="height:300px;">
+                    Charts coming soon ish...
+                </MudPaper>
+            </MudItem>
+
+
+        </MudGrid>
+
+
+
+    </Authorized>
+</AuthorizeView>
+@code {
+
+
+
+
+}

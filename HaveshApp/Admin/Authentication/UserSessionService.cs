@@ -1,7 +1,7 @@
 ﻿using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components.Authorization;
-using HaveshApp.Classes;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
+using HaveshApp.Classes.ExtensionMethods;
 
 namespace HaveshApp.Admin.Authentication;
 

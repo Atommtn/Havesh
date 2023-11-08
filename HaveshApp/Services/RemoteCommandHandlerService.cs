@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace HaveshApp.Services;
+namespace Havesh.Domain.Services;
 
 public class RemoteCommandHandlerService
 {

@@ -1,0 +1,44 @@
+﻿@page "/dashboard/{DashboardTemplateId:int}"
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@using HaveshApp.Admin.Dashboard.Widgets
+
+<MudGrid Class="mt-4">
+    @if (_ds is { DashboardWidgets.Count: > 0 })
+    {
+        @foreach (var ws in _ds
+                                                .DashboardWidgets
+                                                .OrderBy(x=>x.Order))
+        {
+          <WidgetRender WidgetSetting="ws"></WidgetRender>
+        }
+    }
+
+
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int DashboardTemplateId
+    {
+        get => _dashboardTemplateId;
+        set
+        {
+            _dashboardTemplateId = value;
+
+            if (DashboardTemplateId == 0 )
+                Console.Beep();
+
+            _ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User)
+                  ?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User);
+
+            StateHasChanged();
+        }
+    }
+
+    Dashboard? _ds;
+    private int _dashboardTemplateId;
+
+
+}

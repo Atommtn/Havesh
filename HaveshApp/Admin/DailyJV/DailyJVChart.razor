@@ -111,11 +111,11 @@
                 <MudSpacer/>
                 <br/>
             }
-            @if (FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.PrivateCalss).Data is {})
+            @if (FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.PrivateClass).Data is {})
             {
                 <MudText Typo="Typo.h4" Color="Color.Primary" GutterBottom="true">
                     جمع خصوصی:
-                    @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.PrivateCalss).Data.Sum().NumberToText(Language.Persian) تومان
+                    @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.PrivateClass).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
             }
             </MudCardContent>

@@ -1,0 +1,57 @@
+﻿@using Havesh.Model.Model
+
+<MudSelect T="User?" Label="کاربر" @bind-Value="User">
+    @if (AllowNull)
+    {
+        <MudSelectItem Value="@((User)null)">None</MudSelectItem>
+    }
+    @foreach (var user in _users)
+    {
+        <MudSelectItem Value="@user">@user (@string.Join(",", user.Roles))</MudSelectItem>
+    }
+</MudSelect>
+@code {
+
+    private List<User> _users;
+    private User? _user;
+    private Role? _role;
+
+    [Parameter]
+    public bool AllowNull { get; set; }
+
+    [Parameter]
+    public Role? Role
+    {
+        get => _role;
+        set
+        {
+            _role = value;
+            _users = _dataProvider.GetUsersInRole(_role);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<Role?> RoleChanged { get; set; }
+
+    [Parameter]
+    public User? User
+    {
+        get => _user;
+        set
+        {
+            if (_user == value) return;
+            _user = value;
+            UserChanged.InvokeAsync(_user);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<User> UserChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _users = _dataProvider.GetUsersInRole(Role);
+        base.OnInitialized();
+    }
+
+}

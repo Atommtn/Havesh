@@ -6,7 +6,7 @@ using HaveshApp.Admin;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Admin.Student;
 using HaveshApp.Managment.Session.Activity;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using static HaveshApp.Admin.Planning.CompleteTimeTablePage;
 
 namespace HaveshApp.Managment;
@@ -32,13 +32,15 @@ public partial class StudentListRollCallComponenets
 	public Dictionary<string, object> AdditionalAttributes { get; set; }
 
 	async Task<TableData<ShokouhPardisStudentClass>> ServerReload(TableState state)
-	{
-		return new TableData<ShokouhPardisStudentClass>
+    {
+        var list = StudentService.GetStudentsInTimeTable(TimeTableSession.TimeTable);
+		list.ForEach(x=>x.OrderNumber = list.IndexOf(x)+1);
+        return new TableData<ShokouhPardisStudentClass>
 		{
-			TotalItems = StudentService.GetStudentsInTimeTable(TimeTableSession.TimeTable).Count,
-			Items = StudentService.GetStudentsInTimeTable(TimeTableSession.TimeTable)
+			TotalItems = list.Count,
+			Items = list
 		};
-	}
+    }
 
 	private Dictionary<int, List<StudentSessionActivity>>? _stuActiv;
 	protected override void OnInitialized()

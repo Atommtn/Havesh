@@ -1,0 +1,25 @@
+﻿@inherits WidgetBase
+
+<ItemContainerWidget BreakPoints="@BreakPoints">
+    <MudCard Style="@($"height:{Height};")">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudStack Row="true">
+                    <MudIcon Icon="@Icon"
+                             Color="@(IconColor ?? Color.Info)"
+                             Class="mx-4"
+                             Style=@($"width:{IconSize}px; height:{IconSize}px;")></MudIcon>
+                    <MudText Typo="Typo.subtitle1" Class="@($"{TitleClass} mb-n1")">@Title</MudText>
+                </MudStack>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent Class="px-0">
+            @ChildContent
+        </MudCardContent>
+    </MudCard>
+</ItemContainerWidget>
+
+@code {
+
+
+}

@@ -1,4 +1,15 @@
-﻿<MudNavMenu>
+﻿@using Havesh.Model.Data.Dashboard
+<MudNavMenu>
+    @foreach (var dic in _userDashboardMenuItems)
+    {
+        <MudNavGroup Title="@dic.Key" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
+            @foreach (var dashboardT in dic.Value)
+            {
+                <MudNavLink Href="@($"/Dashboard/{dashboardT.Id}")" Match="NavLinkMatch.All">@dashboardT.Name</MudNavLink>
+            }
+        </MudNavGroup>
+    }
+
     <AuthorizeView Roles="Admin">
         <Authorized>
             @*<MudNavLink Href="/" Match="NavLinkMatch.All">Students Menu</MudNavLink>
@@ -20,6 +31,9 @@
 
             </MudNavGroup>
             <MudNavGroup Title="Definition" Icon="@Icons.Filled.AddModerator">
+
+                <MudNavLink Href="/ManageDaboards" Match="NavLinkMatch.Prefix">Dashboard Definition</MudNavLink>
+                <MudDivider/>
                 <MudNavLink Href="/TeacherDefinition" Match="NavLinkMatch.Prefix">Teacher Definition</MudNavLink>
                 <MudNavLink Href="/IntervalDefinition" Match="NavLinkMatch.Prefix">Interval Definition</MudNavLink>
                 <MudNavLink Href="/DaySesseionDefinition" Match="NavLinkMatch.Prefix">DaySession Definition</MudNavLink>
@@ -59,8 +73,21 @@
 
     <AuthorizeView Roles="Teacher">
         <Authorized>
-            <MudNavLink Href="/" Match="NavLinkMatch.All">Class List</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
 </MudNavMenu>
+
+@code
+{
+    Dictionary<string, List<DashboardTemplate>>? _userDashboardMenuItems = new ();
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _userDashboardMenuItems = _dashboardProvider.GetUserDashboardMenuItems(_userSession.User);
+            StateHasChanged();
+        }
+        base.OnAfterRender(firstRender);
+    }
+}

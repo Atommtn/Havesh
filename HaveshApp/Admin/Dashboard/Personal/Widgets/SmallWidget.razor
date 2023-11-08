@@ -1,0 +1,30 @@
+﻿@using Olive
+@using System.Linq
+@inherits WidgetBase
+
+<ItemContainerWidget BreakPoints="@BreakPoints">
+    <MudPaper Class="d-flex flex-row pt-6 pb-4" Style="@($"height:{Height};")">
+        <MudIcon Icon="@Icon" 
+                 Color="@(IconColor ?? Color.Info)" 
+                 Class="mx-4" 
+                 Style=@($"width:{IconSize}px; height:{IconSize}px;")></MudIcon>
+        <div>
+            <MudText Typo="Typo.subtitle1" Class="@($"{TitleClass} mb-n1")">@Title</MudText>
+            <MudText Typo="Typo.h6">
+                @if (@ChildContent is not null)
+                {
+                    @ChildContent
+                }
+                else
+                {
+                    @Value
+                }
+            </MudText>
+
+        </div>
+    </MudPaper>
+</ItemContainerWidget>
+
+@code {
+
+}

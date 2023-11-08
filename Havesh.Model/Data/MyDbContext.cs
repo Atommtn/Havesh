@@ -1,12 +1,20 @@
 ﻿using Havesh.Model.Data;
+using Havesh.Model.Data.Dashboard;
 using Havesh.Model.Model;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Havesh.Model.Model;
 
 public partial class MyDbContext : DbContext
 {
+
+    public virtual DbSet<DashboardTemplate> DashboardTemplates { get; set; } = null!;
+    public virtual DbSet<Dashboard> Dashboards { get; set; } = null!;
+    public virtual DbSet<Widget> Widgets { get; set; } = null!;
+    public virtual DbSet<DashboardTemplateWidget> DashboardTemplateWidgets { get; set; }
+    public virtual DbSet<DashboardWidgetSetting> DashboardWidgetSettings { get; set; } = null!;
     public virtual DbSet<User> Users { get; set; } = null!;
     public virtual DbSet<AdvanceRegistration> AdvanceRegistrations { get; set; } = null!;
     public virtual DbSet<Role> Roles { get; set; } = null!;
@@ -30,7 +38,7 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<LessonPlanSectionType> LessonPlanSectionTypes { get; set; } = null!;
     public virtual DbSet<LessonPlanSection> LessonPlanSections { get; set; } = null!;
-    public virtual DbSet<LessonPlanSectionItem> LessonPlanSecionItems { get; set; } = null!;
+    public virtual DbSet<LessonPlanSectionItem> LessonPlanSectionItems { get; set; } = null!;
 
     public virtual DbSet<TermSessionTemplateDate> TermSessionTemplateDates { get; set; } = null!;
     public virtual DbSet<TermSessionTemplate> TermSessionTemplates { get; set; } = null!;
@@ -45,7 +53,33 @@ public partial class MyDbContext : DbContext
         // Apply the filter condition to all queries for the entity
         /*modelBuilder.Entity<BranchBaseModel>().HasQueryFilter(
 		    (e => e.BCode != null && (!EnableGlobalFilter || e.BCode.Contains("01"))));*/
+        modelBuilder.Entity<DashboardTemplateWidget>()
+            .HasKey(dt => new { dt.DashboardTemplateId, dt.WidgetId });
 
+        modelBuilder.Entity<DashboardTemplateWidget>()
+            .HasOne(dt => dt.DashboardTemplate)
+            .WithMany(dt => dt.DashboardTemplateWidgets)
+            .HasForeignKey(dt => dt.DashboardTemplateId);
+
+        modelBuilder.Entity<DashboardTemplateWidget>()
+            .HasOne(dt => dt.Widget)
+            .WithMany(dt => dt.DashboardTemplateWidgets)
+            .HasForeignKey(dt => dt.WidgetId);
+        
+        //---------------------------------
+
+        modelBuilder.Entity<DashboardWidgetSetting>()
+            .HasKey(dt => new { dt.DashboardId, dt.WidgetId });
+
+        modelBuilder.Entity<DashboardWidgetSetting>()
+            .HasOne(dt => dt.Dashboard)
+            .WithMany(dt => dt.DashboardWidgets)
+            .HasForeignKey(dt => dt.DashboardId);
+
+        modelBuilder.Entity<DashboardWidgetSetting>()
+            .HasOne(dt => dt.Widget)
+            .WithMany(dt => dt.DashboardWidgets)
+            .HasForeignKey(dt => dt.WidgetId);
 
         ShokouhPardisTermClass.Setup(modelBuilder);
         ShokouhPardisSchedule.Setup(modelBuilder);

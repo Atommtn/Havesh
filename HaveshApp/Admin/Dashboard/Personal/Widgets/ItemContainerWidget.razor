@@ -1,0 +1,40 @@
+﻿@using Olive
+@using global::AdminDashboard.Server.Class.Extensions
+@if (BreakPoints is  null)
+{
+    @ChildContent
+}
+else
+{
+    <MudItem xs="@GetBR("xs")"
+             sm="@GetBR("sm")"
+             md="@GetBR("md")"
+             lg="@GetBR("lg")"
+             xl="@GetBR("xl")"
+             xxl="@GetBR("xxl")">
+
+        @ChildContent
+    </MudItem>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string? BreakPoints { get; set; }
+
+    readonly string[] Sections = { "xs", "sm", "md", "lg", "xl", "xxl" };
+
+    int GetBR(string section)
+    {
+        var sections = BreakPoints?.Split(',');
+        var value = $"{section.ToLower()}=";
+        var sec = Enumerable.FirstOrDefault(sections, x => x.StartsWith(value));
+        if (sec != null)
+            return sec.Replace(value, null).ToInt();
+
+        var indexOf = Sections.IndexOf(section) - 1;
+        return indexOf < 0 ? 12 : GetBR(Sections[indexOf]);
+    }
+}

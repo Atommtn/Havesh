@@ -1,7 +1,6 @@
 ﻿@page "/DailyJV"
 @layout PersianPagesLayout
 @using HaveshApp.Admin.DailyJV.Components
-@using HaveshApp.Services
 @using HaveshApp.Admin.Student
 @using System.Globalization
 @using DNTPersianUtils.Core
@@ -57,7 +56,7 @@
 
                         </MudStack>*@
                         <MudStack Class="pa-4" Row="true">
-                            <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateNext" aria-label="NextDay" OnClick='() => SetDay(1)'></MudIconButton>
+                            <MudIconButton Color="@Color.Primary" Icon="@Icons.Material.Filled.NavigateNext" aria-label="NextDay" OnClick='() => SetDay(1)'></MudIconButton>
                             <MudSpacer></MudSpacer>
                            @* @_userSession.LastJvDate
                             @_dailyJV.CurrentDate*@
@@ -68,7 +67,7 @@
                                            MaxDate="DateTime.Today"
                                            TitleDateFormat="dddd, dd MMMM" />
                             <MudSpacer></MudSpacer>
-                            <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateBefore" aria-label="BeforeDay" OnClick='() => SetDay(-1)'></MudIconButton>
+                            <MudIconButton Color="@Color.Primary" Icon="@Icons.Material.Filled.NavigateBefore" aria-label="BeforeDay" OnClick='() => SetDay(-1)'></MudIconButton>
                         </MudStack>
                     </MudPaper>
                     <MudStack>
@@ -148,7 +147,7 @@
 
 
         <MudStack Class="col-md-12">
-            <DailyJvRecordListComponent @ref="_dailyJVListComponent" SelectedDate="_dailyJV.CurrentDate">
+            <DailyJvRecordListComponent @ref="_dailyJVListComponent" @bind-SelectedDate="_dailyJV.CurrentDate">
 
             </DailyJvRecordListComponent>
         </MudStack>

@@ -2,7 +2,7 @@
 using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 using static MudBlazor.CategoryTypes;
 
 namespace HaveshApp.Admin.Planning;

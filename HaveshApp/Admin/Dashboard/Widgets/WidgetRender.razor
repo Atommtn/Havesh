@@ -1,0 +1,44 @@
+﻿@using Havesh.Model.Data.Dashboard
+
+
+@renderedComponent
+
+@code {
+
+    private RenderFragment renderedComponent;
+    private DashboardWidgetSetting _widgetSetting;
+
+    private async Task RenderComponent(Type? componentType, Dictionary<string,object> parameters)
+    {
+        if (componentType is null)
+            throw new Exception("Type is NULLLLLLLLL");
+
+        renderedComponent = builder =>
+        {
+            builder.OpenComponent(0, componentType);
+            builder.AddMultipleAttributes(1, parameters);
+            builder.CloseComponent();
+        };
+    }
+
+    [Parameter]
+    public DashboardWidgetSetting WidgetSetting
+    {
+        get => _widgetSetting;
+        set
+        {
+            _widgetSetting = value;
+            var type = Type.GetType(WidgetSetting.Widget.Type);
+            InvokeAsync(async () =>
+            {
+                await RenderComponent(type,new Dictionary<string, object>
+                {
+                        ["WidgetSetting"] = WidgetSetting
+                });
+
+            });
+        }
+    }
+
+
+}

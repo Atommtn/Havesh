@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using MudBlazor;
-using HaveshApp.Services;
+using Havesh.Domain.Services;
 
 namespace HaveshApp.Pages.SiteTransaction;
 
