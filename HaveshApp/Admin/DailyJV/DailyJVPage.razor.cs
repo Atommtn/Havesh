@@ -44,8 +44,8 @@ public partial class DailyJVPage
 
 	private bool IsOutOfIns
 	{
-		get { return _isOutOfIns; }
-		set
+		get => _isOutOfIns;
+        set
 		{
            
 			_isOutOfIns = value;

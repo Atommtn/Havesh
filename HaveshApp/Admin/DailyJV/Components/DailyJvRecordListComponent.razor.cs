@@ -18,7 +18,7 @@ namespace HaveshApp.Admin.DailyJV.Components;
 public partial class DailyJvRecordListComponent
 {
 	[Parameter]
-	public ShokouhPardisStudentClass Student { get; set; }
+	public ShokouhPardisStudentClass? Student { get; set; }
 	[Parameter]
 	public bool SearchTextDiasabled { get; set; }
         
@@ -43,11 +43,12 @@ public partial class DailyJvRecordListComponent
 			table?.ReloadServerData();
 		}
 	}
-	[Inject] IDialogService DialogService { get; set; }
+    [Parameter]
+    public EventCallback<DateTime?> SelectedDateChanged { get; set; }
+
+    [Inject] IDialogService DialogService { get; set; }
 	[Inject] ISnackbar Snackbar { get; set; }
         
-	[Parameter]
-	public EventCallback<DateTime?> SelectedDateChanged { get; set; }
 
 	[Inject] DataProviderService DataProvider { get; set; }
 
@@ -62,7 +63,7 @@ public partial class DailyJvRecordListComponent
 	{
 		int total;
 		List<ShokouhPardisDailyJv> pagedJvs;
-		if (Student is { })
+		if (Student is not null)
 		{
 			total = DataProvider.GetTotalDailyJv(Student.StudentClassId, selectedTerm.TermClassId);
 			pagedJvs = DataProvider

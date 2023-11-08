@@ -1,0 +1,14 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+<SmallWidgetContainer WidgetSetting="WidgetSetting">
+    @TeacherWidgetsService.CurrentTeacherTimetable.ClassRoom.ClassRoomName
+</SmallWidgetContainer>
+
+@code {
+    
+    [Inject]
+    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+
+
+}

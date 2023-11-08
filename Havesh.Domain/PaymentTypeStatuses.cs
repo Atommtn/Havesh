@@ -14,9 +14,10 @@ public class FeeForStatuses
 {
 	public const string TuitionAmount = "شهریه";
 	public const string Book="کتاب";
-	public const string PrivateCalss="خصوصی";
+	public const string PrivateClass="خصوصی";
 	public const string Placement="تعیین سطح";
 	public const string Final = "فاینال";
+	public const string Refund = "عودت وجه";
         
 
 }

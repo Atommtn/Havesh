@@ -14,7 +14,7 @@ public static class ResolverDiscovery
             .GetTypes();
 
         var resolverTypes = types
-            .Where(type => type.IsSubclassOf(typeof(WidgetResolver)))
+            .Where(type => type.IsSubclassOf(typeof(WidgetResolverBase)))
             .ToList();
 
         return resolverTypes;

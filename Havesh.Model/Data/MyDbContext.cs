@@ -15,7 +15,6 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<Widget> Widgets { get; set; } = null!;
     public virtual DbSet<DashboardTemplateWidget> DashboardTemplateWidgets { get; set; }
     public virtual DbSet<DashboardWidgetSetting> DashboardWidgetSettings { get; set; } = null!;
-
     public virtual DbSet<User> Users { get; set; } = null!;
     public virtual DbSet<AdvanceRegistration> AdvanceRegistrations { get; set; } = null!;
     public virtual DbSet<Role> Roles { get; set; } = null!;
@@ -66,6 +65,8 @@ public partial class MyDbContext : DbContext
             .HasOne(dt => dt.Widget)
             .WithMany(dt => dt.DashboardTemplateWidgets)
             .HasForeignKey(dt => dt.WidgetId);
+        
+        //---------------------------------
 
         modelBuilder.Entity<DashboardWidgetSetting>()
             .HasKey(dt => new { dt.DashboardId, dt.WidgetId });

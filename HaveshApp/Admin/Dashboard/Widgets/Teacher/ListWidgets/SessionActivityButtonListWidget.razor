@@ -1,0 +1,38 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Model
+@using HaveshApp.Admin.Definition.LessonPlan
+@using Olive
+
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+
+<LargWidgetContainer WidgetSetting="WidgetSetting">
+    <MudGrid>
+        @foreach (var act in TeacherWidgetsService.SessionActivities)
+        {
+            <MudItem md="6">
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Class" Variant="Variant.Outlined" FullWidth="true" Style="height:100px" OnClick="() => ClassSessionClick(act)">
+                    <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                        @act.ActivityTitle
+                    </MudText>
+                </MudButton>
+
+            </MudItem>
+        }
+
+    </MudGrid>
+
+
+
+</LargWidgetContainer>
+
+@code {
+
+    [Inject]
+    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+    
+    private void ClassSessionClick(SessionActivity sessionActivity)
+    {
+        _navigationManager.NavigateTo($"/RollCall/{TeacherWidgetsService.CurrentSession.ID}/{sessionActivity.SessionActivityID}");
+    }
+
+}

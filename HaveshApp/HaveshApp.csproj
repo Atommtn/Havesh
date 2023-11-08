@@ -65,17 +65,23 @@
     <TypeScriptCompile Include="wwwroot\imageOptimize\OptimizerService.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Admin\DashboardManagement\WidgetDialog.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="alb-http-to-https-redirection.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Admin\Dashboard\Class\" />
+    <Folder Include="Admin\Dashboard\Widgets\Admin\" />
+    <Folder Include="Admin\Dashboard\Widgets\Modiator\" />
+    <Folder Include="Admin\Dashboard\Widgets\Supervisor\" />
     <Folder Include="Admin\MemberShip\Model\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Admin\Dashboard\Personal\Widgets\ItemContainerWidget.razor" />
-    <None Include="Admin\Dashboard\Personal\Widgets\LargWidgetContainer.razor" />
+    <None Include="Admin\Dashboard\Personal\Widgets\LargWidget.razor" />
     <None Include="Admin\Dashboard\Personal\Widgets\SmallWidget.razor" />
   </ItemGroup>
 </Project>

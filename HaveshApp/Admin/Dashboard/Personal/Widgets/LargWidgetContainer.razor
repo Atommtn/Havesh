@@ -1,24 +1,17 @@
-﻿<ItemContainerWidget BreakPoints="@BreakPoints">
-    <MudCard Style="height:100%;">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h6">@Title</MudText>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent Class="px-0">
-            @ChildContent
-        </MudCardContent>
-    </MudCard>
-</ItemContainerWidget>
+﻿@using Havesh.Model.Data.Dashboard
+@inherits WidgetContainerBase
+
+<LargWidget Title="@(WidgetSetting.Title ?? WidgetSetting.Widget.Title )"
+             Icon="@(WidgetSetting.Icon ?? WidgetSetting.Widget.Icon)"
+             IconColor="@(WidgetSetting.IconColor ?? WidgetSetting.Widget.IconColor)"
+             Height="@(WidgetSetting.Height ?? WidgetSetting.Widget.Height)"
+             IconSize="@(WidgetSetting.IconSize ?? WidgetSetting.Widget.IconSize)"
+             TitleClass="@(WidgetSetting.TitleClass ?? WidgetSetting.Widget.TitleClass)"
+             BreakPoints="@(WidgetSetting.BreakPoints ?? WidgetSetting.Widget.BreakPoints)">
+    @ChildContent
+</LargWidget>
+
 @code {
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
-    [Parameter]
-    public string Title { get; set; }
-
-    [Parameter]
-    public string? BreakPoints { get; set; }
 
 }

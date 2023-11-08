@@ -4,10 +4,6 @@
 @using PersianDate.Standard
 @layout PersianPagesLayout
 
-<MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
-    جلسه @_sessionItem?.SessionNumber - @_sessionItem?.SessionDate.ToFa("D") - @_sessionItem?.SessionTime
-</MudText>
-
 <StudentListRollCallComponenets 
     RowStyle="true" 
     RowsPerPage="25" 

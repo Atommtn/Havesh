@@ -10,31 +10,31 @@
         <MudDivider Class="mb-2 mt-2"></MudDivider>
         <MudGrid Class="mt-3">
             <SmallWidget Height="100px"
-                                Icon="@Icons.Material.Filled.Person"
-                                Title="کلاس"
-                                IconColor="Color.Warning"
-                                Value="@model?.classTitle"
-                                BreakPoints="xs=12,sm=6,md=3" />
+                        Icon="@Icons.Material.Filled.Person"
+                        Title="کلاس"
+                        IconColor="Color.Warning"
+                        Value="@_model?.classTitle"
+                        BreakPoints="xs=12,sm=6,md=3" />
 
             <SmallWidget Height="100px"
-                                Icon="@Icons.Material.Filled.Numbers"
-                                Title="زبان آموزان کلاس"
-                                IconColor="Color.Info"
-                                Value="@model?.totalStudents.ToString()"
-                                BreakPoints="xs=12,sm=6,md=3" />
+                        Icon="@Icons.Material.Filled.Numbers"
+                        Title="زبان آموزان کلاس"
+                        IconColor="Color.Info"
+                        Value="@_model?.totalStudents.ToString()"
+                        BreakPoints="xs=12,sm=6,md=3" />
 
             <SmallWidget Height="100px"
-                                Icon="@Icons.Material.Filled.AdsClick"
-                                Title="سطح"
-                                IconColor="Color.Success"
-                                Value="@model?.levelTitle"
-                                BreakPoints="xs=12,sm=6,md=3" />
+                        Icon="@Icons.Material.Filled.AdsClick"
+                        Title="سطح"
+                        IconColor="Color.Success"
+                        Value="@_model?.levelTitle"
+                        BreakPoints="xs=12,sm=6,md=3" />
 
             <SmallWidget Height="100px"
-                                Icon="@Icons.Material.Filled.Info"
-                                Title="وضعیت"
-                                Value="@model?.status"
-                                BreakPoints="xs=12,sm=6,md=3" />
+                        Icon="@Icons.Material.Filled.Info"
+                        Title="وضعیت"
+                        Value="@_model?.status"
+                        BreakPoints="xs=12,sm=6,md=3" />
 
         </MudGrid>
         @if (_session is not null)
@@ -76,8 +76,6 @@
 
     TimeTableSession? _session;
 
-    [Inject]
-    UserSessionService UserSessionService { get; set; }
 
     protected override void OnInitialized()
     {
@@ -90,11 +88,11 @@
         }
 
         //_UserDo = ProviderService.GetLog();
-        var payload = UserSessionService.Payload;
+        var payload = _userSession.Payload;
         if (!(payload?.Roles?.Contains(AuthorizeRolesConstant.Teacher) ?? false))
             return;
 
-        var teacher = _dataProvider.GetTeacherByUserId(UserSessionService.User?.Id);
+        var teacher = _dataProvider.GetTeacherByUserId(_userSession.User?.Id);
         // TODO: Should be remark -> var startTime = DateTime.Now.TimeOfDay; //TimeSpan.Parse("11:15");// DateTime.Now;
         var startTime = DateTime.Now.TimeOfDay;
         var fromMinutes = TimeSpan.FromMinutes(3);
@@ -111,7 +109,11 @@
         if (_session != null)
             _activities = _dataProvider.GetSessionActivities(_session);
 
-        model = new DashboardModel(timetable?.StudentsCount,timetable?.ClassRoom.ClassRoomName , timetable?.Level.LevelName , _session?.SessionStatus);
+        _model = new DashboardModel(
+            timetable?.StudentsCount, 
+            timetable?.ClassRoom.ClassRoomName, 
+            timetable?.Level.LevelName, 
+            _session?.SessionStatus);
     }
 
     private void ClassSessionClick(TimeTableSession session, SessionActivity sessionActivity)
@@ -119,6 +121,6 @@
         _navigationManager.NavigateTo($"/RollCall/{session?.ID}/{sessionActivity.SessionActivityID}");
     }
 
-    DashboardModel? model = new DashboardModel(0 , "" , "" ,"");
+    DashboardModel? _model = new(0 , "" , "" ,"");
 
 }

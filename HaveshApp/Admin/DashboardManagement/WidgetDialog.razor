@@ -29,6 +29,10 @@
             <MudItem md="6">
                 <MudTextField @bind-Value="Widget.BreakPoints" Label="Break Points"/>
             </MudItem>
+            <MudItem md="6">
+                <RoleSelectorComponent MultiSelection="true" @bind-SelectedText="Widget.BelongToRoles" ></RoleSelectorComponent>
+            </MudItem>
+
         </MudGrid>
 
     </DialogContent>

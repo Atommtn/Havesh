@@ -26,15 +26,26 @@ public class DashboardService
         var widgets = DbContext.Widgets.ToList();
         return widgets;
     }
+    public List<Widget> GetRoleWidgets(Role role)
+    {
+        var widgets = DbContext.Widgets
+            .Where(x=> string.IsNullOrEmpty(x.BelongToRoles)   || x.BelongToRoles.Contains(role.Name) )
+            .ToList();
+        return widgets;
+    }
 
-    public List<DashboardTemplate> GetDashboardTemplates()
+    public List<DashboardTemplate>? GetDashboardTemplates()
     {
         var dashboardTemplates = DbContext
             .DashboardTemplates
+
+            .Include(x=>x.WidgetGroups)
+
             .Include(x => x.BelongsToRole)
 
             .Include(x => x.DashboardTemplateWidgets)
             .ThenInclude(x => x.Widget)
+
             .Include(x => x.DashboardTemplateWidgets)
             .ThenInclude(x => x.DashboardTemplate)
             .ToList();
@@ -65,19 +76,45 @@ public class DashboardService
         DbContext.SaveChanges();
     }
 
-    public Dashboard? GetUserDashboard(User? user)
+    public List<Dashboard?> GetUserDashboards(User? user)
     {
         if (user is null)
             return null;
-        var dashboard = DbContext.Dashboards.FirstOrDefault(x => x.User == user);
-        if (dashboard == null)
+        var dashboards = DbContext.Dashboards
+            .Include(x=>x.DashboardTemplate)
+            .Include(x=>x.DashboardWidgets)
+            .Where(x => x.User == user).ToList();
+        if (dashboards.Any()) return dashboards;
+
+        var _dts = GetDashboardTemplatesByRole(user.Roles);
+        foreach (var dashboardTemplate in _dts)
         {
-            var _dt = GetDashboardTemplateByRole(user.Roles);
+            var dashboard = GenerateUserDashboardByDashboardTemplateId(dashboardTemplate.Id , user);
+            dashboards.Add(dashboard);
         }
+        return dashboards;
+    }
+
+    public Dashboard? GetUserDashboardByTemplateId(User? user , int dtId)
+    {
+        if (user is null)
+            return null;
+        var dashboard = DbContext.Dashboards
+            .Include(x=>x.DashboardTemplate)
+            .ThenInclude(x=>x.DashboardTemplateWidgets)
+            .Include(x=>x.DashboardTemplate)
+            .ThenInclude(x=>x.BelongsToRole)
+            .Include(x=>x.DashboardTemplate)
+            .ThenInclude(x=>x.WidgetGroups)
+
+            .Include(x=>x.DashboardWidgets)
+            .FirstOrDefault(x => x.User == user && x.DashboardTemplate.Id == dtId);
+
         return dashboard;
     }
 
-    private List<DashboardTemplate>? GetDashboardTemplateByRole(List<Role> userRoles)
+
+    private List<DashboardTemplate>? GetDashboardTemplatesByRole(List<Role> userRoles)
     {
 
         foreach (var role in userRoles)
@@ -128,7 +165,7 @@ public class DashboardService
         return dashboard;
     }
 
-    public Dashboard GenerateUserDashboardByDashboardId(int dashboardTemplateId, User? user)
+    public Dashboard GenerateUserDashboardByDashboardTemplateId(int dashboardTemplateId, User? user)
     {
         if (user is null) return null;
         var dashboardTemplate = DbContext
@@ -160,5 +197,48 @@ public class DashboardService
         return dashboard;
 
 
+    }
+    public Dashboard GenerateUserEmptyDashboardByDashboardTemplateId(int dashboardTemplateId, User? user)
+    {
+        if (user is null) return null;
+        var dashboardTemplate = DbContext
+            .DashboardTemplates
+            .Include(x => x.DashboardTemplateWidgets)
+            .ThenInclude(x => x.Widget)
+            .First(x => x.Id == dashboardTemplateId);
+
+        var dashboard = new Dashboard
+        {
+            DashboardTemplate = dashboardTemplate,
+            User = user,
+        };
+
+        DbContext.Dashboards.Add(dashboard);
+
+        DbContext.SaveChanges();
+
+        return dashboard;
+
+
+    }
+
+    public void UpdateDashboardWidgetSetting(DashboardWidgetSetting context)
+    {
+        DbContext.DashboardWidgetSettings.Update(context);
+        DbContext.SaveChanges();
+    }
+
+    public void RemoveWidgetFromDashboard(Dashboard dashboard, DashboardTemplateWidget dtw)
+    {
+        var first = dashboard.DashboardWidgets.First(x=>x.DashboardId == dashboard.Id && x.WidgetId == dtw.WidgetId);
+        DbContext.DashboardWidgetSettings.Remove(first);
+        DbContext.SaveChanges();
+
+    }
+
+    public void UpdateDashboard(Dashboard dashboard)
+    {
+        DbContext.Dashboards.Update(dashboard);
+        DbContext.SaveChanges();
     }
 }

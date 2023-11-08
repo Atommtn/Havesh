@@ -11,6 +11,7 @@
         <MudTh>Icon</MudTh>
         <MudTh>Title</MudTh>
         <MudTh>Break Points</MudTh>
+        <MudTh>Role</MudTh>
         <MudTh>Type</MudTh>
         <MudTh></MudTh>
     </HeaderContent>
@@ -21,8 +22,9 @@
         </MudTd>
         <MudTd>@context.Title</MudTd>
         <MudTd>@context.BreakPoints</MudTd>
+        <MudTd>@context.BelongToRoles</MudTd>
         <MudTd>
-            @context.Type
+            @context.Type[(context.Type.LastIndexOf(".", StringComparison.Ordinal)+1)..]
         </MudTd>
         <MudTd>
             <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Info" Variant="Variant.Text" OnClick="()=>EditWidgetDefinitionClick(context)" />

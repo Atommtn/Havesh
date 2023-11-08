@@ -1,17 +1,10 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
-@inherits HaveshApp.Admin.DashboardManagement.WidgetResolver
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidget Title="@Widget?.Title" 
-             Icon="@Widget?.Icon" 
-             IconColor="@Widget?.IconColor" 
-             Height="@Widget?.Height" 
-             IconSize="@Widget?.IconSize" 
-             TitleClass="@Widget?.TitleClass" 
-             BreakPoints="@Widget?.BreakPoints"
-             >
+<SmallWidgetContainer WidgetSetting="WidgetSetting">
     @_userSession.FullName
-</SmallWidget>
+</SmallWidgetContainer>
 
 @code {
 

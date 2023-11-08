@@ -1,0 +1,15 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@using HaveshApp.Classes
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+<SmallWidgetContainer WidgetSetting="WidgetSetting">
+    @TeacherWidgetsService.CurrentSession.SessionNumber از @TeacherWidgetsService.CurrentTeacherTimetable.Sessions.Count(x=>x.SessionStatus != SessionStatuses.Canceled)
+</SmallWidgetContainer>
+
+@code {
+    
+    [Inject]
+    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+
+
+}

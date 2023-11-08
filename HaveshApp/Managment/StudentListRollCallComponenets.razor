@@ -5,58 +5,45 @@
 @inherits HaveshApp.Classes.SizeSupportComponentBase
 
 <MudContainer Style="@($"max-height: {BrowserHeight - 140}px;overflow-y:scroll; direction:RTL")">
-    <MudText Typo="Typo.h5" Color="Color.Default" GutterBottom="true">
-        جلسه @TimeTableSession?.SessionNumber - @TimeTableSession?.SessionDate.ToFa("D") - @TimeTableSession?.SessionTime
-    </MudText>
+    <MudPaper Outlined="true" Elevation="3" Class="p-3 m-3">
+            <MudText Typo="Typo.h5" Color="Color.Info" GutterBottom="true" Class="p-2">
+                @TimeTableSession.TimeTable.Level.LevelName
+            </MudText>
+            <MudText Typo="Typo.h6" Color="Color.Warning" GutterBottom="true" Class="p-2">
+                جلسه @TimeTableSession?.SessionNumber - @TimeTableSession?.SessionDate.ToFa("D") - @TimeTableSession?.SessionTime
+            </MudText>
+    </MudPaper>
+
+    <MudPaper Outlined="true" Elevation="3" Class="p-3 m-3">
+        <MudStack Row="true">
+            <MudIcon Icon="@SessionActivity.Icon" Color="@(SessionActivity.IconColor ?? Color.Info)" Size="Size.Large"></MudIcon>
+            <MudText Typo="Typo.h5" Color="@(SessionActivity.IconColor ?? Color.Info)" GutterBottom="true">
+                @SessionActivity.ActivityTitle
+            </MudText>
+
+            <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                @SessionActivity.Description
+            </MudText>
+        </MudStack>
+    </MudPaper>
 
     <MudTable @ref="table"
-              @attributes="@AdditionalAttributes"
+    @attributes="@AdditionalAttributes"
               RowStyleFunc="RowStyleFunc"
               Breakpoint="Breakpoint.None"
               ServerData="ServerReload"
               Style="background-color:#3c4043;">
-        <ToolBarContent>
-
-            <MudAlert Severity="Severity.Warning" Icon="@Icons.Material.Filled.Subtitles" ContentAlignment="HorizontalAlignment.Left">
-                @TimeTableSession?.TimeTable?.Title
-
-            </MudAlert>
-
-            <MudAlert Severity="Severity.Error" Icon="@Icons.Material.Filled.LocalLibrary" ContentAlignment="HorizontalAlignment.Left">
-                @TimeTableSession?.TimeTable?.Level?.LevelName
-
-            </MudAlert>
-
-            <MudAlert Severity="Severity.Normal" Icon="@Icons.Material.Filled.Room" ContentAlignment="HorizontalAlignment.Left">
-                @TimeTableSession?.TimeTable?.ClassRoom?.ClassRoomName
-
-            </MudAlert>
-            <MudAlert Severity="Severity.Success" icon="@Icons.Material.Filled.PersonPin" ContentAlignment="HorizontalAlignment.Left">
-                @TimeTableSession?.TimeTable?.Teacher?.FullName
-
-            </MudAlert>
-
-
-        </ToolBarContent>
-        <HeaderContent>
-
-            <MudTh>نام</MudTh>
-            <MudTh>نام خانوادگی</MudTh>
-
-
-            <MudTh></MudTh>
-
-        </HeaderContent>
         <RowTemplate Context="student">
 
+            <MudTd>@student.OrderNumber</MudTd>
             <MudTd>@student.StudentName</MudTd>
             <MudTd>@student.StudentFamily</MudTd>
 
             <MudTd>
                 @if (_stuActiv != null &&
-                     _stuActiv.TryGetValue(student.StudentClassId, out var xx) &&
-                     xx.Any(x => x.ActivityFk == SessionActivity.SessionActivityID &&
-                                 x.ActivityDeletedDateTime == null))
+                _stuActiv.TryGetValue(student.StudentClassId, out var xx) &&
+                xx.Any(x => x.ActivityFk == SessionActivity.SessionActivityID &&
+                x.ActivityDeletedDateTime == null))
                 {
                     @foreach (var sac in xx.Where(x => x.ActivityFk == SessionActivity.SessionActivityID && x.ActivityDeletedDateTime == null))
                     {
@@ -64,7 +51,7 @@
                             @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
                         </MudChip>
 
-                        <DependentSessionActivityItemComponent Student="student" SessionActivity="SessionActivity" AllStudentSessionActivities="xx" StudentSessionActivity="sac" ActivityExec="Exec"/>
+                        <DependentSessionActivityItemComponent Student="student" SessionActivity="SessionActivity" AllStudentSessionActivities="xx" StudentSessionActivity="sac" ActivityExec="Exec" />
                     }
                     @if (SessionActivity.ValueOptionsCanMultiple is true)
                     {

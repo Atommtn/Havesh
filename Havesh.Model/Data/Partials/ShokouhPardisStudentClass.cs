@@ -22,5 +22,6 @@ public partial class ShokouhPardisStudentClass
     [NotMapped]
     public string Tag { get; set; }
     [NotMapped] public string FullName => StudentName + " " + StudentFamily;
+    [NotMapped] public int OrderNumber { get; set; }
 }
 

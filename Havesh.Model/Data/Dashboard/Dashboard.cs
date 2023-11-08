@@ -18,18 +18,23 @@ namespace Havesh.Model.Data.Dashboard
         public Role BelongsToRole { get; set; }
 
         public List<DashboardTemplateWidget>? DashboardTemplateWidgets { get; set; }
+        public List<WidgetGroup>? WidgetGroups { get; set; }
     }
 
     public class DashboardTemplateWidget
     {
-        [Key,Column(Order = 1)]
+        [Key, Column(Order = 1)]
         public int DashboardTemplateId { get; set; }
-        [Key , Column(Order = 2)]
+        [Key, Column(Order = 2)]
         public int WidgetId { get; set; }
 
         // Navigation properties to represent the relationship
         public DashboardTemplate DashboardTemplate { get; set; }
+        public WidgetGroup? WidgetGroup { get; set; }
         public Widget Widget { get; set; }
+
+        [NotMapped]
+        public bool CanAdd { get; set; }
     }
 
     public class Dashboard
@@ -44,21 +49,74 @@ namespace Havesh.Model.Data.Dashboard
 
     public class DashboardWidgetSetting
     {
+        private string? _title;
+        private string? _titleClass;
+        private string? _height;
+        private string? _iconName;
+        private string? _icon;
+        private int? _iconSize;
+        private string? _breakPoints;
+        private Color? _iconColor;
+
         [Key, Column(Order = 1)]
         public int DashboardId { get; set; }
         [Key, Column(Order = 2)]
         public int WidgetId { get; set; }
 
         public Dashboard Dashboard { get; set; }
+        public WidgetGroup? WidgetGroup { get; set; }
         public Widget Widget { get; set; }
 
         public int Order { get; set; }
-        public string? Title { get; set; }
-        public string? TitleClass { get; set; }
-        public string? Height { get; set; }
-        public string? Icon { get; set; }
-        public int? IconSize { get; set; }
-        public string? BreakPoints { get; set; }
+
+        public string? Title
+        {
+            get => _title ?? Widget.Title;
+            set => _title = value;
+        }
+
+        public string? TitleClass
+        {
+            get => _titleClass ?? Widget.TitleClass;
+            set => _titleClass = value;
+        }
+
+        public string? Height
+        {
+            get => _height ?? Widget.Height;
+            set => _height = value;
+        }
+
+        public string? IconName
+        {
+            get => _iconName ?? Widget.IconName;
+            set => _iconName = value;
+        }
+
+        public Color? IconColor
+        {
+            get => _iconColor ?? Widget.IconColor;
+            set => _iconColor = value;
+        }
+
+        public string? Icon
+        {
+            get => _icon ?? Widget.Icon;
+            set => _icon = value;
+        }
+
+        public int? IconSize
+        {
+            get => _iconSize ?? Widget.IconSize;
+            set => _iconSize = value;
+        }
+
+        public string? BreakPoints
+        {
+            get => _breakPoints ?? Widget.BreakPoints;
+            set => _breakPoints = value;
+        }
+
         public bool? Hidden { get; set; }
     }
 
@@ -81,6 +139,31 @@ namespace Havesh.Model.Data.Dashboard
         public List<DashboardTemplateWidget>? DashboardTemplateWidgets { get; set; }
 
         public List<DashboardWidgetSetting>? DashboardWidgets { get; set; }
+        public string? BelongToRoles { get; set; }
 
+    }
+
+
+    public class WidgetGroup
+    {
+        public int Id { get; set; }
+        public int Order { get; set; }
+        public string Title { get; set; }
+
+        public Role BelongToRole { get; set; }
+
+        public string? IconName { get; set; }
+        public string? Icon { get; set; }
+        public Color? IconColor { get; set; } = Color.Default;
+        public int? IconSize { get; set; } = 54;
+
+        public GroupTypeEnum GroupType { get; set; }
+    }
+
+    public enum GroupTypeEnum
+    {
+        None,
+        HeaderLine,
+        Border
     }
 }

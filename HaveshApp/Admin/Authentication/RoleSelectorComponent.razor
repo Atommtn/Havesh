@@ -1,5 +1,15 @@
 ﻿@using Havesh.Model.Model
-<MudSelect Text="Role" @bind-Value="Role">
+<MudSelect T="Role"
+           Label="Roles"
+           @bind-Value="SelectedRole"
+           @bind-Text="SelectedText"
+           @bind-SelectedValues="SelectedValues"
+           MultiSelection="MultiSelection">
+
+    @*@if (AllowNull)
+    {
+        <MudSelectItem Value="@((Role)null)">None</MudSelectItem>
+    }*@
     @foreach (var role in _roles)
     {
         <MudSelectItem Value="role">@role.Name</MudSelectItem>
@@ -7,28 +17,61 @@
 </MudSelect>
 
 @code {
-    private List<Role> _roles;
-    private Role? _role;
+
+    private List<Role>? _roles;
+    private Role? _selectedRole;
+    private List<Role> _selectedRoles;
+    private string? _selectedText;
 
     protected override void OnInitialized()
     {
-        _roles = _dataProvider.GetRoles();
+        _roles ??= _dataProvider.GetRoles();
         base.OnInitialized();
     }
 
     [Parameter]
-    public Role? Role
+    public bool MultiSelection { get; set; }
+
+    [Parameter]
+    public bool AllowNull { get; set; }
+
+    [Parameter]
+    public Role? SelectedRole
     {
-        get => _role;
+        get => _selectedRole;
         set
         {
-            if (_role == value) return;
-            _role = value;
-            RoleChanged?.InvokeAsync(_role);
+            if (_selectedRole == value) return;
+            _selectedRole = value;
+            SelectedRoleChanged?.InvokeAsync(_selectedRole);
 
         }
     }
 
     [Parameter]
-    public EventCallback<Role>? RoleChanged { get; set; }
+    public EventCallback<Role>? SelectedRoleChanged { get; set; }
+
+    [Parameter]
+    public string? SelectedText
+    {
+        get => _selectedText;
+        set
+        {
+            if(_selectedText == value) return;
+            _selectedText = value;
+            SelectedTextChanged?.InvokeAsync(_selectedText);
+            if(string.IsNullOrEmpty(_selectedText) ) return;
+
+            _roles ??= _dataProvider.GetRoles();
+
+            SelectedValues = _roles.Where(x => _selectedText.Contains(x.Name)).ToList();
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string?>? SelectedTextChanged { get; set; }
+
+    private IEnumerable<Role> SelectedValues { get; set; }
+
+
 }

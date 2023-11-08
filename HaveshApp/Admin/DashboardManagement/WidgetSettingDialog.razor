@@ -1,0 +1,67 @@
+﻿@using Havesh.Model.Data.Dashboard
+@using HaveshApp.Admin.DashboardManagement.WidgetResolvers
+@using MudBlazor.Utilities
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid>
+            <MudItem md="6">
+                <MudNumericField @bind-Value="@WidgetSetting.Order" Label="Order"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="@WidgetSetting.Title" Label="Title"/>
+            </MudItem>
+            <MudItem md="6">
+                <IconSelectorComponent @bind-IconName="WidgetSetting.IconName" @bind-Icon="WidgetSetting.Icon"></IconSelectorComponent>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="WidgetSetting.IconColor" Label="Icon Color"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudNumericField @bind-Value="WidgetSetting.IconSize" Label="Icon Size" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="WidgetSetting.Height" Label="Height (px,%)"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="WidgetSetting.TitleClass" Label="Title Class" />
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="WidgetSetting.BreakPoints" Label="Break Points"/>
+            </MudItem>
+
+        </MudGrid>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveWidgetClick">
+            Save
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+
+    [Parameter]
+    public DashboardWidgetSetting WidgetSetting { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance? DialogInstance { get; set; }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance?.Cancel();
+    }
+
+    private void SaveWidgetClick()
+    {
+        _dashboardProvider.UpdateDashboardWidgetSetting(WidgetSetting);
+        DialogInstance?.Close();
+    }
+
+}

@@ -341,11 +341,11 @@ public class DataProviderService
             .Include(x => x.Level)
             .Where(x =>
                 x.TermId == term.TermClassId)
-            .OrderBy(x=>x.Level.LevelName)
+            .OrderBy(x => x.Level.LevelName)
             .ToList();
     }
 
-    
+
     public void SaveDailyJV(ShokouhPardisDailyJv dailyJv)
     {
         //_financialService.ApplyDailyJv(dailyJv);
@@ -417,12 +417,15 @@ public class DataProviderService
     }
 
 
-    public ShokouhPardisTermClass? GetTermsInRangeToday()
+    public ShokouhPardisTermClass? GetTermsInRangeToday(DateTime? defDate = null)
     {
         //dateToCheck >= startDate && dateToCheck < endDate;
+        var dt = defDate ?? DateTime.Today;
+
         var term = DbContext.ShokouhPardisTermClasses.AsQueryable();
-        return term.FirstOrDefault(x => x.StartDate <= DateTime.Today &&
-                                        x.EndDate >= DateTime.Today);
+        var termClass = term.FirstOrDefault(x => x.StartDate <= dt &&
+                                                              x.EndDate >= dt);
+        return termClass;
     }
 
     public Dictionary<int, int> GetTimeTableStudentsCount(ShokouhPardisTermClass term)
@@ -457,7 +460,7 @@ public class DataProviderService
     {
         var tableStudent = DbContext.ShokouhPardisTimeTableStudents
             .Include(x => x.TimeTable)
-            .ThenInclude(x=>x.Term)
+            .ThenInclude(x => x.Term)
             .FirstOrDefault(x => x.TimeTable.TermId == term.TermClassId
                                  && x.StudentId == student.StudentClassId);
         return tableStudent;
@@ -614,19 +617,21 @@ public class DataProviderService
     {
         var queryable = DbContext.ShokouhPardisDailyJvs
             .Include(x => x.Student)
-            .Where(x => x.CurrentDate >= selDate.Value.Date
+            .Where(x => selDate != null
+                        && x.CurrentDate >= selDate.Value.Date
                         && x.CurrentDate <= selDate.Value.Date.AddDays(1))
             .AsQueryable();
         if (searchText is not null)
         {
-            queryable = queryable.Where(x => x.Student.StudentName.Contains(searchText) ||
-                                             x.Student.StudentFamily.Contains(searchText) ||
-                                             x.PaymentType.Contains(searchText) ||
-                                             x.BillNo.ToString().Contains(searchText) ||
-                                             x.Fee.ToString().Contains(searchText) ||
-                                             x.FeeFor.Contains(searchText) ||
-                                             x.DailyJvid.ToString().Contains(searchText) ||
-                                             x.Description.Contains(searchText));
+            queryable = queryable.Where(x => x.Student != null && (x.Student.StudentName.Contains(searchText) ||
+                x.Student.StudentFamily.Contains(searchText) ||
+                (x.PaymentType != null && x.PaymentType.Contains(searchText)) ||
+                (x.BillNo != null && x.BillNo.ToString()!.Contains(searchText)) ||
+                x.Fee.ToString().Contains(searchText) ||
+                (x.FeeFor != null && x.FeeFor.Contains(searchText)) ||
+                 x.DailyJvid.ToString().Contains(searchText) ||
+                (!string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == Convert.ToInt32(searchText)) ||
+                 (x.Description != null && x.Description.Contains(searchText))));
         }
 
         var list = queryable.Skip(page * size).Take(size).ToList();
@@ -643,14 +648,15 @@ public class DataProviderService
             .AsQueryable();
         if (searchText is not null)
         {
-            queryable = queryable.Where(x => x.Student.StudentName.Contains(searchText) ||
-                                             x.Student.StudentFamily.Contains(searchText) ||
-                                             x.PaymentType.Contains(searchText) ||
-                                             x.BillNo.ToString().Contains(searchText) ||
-                                             x.Fee.ToString().Contains(searchText) ||
-                                             x.FeeFor.Contains(searchText) ||
-                                             x.DailyJvid.ToString().Contains(searchText) ||
-                                             x.Description.Contains(searchText));
+            queryable = queryable.Where(x => x.Student != null && (x.Student.StudentName.Contains(searchText) ||
+                                                                   x.Student.StudentFamily.Contains(searchText) ||
+                                                                   (x.PaymentType != null && x.PaymentType.Contains(searchText)) ||
+                                                                   (x.BillNo != null && x.BillNo.ToString()!.Contains(searchText)) ||
+                                                                   x.Fee.ToString().Contains(searchText) ||
+                                                                   (x.FeeFor != null && x.FeeFor.Contains(searchText)) ||
+                                                                   x.DailyJvid.ToString().Contains(searchText) ||
+                                                                   (!string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == Convert.ToInt32(searchText)) ||
+                                                                   (x.Description != null && x.Description.Contains(searchText))));
         }
 
         var list = queryable.Skip(page * size).Take(size).ToList();
@@ -1456,13 +1462,23 @@ public class DataProviderService
         if (userName.IsEmpty()) return null;
         return DbContext
             .Users
-            .Include(x=>x.Roles)
+            .Include(x => x.Roles)
             .FirstOrDefault(x => x.UserName == userName);
     }
 
     public User GetUserByUseId(int userId)
     {
         return DbContext.Users.First(x => x.Id == userId);
+    }
+    public List<User> GetUsersInRole(Role? role = null)
+    {
+        if (role is null)
+            return DbContext.Users.ToList();
+
+        return DbContext.Users
+            .Include(x => x.Roles)
+            .Where(x => x.Roles.Contains(role))
+            .ToList();
     }
 
     public Role? GetRoleByName(string roleName)
@@ -1471,7 +1487,7 @@ public class DataProviderService
         return firstOrDefault;
     }
 
-    
+
     public User? CheckUserLogin(string userName, string password)
     {
         // Log.Information("THIS IS SAMPLE of CHECKING USER LOG");
@@ -1579,16 +1595,16 @@ public class DataProviderService
     public LessonPlan? GetLessonPlan(int sessionNumber, int levelId)
     {
         return DbContext.LessonPlans.
-            Include(x=>x.Sections)
-            .ThenInclude(x=>x.Items)
-            .Include(x=>x.Sections)
-            .ThenInclude(x=>x.SectionType)
+            Include(x => x.Sections)
+            .ThenInclude(x => x.Items)
+            .Include(x => x.Sections)
+            .ThenInclude(x => x.SectionType)
             .FirstOrDefault(x => x.SessionNumber == sessionNumber && x.LevelFk == levelId);
     }
-    public List<LessonPlan> GetLessonPlan( int levelID)
+    public List<LessonPlan> GetLessonPlan(int levelID)
     {
         return DbContext.LessonPlans
-            .Where(x =>x.LevelFk == levelID)
+            .Where(x => x.LevelFk == levelID)
             .ToList();
     }
 
@@ -1629,8 +1645,7 @@ public class DataProviderService
         DbContext.SaveChanges();
     }
 
-    public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time,
-        TimeSpan offset)
+    public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time,TimeSpan offset)
     {
         //throw new NotImplementedException();
         var interval = DbContext.ShokouhPardisIntervals.FirstOrDefault(x =>
@@ -1657,13 +1672,17 @@ public class DataProviderService
         return weekDay;
     }
 
-    public ShokouhPardisTimeTable? GetTeacherTimeTable(ShokouhPardisTermClass term, ShokouhPardisTeacherClass teacher,
-        ShokouhPardisWeekDay weekday, ShokouhPardisInterval interval)
+    public ShokouhPardisTimeTable? GetTeacherTimeTable(ShokouhPardisTermClass term,
+        ShokouhPardisTeacherClass teacher,
+        ShokouhPardisWeekDay weekday,
+        ShokouhPardisInterval interval)
     {
-        var tt = DbContext.ShokouhPardisTimeTables
-            // .Include(x=>x.Schedule)
-            // .ThenInclude(x=>x.Programs)
-            // .ThenInclude(x=>x.DaySession)
+        var tt = DbContext
+            .ShokouhPardisTimeTables
+            .Include(x=>x.Schedule)
+            .ThenInclude(x=>x.Programs)
+            .ThenInclude(x=>x.DaySession)
+            .ThenInclude(x=>x.Interval)
             .FirstOrDefault(x =>
                 x.TermId == term.TermClassId &&
                 x.TeacherId == teacher.TeacherClassId &&
@@ -1877,7 +1896,7 @@ public class DataProviderService
 
     public void ArchivePreRegister(List<ShokouhPardisStudentClass> selectedStudents)
     {
-        var studentIds = selectedStudents.Select(x=>x.StudentClassId).ToArray();
+        var studentIds = selectedStudents.Select(x => x.StudentClassId).ToArray();
 
         var registrations = DbContext.PreRegistrations
             .Where(x => studentIds.Contains(x.StudentFk)).ToList();
@@ -1889,10 +1908,10 @@ public class DataProviderService
 
     public void DailyJvAssignToTimeTable(ShokouhPardisTimeTable tt, List<ShokouhPardisStudentClass> selectedStudents)
     {
-        var studentsIds = selectedStudents.Select(x=>x.StudentClassId).ToArray();
+        var studentsIds = selectedStudents.Select(x => x.StudentClassId).ToArray();
         var preRegistrations = DbContext.PreRegistrations.Where(x => studentsIds.Contains(x.StudentFk)).ToList();
         var dailyJvIds = preRegistrations.Select(x => x.DailyJVFk).ToArray();
-        var shokouhPardisDailyJvs = DbContext.ShokouhPardisDailyJvs.Where(x=> dailyJvIds.Contains(x.DailyJvid)).ToArray();
+        var shokouhPardisDailyJvs = DbContext.ShokouhPardisDailyJvs.Where(x => dailyJvIds.Contains(x.DailyJvid)).ToArray();
         foreach (var x in shokouhPardisDailyJvs)
         {
             x.TimeTableFk = tt.TimeTableId;
@@ -1903,9 +1922,9 @@ public class DataProviderService
 
     public void SetActivityDeleteTime(StudentSessionActivity sac)
     {
-	    sac.ActivityDeletedDateTime = DateTime.Now;
-	    DbContext.Update(sac);
-	    DbContext.SaveChanges();
+        sac.ActivityDeletedDateTime = DateTime.Now;
+        DbContext.Update(sac);
+        DbContext.SaveChanges();
     }
 
     public List<LessonPlanSection>? GetLessonPlanSection(LessonPlan lessonPlan)
@@ -1913,7 +1932,7 @@ public class DataProviderService
         if (lessonPlan is null)
             return null;
         return DbContext.LessonPlanSections
-            .Include(x=>x.SectionType)
+            .Include(x => x.SectionType)
             .Where(
             x => x.LessonPlanFk == lessonPlan.LessonPlanId).ToList();
     }
@@ -1922,7 +1941,7 @@ public class DataProviderService
     {
         return DbContext.LessonPlanSectionItems.Where(
             x => x.LessonPlanSectionFk == section.Id)
-            .OrderBy(x=>x.Order)
+            .OrderBy(x => x.Order)
             .ToList();
     }
 
@@ -1943,22 +1962,22 @@ public class DataProviderService
         return DbContext.ShokouhPardisLevelClasses
             .Where(level => !DbContext.ShokouhPardisLevelBookPrices.Any(price => price.LevelId == level.LevelClassId & price.TermId == term.TermClassId))
             .ToList();
-        
+
     }
-   
+
     public List<ChartSeries> GetDailyJvSeriesPaymentType(DateTime dateFrom, DateTime dateTo)
     {
-       
-            var paymentSummaries = DbContext.ShokouhPardisDailyJvs
-            .Where(p => p.CurrentDate >= dateFrom && p.CurrentDate <= dateTo)
-            .GroupBy(p => new { p.CurrentDate, p.PaymentType })
-            .Select(g => new PaymentSummary
-            {
-                Day = g.Key.CurrentDate,
-                PaymentType = g.Key.PaymentType,
-                TotalFee = g.Sum(p => p.Fee)
-            })
-            .ToList();
+
+        var paymentSummaries = DbContext.ShokouhPardisDailyJvs
+        .Where(p => p.CurrentDate >= dateFrom && p.CurrentDate <= dateTo)
+        .GroupBy(p => new { p.CurrentDate, p.PaymentType })
+        .Select(g => new PaymentSummary
+        {
+            Day = g.Key.CurrentDate,
+            PaymentType = g.Key.PaymentType,
+            TotalFee = g.Sum(p => p.Fee)
+        })
+        .ToList();
 
         var uniquePaymentTypes = paymentSummaries.Select(p => p.PaymentType).Distinct().ToList();
 
@@ -2003,7 +2022,7 @@ public class DataProviderService
             })
             .ToList();
         List<string> uniqueFeeForTypes = paymentSummaries.Select(p => p.FeeFor).Distinct().ToList();
-       
+
         var chartSeriesList = new List<ChartSeries>();
 
         foreach (var feeForType in uniqueFeeForTypes)
@@ -2034,12 +2053,12 @@ public class DataProviderService
 
     public List<ShokouhPardisTimeTable> GetStudentHistory(ShokouhPardisStudentClass student)
     {
-        return  DbContext.ShokouhPardisTimeTableStudents
-            .Include(x=>x.TimeTable)
+        return DbContext.ShokouhPardisTimeTableStudents
+            .Include(x => x.TimeTable)
             .ThenInclude(x => x.Term)
             .ThenInclude(x => x.Year)
             .ThenInclude(x => x.Terms)
-           
+
             .Include(x => x.TimeTable)
             .ThenInclude(x => x.Schedule)
             .ThenInclude(x => x.Programs)
@@ -2051,7 +2070,7 @@ public class DataProviderService
             .ThenInclude(x => x.Programs)
             .ThenInclude(x => x.DaySession)
             .ThenInclude(x => x.WeekDay)
-            
+
             .Include(x => x.TimeTable)
             .ThenInclude(x => x.Level)
 
@@ -2060,14 +2079,14 @@ public class DataProviderService
             .Include(x => x.TimeTable)
             .ThenInclude(x => x.Teacher)
 
-            .Where(x=>x.StudentId == student.StudentClassId)
-            .Select(x=>x.TimeTable).ToList();
+            .Where(x => x.StudentId == student.StudentClassId)
+            .Select(x => x.TimeTable).ToList();
     }
 
     public void StudentMove(ShokouhPardisTimeTable timeTableOrig, ShokouhPardisTimeTable TimeTabelNew, ShokouhPardisStudentClass student)
     {
         //add New
-        var FindTimeTableStudent= DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault(x=>x.TimeTableId == timeTableOrig.TimeTableId &&
+        var FindTimeTableStudent = DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault(x => x.TimeTableId == timeTableOrig.TimeTableId &&
             x.StudentId == student.StudentClassId);
         if (FindTimeTableStudent != null)
         {
@@ -2081,14 +2100,14 @@ public class DataProviderService
     public void RegisterAdvanceUser(AdvanceRegistration advanceRegistration)
     {
 
-	    DbContext.AdvanceRegistrations.Add(advanceRegistration);
-	    DbContext.SaveChanges();
+        DbContext.AdvanceRegistrations.Add(advanceRegistration);
+        DbContext.SaveChanges();
 
     }
 
     public void InactiveUser(string userName)
     {
-        var user = DbContext.Users.FirstOrDefault(x=>x.UserName == userName);
+        var user = DbContext.Users.FirstOrDefault(x => x.UserName == userName);
         if (user is null) return;
 
         user.IsActive = false;
@@ -2127,4 +2146,3 @@ public class DataProviderService
     }
 }
 
-  

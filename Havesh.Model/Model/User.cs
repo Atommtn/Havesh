@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Havesh.Model.Data;
+using Havesh.Model.Data.Dashboard;
 using Olive;
 
 namespace Havesh.Model.Model;
@@ -34,7 +35,8 @@ public class User : BaseEntity
 
     public override string ToString()
     {
-        return $"{FirstName} {LastName}";
+        var s = $"{FirstName} {LastName}".Trim();
+        return string.IsNullOrEmpty(s) ? UserName : s;
     }
 
     public string ToString(bool withGender, bool withUserName)
@@ -91,7 +93,6 @@ public class Role : BaseEntity
     public List<User> Users { get; } = new();
 
     public List<Permission> Permissions { get; } = new();
-
 
     public bool HasPermission(string permission)
     {

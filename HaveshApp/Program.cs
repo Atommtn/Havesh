@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.Localization;
 using Havesh.Model.Data;
 using Havesh.Model.Model;
 using Syncfusion.Blazor;
+using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 
 // Configure logging to log to MSSqlServer database
 
@@ -71,6 +72,8 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services.AddDbContext<MyDbContext>();
+
+builder.Services.AddScoped<TeacherWidgetsService>();
 
 builder.Services.AddScoped<Navigation>();
 builder.Services.AddScoped<AuthenticationService>();
