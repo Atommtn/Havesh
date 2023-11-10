@@ -46,7 +46,7 @@ public class CloneProviderService
                     .Select(price => new ShokouhPardisLevelBookPrice
                     {
                         BookPrice = price.BookPrice,
-                        TermId = toTerm.TermClassId,
+                        TermId = toTerm.Id,
                         LevelId = price.LevelId,
                         TuitionAmount = price.TuitionAmount,
 
@@ -101,13 +101,13 @@ public class CloneProviderService
             var clonedInterval = intervals.Select(x =>
                 new ShokouhPardisInterval
                 {
-                    SourceId = x.IntervalId,
+                    SourceId = x.Id,
 
                     Title = x.Title,
                     StartTime = x.StartTime,
                     EndTime = x.EndTime,
                     TimeInterval = x.TimeInterval,
-                    TermId = toTerm.TermClassId,
+                    TermId = toTerm.Id,
                     
                     IntervalGuid = Guid.NewGuid(),
                     IntervalLastModified = DateTime.Now
@@ -139,8 +139,8 @@ public class CloneProviderService
             var clonedPrograms = programs.Select(x =>
                 new ShokouhPardisProgram()
                 {
-                    ScheduleId = clonedSchedule.First(s => s.SourceId == x.ScheduleId).ScheduleId,
-                    DaysessionId = clonedDaySession.First(d => d.SourceId == x.DaysessionId).DaySessionId,
+                    ScheduleId = clonedSchedule.First(s => s.SourceId == x.ScheduleId).Id,
+                    DaysessionId = clonedDaySession.First(d => d.SourceId == x.DaysessionId).Id,
 
                     ProgramGuid = Guid.NewGuid(),
                     ProgramLastModified = DateTime.Now
@@ -171,10 +171,10 @@ public class CloneProviderService
             var clonedSchedule = schedules.Select(x =>
                 new ShokouhPardisSchedule()
                 {
-                    SourceId = x.ScheduleId,
+                    SourceId = x.Id,
 
                     Title = x.Title,
-                    TermFk = toTerm.TermClassId,
+                    TermFk = toTerm.Id,
                     ScheduleGuid = Guid.NewGuid(),
                     ScheduleLastModified = DateTime.Now
                 })
@@ -205,12 +205,12 @@ public class CloneProviderService
             var clonedDaySessions = daySessions.Select(x =>
                 new ShokouhPardisDaySession()
                 {
-                    SourceId = x.DaySessionId,
+                    SourceId = x.Id,
 
-                    TermFk = toTerm.TermClassId,
+                    TermFk = toTerm.Id,
                     WeekdayId = x.WeekdayId,
 
-                    IntervalId = clonedIntervals.First(i => i.SourceId == x.IntervalId).IntervalId,
+                    IntervalId = clonedIntervals.First(i => i.SourceId == x.IntervalId).Id,
 
                     DaySessionGuid = Guid.NewGuid(),
                     DaySessionLastModified = DateTime.Now
@@ -243,21 +243,21 @@ public class CloneProviderService
             var timeTables = _dataService.GetTimeTables(fromTerm);
             var cloneTimeTable = timeTables.Select(x =>
             {
-                var teacherName = teachers.First(t => t.TeacherClassId == x.TeacherId).FullName;
+                var teacherName = teachers.First(t => t.Id == x.TeacherId).FullName;
                 var year = fromTerm.Year.YearName;
                 var termName = toTerm.TermName;
                 var schedule = clonedSchedule.First(s => s.SourceId == x.ScheduleId);
                 var scheduleName = schedule.Title;
                 var title = string.Join("<-", teacherName, year, termName, scheduleName);
-                var levelClass = levels.First(l => l.LevelClassId == x.LevelId);
+                var levelClass = levels.First(l => l.Id == x.LevelId);
                 return new ShokouhPardisTimeTable()
                 {
-                    SourceId = x.TimeTableId,
+                    SourceId = x.Id,
 
-                    TermId = toTerm.TermClassId,
+                    TermId = toTerm.Id,
                     TeacherId = x.TeacherId,
 
-                    ScheduleId = schedule.ScheduleId,
+                    ScheduleId = schedule.Id,
 
                     Title = title,
                     //Description = "",
@@ -295,7 +295,7 @@ public class CloneProviderService
                 return new ShokouhPardisTimeTableStudent
                 {
                     //TimeTable = timeTable,
-                    TimeTableId = timeTable.TimeTableId,
+                    TimeTableId = timeTable.Id,
                     StudentId = x.StudentId,
 
                     StudentPercentDiscount = x.StudentPercentDiscount,

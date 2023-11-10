@@ -46,8 +46,8 @@ namespace HaveshApp.Admin.DailyJV
                 //_dailyJV.PaymentType = null;
 
                 if (_nextLevel != null)
-                    _price = _dataProvider.GetLevelBookPrice(NextTerm.TermClassId,
-                        _nextLevel.LevelClassId);
+                    _price = _dataProvider.GetLevelBookPrice(NextTerm.Id,
+                        _nextLevel.Id);
             }
         }
 
@@ -215,18 +215,18 @@ namespace HaveshApp.Admin.DailyJV
 
             try
             {
-                _dailyJV.TermId = NextTerm.TermClassId;
+                _dailyJV.TermId = NextTerm.Id;
                 _dailyJV.TimeTableFk = null;
                 //_dailyJV.Student = Student;
-                _dailyJV.BillNo = _dailyJV.DailyJvid;
-                _dailyJV.StudentId = Student.StudentClassId;
+                _dailyJV.BillNo = _dailyJV.Id;
+                _dailyJV.StudentId = Student.Id;
                 _dailyJV.DateOfSettle += ts;
                 _dailyJV.IsPreRegister = true;
                 _dataProvider.SaveDailyJV(_dailyJV);
                 _userSession.LastJvDate = _dailyJV.CurrentDate;
                 _snackBar.Add("اطلاعات با موفقیت ذخیره شد", MudBlazor.Severity.Success);
                 Log.Warning("User {UserName} Create DailyJV For PreRegistration '{DailyJvid}'.",
-                    _userSession.Payload?.UserName, _dailyJV.DailyJvid);
+                    _userSession.Payload?.UserName, _dailyJV.Id);
                 ////// reset page
                 ///
                 /// save preregistratin
@@ -239,7 +239,7 @@ namespace HaveshApp.Admin.DailyJV
                 _dataProvider.SavePreRegistration(preRegistration);
                 _snackBar.Add("اطلاعات پیش ثبت نام با موفقیت ذخیره شد", MudBlazor.Severity.Success);
                 Log.Warning("User {UserName} Create PreRegistration For student '{StudentID}' dailyJV '{DailyJvid}'  .",
-                    _userSession.Payload?.UserName, _dailyJV.DailyJvid, Student.StudentClassId);
+                    _userSession.Payload?.UserName, _dailyJV.Id, Student.Id);
                 RestForm();
                 StateHasChanged();
                 await PrintDailyJvFishClick();
@@ -266,7 +266,7 @@ namespace HaveshApp.Admin.DailyJV
 
         async Task PrintDailyJvFishClick()
         {
-            await BrowserService.OpenInNewTabAsync($"/BillPrint/{_dailyJV.DailyJvid}");
+            await BrowserService.OpenInNewTabAsync($"/BillPrint/{_dailyJV.Id}");
         }
     }
 }

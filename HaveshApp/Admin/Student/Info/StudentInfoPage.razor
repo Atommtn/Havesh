@@ -153,8 +153,8 @@
 
         if (Term != null)
         {
-            timeTable = DataProvider.GetStudentTermClass(Student.StudentClassId, Term.TermClassId);
-            StudentDailyJvs = DataProvider.GetDailyJvBy(Term.TermClassId,Student.StudentClassId);
+            timeTable = DataProvider.GetStudentTermClass(Student.Id, Term.Id);
+            StudentDailyJvs = DataProvider.GetDailyJvBy(Term.Id,Student.Id);
         }
 
         if (timeTable != null)

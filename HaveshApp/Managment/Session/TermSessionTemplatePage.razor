@@ -112,7 +112,7 @@
         var days = contextWeekdayIds.Split(',').Select(x => Convert.ToInt32(x));
         foreach (var d in days)
         {
-	        str += list.First(z => z.WeekDayId == d).Title + " ";
+	        str += list.First(z => z.Id == d).Title + " ";
         }
         return str;
     }

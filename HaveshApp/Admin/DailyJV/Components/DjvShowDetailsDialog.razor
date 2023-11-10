@@ -32,7 +32,7 @@
                     </MudTd>
                     <MudTd>
 
-                        @if (_jvs.Any(x => x.StudentId == context.Student.StudentClassId))
+                        @if (_jvs.Any(x => x.StudentId == context.Student.Id))
                         {
                             <MudButton Variant="Variant.Filled"
                                    EndIcon="@Icons.Filled.Light"
@@ -114,9 +114,9 @@
     private string RowStyleFunc(ShokouhPardisTimeTableStudent TTstudents, int index)
     {
         var TTStdLevel = DataProvider.GetStudetnLevel(TTstudents.Student, SelectedTerm);
-        var shahriehDarInTerm = DataProvider.GetLevelBookPrice(SelectedTerm.TermClassId, TTStdLevel.Level.LevelClassId);
+        var shahriehDarInTerm = DataProvider.GetLevelBookPrice(SelectedTerm.Id, TTStdLevel.Level.Id);
         //var list = DataProvider.GetDailyJvBy(SelectedTerm.TermClassId, student.StudentClassId);
-        var list = _jvs.Where(x => x.StudentId == TTstudents.Student.StudentClassId);
+        var list = _jvs.Where(x => x.StudentId == TTstudents.Student.Id);
 
         int jamPardakhtiShahrieh = list.Where(x => x.FeeFor.Equals("شهریه")).Sum(x => x.Fee);
         int tedadjamPardakhtiShahrieh = list.Count(x => x.FeeFor.Equals("شهریه"));

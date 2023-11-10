@@ -62,7 +62,7 @@ public partial class TeacherDefinitionPage
 	async Task NewTeacherClick()
 	{
 		var Teacher = ShokouhPardisTeacherClass.CreateTeacher();
-		Teacher.TermId = SelectedTerm.TermClassId;
+		Teacher.TermId = SelectedTerm.Id;
 
 		await EditButtonClick(Teacher);
 	}
@@ -75,7 +75,7 @@ public partial class TeacherDefinitionPage
 	async Task OpenNewTeacherDialog(ShokouhPardisTeacherClass teacher)
 	{
 		var dialogReference = DialogService.Show<TeacherDefinitionDialog>(
-			(teacher.TeacherClassId > 0 ? "Edit " : "New ") + "Teacher ",
+			(teacher.Id > 0 ? "Edit " : "New ") + "Teacher ",
 			new DialogParameters
 			{
 				["Teacher"] = teacher
@@ -106,7 +106,7 @@ public partial class TeacherDefinitionPage
 			else
 			{
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save TeacherClass {TeacherClassId}", _userSession.Payload.UserName, retData.TeacherClassId);
+				Log.Warning("User {UserName} Save TeacherClass {TeacherClassId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			RefreshData();
@@ -156,7 +156,7 @@ public partial class TeacherDefinitionPage
 			DataProvider.SaveUser(user);
 			teacher.UserId = user.Id;
 			DataProvider.SaveEditTeacher(teacher);
-			Log.Warning("User {UserName} Save-Update Teacher {TeacherId}", _userSession.Payload.UserName, teacher.TeacherClassId);
+			Log.Warning("User {UserName} Save-Update Teacher {TeacherId}", _userSession.Payload.UserName, teacher.Id);
 		}
 
 		await DialogService.ShowAsync<UserDialog>("Teacher Account", new DialogParameters()

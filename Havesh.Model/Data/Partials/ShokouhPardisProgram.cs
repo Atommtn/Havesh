@@ -88,7 +88,7 @@ public partial class ShokouhPardisTimeTable
         set
         {
             _term = value;
-            TermId = _term.TermClassId;
+            TermId = _term.Id;
         }
     }
 
@@ -98,7 +98,7 @@ public partial class ShokouhPardisTimeTable
         set
         {
             _schedule = value;
-            ScheduleId = _schedule.ScheduleId;
+            ScheduleId = _schedule.Id;
         }
     }
 
@@ -108,7 +108,7 @@ public partial class ShokouhPardisTimeTable
         set
         {
             _teacher = value;
-            TeacherId = _teacher.TeacherClassId;
+            TeacherId = _teacher.Id;
         }
     }
 
@@ -118,7 +118,7 @@ public partial class ShokouhPardisTimeTable
         set
         {
             _level = value;
-            LevelId = _level.LevelClassId;
+            LevelId = _level.Id;
         }
     }
     [Required]
@@ -128,7 +128,7 @@ public partial class ShokouhPardisTimeTable
         set
         {
             _classRoom = value;
-            ClassRoomId = _classRoom.ClassRoomId;
+            ClassRoomId = _classRoom.Id;
         }
     }
 

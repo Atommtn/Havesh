@@ -64,7 +64,7 @@
 
     private async Task StudentDialogButton(ShokouhPardisStudentClass student)
     {
-        var Title = student.StudentClassId > 0 ? "Edit" : "New";
+        var Title = student.Id > 0 ? "Edit" : "New";
         var dialogReference = await DialogService.ShowAsync<AddNewStudentDialog>(
             Title + " Student",
             new DialogParameters
@@ -83,7 +83,7 @@
         {
             var NewStudetent = (ShokouhPardisStudentClass)dialogResult.Data;
             StudentService.SaveStudent(NewStudetent);
-            Log.Warning("User {UserName} {Title} Student {StudentId}", _userSession.Payload?.UserName,Title, NewStudetent.StudentClassId);
+            Log.Warning("User {UserName} {Title} Student {StudentId}", _userSession.Payload?.UserName,Title, NewStudetent.Id);
             await StudentListComponent.ReloadTableServerData();
             StateHasChanged();
         }
@@ -104,7 +104,7 @@
         if (result is true)
         {
             StudentService.DeleteStudent(args.Student);
-            Log.Warning("User {UserName} Delete Student {StudentId}", _userSession.Payload?.UserName, args.Student.StudentClassId);
+            Log.Warning("User {UserName} Delete Student {StudentId}", _userSession.Payload?.UserName, args.Student.Id);
             return true;
         }
         return false;

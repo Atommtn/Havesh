@@ -112,7 +112,7 @@ public partial class DailyJVPage
 			{
 				_selectedStudent = selectedStudents.First();
 				_dailyJV.Student = _selectedStudent;
-				_dailyJV.StudentId = _selectedStudent.StudentClassId;
+				_dailyJV.StudentId = _selectedStudent.Id;
 				SelectedLevel = await GetStudentLevel(_selectedStudent, SelectedTerm);
 				if (SelectedLevel == null)
 					NavigationManager.NavigateTo("/dailyJv/", true);
@@ -181,13 +181,13 @@ public partial class DailyJVPage
 
 	async Task SaveClick()
 	{
-		_dailyJV.TermId = SelectedTerm.TermClassId;
-		_dailyJV.TimeTableFk= _timeTable.TimeTableId;
+		_dailyJV.TermId = SelectedTerm.Id;
+		_dailyJV.TimeTableFk= _timeTable.Id;
 		_dailyJV.DateOfSettle += ts;
 		if (_dailyJV.CurrentDate == DateTime.Today)
 		{
 			_dailyJV.CurrentDate = DateTime.Today;
-			_dailyJV.BillNo = _dailyJV.DailyJvid;
+			_dailyJV.BillNo = _dailyJV.Id;
 		}
 
 		//if (IsOutOfIns)
@@ -202,7 +202,7 @@ public partial class DailyJVPage
 			_dataProvider.SaveDailyJV(_dailyJV);
 			_userSession.LastJvDate = _dailyJV.CurrentDate;
 			Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
-			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.DailyJvid);
+			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
 			await _dailyJVListComponent.FilterData();
 			Reset();
 
@@ -252,7 +252,7 @@ public partial class DailyJVPage
 			FeeFor = null;
 			_dailyJV.Fee = 0;
 			if (_selectedLevel != null)
-				_price = _dataProvider.GetLevelBookPrice(SelectedTerm.TermClassId,_selectedLevel.LevelClassId);
+				_price = _dataProvider.GetLevelBookPrice(SelectedTerm.Id,_selectedLevel.Id);
 		}
 	}
 

@@ -73,7 +73,7 @@
         cloneInProgress = true;
 
 
-        if (SourceTerm.TermClassId == DestinationTerm.TermClassId)
+        if (SourceTerm.Id == DestinationTerm.Id)
         {
             _messages.Add("Source and destination term can not be same, change source or destination terms");
             cloneInProgress = false;

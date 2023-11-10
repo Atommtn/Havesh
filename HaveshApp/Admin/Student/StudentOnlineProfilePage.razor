@@ -83,7 +83,7 @@
     {
         List<int> studentIds = null;
         studentIds = StudentService.GetStudentsprofile()
-                .Select(x => x.StudentClassId)
+                .Select(x => x.Id)
                 .ToList();
 
         var total = StudentService.GetTotalStudentsProfile(studentIds);

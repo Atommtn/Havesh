@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisInterval : BranchBaseModel
 {
-	public int IntervalId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public Guid IntervalGuid { get; set; }
 	public DateTime IntervalLastModified { get; set; }
 	public string? Title { get; set; }

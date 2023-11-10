@@ -82,11 +82,11 @@ public partial class TimeTablePage
 		DataLoading = true;
 		StateHasChanged();
 
-		var total = DataProvider.GetTotalTimeTablesCount(Term.TermClassId ,SearchText , isPrivate);
+		var total = DataProvider.GetTotalTimeTablesCount(Term.Id ,SearchText , isPrivate);
 		var timeTables = DataProvider.GetTimeTables(state.Page, state.PageSize, SearchText, Term , isPrivate).ToList();
 		timeTables.ForEach(x =>
 		{
-			if(_timeTableStudentsCount.TryGetValue(x.TimeTableId,out var zz))
+			if(_timeTableStudentsCount.TryGetValue(x.Id,out var zz))
 				x.StudentsCount = zz;
 		});
 		DataLoading = false;
@@ -113,7 +113,7 @@ public partial class TimeTablePage
 	async Task OpenTimesTableDialog(ShokouhPardisTimeTable context)
 	{
 		var dialogReference = DialogService.Show<TimesTableDialog>(
-			(context.TimeTableId > 0 ? "Edit " : "New ") + "Time-Table " + Term.TermName,
+			(context.Id > 0 ? "Edit " : "New ") + "Time-Table " + Term.TermName,
 			new DialogParameters
 			{
 				["TimeTableItem"] = context,
@@ -144,7 +144,7 @@ public partial class TimeTablePage
 			else
 			{
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.TimeTableId);
+				Log.Warning("User {UserName} Save TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			await table?.ReloadServerData()!;
@@ -165,7 +165,7 @@ public partial class TimeTablePage
 
 	Task AddStudentToClassClick(ShokouhPardisTimeTable timeTable)
 	{
-		NavigationManager.NavigateTo($"/timeTable/{timeTable.TimeTableId}");
+		NavigationManager.NavigateTo($"/timeTable/{timeTable.Id}");
 		return Task.CompletedTask;
 	}
 

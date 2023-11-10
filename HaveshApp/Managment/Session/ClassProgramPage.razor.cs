@@ -90,9 +90,9 @@ public partial class ClassProgramPage : ICanChangeComponentState
 			return;
 		}
             
-		_all = _dataProvider.GetAllTimeTableSchedulesByTermId(_selectedTerm.TermClassId).ToList();
+		_all = _dataProvider.GetAllTimeTableSchedulesByTermId(_selectedTerm.Id).ToList();
 		_timeTablestudentCount = DataProvider.GetTimeTableStudentsCount(_selectedTerm);
-		_sessionsCountByTermId = _dataProvider.GetTimeTableSessionsCountByTermId(_selectedTerm.TermClassId);
+		_sessionsCountByTermId = _dataProvider.GetTimeTableSessionsCountByTermId(_selectedTerm.Id);
 		_prices = DataProvider.GetTermLevelPrices(_selectedTerm);
 		_initData = true;
 		FilterUi();
@@ -106,10 +106,10 @@ public partial class ClassProgramPage : ICanChangeComponentState
 
 
 		var timeTable = _tt.FirstOrDefault(x =>
-			x.TermId == _selectedTerm.TermClassId &&
-			x.ClassRoomId == classRoom.ClassRoomId &&
-			x.Schedule.Programs.All(p => wds.Select(w => w.WeekDayId).Contains(p.DaySession.WeekdayId)) &&
-			x.Schedule.Programs.Any(p => p.DaySession.IntervalId == interval.IntervalId)
+			x.TermId == _selectedTerm.Id &&
+			x.ClassRoomId == classRoom.Id &&
+			x.Schedule.Programs.All(p => wds.Select(w => w.Id).Contains(p.DaySession.WeekdayId)) &&
+			x.Schedule.Programs.Any(p => p.DaySession.IntervalId == interval.Id)
 		);
 		return timeTable;
 	}
@@ -129,8 +129,8 @@ public partial class ClassProgramPage : ICanChangeComponentState
 			if (_oddEvenSwitch == value) return;
 			_oddEvenSwitch = value;
 			SelectedWeekdays = _oddEvenSwitch is true ?
-				_weekdays.Where(x => _oddDayIds.Contains(x.WeekDayId)) :
-				_weekdays.Where(x => _evenDayIds.Contains(x.WeekDayId));
+				_weekdays.Where(x => _oddDayIds.Contains(x.Id)) :
+				_weekdays.Where(x => _evenDayIds.Contains(x.Id));
 		}
 	}
 
@@ -159,13 +159,13 @@ public partial class ClassProgramPage : ICanChangeComponentState
 				.ToList();
 		_tt.ForEach(t =>
 		{
-			if (_timeTablestudentCount.TryGetValue(t.TimeTableId, out var zz))
+			if (_timeTablestudentCount.TryGetValue(t.Id, out var zz))
 				t.StudentsCount = zz;
 		});
 
 		_intervals = _tt?.SelectMany(x => x.Schedule.Programs.Select(p => p.DaySession.Interval)
 			)
-			.DistinctBy(x => x.IntervalId)
+			.DistinctBy(x => x.Id)
 			.OrderBy(x => x.StartTime)
 			.ToList();
 	}
@@ -215,7 +215,7 @@ public partial class ClassProgramPage : ICanChangeComponentState
 
 		var timeTables = GetTimeTables(interval, weekDays).Where(x => x != null).ToList();
 		var sessionsTemplate = _dataProvider.GetTermTemplateByWeekdayIds(SelectedTerm, string.Join(',',
-			weekDays.Select(x => x.WeekDayId).OrderBy(x => x)));
+			weekDays.Select(x => x.Id).OrderBy(x => x)));
 		if (sessionsTemplate is null)
 		{
 			_snackBar.Add("برای این ترم هیچ برنامه برگزاری / تمپلیت  هنوز تعریف نشده است.", Severity.Warning);
@@ -257,18 +257,18 @@ public partial class ClassProgramPage : ICanChangeComponentState
 				in _classRooms
 			where _tt != null && wds != null
 			select _tt.FirstOrDefault(x =>
-				x.ClassRoomId == classRoom.ClassRoomId &&
+				x.ClassRoomId == classRoom.Id &&
 				wds.Any() &&
-				x.Schedule.Programs.All(p => wds.Select(w => w.WeekDayId).Contains(p.DaySession.WeekdayId)) &&
-				x.Schedule.Programs.Any(p => p.DaySession.IntervalId == interval.IntervalId)
+				x.Schedule.Programs.All(p => wds.Select(w => w.Id).Contains(p.DaySession.WeekdayId)) &&
+				x.Schedule.Programs.Any(p => p.DaySession.IntervalId == interval.Id)
 			);
 	}
 
 	int GetTimeTableSessionsCount(ShokouhPardisTimeTable timeTable)
 	{
-		return !_sessionsCountByTermId.ContainsKey(timeTable.TimeTableId) ?
+		return !_sessionsCountByTermId.ContainsKey(timeTable.Id) ?
 			0 :
-			_sessionsCountByTermId[timeTable.TimeTableId];
+			_sessionsCountByTermId[timeTable.Id];
 	}
 
 	async Task SessionCancelClick(ShokouhPardisTimeTable timeTable)
@@ -309,10 +309,10 @@ public partial class ClassProgramPage : ICanChangeComponentState
 	IEnumerable<ShokouhPardisTimeTable?> GetTimeTables(ShokouhPardisTermClass selectedTerm, IEnumerable<ShokouhPardisWeekDay> wds)
 	{
 		return _tt.Where(x =>
-			x.TermId == selectedTerm.TermClassId &&
+			x.TermId == selectedTerm.Id &&
                     
 			x.Schedule.Programs
-				.All(p => wds.Select(w => w.WeekDayId).Contains(p.DaySession.WeekdayId))
+				.All(p => wds.Select(w => w.Id).Contains(p.DaySession.WeekdayId))
 		);
 	}
 

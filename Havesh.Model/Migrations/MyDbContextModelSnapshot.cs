@@ -347,11 +347,11 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>
                 {
-                    b.Property<int>("LessonPlanId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessonPlanId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -368,7 +368,7 @@ namespace HaveshApp.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("LessonPlanId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -623,135 +623,6 @@ namespace HaveshApp.Migrations
                     b.ToTable("MessageBoxes", "ShoukouhPardis12DBAdmin");
                 });
 
-            modelBuilder.Entity("Havesh.Model.Model.OnlineTeacherLink", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ItemID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
-
-                    b.Property<string>("Book")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("DocName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<int?>("ItemCreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemCreatedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ItemGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ItemGUID");
-
-                    b.Property<int?>("ItemModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemModifiedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ItemOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<int>("SessionNo")
-                        .HasColumnType("int")
-                        .HasColumnName("sessionNo");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.HasKey("ItemId");
-
-                    b.ToTable("Online_TeacherLink", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.OnlineTermTable", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ItemID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
-
-                    b.Property<string>("DayOf")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<int?>("ItemCreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemCreatedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ItemGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ItemGUID");
-
-                    b.Property<int?>("ItemModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemModifiedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ItemOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("NewProgram")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("TeacherName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("TimOf")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.HasKey("ItemId");
-
-                    b.ToTable("Online_TermTable", "ShoukouhPardis12DBAdmin");
-                });
-
             modelBuilder.Entity("Havesh.Model.Model.Permission", b =>
                 {
                     b.Property<int>("Id")
@@ -841,11 +712,11 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.SessionActivity", b =>
                 {
-                    b.Property<int>("SessionActivityID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SessionActivityID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ActivityTitle")
                         .IsRequired()
@@ -900,7 +771,7 @@ namespace HaveshApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SessionActivityID");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -939,12 +810,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingCode", b =>
                 {
-                    b.Property<int>("AccountingCodeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountingCodeID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountingCodeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AccountType")
                         .HasColumnType("int");
@@ -985,7 +856,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("AccountingCodeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -994,12 +865,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingTransaction", b =>
                 {
-                    b.Property<int>("AccountingTransactionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountingTransactionID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountingTransactionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AccountingCodeFk")
                         .HasColumnType("int");
@@ -1047,7 +918,7 @@ namespace HaveshApp.Migrations
                     b.Property<DateTime?>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AccountingTransactionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1056,12 +927,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisBookClass", b =>
                 {
-                    b.Property<int>("BookClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("BookClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1089,7 +960,7 @@ namespace HaveshApp.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
-                    b.HasKey("BookClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1098,12 +969,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisClassRoom", b =>
                 {
-                    b.Property<int>("ClassRoomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ClassRoomID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassRoomId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1138,7 +1009,7 @@ namespace HaveshApp.Migrations
                     b.Property<int?>("MinCapacity")
                         .HasColumnType("int");
 
-                    b.HasKey("ClassRoomId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1147,12 +1018,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisDailyJv", b =>
                 {
-                    b.Property<int>("DailyJvid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DailyJVID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DailyJvid"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1222,7 +1093,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXCode");
 
-                    b.HasKey("DailyJvid");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1237,12 +1108,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisDaySession", b =>
                 {
-                    b.Property<int>("DaySessionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DaySessionID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DaySessionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1269,7 +1140,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("WeekdayID");
 
-                    b.HasKey("DaySessionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1282,12 +1153,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisEmployee", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("EmployeeID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1307,7 +1178,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1319,7 +1190,7 @@ namespace HaveshApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -1368,12 +1239,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisFinanceFlat", b =>
                 {
-                    b.Property<int>("FinanceFlatId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Finance_FlatID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinanceFlatId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1438,7 +1309,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Verification_Status");
 
-                    b.HasKey("FinanceFlatId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1447,12 +1318,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisInterval", b =>
                 {
-                    b.Property<int>("IntervalId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("IntervalID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IntervalId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1487,7 +1358,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("IntervalId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1496,12 +1367,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisJvfromSite", b =>
                 {
-                    b.Property<int>("DailyJvid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DailyJVID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DailyJvid"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdminDescription")
                         .HasColumnType("nvarchar(max)");
@@ -1583,7 +1454,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXCode");
 
-                    b.HasKey("DailyJvid");
+                    b.HasKey("Id");
 
                     b.HasIndex("AttachmentFk");
 
@@ -1594,12 +1465,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisLevelBookPrice", b =>
                 {
-                    b.Property<int>("LevelBookPriceId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LevelBookPriceID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LevelBookPriceId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1629,7 +1500,7 @@ namespace HaveshApp.Migrations
                     b.Property<int>("TuitionAmount")
                         .HasColumnType("int");
 
-                    b.HasKey("LevelBookPriceId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1642,12 +1513,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisLevelClass", b =>
                 {
-                    b.Property<int>("LevelClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LevelClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LevelClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1685,7 +1556,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("NextLevelFK");
 
-                    b.HasKey("LevelClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1731,12 +1602,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisProgram", b =>
                 {
-                    b.Property<int>("ProgramId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ProgramID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgramId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DaysessionId")
                         .HasColumnType("int")
@@ -1756,7 +1627,7 @@ namespace HaveshApp.Migrations
                         .HasColumnName("ScheduleID")
                         .HasDefaultValueSql("((0))");
 
-                    b.HasKey("ProgramId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DaysessionId");
 
@@ -1767,12 +1638,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisSchedule", b =>
                 {
-                    b.Property<int>("ScheduleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ScheduleID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1798,7 +1669,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasDefaultValueSql("(N'')");
 
-                    b.HasKey("ScheduleId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1807,12 +1678,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClass", b =>
                 {
-                    b.Property<int>("StudentClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StudentClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1904,7 +1775,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("StudentClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1913,12 +1784,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClassDto", b =>
                 {
-                    b.Property<int>("StudentClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StudentClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1983,7 +1854,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("StudentSHNo");
 
-                    b.HasKey("StudentClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1992,12 +1863,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClassOnlineForm", b =>
                 {
-                    b.Property<int>("StudentClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StudentClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2110,7 +1981,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("StudentClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2119,12 +1990,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherClass", b =>
                 {
-                    b.Property<int>("TeacherClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TeacherClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2178,7 +2049,7 @@ namespace HaveshApp.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("TeacherClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2187,12 +2058,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherLevel", b =>
                 {
-                    b.Property<int>("TeacherLevelsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TeacherLevelsID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherLevelsId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2219,7 +2090,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
-                    b.HasKey("TeacherLevelsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2231,7 +2102,7 @@ namespace HaveshApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -2268,12 +2139,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherTimeSheet", b =>
                 {
-                    b.Property<int>("TeacherTimeSheetId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TeacherTimeSheetID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherTimeSheetId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2308,7 +2179,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("WeekDayID");
 
-                    b.HasKey("TeacherTimeSheetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2325,12 +2196,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTermClass", b =>
                 {
-                    b.Property<int>("TermClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TermClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TermClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2360,7 +2231,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("YearID");
 
-                    b.HasKey("TermClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2371,12 +2242,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTimeTable", b =>
                 {
-                    b.Property<int>("TimeTableId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TimeTableID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimeTableId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2418,7 +2289,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("TimeTableId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2437,12 +2308,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTimeTableStudent", b =>
                 {
-                    b.Property<int>("TimeTableStudentsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TimeTableStudentsID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimeTableStudentsId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2480,7 +2351,7 @@ namespace HaveshApp.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
-                    b.HasKey("TimeTableStudentsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2493,12 +2364,12 @@ namespace HaveshApp.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisWeekDay", b =>
                 {
-                    b.Property<int>("WeekDayId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("WeekDayID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeekDayId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Title")
                         .HasMaxLength(200)
@@ -2512,19 +2383,19 @@ namespace HaveshApp.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
-                    b.HasKey("WeekDayId");
+                    b.HasKey("Id");
 
                     b.ToTable("ShokouhPardis_WeekDay", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisYearClass", b =>
                 {
-                    b.Property<int>("YearClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("YearClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("YearClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("YearClassGuid")
                         .HasColumnType("uniqueidentifier");
@@ -2538,7 +2409,7 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("YearClassId");
+                    b.HasKey("Id");
 
                     b.ToTable("ShokouhPardis_YearClass", "dbo");
                 });
@@ -2548,7 +2419,7 @@ namespace HaveshApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -2606,7 +2477,7 @@ namespace HaveshApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 

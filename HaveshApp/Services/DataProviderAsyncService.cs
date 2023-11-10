@@ -21,7 +21,7 @@ public class DataProviderAsyncService
 
 	public async Task<List<ShokouhPardisTermClass>> GetTermsAsync(ShokouhPardisYearClass year)
 	{
-		return await _dbConntext.ShokouhPardisTermClasses.Where(x => x.YearId == year.YearClassId).ToListAsync();
+		return await _dbConntext.ShokouhPardisTermClasses.Where(x => x.YearId == year.Id).ToListAsync();
 	}
 
 	public async Task<int> GetTotalTimeTablesCount(int termTermClassId , bool isPrivate = false)
@@ -58,7 +58,7 @@ public class DataProviderAsyncService
 
 			.Include(x => x.Teacher)
 			//.AsQueryable()
-			.Where(x => x.TermId == term.TermClassId);
+			.Where(x => x.TermId == term.Id);
 		if (searchText.IsEmpty())
 		{
 			queryable = queryable.Where(x =>
@@ -91,7 +91,7 @@ public class DataProviderAsyncService
 	{
 		var xx = await _dbConntext.ShokouhPardisTimeTableStudents
 			.Include(x=>x.TimeTable)
-			.Where(x=>x.TimeTable.TermId == term.TermClassId)
+			.Where(x=>x.TimeTable.TermId == term.Id)
 			.GroupBy(x => ((int)x.TimeTableId)!)
 			.Select(group => new
 			{
@@ -110,11 +110,11 @@ public class DataProviderAsyncService
 		{
 			var list =
 				_dbConntext.ShokouhPardisLevelBookPrices
-					.Where(x => x.TermId == SourceTerm.TermClassId)
+					.Where(x => x.TermId == SourceTerm.Id)
 					.Select(price => new ShokouhPardisLevelBookPrice
 					{
 						BookPrice = price.BookPrice,
-						TermId = DestinationTerm.TermClassId,
+						TermId = DestinationTerm.Id,
 						LevelId = price.LevelId,
 						TuitionAmount = price.TuitionAmount,
 						LevelBookPriceGuid = Guid.NewGuid(),

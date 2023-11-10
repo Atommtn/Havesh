@@ -112,7 +112,7 @@
         var _timeTable = DataProvider.GetStudetnLevel(DailyJv.Student, DailyJv.Term)!;
         if (_timeTable != null)
         {
-            DailyJv.TimeTableFk = _timeTable.TimeTableId;
+            DailyJv.TimeTableFk = _timeTable.Id;
         }
         DialogInstance.Close(DailyJv);
     }

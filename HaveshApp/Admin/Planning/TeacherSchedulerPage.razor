@@ -86,7 +86,7 @@
 
     private void CheckForEdit()
     {
-        if (Term is not { TermClassId: > 0 } || Teacher is not { TeacherClassId: > 0 }) return;
+        if (Term is not { Id: > 0 } || Teacher is not { Id: > 0 }) return;
 
         var anyExist = DataProvider.AnyTeacherTimeSheet(Term,Teacher);
         var pageName = NavigationManager.Uri.Replace(NavigationManager.BaseUri,null);
@@ -97,17 +97,17 @@
         {
             if (TermIdParam.IsEmpty() && !TeacherIdParam.IsEmpty())
             {
-                GoToEdit(pageName, Term.TermClassId, Teacher.TeacherClassId);
+                GoToEdit(pageName, Term.Id, Teacher.Id);
             }
             else
             {
-                if (TermIdParam == Term.TermClassId.ToString() || TeacherIdParam == Teacher.TeacherClassId.ToString())
+                if (TermIdParam == Term.Id.ToString() || TeacherIdParam == Teacher.Id.ToString())
                 {
 
                 }
                 else
                 {
-                    GoToEdit(pageName, Term.TermClassId, Teacher.TeacherClassId);
+                    GoToEdit(pageName, Term.Id, Teacher.Id);
                 }
             }
         }
@@ -187,7 +187,7 @@
         if (TermIdParam.IsEmpty())
         {
             var pageName = NavigationManager.Uri.Replace(NavigationManager.BaseUri,null);
-            NavigationManager.NavigateTo($"{pageName}/{Term.TermClassId}/{Teacher.TeacherClassId}");
+            NavigationManager.NavigateTo($"{pageName}/{Term.Id}/{Teacher.Id}");
         }
     }
 
@@ -195,28 +195,28 @@
     {
         if (_teacherTimeSheets is null)
             return Variant.Text;
-        return _teacherTimeSheets.Any(x => x.WeekDayId == weekDay.WeekDayId && x.IntervalId == interval.IntervalId) ?
+        return _teacherTimeSheets.Any(x => x.WeekDayId == weekDay.Id && x.IntervalId == interval.Id) ?
             Variant.Filled :
             Variant.Text;
     }
 
     private void SelectIntervalClick(ShokouhPardisWeekDay weekDay, ShokouhPardisInterval interval)
     {
-        if (_teacherTimeSheets?.Any(x => x.WeekDayId == weekDay.WeekDayId && x.IntervalId == interval.IntervalId) ?? false)
+        if (_teacherTimeSheets?.Any(x => x.WeekDayId == weekDay.Id && x.IntervalId == interval.Id) ?? false)
         {
-            var delItem = _teacherTimeSheets.First(x => x.WeekDayId == weekDay.WeekDayId && x.IntervalId == interval.IntervalId);
+            var delItem = _teacherTimeSheets.First(x => x.WeekDayId == weekDay.Id && x.IntervalId == interval.Id);
             _teacherTimeSheets.Remove(delItem);
-            if (delItem.TeacherTimeSheetId > 0)
+            if (delItem.Id > 0)
                 _delTeacherTimeSheets.Add(delItem);
             return;
         }
 
         var shokouhPardisTeacherTimeSheet = new ShokouhPardisTeacherTimeSheet()
             {
-                WeekDayId = weekDay.WeekDayId,
-                IntervalId = interval.IntervalId,
-                TeacherId = Teacher.TeacherClassId,
-                TermId = Term.TermClassId,
+                WeekDayId = weekDay.Id,
+                IntervalId = interval.Id,
+                TeacherId = Teacher.Id,
+                TermId = Term.Id,
                 TeacherTimeSheetGuid = Guid.NewGuid(),
                 TeacherTimeSheetLastModified = DateTime.Now,
                 IsAvailable = true

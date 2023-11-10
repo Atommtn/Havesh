@@ -1,8 +1,11 @@
-﻿namespace Havesh.Model.Model;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisProgram
 {
-	public int ProgramId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public Guid ProgramGuid { get; set; }
 	public DateTime ProgramLastModified { get; set; }
 	public int ScheduleId { get; set; }

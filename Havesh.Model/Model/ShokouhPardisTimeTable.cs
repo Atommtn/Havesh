@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisTimeTable : BranchBaseModel
 {
-	public int TimeTableId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public Guid TimeTableGuid { get; set; }
 	public DateTime TimeTableLastModified { get; set; }
 	public int TermId { get; set; }

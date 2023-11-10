@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisTeacherLevel : BranchBaseModel
 {
-	public int TeacherLevelsId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public Guid TeacherLevelsGuid { get; set; }
 	public DateTime TeacherLevelsLastModified { get; set; }
 	public int TeacherId { get; set; }

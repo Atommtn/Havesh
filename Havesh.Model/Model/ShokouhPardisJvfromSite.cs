@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisJvfromSite : BranchBaseModel
 {
-	public int DailyJvid { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public string StudentName { get; set; } = null!;
 	public string StudentFamil { get; set; } = null!;
 	public DateTime? CreateDate { get; set; }

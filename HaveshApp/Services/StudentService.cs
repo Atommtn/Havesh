@@ -28,7 +28,7 @@ public class StudentService
 		var iQ = _dbConntext.ShokouhPardisStudentClasses.AsQueryable();
 		if (studentIds is { })
 		{
-			iQ = iQ.Where(x => studentIds.Contains(x.StudentClassId));
+			iQ = iQ.Where(x => studentIds.Contains(x.Id));
 		}
             
 		return iQ.Count();
@@ -40,7 +40,7 @@ public class StudentService
 		var queryable = _dbConntext.ShokouhPardisStudentClasses.AsQueryable();
 		if (studentIds is { })
 		{
-			queryable = queryable.Where(x => studentIds.Contains(x.StudentClassId));
+			queryable = queryable.Where(x => studentIds.Contains(x.Id));
 		}
 
            
@@ -107,7 +107,7 @@ public class StudentService
 		var students = _dbConntext
 			.ShokouhPardisTimeTableStudents
 			.Include(x => x.Student)
-			.Where(x => x.TimeTableId == timeTable.TimeTableId);
+			.Where(x => x.TimeTableId == timeTable.Id);
 		return students;
 	}
 	IQueryable<ShokouhPardisTimeTableStudent> GetStudentInTimeTableQuery(ShokouhPardisTimeTable timeTable, string? searchText)
@@ -115,7 +115,7 @@ public class StudentService
 		var queryable = _dbConntext
 			.ShokouhPardisTimeTableStudents
 			.Include(x => x.Student)
-			.Where(x => x.TimeTableId == timeTable.TimeTableId);
+			.Where(x => x.TimeTableId == timeTable.Id);
 		if (searchText is not null)
 		{
 			queryable = queryable.Where(x => x.Student.StudentName.Contains(searchText) ||
@@ -142,7 +142,7 @@ public class StudentService
 
 		if (!result.Any()) return false;
 
-		if (result.Count == 1 && result.First().StudentClassId == stuId) return false;
+		if (result.Count == 1 && result.First().Id == stuId) return false;
 
 		return true;
 	}
@@ -165,7 +165,7 @@ public class StudentService
 		var iQ = _dbConntext.ShokouhPardisStudentClassOnlineForms.AsQueryable();
 		if (studentIds is { })
 		{
-			iQ = iQ.Where(x => studentIds.Contains(x.StudentClassId));
+			iQ = iQ.Where(x => studentIds.Contains(x.Id));
 		}
 		return iQ.Count();
 	}
@@ -176,7 +176,7 @@ public class StudentService
 		var queryable = _dbConntext.ShokouhPardisStudentClassOnlineForms.AsQueryable();
 		if (studentIds is { })
 		{
-			queryable = queryable.Where(x => studentIds.Contains(x.StudentClassId));
+			queryable = queryable.Where(x => studentIds.Contains(x.Id));
 		}
 		if (searchText is not null)
 		{
@@ -234,7 +234,7 @@ public class StudentService
 				.Include(x => x.Student)
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Term)
-				.Where(x => x.TimeTable.Term.TermClassId == term.TermClassId)
+				.Where(x => x.TimeTable.Term.Id == term.Id)
 			;
 		if (searchText is not null)
 		{
@@ -260,7 +260,7 @@ public class StudentService
 		if (tt.Level is { })
 		{
 			iQ = iQ.Where(x => (x.IsArchive == null || x.IsArchive == false) &&
-			                   x.Level.LevelClassId == tt.Level.LevelClassId);
+			                   x.Level.Id == tt.Level.Id);
 		}
 		return iQ.Count();
 	}
@@ -272,7 +272,7 @@ public class StudentService
 		IQueryable<ShokouhPardisStudentClass> queryable = _dbConntext.PreRegistrations
 			.Include(x => x.Student)
 			.Where(x => (x.IsArchive == null || x.IsArchive == false) &&
-			            x.LevelFk == tt.Level.LevelClassId &&
+			            x.LevelFk == tt.Level.Id &&
 			            x.TermFk == tt.TermId)
 			.Select(x => x.Student).AsQueryable();
             
