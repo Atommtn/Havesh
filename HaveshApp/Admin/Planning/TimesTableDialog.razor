@@ -37,9 +37,9 @@
                     {
                         @if (_teacherTimeSheet is { } &&
                              _teacherTimeSheet.Any(x =>
-                                 x.Term.TermClassId == TimeTableItem.Term.TermClassId &&
-                                 x.WeekDay.WeekDayId == prog.DaySession.WeekDay.WeekDayId &&
-                                 x.Interval.IntervalId == prog.DaySession.Interval.IntervalId))
+                                 x.Term.Id == TimeTableItem.Term.Id &&
+                                 x.WeekDay.Id == prog.DaySession.WeekDay.Id &&
+                                 x.Interval.Id == prog.DaySession.Interval.Id))
                         {
                             <MudChip Color="Color.Success">
                                 @prog.DaySession.WeekDay.Title @prog.DaySession.Interval.Title

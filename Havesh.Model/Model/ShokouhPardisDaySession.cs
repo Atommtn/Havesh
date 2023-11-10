@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisDaySession : BranchBaseModel
 {
-	public int DaySessionId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public Guid DaySessionGuid { get; set; }
 	public DateTime DaySessionLastModified { get; set; }
 	public int WeekdayId { get; set; }

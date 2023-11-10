@@ -65,9 +65,9 @@ public partial class DailyJvRecordListComponent
 		List<ShokouhPardisDailyJv> pagedJvs;
 		if (Student is not null)
 		{
-			total = DataProvider.GetTotalDailyJv(Student.StudentClassId, selectedTerm.TermClassId);
+			total = DataProvider.GetTotalDailyJv(Student.Id, selectedTerm.Id);
 			pagedJvs = DataProvider
-				.GetPagedJvs(state.Page, state.PageSize, Student.StudentClassId, selectedTerm.TermClassId, SearchText);
+				.GetPagedJvs(state.Page, state.PageSize, Student.Id, selectedTerm.Id, SearchText);
 		}
 		else
 		{
@@ -125,7 +125,7 @@ public partial class DailyJvRecordListComponent
 			JvFromSiteFk = ((ShokouhPardisDailyJv)dJv).JvFromSiteFk,
 			BillNo= ((ShokouhPardisDailyJv)dJv).BillNo,
 			CardPostfix= ((ShokouhPardisDailyJv)dJv).CardPostfix,
-			DailyJvid= ((ShokouhPardisDailyJv)dJv).DailyJvid,
+			Id= ((ShokouhPardisDailyJv)dJv).Id,
 			DailyJvlastModified= ((ShokouhPardisDailyJv)dJv).DailyJvlastModified,
 			DateOfSettle= ((ShokouhPardisDailyJv)dJv).DateOfSettle,
 			Description= ((ShokouhPardisDailyJv)dJv).Description,
@@ -149,7 +149,7 @@ public partial class DailyJvRecordListComponent
 		((ShokouhPardisDailyJv)dJv).JvFromSiteFk= dJvTemp.JvFromSiteFk;
 		((ShokouhPardisDailyJv)dJv).BillNo= dJvTemp.BillNo;
 		((ShokouhPardisDailyJv)dJv).CardPostfix= dJvTemp.CardPostfix;
-		((ShokouhPardisDailyJv)dJv).DailyJvid= dJvTemp.DailyJvid;
+		((ShokouhPardisDailyJv)dJv).Id= dJvTemp.Id;
 		((ShokouhPardisDailyJv)dJv).DailyJvlastModified= dJvTemp.DailyJvlastModified;
 		((ShokouhPardisDailyJv)dJv).DateOfSettle = dJvTemp.DateOfSettle;
 		((ShokouhPardisDailyJv)dJv).Description= dJvTemp.Description;
@@ -181,7 +181,7 @@ public partial class DailyJvRecordListComponent
 			try
 			{
 				DataProvider.SaveEditDailyJV(retData);
-				Log.Warning("User {UserName} Update DailyJv {DailyJv}", _userSession.Payload.UserName,retData.DailyJvid);
+				Log.Warning("User {UserName} Update DailyJv {DailyJv}", _userSession.Payload.UserName,retData.Id);
 				Snackbar.Add("با موفقیت بروزرسانی گردید.", Severity.Success);
 
 			}
@@ -211,7 +211,7 @@ public partial class DailyJvRecordListComponent
 			}
 
 			Snackbar.Add("با موفقیت حذف گردید.", Severity.Success);
-			Log.Warning("User {UserName} Delete DailyJv {DailyJvid}", _userSession.Payload.UserName,dJv.DailyJvid);
+			Log.Warning("User {UserName} Delete DailyJv {DailyJvid}", _userSession.Payload.UserName,dJv.Id);
 			await FilterData();
 
 		}
@@ -222,6 +222,6 @@ public partial class DailyJvRecordListComponent
 
 	async Task PrintDailyJvPrintClick(ShokouhPardisDailyJv shokouhPardisDailyJv)
 	{
-		await BrowserService.OpenInNewTabAsync($"/BillPrint/{shokouhPardisDailyJv.DailyJvid}");
+		await BrowserService.OpenInNewTabAsync($"/BillPrint/{shokouhPardisDailyJv.Id}");
 	}
 }

@@ -36,7 +36,7 @@ public partial class BookPriceDefinitionPage
 	async Task NewDaySessionClick()
 	{
 		levelPrice = ShokouhPardisLevelBookPrice.CreateLevelPrices();
-		levelPrice.TermId = SelectedTerm.TermClassId;
+		levelPrice.TermId = SelectedTerm.Id;
             
 		await EditButtonClick(levelPrice);
 	}
@@ -49,7 +49,7 @@ public partial class BookPriceDefinitionPage
 	async Task OpenNewDaySessionDialog(ShokouhPardisLevelBookPrice levelPrice, ShokouhPardisLevelClass level = null)
 	{
 		var dialogReference = DialogService.Show<BookPriceDefinitionDialog>(
-			(levelPrice.LevelBookPriceId> 0 ? "ویرایش " : "جدید ") + "قیمت ",
+			(levelPrice.Id> 0 ? "ویرایش " : "جدید ") + "قیمت ",
 			new DialogParameters
 			{
 				["LevelPrice"] = levelPrice,
@@ -65,7 +65,7 @@ public partial class BookPriceDefinitionPage
 		if (dialogResult.Cancelled == false)
 		{
 			var retData = (ShokouhPardisLevelBookPrice)dialogResult.Data;
-			if (levelPrice.LevelBookPriceId == 0)
+			if (levelPrice.Id == 0)
 			{
 				//New dialoge
 				var result = DataProvider.SaveEditLevelBookPrice(retData, SelectedTerm);
@@ -83,7 +83,7 @@ public partial class BookPriceDefinitionPage
 				else
 				{
 					Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-					Log.Warning("User {UserName} Save LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.LevelBookPriceId);
+					Log.Warning("User {UserName} Save LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.Id);
 				}
 
 			}
@@ -91,7 +91,7 @@ public partial class BookPriceDefinitionPage
 			{
 				//edit dialoge
 				DataProvider.UpdateEditLevelBookPrice(retData, SelectedTerm);
-				Log.Warning("User {UserName} Update LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.LevelBookPriceId);
+				Log.Warning("User {UserName} Update LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.Id);
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
 
 			}
@@ -104,8 +104,8 @@ public partial class BookPriceDefinitionPage
 	private async Task EditLevelPriceClick(ShokouhPardisLevelClass level)
 	{
 		levelPrice = ShokouhPardisLevelBookPrice.CreateLevelPrices();
-		levelPrice.TermId = SelectedTerm.TermClassId;
-		levelPrice.LevelId = level.LevelClassId;
+		levelPrice.TermId = SelectedTerm.Id;
+		levelPrice.LevelId = level.Id;
 		await EditButtonClick(levelPrice,level);
 	}
 

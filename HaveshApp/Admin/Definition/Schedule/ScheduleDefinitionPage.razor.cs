@@ -35,7 +35,7 @@ public partial class ScheduleDefinitionPage
 	async Task NewScheduleClick()
 	{
 		ShokouhPardisSchedule schedule = ShokouhPardisSchedule.CreateSchedule();
-		schedule.TermFk = SelectedTerm.TermClassId;
+		schedule.TermFk = SelectedTerm.Id;
 		await EditScheduleClick(schedule);
 	}
 
@@ -47,7 +47,7 @@ public partial class ScheduleDefinitionPage
 	async Task OpenNewEditScheduleDialog(ShokouhPardisSchedule schedule)
 	{
 		var dialogReference = DialogService.Show<ScheduleDefinitionDialog>(
-			(schedule.ScheduleId > 0 ? "ویرایش " : "جدید ") + "زمانبندی ",
+			(schedule.Id > 0 ? "ویرایش " : "جدید ") + "زمانبندی ",
 			new DialogParameters
 			{
 				["Schedule"] = schedule
@@ -77,7 +77,7 @@ public partial class ScheduleDefinitionPage
 			else
 			{
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save-Update Schedule {ScheduleId}", _userSession.Payload.UserName, retData.ScheduleId);
+				Log.Warning("User {UserName} Save-Update Schedule {ScheduleId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			RefreshData();
@@ -88,7 +88,7 @@ public partial class ScheduleDefinitionPage
 	async void AddProgramClick(ShokouhPardisSchedule schedule)
 	{
 
-		var daySession = ShokouhPardisDaySession.CreateDaySession(SelectedTerm.TermClassId);
+		var daySession = ShokouhPardisDaySession.CreateDaySession(SelectedTerm.Id);
 		await OpenNewDaySessionDialog(daySession, schedule);
 	}
 
@@ -97,7 +97,7 @@ public partial class ScheduleDefinitionPage
 		ShokouhPardisSchedule schedule)
 	{
 		var dialogReference = DialogService.Show<DaySesseionDefinitionDialog>(
-			(daySession.DaySessionId > 0 ? "ویرایش " : "جدید ") + "زمانبندی ",
+			(daySession.Id > 0 ? "ویرایش " : "جدید ") + "زمانبندی ",
 			new DialogParameters
 			{
 				["DaySession"] = daySession,

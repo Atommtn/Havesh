@@ -35,7 +35,7 @@ public class FinancialService
 			Debit = debit,
 			Credit = credit,
 			Description = description,
-			AccountingCodeFk = stuAccountingCode.AccountingCodeId,
+			AccountingCodeFk = stuAccountingCode.Id,
 			Code = stuAccountingCode.Code,
 			SubjectRecFk = studentId,
 			Balance = bal
@@ -69,7 +69,7 @@ public class FinancialService
 		//     // TODO: شهریه کامل پرداخت شده
 		// }
 
-		AccountTransaction(djv.StudentId, djv.TermId, djv.Fee, djv.FeeFor, "Transaction from JV-ID : " + djv.DailyJvid);
+		AccountTransaction(djv.StudentId, djv.TermId, djv.Fee, djv.FeeFor, "Transaction from JV-ID : " + djv.Id);
 
 		//_dbConntext.ShokouhPardisTimeTableStudents.
 
@@ -86,13 +86,13 @@ public class FinancialService
 		try
 		{
 			var studentRefCode = _dbConntext.ShokouhPardisAccountingCodes
-				.Single(x => x.AccountingCodeId == 4);
+				.Single(x => x.Id == 4);
 
 			studentRefCode.LastSq += 1;
 
 			var coding = studentRefCode.LastSq!.ToString().PadLeft(5, '0');
 			var student = _dbConntext.ShokouhPardisStudentClasses
-				.Single(x => x.StudentClassId == studentId);
+				.Single(x => x.Id == studentId);
 
 			newCode = new ShokouhPardisAccountingCode()
 			{

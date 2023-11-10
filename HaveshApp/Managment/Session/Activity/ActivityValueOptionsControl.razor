@@ -47,7 +47,7 @@
     {
         var valueOption = new SessionActivityValueOption()
         {
-            SessionActivityFk = SessionActivity.SessionActivityID
+            SessionActivityFk = SessionActivity.Id
         };
 
         await OpenValueOptionDialog(valueOption);
@@ -67,7 +67,7 @@
         var dialogReferenceResult = await dialogReference.Result;
         if (!dialogReferenceResult.Canceled)
         {
-            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.SessionActivityID);
+            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.Id);
         }
     }
 
@@ -84,7 +84,7 @@
         if (showMessageBox is true)
         {
             _dataProvider.DeleteSessionActivityValueOption(vo);
-            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.SessionActivityID);
+            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.Id);
         }
     }
 

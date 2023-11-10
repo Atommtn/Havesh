@@ -36,7 +36,7 @@ public partial class DaySesseionDefinitionPage
 
 	async Task NewDaySessionClick()
 	{
-		var daySession = ShokouhPardisDaySession.CreateDaySession(SelectedTerm.TermClassId);
+		var daySession = ShokouhPardisDaySession.CreateDaySession(SelectedTerm.Id);
 		daySession.WeekDay = DataProvider.GetFirstWeekDays();
 		daySession.Interval = DataProvider.GetFirstIntervalByTerm(SelectedTerm);
 
@@ -51,7 +51,7 @@ public partial class DaySesseionDefinitionPage
 	async Task OpenNewDaySessionDialog(ShokouhPardisDaySession daySessions)
 	{
 		var dialogReference = DialogService.Show<DaySesseionDefinitionDialog>(
-			(daySessions.DaySessionId > 0 ? "ویرایش " : "جدید ") + "روز سانس ",
+			(daySessions.Id > 0 ? "ویرایش " : "جدید ") + "روز سانس ",
 			new DialogParameters
 			{
 				["DaySession"] = daySessions,
@@ -83,7 +83,7 @@ public partial class DaySesseionDefinitionPage
 			else
 			{
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save-Update DaySession {DaySessionId}", _userSession.Payload.UserName, retData.DaySessionId);
+				Log.Warning("User {UserName} Save-Update DaySession {DaySessionId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			RefreshData();

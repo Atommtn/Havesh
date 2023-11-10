@@ -21,8 +21,6 @@ public partial class MyDbContext : DbContext
 	}
 
 
-	public virtual DbSet<OnlineTeacherLink> OnlineTeacherLinks { get; set; } = null!;
-	public virtual DbSet<OnlineTermTable> OnlineTermTables { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisAccountingCode> ShokouhPardisAccountingCodes { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisAccountingTransaction> ShokouhPardisAccountingTransactions { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisBookClass> ShokouhPardisBookClasses { get; set; } = null!;
@@ -75,70 +73,16 @@ public partial class MyDbContext : DbContext
 		modelBuilder.HasDefaultSchema("ShoukouhPardis12DBAdmin")
 			.UseCollation("Latin1_General_CI_AS");
 
-		modelBuilder.Entity<OnlineTeacherLink>(entity =>
-		{
-			entity.HasKey(e => e.ItemId);
 
-			entity.ToTable("Online_TeacherLink");
-
-			entity.Property(e => e.ItemId).HasColumnName("ItemID");
-
-			entity.Property(e => e.Book).HasDefaultValueSql("(N'')");
-
-			entity.Property(e => e.DocName)
-				.HasMaxLength(250)
-				.HasDefaultValueSql("(N'')");
-
-			entity.Property(e => e.ItemGuid).HasColumnName("ItemGUID");
-
-			entity.Property(e => e.Name)
-				.HasMaxLength(250)
-				.HasDefaultValueSql("(N'')");
-
-			entity.Property(e => e.SessionNo).HasColumnName("sessionNo");
-
-			entity.Property(e => e.Url)
-				.HasMaxLength(1024)
-				.HasDefaultValueSql("(N'')");
-		});
-
-		modelBuilder.Entity<OnlineTermTable>(entity =>
-		{
-			entity.HasKey(e => e.ItemId);
-
-			entity.ToTable("Online_TermTable");
-
-			entity.Property(e => e.ItemId).HasColumnName("ItemID");
-
-			entity.Property(e => e.DayOf)
-				.HasMaxLength(200)
-				.HasDefaultValueSql("(N'')");
-
-			entity.Property(e => e.ItemGuid).HasColumnName("ItemGUID");
-
-			entity.Property(e => e.Level)
-				.HasMaxLength(200)
-				.HasDefaultValueSql("(N'')");
-
-			entity.Property(e => e.NewProgram).HasMaxLength(1024);
-
-			entity.Property(e => e.TeacherName)
-				.HasMaxLength(200)
-				.HasDefaultValueSql("(N'')");
-
-			entity.Property(e => e.TimOf)
-				.HasMaxLength(200)
-				.HasDefaultValueSql("(N'')");
-		});
 
 
 		modelBuilder.Entity<ShokouhPardisAccountingCode>(entity =>
 		{
-			entity.HasKey(e => e.AccountingCodeId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_AccountingCode");
 
-			entity.Property(e => e.AccountingCodeId).HasColumnName("AccountingCodeID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.AccountingCodeLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -153,11 +97,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisAccountingTransaction>(entity =>
 		{
-			entity.HasKey(e => e.AccountingTransactionId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_AccountingTransaction");
 
-			entity.Property(e => e.AccountingTransactionId).HasColumnName("AccountingTransactionID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.AccountingTransactionLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -168,11 +112,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisBookClass>(entity =>
 		{
-			entity.HasKey(e => e.BookClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_BookClass", "dbo");
 
-			entity.Property(e => e.BookClassId).HasColumnName("BookClassID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.BookClassLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -185,11 +129,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisClassRoom>(entity =>
 		{
-			entity.HasKey(e => e.ClassRoomId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_ClassRoom", "dbo");
 
-			entity.Property(e => e.ClassRoomId).HasColumnName("ClassRoomID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.ClassRoomLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -200,11 +144,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisDailyJv>(entity =>
 		{
-			entity.HasKey(e => e.DailyJvid);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_DailyJV");
 
-			entity.Property<int>(e => e.DailyJvid).HasColumnName("DailyJVID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<string>(e => e.CardPostfix).HasMaxLength(200);
 
@@ -229,11 +173,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisDaySession>(entity =>
 		{
-			entity.HasKey(e => e.DaySessionId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_DaySession", "dbo");
 
-			entity.Property<int>(e => e.DaySessionId).HasColumnName("DaySessionID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.DaySessionLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -244,11 +188,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisEmployee>(entity =>
 		{
-			entity.HasKey(e => e.EmployeeId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_Employee");
 
-			entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.EmployeeLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -259,7 +203,7 @@ public partial class MyDbContext : DbContext
 		{
 			entity.ToTable("ShokouhPardis_FileAttachment");
 
-			entity.Property<int>(e => e.Id).HasColumnName("ID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<string>(e => e.FileName).HasMaxLength(512);
 
@@ -272,11 +216,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisFinanceFlat>(entity =>
 		{
-			entity.HasKey(e => e.FinanceFlatId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_Finance_Flat");
 
-			entity.Property(e => e.FinanceFlatId).HasColumnName("Finance_FlatID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.CreditCardPostFixNo).HasMaxLength(16);
 
@@ -311,11 +255,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisInterval>(entity =>
 		{
-			entity.HasKey(e => e.IntervalId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_Interval", "dbo");
 
-			entity.Property<int>(e => e.IntervalId).HasColumnName("IntervalID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.IntervalLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -328,11 +272,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisJvfromSite>(entity =>
 		{
-			entity.HasKey(e => e.DailyJvid);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_JVFromSite");
 
-			entity.Property<int>(e => e.DailyJvid).HasColumnName("DailyJVID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<string>(e => e.ApprovedBy).HasMaxLength(200);
 
@@ -367,11 +311,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisLevelBookPrice>(entity =>
 		{
-			entity.HasKey(e => e.LevelBookPriceId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_LevelBookPrice");
 
-			entity.Property<int>(e => e.LevelBookPriceId).HasColumnName("LevelBookPriceID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.LevelBookPriceLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -382,11 +326,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisLevelClass>(entity =>
 		{
-			entity.HasKey(e => e.LevelClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_LevelClass", "dbo");
 
-			entity.Property<int>(e => e.LevelClassId).HasColumnName("LevelClassID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<int>(e => e.BookId).HasColumnName("BookID");
 
@@ -403,11 +347,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisProgram>(entity =>
 		{
-			entity.HasKey(e => e.ProgramId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_Program", "dbo");
 
-			entity.Property<int>(e => e.ProgramId).HasColumnName("ProgramID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<int>(e => e.DaysessionId).HasColumnName("DaysessionID");
 
@@ -420,11 +364,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisSchedule>(entity =>
 		{
-			entity.HasKey(e => e.ScheduleId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_schedule", "dbo");
 
-			entity.Property<int>(e => e.ScheduleId).HasColumnName("ScheduleID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.ScheduleLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -435,11 +379,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisStudentClass>(entity =>
 		{
-			entity.HasKey(e => e.StudentClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_StudentClass", "dbo");
 
-			entity.Property<int>(e => e.StudentClassId).HasColumnName("StudentClassID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<string>(e => e.FatherJob).HasMaxLength(200);
 
@@ -483,11 +427,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisStudentClassDto>(entity =>
 		{
-			entity.HasKey(e => e.StudentClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_StudentClass_Dto");
 
-			entity.Property(e => e.StudentClassId).HasColumnName("StudentClassID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.FatherJob).HasMaxLength(200);
 
@@ -518,11 +462,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisStudentClassOnlineForm>(entity =>
 		{
-			entity.HasKey(e => e.StudentClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_StudentClass_OnlineForm");
 
-			entity.Property<int>(e => e.StudentClassId).HasColumnName("StudentClassID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<string>(e => e.FatherJob).HasMaxLength(200);
 
@@ -570,11 +514,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisTeacherClass>(entity =>
 		{
-			entity.HasKey(e => e.TeacherClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_TeacherClass", "dbo");
 
-			entity.Property<int>(e => e.TeacherClassId).HasColumnName("TeacherClassID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.TeacherClassLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -597,11 +541,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisTeacherLevel>(entity =>
 		{
-			entity.HasKey(e => e.TeacherLevelsId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_TeacherLevels");
 
-			entity.Property(e => e.TeacherLevelsId).HasColumnName("TeacherLevelsID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.LevelId).HasColumnName("LevelID");
 
@@ -614,18 +558,18 @@ public partial class MyDbContext : DbContext
 		{
 			entity.ToTable("ShokouhPardis_TeacherTermClass");
 
-			entity.Property<int>(e => e.Id).HasColumnName("ID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.LastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 		});
 
 		modelBuilder.Entity<ShokouhPardisTeacherTimeSheet>(entity =>
 		{
-			entity.HasKey(e => e.TeacherTimeSheetId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_TeacherTimeSheet");
 
-			entity.Property<int>(e => e.TeacherTimeSheetId).HasColumnName("TeacherTimeSheetID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<int>(e => e.IntervalId).HasColumnName("IntervalID");
 
@@ -640,11 +584,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisTermClass>(entity =>
 		{
-			entity.HasKey(e => e.TermClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_TermClass", "dbo");
 
-			entity.Property<int>(e => e.TermClassId).HasColumnName("TermClassID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.TermClassLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -655,11 +599,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisTimeTable>(entity =>
 		{
-			entity.HasKey(e => e.TimeTableId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_TimeTable");
 
-			entity.Property<int>(e => e.TimeTableId).HasColumnName("TimeTableID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<int>(e => e.LevelId).HasColumnName("LevelID");
 
@@ -670,22 +614,22 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisTimeTableStudent>(entity =>
 		{
-			entity.HasKey(e => e.TimeTableStudentsId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_TimeTableStudents");
 
-			entity.Property<int>(e => e.TimeTableStudentsId).HasColumnName("TimeTableStudentsID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.TimeTableStudentsLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 		});
 
 		modelBuilder.Entity<ShokouhPardisWeekDay>(entity =>
 		{
-			entity.HasKey(e => e.WeekDayId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_WeekDay", "dbo");
 
-			entity.Property<int>(e => e.WeekDayId).HasColumnName("WeekDayID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<string>(e => e.Title).HasMaxLength(200);
 
@@ -694,11 +638,11 @@ public partial class MyDbContext : DbContext
 
 		modelBuilder.Entity<ShokouhPardisYearClass>(entity =>
 		{
-			entity.HasKey(e => e.YearClassId);
+			entity.HasKey(e => e.Id);
 
 			entity.ToTable("ShokouhPardis_YearClass", "dbo");
 
-			entity.Property<int>(e => e.YearClassId).HasColumnName("YearClassID");
+			entity.Property<int>(e => e.Id).HasColumnName("Id");
 
 			entity.Property<DateTime>(e => e.YearClassLastModified).HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
@@ -709,7 +653,7 @@ public partial class MyDbContext : DbContext
 		{
 			entity.ToTable("StatementMeliN");
 
-			entity.Property(e => e.Id).HasColumnName("ID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.DepositAmount)
 				.HasMaxLength(255)
@@ -738,7 +682,7 @@ public partial class MyDbContext : DbContext
 		{
 			entity.ToTable("StatementParsianM");
 
-			entity.Property(e => e.Id).HasColumnName("ID");
+			entity.Property(e => e.Id).HasColumnName("Id");
 
 			entity.Property(e => e.AgentBranch)
 				.HasMaxLength(255)

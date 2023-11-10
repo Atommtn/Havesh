@@ -78,8 +78,8 @@ public partial class StudentListRollCallComponenets
 			StudentSessionActivityGuid = Guid.NewGuid(),
 			ActivityDateTime = DateTime.Now,
 			TimeTableSessionFk = TimeTableSession!.ID,
-			StudentFk = obj.Item1.StudentClassId,
-			ActivityFk = obj.Item2.SessionActivityID,
+			StudentFk = obj.Item1.Id,
+			ActivityFk = obj.Item2.Id,
 			ActivityValue = obj.Item3.Value
 		};
 		_dataProvider.SaveStudentActivity(studentSessionActivity);

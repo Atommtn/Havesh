@@ -49,7 +49,7 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
             ReloadData();
         }
 
-        readonly DateTime _dateTime = DateTime.Today.AddDays(-2);
+        readonly DateTime _dateTime = DateTime.Today;//.AddDays(-1);
 
         private void ReloadData()
         {
@@ -103,18 +103,18 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 
         private ShokouhPardisWeekDay GetWeekday()
         {
-            //var weekday = _dataProvider.GetTodayWeekday();
-            var weekday = _dataProvider.GetTodayWeekday(0);
+            var weekday = _dataProvider.GetTodayWeekday();
+            //var weekday = _dataProvider.GetTodayWeekday(0);
             return weekday;
         }
 
         private ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term)
         {
             // _TODO: Should be remark ->
-            var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
+            //var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
 
 
-            //var startTime = DateTime.Now.TimeOfDay;
+            var startTime = DateTime.Now.TimeOfDay;
             var fromMinutes = TimeSpan.FromMinutes(3);
             var interval = _dataProvider.GetInterval(term, startTime, fromMinutes);
             return interval;

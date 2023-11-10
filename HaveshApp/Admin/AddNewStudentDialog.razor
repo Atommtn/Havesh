@@ -128,7 +128,7 @@
     private void SaveDialogClick()
     {
 
-        if (!StudentService.IsDuplicatedStudent(Student, Student.StudentClassId))
+        if (!StudentService.IsDuplicatedStudent(Student, Student.Id))
         {
             Snackbar.Add("Student Save Successfully", severity: Severity.Success);
             Student.BCode = Student.Gender switch

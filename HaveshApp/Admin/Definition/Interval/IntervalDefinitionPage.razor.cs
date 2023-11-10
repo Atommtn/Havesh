@@ -37,7 +37,7 @@ public partial class IntervalDefinitionPage
 	async Task NewIntervalClick()
 	{
 		ShokouhPardisInterval interval = ShokouhPardisInterval.CreateInterval();
-		interval.TermId = SelectedTerm.TermClassId;
+		interval.TermId = SelectedTerm.Id;
 
 		await EditButtonClick(interval);
 	}
@@ -50,7 +50,7 @@ public partial class IntervalDefinitionPage
 	async Task OpenNewIntervalDialog(ShokouhPardisInterval interval)
 	{
 		var dialogReference = DialogService.Show<IntervalDefinitionDialog>(
-			(interval.IntervalId > 0 ? "ویرایش " : "جدید ") + "سانس ",
+			(interval.Id > 0 ? "ویرایش " : "جدید ") + "سانس ",
 			new DialogParameters
 			{
 				["Interval"] = interval
@@ -80,7 +80,7 @@ public partial class IntervalDefinitionPage
 			else
 			{
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save-Update TimeInterval {TimeIntervalId}", _userSession.Payload.UserName, retData.IntervalId);
+				Log.Warning("User {UserName} Save-Update TimeInterval {TimeIntervalId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			RefreshData();

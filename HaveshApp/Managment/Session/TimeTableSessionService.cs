@@ -34,7 +34,7 @@ public class TimeTableSessionService
 		if (timeTable?.Schedule?.Programs == null || timeTable.Schedule.Programs.Count == 0)
 		{
 			if (timeTable != null)
-				timeTable = _dataProviderService.GetTimeTable(timeTable.TimeTableId);
+				timeTable = _dataProviderService.GetTimeTable(timeTable.Id);
 		}
 
 		var weekdayIds = string.Join(',', timeTable?.Schedule?.Programs.Select(x => x.DaySession.WeekdayId).Order()!);
@@ -73,7 +73,7 @@ public class TimeTableSessionService
 
 
 				ClassRoomFk = timeTable.ClassRoomId,
-				TimeTableFk = timeTable.TimeTableId,
+				TimeTableFk = timeTable.Id,
 				TeacherFk = timeTable.TeacherId,
 				SessionDescription = date.Description,
 				SessionStatus = SessionStatuses.Pending

@@ -41,6 +41,6 @@
 
     private void ClassSessionClick(TimeTableSession session, SessionActivity sessionActivity)
     {
-        _navigationManager.NavigateTo($"/RollCall/{session?.ID}/{sessionActivity.SessionActivityID}");
+        _navigationManager.NavigateTo($"/RollCall/{session?.ID}/{sessionActivity.Id}");
     }
 }

@@ -9,7 +9,7 @@ namespace Havesh.Model.Model;
 public partial class LessonPlan : BranchBaseModel
 {
 	[Key]
-	public int LessonPlanId { get; set; }
+	public int Id { get; set; }
 	//public string Title { get; set; }
 	public int LevelFk { get; set; }
 	public int SessionNumber { get; set; }

@@ -145,7 +145,7 @@ public partial class StudentJVReport
 	{
             
 		Students = GetReport(selectedTimeTable);
-		_jvs = DataProvider.GetDailyJvsByTerm(SelectedTerm.TermClassId);
+		_jvs = DataProvider.GetDailyJvsByTerm(SelectedTerm.Id);
 		var dialogReference = await DialogService.ShowAsync<DjvShowDetailsDialog>(
 			"نمایش", new DialogParameters()
 			{

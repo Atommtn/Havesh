@@ -27,7 +27,7 @@ public partial class LessonPlanDefinitionPage
 
 	private void RefreshData()
 	{
-		LessonPlans = _dataProvider.GetLessonPlan(SelectedLevel.LevelClassId);
+		LessonPlans = _dataProvider.GetLessonPlan(SelectedLevel.Id);
 
 	}
 
@@ -44,7 +44,7 @@ public partial class LessonPlanDefinitionPage
 	private async Task OpenNewLessonPlanDialog(Havesh.Model.Model.LessonPlan lessonPlan)
 	{
 		var dialogReference = DialogService.Show<LessonPlanDefinitionDialog>(
-			(lessonPlan.LessonPlanId > 0 ? "ویرایش " : "جدید ") + "لسن پلن ",
+			(lessonPlan.Id > 0 ? "ویرایش " : "جدید ") + "لسن پلن ",
 			new DialogParameters
 			{
 				["LessonPlan"] = lessonPlan
@@ -79,7 +79,7 @@ public partial class LessonPlanDefinitionPage
 				{
 					Snackbar.Add("لسن پلن با موفقیت ذخیره شد.", Severity.Success);
 					Log.Warning("User {UserName} Save-Update LessonPlan {lessonPlanID}",
-						_userSession.Payload.UserName, retData.LessonPlanId);
+						_userSession.Payload.UserName, retData.Id);
 				}
 			}
 			catch (Exception ex)
@@ -98,14 +98,14 @@ public partial class LessonPlanDefinitionPage
 	{
 		Havesh.Model.Model.LessonPlan lessonPlan = Havesh.Model.Model.LessonPlan.CreateLessonPlan();
 		lessonPlan.SessionNumber = _dataProvider.GetLessonPlanSessionNo(SelectedLevel);
-		lessonPlan.LevelFk = SelectedLevel.LevelClassId;
+		lessonPlan.LevelFk = SelectedLevel.Id;
 		await EditButtonClick(lessonPlan);
 	}
 
 	private async Task AddSectionClick(Havesh.Model.Model.LessonPlan lessonPlan)
 	{
 		var dialogReference = DialogService.Show<SectionDefinitionDialog>(
-			(lessonPlan.LessonPlanId > 0 ? "Edit " : "New ") + "Section ",
+			(lessonPlan.Id > 0 ? "Edit " : "New ") + "Section ",
 			new DialogParameters
 			{
 				["LessonPlan"] = lessonPlan

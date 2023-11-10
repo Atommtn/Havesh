@@ -190,7 +190,7 @@ public partial class StudentsListComponent
 	async Task StudentDialogButton(ShokouhPardisStudentClass context)
 	{
 		var dialogReference = DialogService.Show<AddNewStudentDialog>(
-			" زبان آموز - " + (context.StudentClassId > 0 ? "ویرایش" : "جدید") ,
+			" زبان آموز - " + (context.Id > 0 ? "ویرایش" : "جدید") ,
 			new DialogParameters
 			{
 				["Student"] = context
@@ -205,7 +205,7 @@ public partial class StudentsListComponent
 		{
 			var NewStudetent = (ShokouhPardisStudentClass)dialogResult.Data;
 			StudentService.SaveStudent(NewStudetent);
-			Log.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload.UserName, NewStudetent.StudentClassId);
+			Log.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload.UserName, NewStudetent.Id);
 			await ReloadTableServerData();
 			StateHasChanged();
 		}
@@ -248,7 +248,7 @@ public partial class StudentsListComponent
 		if (!RowStyle)
 		{return "background-color:rgba(79, 79, 79, 0.5);"; }
 		var TTStdLevel = DataProvider.GetStudetnLevel(student, TimeTable.Term);
-		var shahriehDarInTerm = DataProvider.GetLevelBookPrice(TimeTable.TermId, TTStdLevel.Level.LevelClassId);
+		var shahriehDarInTerm = DataProvider.GetLevelBookPrice(TimeTable.TermId, TTStdLevel.Level.Id);
 		//var list = DataProvider.GetDailyJvBy(SelectedTerm.TermClassId, student.StudentClassId);
 		var list = DataProvider.GetDailyJvsByTimeTable(TimeTable,student);
 

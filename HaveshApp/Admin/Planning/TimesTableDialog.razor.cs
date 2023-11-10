@@ -123,8 +123,8 @@ public partial class TimesTableDialog
 		if (timeTable is { Term: { }, Teacher: { } })
 		{
 			return DataProvider.GetTermTeacherTimeSheets(
-				timeTable.Term.TermClassId,
-				timeTable.Teacher.TeacherClassId);
+				timeTable.Term.Id,
+				timeTable.Teacher.Id);
 		}
 		return null;
 	}

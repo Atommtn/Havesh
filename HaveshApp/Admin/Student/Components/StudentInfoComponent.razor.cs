@@ -61,7 +61,7 @@ public partial class StudentInfoComponent
 		{
 			var NewStudetent = (ShokouhPardisStudentClass)dialogResult.Data;
 			StudentService.SaveStudent(NewStudetent);
-			Log.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload?.UserName, NewStudetent.StudentClassId);
+			Log.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload?.UserName, NewStudetent.Id);
 			StateHasChanged();
 		}
 	}

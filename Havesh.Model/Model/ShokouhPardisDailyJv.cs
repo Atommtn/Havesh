@@ -4,7 +4,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisDailyJv : BranchBaseModel
 {
-	public int DailyJvid { get; set; }
+	public int Id { get; set; }
 	public Guid DailyJvguid { get; set; }
 	public DateTime DailyJvlastModified { get; set; }
 	public int TermId { get; set; }

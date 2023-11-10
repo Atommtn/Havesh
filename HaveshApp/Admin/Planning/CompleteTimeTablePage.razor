@@ -172,7 +172,7 @@
         {
             var SelectedTimeTable = (ShokouhPardisTimeTable)dialogReferenceResult.Data;
             _dataProvider.StudentMove(TimeTableItem,SelectedTimeTable , student);
-            Log.Warning("User {UserName} Move Student '{StudentID}' and '{TimeTableID}' to new '{TimeTableID}'.", _userSession.Payload?.UserName, TimeTableItem.TimeTableId,SelectedTimeTable.TimeTableId);
+            Log.Warning("User {UserName} Move Student '{StudentID}' and '{TimeTableID}' to new '{TimeTableID}'.", _userSession.Payload?.UserName, TimeTableItem.Id,SelectedTimeTable.Id);
             _snackBar.Add("انتقال با موفقیت انجام شد.", Severity.Success);
             await studentsTableComponent?.ReloadData()!;
         }

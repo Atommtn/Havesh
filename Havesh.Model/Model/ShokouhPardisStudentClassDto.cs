@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisStudentClassDto : BranchBaseModel
 {
-	public int StudentClassId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public long StudentIdno { get; set; }
 	public string StudentName { get; set; } = null!;
 	public string StudentFamily { get; set; } = null!;

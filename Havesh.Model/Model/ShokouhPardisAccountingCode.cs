@@ -1,10 +1,12 @@
-﻿using Havesh.Model.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using Havesh.Model.Data;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisAccountingCode : BranchBaseModel
 {
-	public int AccountingCodeId { get; set; }
+	[Key]
+	public int Id { get; set; }
 	public Guid AccountingCodeGuid { get; set; }
 	public DateTime AccountingCodeLastModified { get; set; }
 	public int? AccountingCodeParentId { get; set; }

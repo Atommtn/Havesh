@@ -62,7 +62,7 @@
     private async Task OpenDialog(SessionActivity sa)
     {
         var reference = await DialogService.ShowAsync<SessionActivityDialog>(
-            (sa.SessionActivityID > 0 ? "Edit " : "New ") + "Activity"
+            (sa.Id > 0 ? "Edit " : "New ") + "Activity"
             , new DialogParameters
             {
                 ["SessionActivity"] = sa

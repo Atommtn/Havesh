@@ -65,7 +65,7 @@
         <MudTd DataLabel="شیوه پرداخت">@dJV.PaymentType</MudTd>
         <MudTd DataLabel="بابت">@dJV.FeeFor</MudTd>
         <MudTd DataLabel="مبلغ">@dJV.Fee</MudTd>
-        <MudTd DataLabel="شماره قبض">@(dJV.BillNo is > 0 ? dJV.BillNo : dJV.DailyJvid)</MudTd>
+        <MudTd DataLabel="شماره قبض">@(dJV.BillNo is > 0 ? dJV.BillNo : dJV.Id)</MudTd>
             <MudTd DataLabel="اطلاعات پوز - واریز">
             @if (dJV.PaymentType.Contains("پوز"))
             {

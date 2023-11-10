@@ -41,11 +41,11 @@
 
             <MudTd>
                 @if (_stuActiv != null &&
-                _stuActiv.TryGetValue(student.StudentClassId, out var xx) &&
-                xx.Any(x => x.ActivityFk == SessionActivity.SessionActivityID &&
+                _stuActiv.TryGetValue(student.Id, out var xx) &&
+                xx.Any(x => x.ActivityFk == SessionActivity.Id &&
                 x.ActivityDeletedDateTime == null))
                 {
-                    @foreach (var sac in xx.Where(x => x.ActivityFk == SessionActivity.SessionActivityID && x.ActivityDeletedDateTime == null))
+                    @foreach (var sac in xx.Where(x => x.ActivityFk == SessionActivity.Id && x.ActivityDeletedDateTime == null))
                     {
                         <MudChip Size="Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)">
                             @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")

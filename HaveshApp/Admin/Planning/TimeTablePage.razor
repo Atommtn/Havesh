@@ -56,7 +56,7 @@
                     @context.Items.Count() کلاس
                 </MudChip>
                 <MudChip Label="true" Size="Size.Small" Icon="@Icons.Filled.People">
-                    @context.Items.Select(x => _timeTableStudentsCount.TryGetValue(x.TimeTableId, out var count) ? count : 0).Sum() زبان آموز
+                    @context.Items.Select(x => _timeTableStudentsCount.TryGetValue(x.Id, out var count) ? count : 0).Sum() زبان آموز
                 </MudChip>
             </MudTh>
             <MudTh></MudTh>
@@ -91,7 +91,7 @@
                 جمع کلاس ها: @context.Items.Count()
             </MudTh>
             <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="3">
-                جمع زبان آموزان: @context.Items.Select(x => _timeTableStudentsCount.TryGetValue(x.TimeTableId,out var count) ? count : 0).Sum()
+                جمع زبان آموزان: @context.Items.Select(x => _timeTableStudentsCount.TryGetValue(x.Id,out var count) ? count : 0).Sum()
             </MudTh>
         </GroupFooterTemplate>
         <PagerContent>

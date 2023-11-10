@@ -1,10 +1,12 @@
 ﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisTermClass : BranchBaseModel
 {
-	public int TermClassId { get; set; }
+    [Key]
+    public int Id { get; set; }
 	public Guid TermClassGuid { get; set; }
 	public DateTime TermClassLastModified { get; set; }
 	public string? TermName { get; set; }
