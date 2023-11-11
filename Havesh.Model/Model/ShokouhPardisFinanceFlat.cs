@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisFinanceFlat : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid FinanceFlatGuid { get; set; }
 	public DateTime FinanceFlatLastModified { get; set; }
 	public string? StudentId { get; set; }

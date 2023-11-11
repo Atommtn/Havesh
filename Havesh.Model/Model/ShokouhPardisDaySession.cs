@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisDaySession : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid DaySessionGuid { get; set; }
 	public DateTime DaySessionLastModified { get; set; }
 	public int WeekdayId { get; set; }

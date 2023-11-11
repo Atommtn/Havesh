@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisClassRoom : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid ClassRoomGuid { get; set; }
 	public DateTime ClassRoomLastModified { get; set; }
 	public string ClassRoomName { get; set; } = null!;

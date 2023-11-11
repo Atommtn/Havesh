@@ -18,7 +18,7 @@
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd>@context.TermSessionTemplateID</MudTd>
+        <MudTd>@context.Id</MudTd>
         <MudTd>@context.Term.TermName</MudTd>
         <MudTd>@context.TemplateName</MudTd>
         <MudTd>@context.Description</MudTd>
@@ -98,7 +98,7 @@
         var x = string.Join(',', Days.Where(x => x.Value == true).Select(x => x.Key));
         TermSessionTemplate.WeekdayIds = x;
         _dataProvider.SaveTermSessionTemplate(TermSessionTemplate);
-        Log.Warning("User {UserName} Save TermSessionTemplate {TermSessionTemplateId}", _userSession.Payload.UserName, TermSessionTemplate.TermSessionTemplateID);
+        Log.Warning("User {UserName} Save TermSessionTemplate {TermSessionTemplateId}", _userSession.Payload.UserName, TermSessionTemplate.Id);
         _templates = DataProviderService.GetTermTemplates(Term);
         TermSessionTemplate = new TermSessionTemplate();
         StateHasChanged();

@@ -54,7 +54,7 @@
     void SaveClick()
     {
         _dataProvider.SaveTimeTableSession(TimeTableSession);
-        Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", _userSession.Payload.UserName, TimeTableSession.ID);
+        Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", _userSession.Payload.UserName, TimeTableSession.Id);
         DialogInstance.Close();
     }
 

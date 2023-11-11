@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisInterval : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid IntervalGuid { get; set; }
 	public DateTime IntervalLastModified { get; set; }
 	public string? Title { get; set; }

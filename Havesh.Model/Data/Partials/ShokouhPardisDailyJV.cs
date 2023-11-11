@@ -5,10 +5,10 @@ namespace Havesh.Model.Model;
 
 public  partial class ShokouhPardisDailyJv
 {
-	[ForeignKey("StudentId")]
+	[ForeignKey(nameof(Model.ShokouhPardisDailyJv.StudentId))]
 	public ShokouhPardisStudentClass? Student { get; set; }
 
-	[ForeignKey("TermId")] 
+	[ForeignKey(nameof(Model.ShokouhPardisDailyJv.TermId))] 
 	public ShokouhPardisTermClass? Term { get; set; }
 
 	[ForeignKey(nameof(Model.ShokouhPardisDailyJv.TimeTableFk))] 

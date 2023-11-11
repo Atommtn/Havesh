@@ -4,7 +4,7 @@ using Havesh.Model.Data;
 
 namespace Havesh.Model.Model;
 
-public partial class StudentSessionActivity : BranchBaseModel
+public partial class StudentSessionActivity 
 {
 	[ForeignKey(nameof(StudentFk))]
 	public ShokouhPardisStudentClass Student { get; set; }
@@ -19,10 +19,8 @@ public partial class StudentSessionActivity : BranchBaseModel
 
 
 [Table("ShokouhPardis_StudentSessionActivity")]
-public partial class StudentSessionActivity
+public partial class StudentSessionActivity : BranchBaseModel
 {
-	[Key]
-	public int StudentSessionActivityID { get; set; }
 	public int TimeTableSessionFk { get; set; }
 
 	public int StudentFk { get; set; }

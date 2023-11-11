@@ -7,8 +7,6 @@ namespace Havesh.Model.Model;
 [Table("ShokouhPardis_TimeTableSession")]
 public partial class TimeTableSession : BranchBaseModel
 {
-	[Key]
-	public int ID { get; set; }
 	public int SessionNumber { get; set; }
 	public int TimeTableFk { get; set; }
 	public int TeacherFk { get; set; }

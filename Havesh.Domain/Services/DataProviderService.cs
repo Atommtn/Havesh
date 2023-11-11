@@ -630,10 +630,15 @@ public class DataProviderService
                 x.Fee.ToString().Contains(searchText) ||
                 (x.FeeFor != null && x.FeeFor.Contains(searchText)) ||
                  x.Id.ToString().Contains(searchText) ||
-                (!string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == Convert.ToInt32(searchText)) ||
+                
                  (x.Description != null && x.Description.Contains(searchText))));
         }
 
+        if (int.TryParse(searchText, out var code))
+        {
+            queryable = queryable.Where(x =>
+                !string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == code);
+        }
         var list = queryable.Skip(page * size).Take(size).ToList();
         return list;
     }
@@ -655,9 +660,14 @@ public class DataProviderService
                                                                    x.Fee.ToString().Contains(searchText) ||
                                                                    (x.FeeFor != null && x.FeeFor.Contains(searchText)) ||
                                                                    x.Id.ToString().Contains(searchText) ||
-                                                                   (!string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == Convert.ToInt32(searchText)) ||
                                                                    (x.Description != null && x.Description.Contains(searchText))));
         }
+        if (int.TryParse(searchText, out var code))
+        {
+            queryable = queryable.Where(x =>
+                !string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == code);
+        }
+
 
         var list = queryable.Skip(page * size).Take(size).ToList();
         return list;
@@ -1542,7 +1552,7 @@ public class DataProviderService
 
     public void SaveTermSessionTemplate(TermSessionTemplate tst)
     {
-        if (tst.TermSessionTemplateID == 0)
+        if (tst.Id == 0)
             DbContext.TermSessionTemplates.Add(tst);
         else
             DbContext.TermSessionTemplates.Update(tst);
@@ -1553,14 +1563,14 @@ public class DataProviderService
     public List<TermSessionTemplateDate> GetTermSessionTemplateDates(TermSessionTemplate tst)
     {
         return DbContext.TermSessionTemplateDates
-            .Where(x => x.TermSessionTemplateFk == tst.TermSessionTemplateID)
+            .Where(x => x.TermSessionTemplateFk == tst.Id)
             .ToList();
     }
 
     public int GetTermSessionTemplateDateCount(TermSessionTemplate tst)
     {
         return DbContext.TermSessionTemplateDates
-            .Count(x => x.TermSessionTemplateFk == tst.TermSessionTemplateID);
+            .Count(x => x.TermSessionTemplateFk == tst.Id);
 
     }
 
@@ -1587,7 +1597,7 @@ public class DataProviderService
     public void DeleteTermSessionTemplateDates(TermSessionTemplate context)
     {
         var dates = DbContext.TermSessionTemplateDates.Where(x =>
-            x.TermSessionTemplateFk == context.TermSessionTemplateID);
+            x.TermSessionTemplateFk == context.Id);
         DbContext.RemoveRange(dates);
         DbContext.SaveChanges();
     }
@@ -1700,7 +1710,7 @@ public class DataProviderService
             .ThenInclude(x => x.Teacher)
             .Include(x => x.TimeTable)
             .ThenInclude(x => x.ClassRoom)
-            .FirstOrDefault(x => x.ID == sessionId);
+            .FirstOrDefault(x => x.Id == sessionId);
         return timeTableSession!;
     }
 
@@ -1757,7 +1767,7 @@ public class DataProviderService
     {
         var activities = DbContext
                 .StudentSessionActivities
-                .Where(x => x.TimeTableSessionFk == session.ID)
+                .Where(x => x.TimeTableSessionFk == session.Id)
                 .ToList()
                 .GroupBy(g => g.StudentFk)
                 .ToDictionary(x => x.Key, y => y.ToList())
@@ -2142,7 +2152,7 @@ public class DataProviderService
             .Include(x => x.TimeTable)
             .ThenInclude(x => x.Teacher)
 
-            .FirstOrDefault(x => x.ID == sessionId);
+            .FirstOrDefault(x => x.Id == sessionId);
     }
 }
 

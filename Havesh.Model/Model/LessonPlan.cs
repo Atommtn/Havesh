@@ -8,8 +8,7 @@ namespace Havesh.Model.Model;
 [Table("ShokouhPardis_LessonPlan")]
 public partial class LessonPlan : BranchBaseModel
 {
-	[Key]
-	public int Id { get; set; }
+
 	//public string Title { get; set; }
 	public int LevelFk { get; set; }
 	public int SessionNumber { get; set; }

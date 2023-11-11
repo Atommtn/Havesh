@@ -20,8 +20,11 @@ public class Branch
 	public Branch? ParentBranch { get; set; }
 }
 
+[Serializable]
 public class BranchBaseModel
 {
+    public int Id { get; set; }
+
 	public string? BCode { get; set; }
 
 	public int BranchFk { get; set; }

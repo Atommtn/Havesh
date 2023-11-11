@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisTermClass : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid TermClassGuid { get; set; }
 	public DateTime TermClassLastModified { get; set; }
 	public string? TermName { get; set; }

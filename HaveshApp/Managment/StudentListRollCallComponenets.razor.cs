@@ -77,7 +77,7 @@ public partial class StudentListRollCallComponenets
 			StudentSessionActivityLastModified = DateTime.Now,
 			StudentSessionActivityGuid = Guid.NewGuid(),
 			ActivityDateTime = DateTime.Now,
-			TimeTableSessionFk = TimeTableSession!.ID,
+			TimeTableSessionFk = TimeTableSession!.Id,
 			StudentFk = obj.Item1.Id,
 			ActivityFk = obj.Item2.Id,
 			ActivityValue = obj.Item3.Value

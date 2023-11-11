@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisTeacherLevel : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid TeacherLevelsGuid { get; set; }
 	public DateTime TeacherLevelsLastModified { get; set; }
 	public int TeacherId { get; set; }

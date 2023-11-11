@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Havesh.Model.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Havesh.Model.Model;
 
 [Table("ShokouhPardis_SessionActivityValueOption")]
-public partial class SessionActivityValueOption
+public partial class SessionActivityValueOption : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
 
     public int SessionActivityFk { get; set; }
 

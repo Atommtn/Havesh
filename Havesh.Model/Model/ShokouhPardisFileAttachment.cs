@@ -4,7 +4,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisFileAttachment : BranchBaseModel
 {
-	public int Id { get; set; }
+
 	public Guid Guid { get; set; }
 	public DateTime LastModified { get; set; }
 	public string? FileTitle { get; set; }

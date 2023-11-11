@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisAccountingTransaction : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid AccountingTransactionGuid { get; set; }
 	public DateTime AccountingTransactionLastModified { get; set; }
 	public int? AccountingCodeFk { get; set; }

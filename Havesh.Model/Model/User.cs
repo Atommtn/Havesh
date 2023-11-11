@@ -5,16 +5,10 @@ using Olive;
 
 namespace Havesh.Model.Model;
 
-[Serializable]
-public class BaseEntity
+
+public class User : BranchBaseModel
 {
 
-}
-
-public class User : BaseEntity
-{
-
-    public int Id { get; set; }
     public bool? Gender { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
@@ -25,13 +19,7 @@ public class User : BaseEntity
     public List<Role> Roles { get; } = new();
     public bool IsActive { get; set; }
 
-    public string? BCode { get; set; }
-    public int BranchFk { get; set; }
-
     [NotMapped] public string FullName => FirstName + " " + LastName;
-
-    [ForeignKey(nameof(BranchFk))]
-    public Branch Branch { get; set; }
 
     public override string ToString()
     {
@@ -86,9 +74,8 @@ public class User : BaseEntity
     }
 }
 
-public class Role : BaseEntity
+public class Role : BranchBaseModel
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public List<User> Users { get; } = new();
 
@@ -122,9 +109,8 @@ public class Role : BaseEntity
 }
 
 
-public class Permission : BaseEntity
+public class Permission : BranchBaseModel
 {
-    public int Id { get; set; }
 
     public bool Allow { get; set; }
     public string Title { get; set; }
@@ -133,18 +119,13 @@ public class Permission : BaseEntity
 }
 
 
-public class AdvanceRegistration : BaseEntity
+public class AdvanceRegistration : BranchBaseModel
 {
-    public int Id { get; set; }
     public bool? Allow { get; set; }
     public string? Title { get; set; }
     public string? Code { get; set; }
     public string UserName { get; set; }
 
-    public int BranchFk { get; set; }
-
-    [ForeignKey(nameof(BranchFk))]
-    public Branch Branch { get; set; }
     public DateTime DateTime { get; set; }
 
 }

@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisTimeTable : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid TimeTableGuid { get; set; }
 	public DateTime TimeTableLastModified { get; set; }
 	public int TermId { get; set; }

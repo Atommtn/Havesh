@@ -82,7 +82,7 @@ public class TimeTableSessionService
 
 			_dataProviderService.SaveTimeTableSession(timeTableSession);
 			Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", 
-				_userSession.Payload.UserName, timeTableSession.ID);
+				_userSession.Payload.UserName, timeTableSession.Id);
 			await OnTimeTableSessionCreated?.Invoke(timeTableSession);
 		}
 
@@ -111,9 +111,9 @@ public class TimeTableSessionService
 		// Save Should run before to get new Time Table Session ID
 		replTimeTableSession = _dataProviderService.SaveTimeTableSession(replTimeTableSession);
 		Log.Warning("User {UserName} replace TimeTableSession from {TimeTableSessionId} to new {TimeTableSessionId}", 
-			_userSession.Payload.UserName, replTimeTableSession.ID,origTimeTableSession.ID);
+			_userSession.Payload.UserName, replTimeTableSession.Id,origTimeTableSession.Id);
 
-		origTimeTableSession.ReplacementTimeTableSessionFk = replTimeTableSession.ID;
+		origTimeTableSession.ReplacementTimeTableSessionFk = replTimeTableSession.Id;
 		origTimeTableSession.SessionStatus = SessionStatuses.Canceled;
 		string? x = null;
 		if (causeItem.HasValue())
@@ -151,7 +151,7 @@ public class TimeTableSessionService
 		origTimeTableSession.SessionNumber *= -1;
 		_dataProviderService.SaveTimeTableSession(origTimeTableSession);
 		Log.Warning("User {UserName} replace TimeTableSession from {TimeTableSessionId} to new {TimeTableSessionId}", 
-			_userSession.Payload.UserName, replTimeTableSession.ID, origTimeTableSession.ID);
+			_userSession.Payload.UserName, replTimeTableSession.Id, origTimeTableSession.Id);
 		return replTimeTableSession;
 	}
 

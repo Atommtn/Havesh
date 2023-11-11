@@ -8,10 +8,7 @@ namespace Havesh.Model.Model;
 public partial class PreRegistration : BranchBaseModel
 {
 
-	[Key]
-	public int Id { get; set; }
-        
-	public int DailyJVFk { get; set; }
+    public int DailyJVFk { get; set; }
         
 	public int StudentFk { get; set; }
         

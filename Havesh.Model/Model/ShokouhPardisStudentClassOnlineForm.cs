@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisStudentClassOnlineForm : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public string StudentIdno { get; set; } = null!;
 	public string StudentName { get; set; } = null!;
 	public string StudentFamily { get; set; } = null!;

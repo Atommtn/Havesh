@@ -8,8 +8,7 @@ namespace Havesh.Model.Model;
 [Table("ShokouhPardis_SessionActivity")]
 public partial class SessionActivity : BranchBaseModel
 {
-	[Key]
-	public int Id { get; set; }
+
 	public string ActivityTitle { get; set; }
 	public string? Levels { get; set; }
 	public string? LevelGroups { get; set; }

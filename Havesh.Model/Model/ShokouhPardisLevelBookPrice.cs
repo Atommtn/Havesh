@@ -5,8 +5,7 @@ namespace Havesh.Model.Model;
 
 public partial class ShokouhPardisLevelBookPrice : BranchBaseModel
 {
-    [Key]
-    public int Id { get; set; }
+
 	public Guid LevelBookPriceGuid { get; set; }
 	public DateTime LevelBookPriceLastModified { get; set; }
 	public int TermId { get; set; }

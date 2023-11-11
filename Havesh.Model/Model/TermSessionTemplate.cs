@@ -7,8 +7,6 @@ namespace Havesh.Model.Model;
 [Table("ShokouhPardis_TermSessionTemplate")]
 public partial class TermSessionTemplate : BranchBaseModel
 {
-	[Key]
-	public int TermSessionTemplateID { get; set; }
 	public int TermFk { get; set; }
 	public string TemplateName { get; set; }
 

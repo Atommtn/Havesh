@@ -165,7 +165,7 @@
                 };
 
             _dataProvider.SaveTimeTableSession(timeTableSession);
-            Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", _userSession.Payload.UserName, timeTableSession.ID);
+            Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", _userSession.Payload.UserName, timeTableSession.Id);
         }
 
         LoadSessions();
@@ -224,6 +224,6 @@
     [Inject] public BrowserService BrowserService { get; set; }
     private async Task SupervisorControl(TimeTableSession timeTableSession)
     {
-        await BrowserService.OpenInNewTabAsync($"/SupervisorClassAction/{timeTableSession.ID}");
+        await BrowserService.OpenInNewTabAsync($"/SupervisorClassAction/{timeTableSession.Id}");
     }
 }
