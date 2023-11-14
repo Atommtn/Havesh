@@ -63,23 +63,21 @@ public partial class DailyJvRecordListComponent
 	{
 		int total;
 		List<ShokouhPardisDailyJv> pagedJvs;
-		if (Student is not null)
-		{
-			total = DataProvider.GetTotalDailyJv(Student.Id, selectedTerm.Id);
-			pagedJvs = DataProvider
-				.GetPagedJvs(state.Page, state.PageSize, Student.Id, selectedTerm.Id, SearchText);
-		}
-		else
-		{
-			total = DataProvider.GetTotalDailyJv(SelectedDate);
-			pagedJvs = DataProvider
-				.GetPagedJvs(state.Page, state.PageSize, SelectedDate, SearchText);
-
-		}
-
+        if (Student is null)
+        {
+            total = DataProvider.GetTotalDailyJv(SelectedDate);
+            pagedJvs = DataProvider
+                .GetPagedJvs(state.Page, state.PageSize, SelectedDate, SearchText);
+        }
+        else
+        {
+            total = DataProvider.GetTotalDailyJv(Student.Id, selectedTerm.Id);
+            pagedJvs = DataProvider
+                .GetPagedJvs(state.Page, state.PageSize, Student.Id, selectedTerm.Id, SearchText);
+        }
 
 
-		return new TableData<ShokouhPardisDailyJv>()
+        return new TableData<ShokouhPardisDailyJv>()
 		{
 			TotalItems = total,
 			Items = pagedJvs

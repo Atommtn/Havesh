@@ -9,14 +9,14 @@
                     <MudCardHeader>
                         <CardHeaderAvatar>
                             <MudAvatar Color="Color.Secondary" Variant="Variant.Outlined">
-                                <MudIcon Icon="@Icons.Filled.ContactPhone" />
+                                <MudIcon Icon="@Icons.Material.Filled.ContactPhone" />
                             </MudAvatar>
                         </CardHeaderAvatar>
                         <CardHeaderContent>
                             <MudTextField Label="نام" @bind-Value="@Student.StudentName" ReadOnly="@MTDisabled"></MudTextField>
                             <MudTextField Label="نام خانوادگی" @bind-Value="@Student.StudentFamily" ReadOnly="@MTDisabled"></MudTextField>
                             <MudTextField Label="کد ملی" @bind-Value="@Student.StudentIdno" ReadOnly="@MTDisabled"></MudTextField>
-                            <MudSwitch @bind-Checked="@Student.IsGirl" ThumbIcon="@Icons.Filled.Girl" Color="Color.Error" UnCheckedColor="Color.Success" ThumbIconColor="Color.Default" Disabled="@MTDisabled">
+                            <MudSwitch @bind-Checked="@Student.IsGirl" ThumbIcon="@Icons.Material.Filled.Girl" Color="Color.Error" UnCheckedColor="Color.Success" ThumbIconColor="Color.Default" Disabled="@MTDisabled">
                                 @if(Student.IsGirl==true)
                                 {
                                     <MudText Typo="Typo.caption" Color="Color.Error">

@@ -24,5 +24,5 @@ public  partial class ShokouhPardisDailyJv
 		};
 		return dailyJv;
 	}
-        
+
 }

@@ -71,11 +71,10 @@
         _loginCheck = true;
         StateHasChanged();
         await Task.Delay(100);
-	    User user;
 
-	    try
+        try
 	    {
-		    user = await AuthenticationService.Login(UserName, Password);
+	        var user = await AuthenticationService.Login(UserName, Password);
 	    }
 	    catch (AuthenticationService.InvalidUserCredentialException e)
 	    {
@@ -91,7 +90,6 @@
 		    _loginCheck = false;
 		    return;
 	    }
-
         Log.Information("User {UserName} Successfully logged-in to application.",UserName);
     }
 

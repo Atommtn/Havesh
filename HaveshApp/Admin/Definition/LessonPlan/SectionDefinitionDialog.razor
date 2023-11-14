@@ -11,7 +11,7 @@
                       Style="background-color: #3c4043;">
                 <ToolBarContent>
                   
-                    <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewSectionClick">
+                    <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewSectionClick">
                       Add Section
                         </MudButton>
 
@@ -32,10 +32,10 @@
                     <MudTd>@sec.SectionObjective</MudTd>
 
                     <MudTd>
-                        <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(sec)"></MudIconButton>
+                        <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(sec)"></MudIconButton>
                     </MudTd>
                     <MudTd>
-                        <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.AddComment" Size="Size.Small" OnClick="() => AddSectionItemClick(sec)"></MudIconButton>
+                        <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.AddComment" Size="Size.Small" OnClick="() => AddSectionItemClick(sec)"></MudIconButton>
                     </MudTd>
 
                 </RowTemplate>
@@ -49,11 +49,11 @@
       
     </ChildComponent>
     <DialogAction>
-        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
             ذخیره
         </MudButton>
 
-        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
             بستن
         </MudButton>
     </DialogAction>

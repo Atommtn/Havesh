@@ -9,7 +9,7 @@
     <MudCardHeader>
         <MudToolBar>
             <MudSpacer/>
-            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="AddStudentsToClassClick">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="AddStudentsToClassClick">
                 اضافه کردن دانش آموز به این کلاس
             </MudButton>
 
@@ -46,7 +46,7 @@
 
         
         <StudentsListComponent class="mt-2" @ref="studentsTableComponent" RowStyle="false" RowPage="25" AllowDelete="true" TimeTable="TimeTableItem" OnDeleteStudentAction="OnDeleteStudentAction">
-            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.ChangeCircle" Variant="Variant.Filled" OnClick="()=>ChangeStudentTimeTableClick(context)">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.ChangeCircle" Variant="Variant.Filled" OnClick="()=>ChangeStudentTimeTableClick(context)">
                 انتقال
             </MudButton>
 

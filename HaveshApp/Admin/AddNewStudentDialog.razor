@@ -12,7 +12,7 @@
 
             <MudGrid>
                 <MudItem md="12">
-                    <MudSwitch @bind-Checked="@Student.Gender" ThumbIcon="@Icons.Filled.Girl" Color="Color.Info" UnCheckedColor="Color.Error" ThumbIconColor="Color.Default">
+                    <MudSwitch @bind-Checked="@Student.Gender" ThumbIcon="@Icons.Material.Filled.Girl" Color="Color.Info" UnCheckedColor="Color.Error" ThumbIconColor="Color.Default">
                         @if (Student.Gender is false)
                         {
                             <MudText Typo="Typo.caption" Color="Color.Error">
@@ -106,7 +106,7 @@
     </ChildComponent>
     <DialogAction>
 
-        <MudButton Color="@Color.Success" StartIcon="@Icons.Filled.Save"
+        <MudButton Color="@Color.Success" StartIcon="@Icons.Material.Filled.Save"
                    Variant="@Variant.Filled" OnClick="@SaveDialogClick">
             Save
         </MudButton>

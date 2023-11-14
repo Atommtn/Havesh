@@ -23,5 +23,10 @@ public partial class ShokouhPardisStudentClass
     public string Tag { get; set; }
     [NotMapped] public string FullName => StudentName + " " + StudentFamily;
     [NotMapped] public int OrderNumber { get; set; }
+
+    public override string ToString()
+    {
+        return FullName;
+    }
 }
 

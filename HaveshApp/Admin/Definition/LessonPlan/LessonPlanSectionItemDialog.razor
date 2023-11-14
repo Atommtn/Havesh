@@ -19,7 +19,7 @@
                 <MudSpacer></MudSpacer>
                 <MudTextField @bind-Value="NewSectionItemOrder" Label="Item Order"/>
                 <MudSpacer></MudSpacer>
-                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewSectionItemClick">
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewSectionItemClick">
                     Add Section Item
                 </MudButton>
 
@@ -33,7 +33,7 @@
                 <MudTd>@secItem.SectionItemTitle </MudTd>
                 <MudTd>@secItem.Order </MudTd>
                 <MudTd>
-                    <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(secItem)"></MudIconButton>
+                    <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(secItem)"></MudIconButton>
 
                 </MudTd>
 
@@ -46,7 +46,7 @@
     </ChildComponent>
     <DialogAction>
   
-        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
             بستن
         </MudButton>
     </DialogAction>

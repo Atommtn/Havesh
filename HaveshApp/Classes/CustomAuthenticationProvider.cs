@@ -7,6 +7,8 @@ namespace HaveshApp.Classes;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
+    private int _authAttemps = 0;
+
 	readonly UserSessionService _sessionService;
 	readonly IHttpContextAccessor _accessor;
 	readonly IConfiguration _configuration;
@@ -25,26 +27,40 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 	{
 		var token = GetTokenParser(out var parser, _accessor.HttpContext, _configuration);
 
+
 		if (parser.TryParseToken(token,out var payload,out var claims))
 		{
-			var authenticationState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims?.Claims, "Bearer")));
+
+			// JWT is Valid
+
+			var authenticationState = new AuthenticationState(new ClaimsPrincipal(
+                new ClaimsIdentity(claims?.Claims, "Bearer")));
 			var authenticationStateAsync = Task.FromResult(authenticationState);
 			NotifyAuthenticationStateChanged(authenticationStateAsync);
 			_sessionService.Token = token;
 			_sessionService.State = authenticationStateAsync;
 			_sessionService.Payload = payload;
-			return authenticationStateAsync;
-		}
+            _authAttemps++;
 
-		var fromResult = Task.FromResult(new AuthenticationState(new ClaimsPrincipal()));
+            if ((_sessionService.User?.IsActive ?? false) )
+            {
+                return authenticationStateAsync;
+            }
+        }
+
+		// JWT is Invalid
+		var fromResult = Task.FromResult(
+            new AuthenticationState(new ClaimsPrincipal()));
+
 		NotifyAuthenticationStateChanged(fromResult);
 		_sessionService.Token = null;
 		_sessionService.State = fromResult;
+        _authAttemps = 0;
 		return fromResult;
 
 	}
 
-	public static string? GetTokenParser(out JwtTokenParser parser, HttpContext? httpContext, IConfiguration configuration)
+    private static string? GetTokenParser(out JwtTokenParser parser, HttpContext? httpContext, IConfiguration configuration)
 	{
 		var jwtSection = configuration.GetSection("JWT");
 

@@ -2,7 +2,7 @@
 @using Havesh.Model.Model
 <MudTable Items="_users">
     <ToolBarContent>
-        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewUserClick">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewUserClick">
             New User
         </MudButton>
     </ToolBarContent>
@@ -26,10 +26,10 @@
             }
         </MudTd>
         <MudTd>
-            <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Person" Variant="Variant.Outlined" OnClick="() => UserRolesClick(context)">
+            <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" OnClick="() => UserRolesClick(context)">
                 Roles
             </MudButton>
-            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Edit" Variant="Variant.Text" OnClick="()=>UserEditClick(context)">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Edit" Variant="Variant.Text" OnClick="()=>UserEditClick(context)">
                 Edit
             </MudButton>
 

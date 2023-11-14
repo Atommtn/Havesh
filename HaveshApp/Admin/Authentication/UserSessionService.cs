@@ -21,14 +21,12 @@ public class UserSessionService
 	{
 		get
 		{
-			if (_user != null)
-			{
-				return _user;
-			}
-
 			_dataProviderService ??= _serviceProvider.GetService<DataProviderService>();
-			_user = _dataProviderService?.GetUserByUserName(Payload?.UserName);
-			return _user;
+			_user ??= _dataProviderService?.GetUserByUserName(Payload?.UserName);
+            
+            if (_dataProviderService != null) 
+                _dataProviderService.DbContext.Actor ??= _user;
+            return _user;
 		}
 	}
 

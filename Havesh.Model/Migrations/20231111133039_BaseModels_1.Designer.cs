@@ -4,16 +4,19 @@ using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HaveshApp.Migrations
+namespace Havesh.Model.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231111133039_BaseModels_1")]
+    partial class BaseModels_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -800,48 +803,6 @@ namespace HaveshApp.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("MessageBoxes", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.MyDbContext+EntityChange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ActionById")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ActionWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EntityKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Field")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OldValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionById");
-
-                    b.ToTable("EntityChanges", "ShoukouhPardis12DBAdmin");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Permission", b =>
@@ -4028,17 +3989,6 @@ namespace HaveshApp.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.MyDbContext+EntityChange", b =>
-                {
-                    b.HasOne("Havesh.Model.Model.User", "ActionBy")
-                        .WithMany()
-                        .HasForeignKey("ActionById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActionBy");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Permission", b =>

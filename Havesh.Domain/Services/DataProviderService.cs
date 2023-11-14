@@ -596,9 +596,10 @@ public class DataProviderService
 
     public int GetTotalDailyJv(DateTime? selectedDate)
     {
+        if (selectedDate is null) return 0;
         var iQ = DbContext.ShokouhPardisDailyJvs
-            .Where(x => x.CurrentDate == selectedDate.Value.Date
-                        && x.CurrentDate < selectedDate.Value.Date.AddDays(1)
+            .Where(x => x.CurrentDate >= selectedDate.Value.Date &&
+                                            x.CurrentDate < selectedDate.Value.Date.AddDays(1)
             )
             .AsQueryable();
         return iQ.Count();
@@ -607,7 +608,8 @@ public class DataProviderService
     public int GetTotalDailyJv(int studentId, int selectedTermId)
     {
         var iQ = DbContext.ShokouhPardisDailyJvs
-            .Where(x => x.StudentId == studentId &&
+            .Where(x =>
+                        x.StudentId == studentId &&
                         x.TermId == selectedTermId)
             .AsQueryable();
         return iQ.Count();
@@ -619,26 +621,30 @@ public class DataProviderService
             .Include(x => x.Student)
             .Where(x => selDate != null
                         && x.CurrentDate >= selDate.Value.Date
-                        && x.CurrentDate <= selDate.Value.Date.AddDays(1))
+                        && x.CurrentDate < selDate.Value.Date.AddDays(1))
             .AsQueryable();
         if (searchText is not null)
         {
-            queryable = queryable.Where(x => x.Student != null && (x.Student.StudentName.Contains(searchText) ||
-                x.Student.StudentFamily.Contains(searchText) ||
-                (x.PaymentType != null && x.PaymentType.Contains(searchText)) ||
-                (x.BillNo != null && x.BillNo.ToString()!.Contains(searchText)) ||
-                x.Fee.ToString().Contains(searchText) ||
-                (x.FeeFor != null && x.FeeFor.Contains(searchText)) ||
-                 x.Id.ToString().Contains(searchText) ||
-                
-                 (x.Description != null && x.Description.Contains(searchText))));
+            var parts = searchText.Split(new[] { ' ', '-', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                queryable = queryable.Where(x => x.Student != null && (x.Student.StudentName.Contains(part) ||
+                                                                       x.Student.StudentFamily.Contains(part) ||
+                                                                       (x.PaymentType != null && x.PaymentType.Contains(part)) ||
+                                                                       (x.BillNo != null && x.BillNo.ToString()!.Contains(part)) ||
+                                                                       x.Fee.ToString().Contains(part) ||
+                                                                       (x.FeeFor != null && x.FeeFor.Contains(part)) ||
+                                                                       x.Id.ToString().Contains(part) ||
+                                                                       (x.Description != null && x.Description.Contains(part))));
+                if (int.TryParse(part, out var code))
+                {
+                    queryable = queryable.Where(x =>
+                        !string.IsNullOrEmpty(part) && x.PosCode != null && x.PosCode == code);
+                }
+            }
+
         }
 
-        if (int.TryParse(searchText, out var code))
-        {
-            queryable = queryable.Where(x =>
-                !string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == code);
-        }
         var list = queryable.Skip(page * size).Take(size).ToList();
         return list;
     }
@@ -653,19 +659,27 @@ public class DataProviderService
             .AsQueryable();
         if (searchText is not null)
         {
-            queryable = queryable.Where(x => x.Student != null && (x.Student.StudentName.Contains(searchText) ||
-                                                                   x.Student.StudentFamily.Contains(searchText) ||
-                                                                   (x.PaymentType != null && x.PaymentType.Contains(searchText)) ||
-                                                                   (x.BillNo != null && x.BillNo.ToString()!.Contains(searchText)) ||
-                                                                   x.Fee.ToString().Contains(searchText) ||
-                                                                   (x.FeeFor != null && x.FeeFor.Contains(searchText)) ||
-                                                                   x.Id.ToString().Contains(searchText) ||
-                                                                   (x.Description != null && x.Description.Contains(searchText))));
-        }
-        if (int.TryParse(searchText, out var code))
-        {
-            queryable = queryable.Where(x =>
-                !string.IsNullOrEmpty(searchText) && x.PosCode != null && x.PosCode == code);
+            var parts = searchText.Split(new[] { ' ', '-', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                queryable = queryable.Where(x => x.Student != null && (x.Student.StudentName.Contains(part) ||
+                                                                       x.Student.StudentFamily.Contains(part) ||
+                                                                       (x.PaymentType != null && x.PaymentType.Contains(part)) ||
+                                                                       (x.BillNo != null && x.BillNo.ToString()!.Contains(part)) ||
+                                                                       x.Fee.ToString().Contains(part) ||
+                                                                       (x.FeeFor != null && x.FeeFor.Contains(part)) ||
+                                                                       x.Id.ToString().Contains(part) ||
+                                                                       (x.Description != null && x.Description.Contains(part))));
+                if (int.TryParse(part, out var code))
+                {
+                    queryable = queryable.Where(x =>
+                        !string.IsNullOrEmpty(part) &&
+                        x.PosCode != null &&
+                        x.PosCode == code);
+                }
+
+            }
+
         }
 
 
@@ -1655,7 +1669,7 @@ public class DataProviderService
         DbContext.SaveChanges();
     }
 
-    public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time,TimeSpan offset)
+    public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time, TimeSpan offset)
     {
         //throw new NotImplementedException();
         var interval = DbContext.ShokouhPardisIntervals.FirstOrDefault(x =>
@@ -1689,10 +1703,10 @@ public class DataProviderService
     {
         var tt = DbContext
             .ShokouhPardisTimeTables
-            .Include(x=>x.Schedule)
-            .ThenInclude(x=>x.Programs)
-            .ThenInclude(x=>x.DaySession)
-            .ThenInclude(x=>x.Interval)
+            .Include(x => x.Schedule)
+            .ThenInclude(x => x.Programs)
+            .ThenInclude(x => x.DaySession)
+            .ThenInclude(x => x.Interval)
             .FirstOrDefault(x =>
                 x.TermId == term.Id &&
                 x.TeacherId == teacher.Id &&

@@ -1,14 +1,115 @@
 ﻿using Havesh.Model.Data;
 using Havesh.Model.Data.Dashboard;
+using Havesh.Model.Filter;
 using Havesh.Model.Model;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Havesh.Model.Model;
 
 public partial class MyDbContext : DbContext
 {
+    public User? Actor { get; set; }
+
+    public class EntityChange
+    {
+        public int Id { get; set; }
+        public string EntityName { get; set; }
+        public string? EntityKey { get; set; }
+        public string Action { get; set; } // Added, Modified, Deleted
+        public string? Field { get; set; }
+        public string? OldValue { get; set; }
+        public string? NewValue { get; set; }
+        public User? ActionBy { get; set; } 
+        public DateTime ActionWhen { get; set; } = DateTime.Now;
+    }
+    public DbSet<EntityChange> EntityChanges { get; set; }
+
+    public override int SaveChanges()
+    {
+        var entityChanges = CaptureEntityChanges();
+
+        // Save changes to the database
+        var result = base.SaveChanges();
+
+        // Save the entity changes to a separate table or storage
+        if (entityChanges == null) 
+            return result;
+
+        EntityChanges.AddRange(entityChanges);
+        SaveChanges(); // Save entity changes
+
+
+        return result;
+    }
+
+    private List<EntityChange>? CaptureEntityChanges()
+    {
+
+        var entityChanges = new List<EntityChange>();
+
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            var firstOrDefault = Convert.ToInt32(entry.CurrentValues["Id"]) ?? 0;
+            if (!entry.CurrentValues.Properties.Any(x=>x.Name.Equals("Id"))) return null;
+
+            if (entry.State == EntityState.Added)
+            {
+                if (entry.Entity.GetType() == typeof(EntityChange))
+                    return null;
+                entityChanges.Add(new EntityChange
+                {
+                    EntityName = entry.Entity.GetType().Name,
+                    EntityKey = entry.CurrentValues["Id"]?.ToString(),
+                    Action = "Added",
+                    NewValue = JsonConvert.SerializeObject(entry.CurrentValues.ToObject()),
+                    ActionBy = Actor,
+                    ActionWhen = DateTime.Now
+                });
+            }
+            else if (entry.State == EntityState.Modified)
+            {
+                var oldValues = entry.OriginalValues;
+                var newValues = entry.CurrentValues;
+
+                var propertiesChanged = entry.OriginalValues.Properties
+                    .Where(p => !Equals(oldValues[p], newValues[p]))
+                    .Select(p => p);
+
+                foreach (var property in propertiesChanged)
+                {
+                    entityChanges.Add(new EntityChange
+                    {
+                        EntityName = entry.Entity.GetType().Name,
+                        EntityKey = entry.OriginalValues["Id"]?.ToString(),
+                        Action = "Modified",
+                        Field = property.Name,
+                        OldValue = JsonConvert.SerializeObject(oldValues[property]),
+                        NewValue = JsonConvert.SerializeObject(newValues[property]),
+                        ActionBy = Actor,
+                        ActionWhen = DateTime.Now
+                    });
+                }
+            }
+            else if (entry.State == EntityState.Deleted)
+            {
+                entityChanges.Add(new EntityChange
+                {
+                    EntityName = entry.Entity.GetType().Name,
+                    EntityKey = entry.OriginalValues["Id"]?.ToString(),
+                    Action = "Deleted",
+                    OldValue = JsonConvert.SerializeObject(entry.OriginalValues.ToObject()),
+                    ActionBy = Actor,
+                    ActionWhen = DateTime.Now
+                });
+            }
+        }
+
+        return entityChanges;
+    }
 
     public virtual DbSet<DashboardTemplate> DashboardTemplates { get; set; } = null!;
     public virtual DbSet<Dashboard> Dashboards { get; set; } = null!;
@@ -106,5 +207,24 @@ public partial class MyDbContext : DbContext
 		        modelBuilder.Entity(entityType.ClrType).HasQueryFilter(predicate);
 	        }
         }*/
+
+        //modelBuilder.Entity<BaseModel>().HasQueryFilter(e => !e.IsDeleted);
+
+        /*
+        var softDeleteEntities = typeof(ICanBeSoftDeleted).Assembly.GetTypes()
+            .Where(type => typeof(ICanBeSoftDeleted)
+                               .IsAssignableFrom(type)
+                           && type is { IsClass: true, IsAbstract: false });
+
+        var filter = new GlobalQueryFilter();
+        foreach (var softDeleteEntity in softDeleteEntities)
+        {
+            modelBuilder.Entity(softDeleteEntity)
+                .HasQueryFilter(
+                    filter.GenerateQueryFilterLambdaExpression(softDeleteEntity)
+                );
+
+        }
+    */
     }
 }

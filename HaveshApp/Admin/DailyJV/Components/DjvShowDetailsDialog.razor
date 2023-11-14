@@ -35,7 +35,7 @@
                         @if (_jvs.Any(x => x.StudentId == context.Student.Id))
                         {
                             <MudButton Variant="Variant.Filled"
-                                   EndIcon="@Icons.Filled.Light"
+                                   EndIcon="@Icons.Material.Filled.Light"
                                    Color="Color.Tertiary" OnClick="() => { context.Student.ShowDetail = !context.Student.ShowDetail; }">
                                 نمایش پرداخت
                             </MudButton>
@@ -48,14 +48,14 @@
                         @switch (status)
                         {
                         case 1:
-                        <MudIcon Icon="@Icons.Filled.Check" />
+                        <MudIcon Icon="@Icons.Material.Filled.Check" />
                         break;
 
                         case -1:
-                        <MudIcon Icon="@Icons.Filled.AirplaneTicket" />
+                        <MudIcon Icon="@Icons.Material.Filled.AirplaneTicket" />
                         break;
                         case 0:
-                        <MudIcon Icon="@Icons.Filled.Add" />
+                        <MudIcon Icon="@Icons.Material.Filled.Add" />
                         break;
                         }*@
 
@@ -90,7 +90,7 @@
     
     <DialogAction>
     
-        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
             بستن
         </MudButton>
     </DialogAction>

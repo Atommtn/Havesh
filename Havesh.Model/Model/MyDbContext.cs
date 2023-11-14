@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Havesh.Model.Data;
+using Havesh.Model.Filter;
+using Havesh.Model.Interceptors;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 
@@ -60,7 +63,10 @@ public partial class MyDbContext : DbContext
 			//optionsBuilder.UseSqlServer("Data Source=94.232.174.176;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;");
 			var conStr = _configuration["ConnectionStrings:ArvanConnection"];
 			//optionsBuilder.UseSqlServer("Data Source=94.101.189.165;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;");
-			optionsBuilder.UseSqlServer(conStr);
+			optionsBuilder
+                .UseSqlServer(conStr)
+                //.AddInterceptors(new CustomQueryInterceptor())
+                ;
             optionsBuilder.ConfigureWarnings(warnings =>
             {
                 warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
@@ -74,9 +80,7 @@ public partial class MyDbContext : DbContext
 			.UseCollation("Latin1_General_CI_AS");
 
 
-
-
-		modelBuilder.Entity<ShokouhPardisAccountingCode>(entity =>
+        modelBuilder.Entity<ShokouhPardisAccountingCode>(entity =>
 		{
 			entity.HasKey(e => e.Id);
 

@@ -27,19 +27,19 @@ public partial class DailyJVPage
 	[Inject] NavigationManager NavigationManager { get; set; }
         
 	ShokouhPardisStudentClass? _selectedStudent;
-	public ShokouhPardisTermClass SelectedTerm { get; set; }
+	ShokouhPardisTermClass SelectedTerm { get; set; }
         
 	MudTabs? tabs;
         
-	public TimeSpan? ts { get; set; }
-	ShokouhPardisTimeTable _timeTable;
+	TimeSpan? ts { get; set; }
+	ShokouhPardisTimeTable? _timeTable;
 	ShokouhPardisLevelBookPrice? _price;
 	ShokouhPardisLevelClass? _selectedLevel;
 	ShokouhPardisDailyJv _dailyJV;
         
-	public bool[] TabDisabled { get; set; } = { false, true, true };
+	bool[] TabDisabled { get; set; } = { false, true, true };
 
-	public CultureInfo _ir = new CultureInfo("fa-Ir");
+	CultureInfo _ir = new CultureInfo("fa-Ir");
 	bool initComplete = false;
 
 	private bool IsOutOfIns
@@ -61,8 +61,8 @@ public partial class DailyJVPage
 	private DailyJvRecordListComponent _dailyJVListComponent;
 
 	public string? OutOfInsFullName { get; set; }
-        
-	void Init()
+
+    async Task Init()
 	{
 		if (initComplete)
 			return;
@@ -74,15 +74,15 @@ public partial class DailyJVPage
 		_ir.NumberFormat.CurrencyDecimalDigits = 0;
 		_ir.NumberFormat.CurrencySymbol = "تومان";
 		StateHasChanged();
-		Reset();
+		await Reset();
 	}
 
-	void Reset()
+    async Task Reset()
 	{
 		_dailyJV = ShokouhPardisDailyJv.CreateNewDailyJV();
 		_dailyJV.CurrentDate = _userSession.LastJvDate;
 		_selectedStudent = null;
-		Activate(0);
+		await Activate(0);
 	}
 
 	protected override void OnInitialized()
@@ -182,7 +182,7 @@ public partial class DailyJVPage
 	async Task SaveClick()
 	{
 		_dailyJV.TermId = SelectedTerm.Id;
-		_dailyJV.TimeTableFk= _timeTable.Id;
+		_dailyJV.TimeTableFk= _timeTable?.Id;
 		_dailyJV.DateOfSettle += ts;
 		if (_dailyJV.CurrentDate == DateTime.Today)
 		{
@@ -204,7 +204,7 @@ public partial class DailyJVPage
 			Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
 			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
 			await _dailyJVListComponent.FilterData();
-			Reset();
+			await Reset();
 
 		}
 		catch (Exception e)
@@ -218,29 +218,28 @@ public partial class DailyJVPage
 
 	async Task<ShokouhPardisLevelClass?> GetStudentLevel(ShokouhPardisStudentClass? student, ShokouhPardisTermClass term)
 	{
-		if (student != null)
-		{
-			_timeTable = _dataProvider.GetStudetnLevel(student, term)!;
-			if (_timeTable == null)
-			{
+        if (student == null) 
+            return null;
 
-				var parameters = new DialogParameters();
-				parameters.Add("ContentText", "این دانش آموز در این ترم در هیچ کلاسی ثبت نام نشده است. اول می بایست به یک کلاس اضافه شود.");
-				parameters.Add("ButtonText", "متوجه شدم");
-				parameters.Add("Color", Color.Error);
+        _timeTable = _dataProvider.GetStudetnLevel(student, term)!;
+        if (_timeTable != null) 
+            return _timeTable.Level;
 
-				var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        var parameters = new DialogParameters
+        {
+            { "ContentText", "این دانش آموز در این ترم در هیچ کلاسی ثبت نام نشده است. اول می بایست به یک کلاس اضافه شود." },
+            { "ButtonText", "متوجه شدم" },
+            { "Color", Color.Error }
+        };
 
-				var dialog = DialogService.Show<AlertDialog>("خطا", parameters, options);
-				var result = await dialog.Result;
-				return null;
-			}
-			return _timeTable.Level;
-		}
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<AlertDialog>("خطا", parameters, options);
+        //var result = await dialog.Result;
+        return null;
 
 
-		return null;
-	}
+    }
 
 	ShokouhPardisLevelClass? SelectedLevel
 	{
@@ -256,7 +255,7 @@ public partial class DailyJVPage
 		}
 	}
 
-	public string? FeeFor
+    private string? FeeFor
 	{
 		get => _dailyJV.FeeFor;
 		set

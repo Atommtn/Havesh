@@ -1,7 +1,7 @@
 ﻿@using HaveshApp.Admin.CompleteForm.Component
 @if (Student is null)
 {
-    <MudAlert Class="m-auto text-center" Elevation="2" Variant="Variant.Outlined" Icon="@Icons.Filled.Person" Severity="Severity.Warning">
+    <MudAlert Class="m-auto text-center" Elevation="2" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Person" Severity="Severity.Warning">
         <MudText Typo="Typo.h6">
             برای ورود اطلاعات زبان آموز جدید روی دکمه "ثبت نام زبان آموز جدید" کلیک کنید
         </MudText>
@@ -16,11 +16,11 @@ else
         <MudCardContent>
             <MudPaper Width="100%">
                 <MudList Class="MList">
-                    <MudListItem Class="mud-typography" Text="لطفا قبل از تکمیل فرم مطالب زیر را با دقت مطالعه نمایید." Icon="@Icons.Filled.Warning" IconColor="Color.Warning" />
-                    <MudListItem Text="نام و نام خانوادگی بصورت جدا در قسمت مشخص شده وارد شود." Icon="@Icons.Filled.Person" IconColor="Color.Primary" />
-                    <MudListItem Text="لطفا کد ملی با دقت وارد شود.اگر کد ملی با صفر شروع میشود آن را وارد نمایید." Icon="@Icons.Filled.Grid3x3" IconColor="Color.Success" />
-                    <MudListItem Text="نام و نام خانوادگی مادر را بصورت کامل در قسمت مشخص شده وارد نمایید" Icon="@Icons.Filled.Woman" IconColor="Color.Info" />
-                    <MudListItem Text="شماره های تلفن همراه را با 09 وارد نمایید. اگر هم شماره ای را نداشتید یا نمیخواستید وارد کنید مثلا اگر منزلتان تلفن ثابت ندارد بجای آن صفر وارد نمایید." Icon="@Icons.Filled.PhoneAndroid" IconColor="Color.Error" />
+                    <MudListItem Class="mud-typography" Text="لطفا قبل از تکمیل فرم مطالب زیر را با دقت مطالعه نمایید." Icon="@Icons.Material.Filled.Warning" IconColor="Color.Warning" />
+                    <MudListItem Text="نام و نام خانوادگی بصورت جدا در قسمت مشخص شده وارد شود." Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary" />
+                    <MudListItem Text="لطفا کد ملی با دقت وارد شود.اگر کد ملی با صفر شروع میشود آن را وارد نمایید." Icon="@Icons.Material.Filled.Grid3x3" IconColor="Color.Success" />
+                    <MudListItem Text="نام و نام خانوادگی مادر را بصورت کامل در قسمت مشخص شده وارد نمایید" Icon="@Icons.Material.Filled.Woman" IconColor="Color.Info" />
+                    <MudListItem Text="شماره های تلفن همراه را با 09 وارد نمایید. اگر هم شماره ای را نداشتید یا نمیخواستید وارد کنید مثلا اگر منزلتان تلفن ثابت ندارد بجای آن صفر وارد نمایید." Icon="@Icons.Material.Filled.PhoneAndroid" IconColor="Color.Error" />
                     
 
                 </MudList>
@@ -58,7 +58,7 @@ else
                                               For="@(() => Student.StudentFamily)"
                                               Label="نام خانوادگی"/>
                                 <MudSwitch @bind-Checked="@Student.IsGirl"
-                                           ThumbIcon="@Icons.Filled.Girl" Color="Color.Error"
+                                           ThumbIcon="@Icons.Material.Filled.Girl" Color="Color.Error"
                                            UnCheckedColor="Color.Success" ThumbIconColor="Color.Default" >
                                     @if(Student.IsGirl==true)
                                     {
@@ -189,7 +189,7 @@ else
 
         <MudCardActions>
 
-            <MudButton Style="width: 250px; height: 90px;" Class="m-auto" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Filled.Save" OnClick="SaveClick" Size="Size.Large" >
+            <MudButton Style="width: 250px; height: 90px;" Class="m-auto" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Save" OnClick="SaveClick" Size="Size.Large" >
                 ذخیره
             </MudButton>
         </MudCardActions>

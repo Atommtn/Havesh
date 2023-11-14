@@ -49,6 +49,10 @@ public class JwtTokenParser
 
             return true;
         }
+        catch (SecurityTokenExpiredException ex)
+        {
+            return false;
+        }
         catch (Exception)
         {
             return false;

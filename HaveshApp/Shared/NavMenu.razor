@@ -15,22 +15,22 @@
             @*<MudNavLink Href="/" Match="NavLinkMatch.All">Students Menu</MudNavLink>
             <MudNavLink Href="/Home" Match="NavLinkMatch.All">Home</MudNavLink>*@
             <MudNavLink Href="/" Match="NavLinkMatch.All">Home Dahsboard CRM</MudNavLink>
-            <MudNavGroup Title="Admin" Expanded="true" Icon="@Icons.Filled.Dashboard">
+            <MudNavGroup Title="Admin" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
                 <MudNavLink Href="/DailyJV" Match="NavLinkMatch.Prefix">Daily JV</MudNavLink>
                 <MudNavLink Href="/DailyJVChart" Match="NavLinkMatch.Prefix">Daily JV Chart</MudNavLink>
                 <MudNavLink Href="/TeacherScheduler" Match="NavLinkMatch.Prefix">Teacher Scheduler</MudNavLink>
                 <MudNavLink Href="/TimeTableAdmin" Match="NavLinkMatch.Prefix">TimeTable Admin Report</MudNavLink>
                 <MudNavLink Href="/AdminSmsPanel" Match="NavLinkMatch.Prefix">Admin SMS Panel</MudNavLink>
             </MudNavGroup>
-            <MudNavGroup Title="Setting" Icon="@Icons.Filled.Settings">
+            <MudNavGroup Title="Setting" Icon="@Icons.Material.Filled.Settings">
                 <MudNavLink Href="/BasicSetting" Match="NavLinkMatch.Prefix">Basic Setting</MudNavLink>
             </MudNavGroup>
-            <MudNavGroup Title="Data Import" Icon="@Icons.Filled.CopyAll">
+            <MudNavGroup Title="Data Import" Icon="@Icons.Material.Filled.CopyAll">
                 <MudNavLink Href="/BookPriceClone" Match="NavLinkMatch.Prefix">Clone BookPrice</MudNavLink>
                 <MudNavLink Href="/ClonePage" Match="NavLinkMatch.Prefix">Clone TERM</MudNavLink>
 
             </MudNavGroup>
-            <MudNavGroup Title="Definition" Icon="@Icons.Filled.AddModerator">
+            <MudNavGroup Title="Definition" Icon="@Icons.Material.Filled.AddModerator">
 
                 <MudNavLink Href="/ManageDaboards" Match="NavLinkMatch.Prefix">Dashboard Definition</MudNavLink>
                 <MudDivider/>
@@ -40,13 +40,13 @@
                 <MudNavLink Href="/ScheduleDefinition" Match="NavLinkMatch.Prefix">Schedule Definition</MudNavLink>
                 <MudNavLink Href="/LevelPriceDefinition" Match="NavLinkMatch.Prefix">Level Price Definition</MudNavLink>
                 <MudNavLink Href="/LessonPlanDefinition" Match="NavLinkMatch.Prefix">Lesson Plan Definition</MudNavLink>
-                <MudNavGroup Title="Sessions" Icon="@Icons.Filled.MeetingRoom">
+                <MudNavGroup Title="Sessions" Icon="@Icons.Material.Filled.MeetingRoom">
                     <MudNavLink Href="/TermSessionTemplate" Match="NavLinkMatch.Prefix">Term Session Template Definition</MudNavLink>
                     <MudNavLink Href="/SessionActiviy" Match="NavLinkMatch.Prefix">Session Activity</MudNavLink>
                     <MudNavLink Href="/ClassProgram/SessionGenerator" Match="NavLinkMatch.Prefix">Term Session Generator</MudNavLink>
                     <MudNavLink Href="/ClassProgram/SessionCancel" Match="NavLinkMatch.Prefix">Term Session Cancelation</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Membership" Icon="@Icons.Filled.CardMembership">
+                <MudNavGroup Title="Membership" Icon="@Icons.Material.Filled.CardMembership">
                     <MudNavLink Href="/Users" Match="NavLinkMatch.Prefix">Users Definition</MudNavLink>
                     <MudNavLink Href="/Roles" Match="NavLinkMatch.Prefix">Roles Definition</MudNavLink>
                     <MudNavLink Href="/Permissions" Match="NavLinkMatch.Prefix">Permission Definition</MudNavLink>
@@ -57,16 +57,16 @@
     <AuthorizeView Roles="Admin,Modiator,Supervisor">
         <Authorized>
             <MudNavGroup Title="Dashboard" Expanded="true">
-                <MudNavLink Href="/ClassProgram" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.PersonalVideo" IconColor="Color.Warning">جدول برنامه کلاس ها</MudNavLink>
-                <MudNavLink Href="/TeacherTimeTable" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.PersonPin" IconColor="Color.Error">برنامه کلاس معلمین</MudNavLink>
+                <MudNavLink Href="/ClassProgram" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonalVideo" IconColor="Color.Warning">جدول برنامه کلاس ها</MudNavLink>
+                <MudNavLink Href="/TeacherTimeTable" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonPin" IconColor="Color.Error">برنامه کلاس معلمین</MudNavLink>
                 <MudDivider></MudDivider>
-                <MudNavLink Href="/DailyJV" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.Today" IconColor="Color.Info">ثبت روزانه</MudNavLink>
-                <MudNavLink Href="/StudentJVReport" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.Money" IconColor="Color.Info">گزارش بدهی</MudNavLink>
-                @*<MudNavLink Href="/siteJvPage" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.RecordVoiceOver">ثبت واریز اولیا</MudNavLink>*@
-                <MudNavLink Href="/prereg" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.RecordVoiceOver">پیش ثبت نام</MudNavLink>
+                <MudNavLink Href="/DailyJV" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Today" IconColor="Color.Info">ثبت روزانه</MudNavLink>
+                <MudNavLink Href="/StudentJVReport" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Money" IconColor="Color.Info">گزارش بدهی</MudNavLink>
+                @*<MudNavLink Href="/siteJvPage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.RecordVoiceOver">ثبت واریز اولیا</MudNavLink>*@
+                <MudNavLink Href="/prereg" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.RecordVoiceOver">پیش ثبت نام</MudNavLink>
                 <MudDivider></MudDivider>
-                <MudNavLink Href="/StudentSearch" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.PersonSearch" IconColor="Color.Success">زبان آموزان</MudNavLink>
-                <MudNavLink Href="/Profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.BookOnline">پروفایهای آنلاین</MudNavLink>
+                <MudNavLink Href="/StudentSearch" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonSearch" IconColor="Color.Success">زبان آموزان</MudNavLink>
+                <MudNavLink Href="/Profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BookOnline">پروفایهای آنلاین</MudNavLink>
             </MudNavGroup>
         </Authorized>
     </AuthorizeView>

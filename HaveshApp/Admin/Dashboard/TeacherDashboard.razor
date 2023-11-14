@@ -55,7 +55,7 @@
 
             @foreach (var act in _activities)
             {
-                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Class" Variant="Variant.Outlined" OnClick="() => ClassSessionClick(_session, act)">
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Class" Variant="Variant.Outlined" OnClick="() => ClassSessionClick(_session, act)">
                     <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
                         @act.ActivityTitle - جلسه @_session?.SessionNumber
                     </MudText>

@@ -69,7 +69,7 @@
                 @if (PreRegisterShow)
                 {
                     <MudStack Class="pa-4" Row="true">
-                        <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateNext" aria-label="NextDay" OnClick='() => SetDay(1)'></MudIconButton>
+                        <MudIconButton Color="@Color.Primary" Icon="@Icons.Material.Filled.NavigateNext" aria-label="NextDay" OnClick='() => SetDay(1)'></MudIconButton>
                         <MudSpacer></MudSpacer>
 
                         <MudDatePicker @bind-Date="_dailyJV.CurrentDate"
@@ -79,7 +79,7 @@
                                        MaxDate="DateTime.Today"
                                        TitleDateFormat="dddd, dd MMMM" />
                         <MudSpacer></MudSpacer>
-                        <MudIconButton Color="@Color.Primary" Icon="@Icons.Filled.NavigateBefore" aria-label="BeforeDay" OnClick='() => SetDay(-1)'></MudIconButton>
+                        <MudIconButton Color="@Color.Primary" Icon="@Icons.Material.Filled.NavigateBefore" aria-label="BeforeDay" OnClick='() => SetDay(-1)'></MudIconButton>
                     </MudStack>
 
 

@@ -21,7 +21,7 @@
         <ToolBarContent>
             <MudStack Row="true" Spacing="3" AlignItems="AlignItems.Center" Style="width: 100%">
 
-                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewTimesheetClick">
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewTimesheetClick">
                     تعریف برنامه کلاسی
                     </MudButton>
                 <MudSwitch @bind-Checked="@isPrivate" Label="نمایش کلاس های خصوص" Color="Color.Primary"  />
@@ -31,7 +31,7 @@
                               Placeholder="می توانید بر اساس هر موضوعی جستجو کنید"
                               DebounceInterval="1000"
                               OnDebounceIntervalElapsed="FilterData"
-                              AdornmentIcon="@Icons.Filled.Search"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
                               Adornment="Adornment.Start"
                               Clearable="true" />
             </MudStack>
@@ -49,13 +49,13 @@
         </HeaderContent>
         <GroupHeaderTemplate>
             <MudTh Class="mud-table-cell-custom-group" colspan="9">
-                <MudChip Label="false" Icon="@Icons.Filled.PersonPin">
+                <MudChip Label="false" Icon="@Icons.Material.Filled.PersonPin">
                     @($"{context.GroupName}: {context.Key}")
                 </MudChip>
-                <MudChip Label="true" Size="Size.Small" Icon="@Icons.Filled.DeveloperBoard">
+                <MudChip Label="true" Size="Size.Small" Icon="@Icons.Material.Filled.DeveloperBoard">
                     @context.Items.Count() کلاس
                 </MudChip>
-                <MudChip Label="true" Size="Size.Small" Icon="@Icons.Filled.People">
+                <MudChip Label="true" Size="Size.Small" Icon="@Icons.Material.Filled.People">
                     @context.Items.Select(x => _timeTableStudentsCount.TryGetValue(x.Id, out var count) ? count : 0).Sum() زبان آموز
                 </MudChip>
             </MudTh>
@@ -79,10 +79,10 @@
             </MudTd>*@
 
             <MudTd>
-                <MudIconButton Icon="@Icons.Filled.InstallDesktop" Color="Color.Success" Variant="Variant.Filled" OnClick="() => AddStudentToClassClick(context)" />
-                <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Info" Variant="Variant.Text" OnClick="() => EditButtonClick(context)" />
-                <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="() => DeleteButtonClick(context)"/>
-                <MudIconButton Icon="@Icons.Filled.ManageAccounts" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => ManageSessionClick(context)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.InstallDesktop" Color="Color.Success" Variant="Variant.Filled" OnClick="() => AddStudentToClassClick(context)" />
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Info" Variant="Variant.Text" OnClick="() => EditButtonClick(context)" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="() => DeleteButtonClick(context)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.ManageAccounts" Color="Color.Primary" Variant="Variant.Filled" OnClick="() => ManageSessionClick(context)"/>
             </MudTd>
 
         </RowTemplate>

@@ -3,7 +3,7 @@
 
 <MudTable T="SessionActivity" Items="_allActivities">
     <ToolBarContent>
-        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewSessionActivityClick">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewSessionActivityClick">
             New Session Activity
         </MudButton>
 
@@ -29,7 +29,7 @@
         <MudTd>@context.ValueOptionsCanMultiple</MudTd>
         <MudTd>@context.ValueControl</MudTd>
         <MudTd>
-            <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>EditSessionActivity(context)"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>EditSessionActivity(context)"/>
         </MudTd>
     </RowTemplate>
 </MudTable>

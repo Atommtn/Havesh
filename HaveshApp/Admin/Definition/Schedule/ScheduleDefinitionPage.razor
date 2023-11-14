@@ -15,7 +15,7 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">جدول زمانبندی ترمیک</MudText>
         <MudSpacer />
-        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="NewScheduleClick">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewScheduleClick">
             اضافه کردن عنوان زمانبندی جدید
         </MudButton>
 
@@ -35,7 +35,7 @@
                 {
                     @foreach (var prog in Schedule.Programs)
                     {
-                        <MudChip Color="Color.Success"  CloseIcon="@Icons.Filled.Delete"  OnClose="()=>DeleteProg(prog)">
+                        <MudChip Color="Color.Success"  CloseIcon="@Icons.Material.Filled.Delete"  OnClose="()=>DeleteProg(prog)">
                             @prog.DaySession.WeekDay.Title @prog.DaySession.Interval.Title
                         </MudChip>
 
@@ -44,9 +44,9 @@
             </MudItem>
         </MudTd>
         <MudTd>
-            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => EditScheduleClick(Schedule)"></MudIconButton>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() => EditScheduleClick(Schedule)"></MudIconButton>
         </MudTd><MudTd>
-            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Filled.Add" Size="Size.Small" OnClick="()=>AddProgramClick(Schedule)"></MudIconButton>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Add" Size="Size.Small" OnClick="()=>AddProgramClick(Schedule)"></MudIconButton>
         </MudTd>
 
 

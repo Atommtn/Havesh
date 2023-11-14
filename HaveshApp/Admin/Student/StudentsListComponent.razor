@@ -17,7 +17,7 @@
         <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Left">لیست زبان آموزان</MudAlert>
         @if (AddNewStudent)
         {
-            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" OnClick="AddStudent">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="AddStudent">
                 اضافه نمودن دانش آموز
             </MudButton>
 
@@ -25,7 +25,7 @@
         }
         @if (MultiSelect)
         {
-            <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Text" 
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" 
                        OnClick="SelectCompleteMultiClick">
                 Select Complete
             </MudButton>
@@ -42,7 +42,7 @@
                       Placeholder="می توانید بر اساس هر چیزی جستجو را بنویسید"
                       DebounceInterval="1000"
                       OnDebounceIntervalElapsed="FilterData"
-                      AdornmentIcon="@Icons.Filled.Search"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
                       Adornment="Adornment.Start"
                       Clearable="true" />
     </ToolBarContent>
@@ -68,13 +68,13 @@
         <MudTd>
             @if (MultiSelect)
             {
-                <MudIconButton Icon="@(student.IsSelect ? Icons.Filled.Check : Icons.Filled.Square)" Color="Color.Warning" Variant="Variant.Outlined" OnClick="() => SelectStudentToListClick(student)" />
+                <MudIconButton Icon="@(student.IsSelect ? Icons.Material.Filled.Check : Icons.Material.Filled.Square)" Color="Color.Warning" Variant="Variant.Outlined" OnClick="() => SelectStudentToListClick(student)" />
             }
         </MudTd>
         <MudTd>
             @if (SingleSelect)
             {
-                <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Check" Variant="Variant.Outlined" OnClick="() => SelectStudentClick(student)">
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" Variant="Variant.Outlined" OnClick="() => SelectStudentClick(student)">
                     Select
                 </MudButton>
             }
@@ -82,13 +82,13 @@
         <MudTd>
             @if (StudentDetail)
             {
-                <MudIconButton Icon="@Icons.Filled.Person" Color="Color.Success" Variant="Variant.Outlined" OnClick="() => StudentProfileClick(student)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Success" Variant="Variant.Outlined" OnClick="() => StudentProfileClick(student)"/>
             }
         </MudTd> 
         <MudTd>
             @if (RowStyle)
             {
-                <MudIconButton Icon="@Icons.Filled.Money" Color="Color.Warning" Variant="Variant.Text" OnClick="() => { student.ShowDetail = !student.ShowDetail; }"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Money" Color="Color.Warning" Variant="Variant.Text" OnClick="() => { student.ShowDetail = !student.ShowDetail; }"/>
             }
         </MudTd>
         <MudTd>
@@ -127,7 +127,7 @@
             {
                 <AuthorizeView Roles="Admin,Modiator">
                     <Authorized>
-                        <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Default" Variant="Variant.Filled" OnClick="() => EditStudentClick(student)"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" Variant="Variant.Filled" OnClick="() => EditStudentClick(student)"/>
                     </Authorized>
                 </AuthorizeView>
             }
@@ -141,7 +141,7 @@
             {
                 <AuthorizeView Roles="Admin,Modiator">
                     <Authorized>
-                        <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="() => DeleteStudentClick(student)"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Text" OnClick="() => DeleteStudentClick(student)"/>
                     </Authorized>
                 </AuthorizeView>
             }

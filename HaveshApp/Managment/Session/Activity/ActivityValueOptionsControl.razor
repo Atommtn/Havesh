@@ -6,7 +6,7 @@
 
 <MudTable Items="SessionActivity.ValueOptions" @ref="_table">
     <ToolBarContent>
-        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Filled" OnClick="NewValueOptionClick">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" OnClick="NewValueOptionClick">
             New Value Option
         </MudButton>
     </ToolBarContent>
@@ -25,10 +25,10 @@
         <MudTd>@context.Value</MudTd>
         <MudTd>@context.ShowByValue</MudTd>
         <MudTd>
-            <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>ValueOptionItemEditClick(context)"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>ValueOptionItemEditClick(context)"/>
         </MudTd>
         <MudTd>
-            <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" Variant="Variant.Filled" OnClick="()=>ValueOptionItemDeleteClick(context)"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Filled" OnClick="()=>ValueOptionItemDeleteClick(context)"/>
         </MudTd>
     </RowTemplate>
 </MudTable>

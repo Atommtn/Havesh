@@ -76,10 +76,10 @@
                 @if (Level is { } && _bookPrice is { })
                 {
 
-                    <MudChip Size="Size.Medium" Color="Color.Secondary" Icon="@Icons.Filled.MenuBook">
+                    <MudChip Size="Size.Medium" Color="Color.Secondary" Icon="@Icons.Material.Filled.MenuBook">
                         @_bookPrice.BookPrice
                     </MudChip>
-                    <MudChip Size="Size.Medium" Color="Color.Success" Icon="@Icons.Filled.Payment">
+                    <MudChip Size="Size.Medium" Color="Color.Success" Icon="@Icons.Material.Filled.Payment">
                         @_bookPrice.TuitionAmount
                     </MudChip>
                 }
@@ -98,11 +98,11 @@
         </MudForm>
     </ChildComponent>
     <DialogAction>
-        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
             Save
         </MudButton>
 
-        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
             Close
         </MudButton>
     </DialogAction>

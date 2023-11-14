@@ -10,6 +10,7 @@ public class Payload
     public List<string>? Roles { get; set; }
     public string? Email { get; set; }
     public string? Mobile { get; set; }
+    public DateTime? Expire { get; set; }
 
     public override string ToString()
     {

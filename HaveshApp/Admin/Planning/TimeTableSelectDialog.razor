@@ -19,7 +19,7 @@
                                   Placeholder="می توانید بر اساس هر موضوعی جستجو کنید"
                                   DebounceInterval="1000"
                                   OnDebounceIntervalElapsed="FilterData"
-                                  AdornmentIcon="@Icons.Filled.Search"
+                                  AdornmentIcon="@Icons.Material.Filled.Search"
                                   Adornment="Adornment.Start"
                                   Clearable="true" />
                 </MudStack>
@@ -31,13 +31,13 @@
             </HeaderContent>
             <GroupHeaderTemplate>
                 <MudTh Class="mud-table-cell-custom-group" colspan="9">
-                    <MudChip Label="false" Icon="@Icons.Filled.PersonPin">
+                    <MudChip Label="false" Icon="@Icons.Material.Filled.PersonPin">
                         @($"{context.GroupName}: {context.Key}")
                     </MudChip>
-                    <MudChip Label="true" Size="Size.Small" Icon="@Icons.Filled.DeveloperBoard">
+                    <MudChip Label="true" Size="Size.Small" Icon="@Icons.Material.Filled.DeveloperBoard">
                         @context.Items.Count() کلاس
                     </MudChip>
-                    <MudChip Label="true" Size="Size.Small" Icon="@Icons.Filled.People">
+                    <MudChip Label="true" Size="Size.Small" Icon="@Icons.Material.Filled.People">
                         @context.Items.Select(x => _timeTableStudentsCount.TryGetValue(x.Id, out var count) ? count : 0).Sum() زبان آموز
                     </MudChip>
                 </MudTh>
@@ -51,7 +51,7 @@
 
 
                 <MudTd>
-                    <MudIconButton Icon="@Icons.Filled.MoveToInbox" Color="Color.Success" Variant="Variant.Filled" OnClick="() => MoveDialogClick(context)" />
+                    <MudIconButton Icon="@Icons.Material.Filled.MoveToInbox" Color="Color.Success" Variant="Variant.Filled" OnClick="() => MoveDialogClick(context)" />
 
                 </MudTd>
 
@@ -70,7 +70,7 @@
         </MudTable>
     </ChildComponent>
     <DialogAction>
-        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Text" OnClick="CancleDialogClick">
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CancleDialogClick">
             انصراف
         </MudButton>
     </DialogAction>

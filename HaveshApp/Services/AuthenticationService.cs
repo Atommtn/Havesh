@@ -81,7 +81,7 @@ public class AuthenticationService
 		await _browserService.SetCookieAsync(tokenName, jwt, 30);
 		_navigationManager.NavigateTo("/", true);
 
-		return user;
+        return user;
 	}
 
 	public async Task<string> LogOut()
@@ -92,6 +92,7 @@ public class AuthenticationService
 		await _browserService.EraseCookieAsync(tokenName);
 		var state = await ((CustomAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
 		_navigationManager.NavigateTo("/LoginPage", true);
+        _dataProviderService.DbContext.Actor = null;
 		return _userSession.UserName!;
 	}
 }
