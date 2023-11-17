@@ -1,4 +1,5 @@
-﻿using HaveshApp.Admin.Authentication;
+﻿using Havesh.Model.Data.Dashboard;
+using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes.ExtensionMethods;
 using HaveshApp.Classes.SignalR;
 using Microsoft.AspNetCore.SignalR;

@@ -24,6 +24,7 @@ public class Message : BranchBaseModel
 	public List<ShokouhPardisMediaAttachment>? Attachments { get; set; }
 	public MessageTypeEnum Type { get; set; }
 	public string? Command { get; set; }
+	public string? CommandArg { get; set; }
 	public List<MessageAction>? Actions { get; set; }
 	public int? ReplyToMessageId { get; set; }
 		

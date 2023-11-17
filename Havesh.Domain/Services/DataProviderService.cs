@@ -1508,7 +1508,9 @@ public class DataProviderService
 
     public User GetUserByUseId(int userId)
     {
-        return DbContext.Users.First(x => x.Id == userId);
+        return DbContext.Users
+	        .Include(x=>x.Roles)
+	        .First(x => x.Id == userId);
     }
     public List<User> GetUsersInRole(Role? role = null)
     {
@@ -1723,6 +1725,8 @@ public class DataProviderService
 		    .ThenInclude(x => x.Programs)
 		    .ThenInclude(x => x.DaySession)
 		    .ThenInclude(x => x.Interval)
+		    .Include(x=>x.ClassRoom)
+		    .Include(x=>x.Level)
 		    .FirstOrDefault(x =>
 			    x.TermId == termId &&
 			    x.TeacherId == teacherId &&
@@ -1799,7 +1803,7 @@ public class DataProviderService
 
     public void SaveStudentActivity(StudentSessionActivity activity)
     {
-        DbContext.StudentSessionActivities.Update(activity);
+        DbContext.Update(activity);
         DbContext.SaveChanges();
     }
 
@@ -2207,6 +2211,18 @@ public class DataProviderService
 		    .ToList();
 
 	    return list;
+    }
+
+    public List<TimeTableSession> GetTimeTableSessions(List<ShokouhPardisTimeTable> timeTables)
+    {
+	    var list = timeTables.Select(z => z.Id).ToList();
+
+	    var timeTableSessions = DbContext
+		    .TimeTableSessions
+		    .Where(x => list.Contains(x.Id))
+		    .ToList();
+	    return timeTableSessions;
+
     }
 }
 

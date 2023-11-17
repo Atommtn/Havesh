@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Havesh.Model.Model;
+using HaveshApp.Classes.ExtensionMethods;
+using Microsoft.AspNetCore.Components;
 
 namespace Havesh.Domain.Services;
 
@@ -18,6 +22,7 @@ public class RemoteCommandHandlerService
 		_navigationManager = navigationManager;
 	}
 
+	
 	public async Task ExecuteCommand(string command)
 	{
 		var cmd = command.ToLower().Split(' ');

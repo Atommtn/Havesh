@@ -2,6 +2,7 @@
 @using Append.Blazor.Notifications
 @using DNTPersianUtils.Core
 @using Havesh.Model.Data
+@using Havesh.Model.Data.Dashboard
 @using Havesh.Model.Model
 @using HaveshApp.Classes.ExtensionMethods
 @using PersianDate.Standard
@@ -75,8 +76,8 @@
 	{
 		await _messageService.SendMessageAsync(new Message()
 			{
-				ReplyToMessageId = MessageDto.MessageId,
-				ReplyOriginalMessage = MessageDto.Body,
+				ReplyToMessageId = MessageDto?.MessageId,
+				ReplyOriginalMessage = MessageDto?.Body,
 				From = _dataProvider.GetUserByUseId(MessageDto.ToUserId),
 				To = _dataProvider.GetUserByUseId(MessageDto.FromUserId),
 				Severity = Severity.Normal,
@@ -90,5 +91,5 @@
 	}
 
 	[Parameter]
-	public MessageDto MessageDto { get; set; }
+	public MessageDto? MessageDto { get; set; }
 }

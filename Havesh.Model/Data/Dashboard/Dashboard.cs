@@ -119,9 +119,11 @@ namespace Havesh.Model.Data.Dashboard
 
         public bool? Hidden { get; set; }
         public bool? IsInline { get; set; }
+        
+        public Func<MessageDto, Task>? MessageReceived;
     }
 
-    public class Widget
+	public class Widget
     {
         public int Id { get; set; }
         public string Type { get; set; }

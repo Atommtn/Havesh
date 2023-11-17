@@ -95,4 +95,9 @@ public class AuthenticationService
         _dataProviderService.DbContext.Actor = null;
 		return _userSession.UserName!;
 	}
+
+	public User GetUser(int userId)
+	{
+		return _dataProviderService.GetUserByUseId(userId);
+	}
 }

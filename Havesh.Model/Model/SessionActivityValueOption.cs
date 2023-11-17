@@ -16,4 +16,6 @@ public partial class SessionActivityValueOption : BranchBaseModel
 
     public string? ShowByValue { get; set; }
 
+    public string? BroadcastToRoles { get; set; }
+
 }

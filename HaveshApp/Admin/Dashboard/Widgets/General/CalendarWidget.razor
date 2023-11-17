@@ -4,5 +4,5 @@
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
 <SmallWidgetContainer WidgetSetting="WidgetSetting">
-    @DateTime.Now.ToPersianDateTextify(true)
+    @DateTime.Today.AddDays(1).ToPersianDateTextify(true)
 </SmallWidgetContainer>

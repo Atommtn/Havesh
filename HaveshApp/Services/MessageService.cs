@@ -7,6 +7,7 @@ using Havesh.Model.Model;
 using HaveshApp.Classes.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using HaveshApp.Classes.ExtensionMethods;
+using HaveshApp.Services;
 
 namespace Havesh.Domain.Services;
 
@@ -48,10 +49,24 @@ public class MessageService
 	public async Task SendMessageAsync(Message message)
 	{
 		await _messageDataProvider.SendMessageAsync(message);
-		var connections = _connectionManagerService.GetOnlineUserConnections(message.To.Id);
+		var connections = _connectionManagerService.GetOnlineUserConnections(message.To);
 		foreach (var connection in connections)
 		{
 			await HubContext.Clients.Client(connection).SendAsync("HandleIncomingMessage", message.Dto());
+		}
+			
+	}
+
+	public async Task SendMessageToRolesAsync(Message message , string[] roles)
+	{
+		await _messageDataProvider.SendMessageAsync(message);
+		var connections = _connectionManagerService.GetOnlineConnectionsUserInRole(roles);
+		foreach (var connection in connections)
+		{
+			await HubContext
+				.Clients
+				.Client(connection)
+				.SendAsync("HandleIncomingMessage", message.Dto());
 		}
 			
 	}
@@ -60,8 +75,7 @@ public class MessageService
 
 public class MessageDataProviderService : DataProviderService
 {
-	public MessageDataProviderService(MyDbContext dbContext, 
-		FinancialService financialService) 
+	public MessageDataProviderService(MyDbContext dbContext) 
 		: base(dbContext)
 	{
 

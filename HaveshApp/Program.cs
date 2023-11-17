@@ -32,6 +32,7 @@ using Havesh.Model.Data;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Dashboard.Widgets.Supervisor;
 using HaveshApp.Admin.Dashboard.Widgets.Teacher;
+using HaveshApp.Services;
 
 // Configure logging to log to MSSqlServer database
 
@@ -76,11 +77,13 @@ builder.Services.AddDbContext<MyDbContext>();
 builder.Services.AddScoped<TeacherWidgetsService>();
 builder.Services.AddScoped<SupervisorWidgetsService>();
 
+builder.Services.AddSingleton<UserConnectionManagerService>();
+
+
 builder.Services.AddScoped<Navigation>();
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserSessionService>();
 builder.Services.AddScoped<MessageHandlingService>();
-builder.Services.AddSingleton<UserConnectionManagerService>();
 
 builder.Services.AddScoped<DashboardService>();
 

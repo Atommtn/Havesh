@@ -7,4 +7,5 @@ public enum MessageTypeEnum
 	Notification,
 	Alert,
 	Command,
+	Broadcast
 }

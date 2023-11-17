@@ -1,10 +1,13 @@
 ﻿@using Havesh.Model.Model
 @using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using System.Text.Json
+@using Havesh.Model.Data
+@using Newtonsoft.Json
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
 <LargWidgetContainer WidgetSetting="WidgetSetting">
 
-	<MudTable T="ShokouhPardisTimeTable" Items="SupervisorWidgetsService.IntervalTimeTables">
+	<MudTable T="ShokouhPardisTimeTable" Items="_timeTables">
 		<HeaderContent>
 			<MudTh>کلاس</MudTh>
 			<MudTh>معلم</MudTh>
@@ -29,17 +32,69 @@
 					@context.Sessions.FirstOrDefault(x => x.SessionDate >= DateTime.Today)?.SessionStatus
 				</MudChip>
 			</MudTd>
-			<MudTd></MudTd>
-			<MudTd></MudTd>
+			<MudTd>
+				@if (Absents.TryGetValue(context.Id, out var ac))
+				{
+					@ac
+				}
+			</MudTd>
+			<MudTd>
+				@if (Presents.TryGetValue(context.Id, out var pc))
+				{
+					@pc
+				}
+			</MudTd>
 		</RowTemplate>
 	</MudTable>
 </LargWidgetContainer>
 
 @code {
+	Dictionary<int, int> Absents = new Dictionary<int, int>();
+	Dictionary<int, int> Presents = new Dictionary<int, int>();
 	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; }
+
+	List<ShokouhPardisTimeTable>? _timeTables;
 
 	protected override void OnInitialized()
 	{
+		_timeTables = SupervisorWidgetsService.IntervalTimeTables;
+
+		WidgetSetting.MessageReceived = msg =>
+		{
+			if (msg is { MessageType: MessageTypeEnum.Broadcast, Command: "StudentActivity" })
+			{
+				var sessionActivity = JsonConvert.DeserializeObject<StudentSessionActivity>(msg.CommandArg!);
+				if (sessionActivity == null) return Task.CompletedTask;
+
+				var activity = SupervisorWidgetsService.SessionActivities.First(x => x.Id == sessionActivity.ActivityFk);
+				var timeTableSession = SupervisorWidgetsService.TimeTableSessions.First(x => x.TimeTableFk == sessionActivity.TimeTableSessionFk);
+				
+				if (activity.ActivityTitle == "حضور و غیاب")
+				{
+					switch (sessionActivity.ActivityValue)
+					{
+						case "Absent":
+							if (Absents.TryGetValue(timeTableSession.TimeTableFk, out var count))
+							{
+								Absents[timeTableSession.TimeTableFk]++;
+								break;
+							}
+							Absents.Add(timeTableSession.TimeTableFk, 1);
+							break;
+						case "Present":
+							if (Presents.TryGetValue(timeTableSession.TimeTableFk, out var countPresents))
+							{
+								Presents[timeTableSession.TimeTableFk]++;
+								break;
+							}
+							Presents.Add(timeTableSession.TimeTableFk, 1);
+							break;
+					}
+				}
+			}
+			StateHasChanged();
+			return Task.CompletedTask;
+		};
 		base.OnInitialized();
 	}
 

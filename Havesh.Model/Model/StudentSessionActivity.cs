@@ -4,6 +4,7 @@ using Havesh.Model.Data;
 
 namespace Havesh.Model.Model;
 
+[Serializable]
 public partial class StudentSessionActivity 
 {
 	[ForeignKey(nameof(StudentFk))]

@@ -2,43 +2,72 @@
 @using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
 @using HaveshApp.Admin.Dashboard.Widgets
-
+@using HaveshApp.Classes.ExtensionMethods
+@using Havesh.Model.Data
+@using Havesh.Model.Model
+@using System.Text.Json
+@implements IDisposable
 <MudGrid Class="mt-4">
-    @if (_ds is { DashboardWidgets.Count: > 0 })
-    {
-        @foreach (var ws in _ds
-                                                .DashboardWidgets
-                                                .OrderBy(x=>x.Order))
-        {
-          <WidgetRender WidgetSetting="ws"></WidgetRender>
-        }
-    }
+	@if (_ds is { DashboardWidgets.Count: > 0 } && _widgets != null)
+	{
+		foreach (var ws in _widgets)
+		{
+			<WidgetRender WidgetSetting="@ws"></WidgetRender>
+		}
+	}
 
 
 </MudGrid>
 
 @code {
 
-    [Parameter]
-    public int DashboardTemplateId
-    {
-        get => _dashboardTemplateId;
-        set
-        {
-            _dashboardTemplateId = value;
 
-            if (DashboardTemplateId == 0 )
-                Console.Beep();
+	[Parameter]
+	public int DashboardTemplateId
+	{
+		get => _dashboardTemplateId;
+		set
+		{
+			_dashboardTemplateId = value;
 
-            _ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User)
-                  ?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User);
+			_ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User)
+						?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User);
 
-            StateHasChanged();
-        }
-    }
+			_widgets = _ds?
+				.DashboardWidgets?
+				.OrderBy(x => x.Order).ToList();
 
-    Dashboard? _ds;
-    private int _dashboardTemplateId;
+			StateHasChanged();
+		}
+	}
 
+	List<DashboardWidgetSetting>? _widgets;
+
+	protected override void OnInitialized()
+	{
+		_userSession.MessageReceived += UserSessionOnMessageReceived;
+		base.OnInitialized();
+	}
+
+	private async Task UserSessionOnMessageReceived(MessageDto msg)
+	{
+		if (msg.MessageType == MessageTypeEnum.Broadcast)
+		{
+			if (_widgets != null)
+				foreach (var widget in _widgets.Where(widget => widget.MessageReceived != null))
+				{
+					await widget.MessageReceived?.Invoke(msg)!;
+				}
+		}
+	}
+
+
+	Dashboard? _ds;
+	private int _dashboardTemplateId;
+
+	public void Dispose()
+	{
+		_userSession.MessageReceived -= UserSessionOnMessageReceived;
+	}
 
 }

@@ -18,6 +18,12 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	private ShokouhPardisWeekDay? _weekday;
 	private ShokouhPardisInterval? _interval;
 
+	List<TimeTableSession> _timeTableSessions;
+	public List<TimeTableSession> TimeTableSessions => _timeTableSessions;
+
+	List<SessionActivity> _sessionActivities;
+	public List<SessionActivity> SessionActivities => _sessionActivities;
+	
 	public SupervisorWidgetsService(
 		DataProviderService dataProvider,
 		ISnackbar snackBar,
@@ -32,7 +38,7 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	}
 
 	//readonly DateTime _dateTime = DateTime.Today;
-	readonly DateTime _dateTime = DateTime.Today.AddDays(1);
+	readonly DateTime _dateTime = DateTime.Today.AddDays(0);
 
 	public List<ShokouhPardisTimeTable> IntervalTimeTables => _timeTables;
 	public List<ShokouhPardisClassRoom> IntervalClassrooms => _timeTables.Select(x=>x.ClassRoom).ToList();
@@ -62,6 +68,10 @@ public class SupervisorWidgetsService : WidgetServiceBase
 			return;
 		
 		_timeTables = _dataProvider.GetTimeTables(_interval,_weekday);
+
+		_timeTableSessions = _dataProvider.GetTimeTableSessions(_timeTables);
+		_sessionActivities = _dataProvider.GetSessionActivities();
+
 
 		/*
 		_students = _dataProvider.GetTimeTableStudents(_timeTable);
@@ -99,9 +109,14 @@ public class SupervisorWidgetsService : WidgetServiceBase
 
 	public ShokouhPardisWeekDay GetWeekday()
 	{
-		//var weekday = _dataProvider.GetTodayWeekday();
-		var weekday = _dataProvider.GetTodayWeekday(0);
+#if DEBUG
+		var weekday = Environment.GetEnvironmentVariable("FRZ_TEST") == "true" 
+				? _dataProvider.GetTodayWeekday(0)
+				: _dataProvider.GetTodayWeekday();
+#else
+		var weekday = _dataProvider.GetTodayWeekday();
 
+#endif
 		return weekday;
 	}
 
