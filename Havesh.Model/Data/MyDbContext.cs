@@ -49,63 +49,71 @@ public partial class MyDbContext : DbContext
     private List<EntityChange>? CaptureEntityChanges()
     {
 
-        var entityChanges = new List<EntityChange>();
+        List<EntityChange>? entityChanges = null;
 
         foreach (var entry in ChangeTracker.Entries())
         {
-            var firstOrDefault = Convert.ToInt32(entry.CurrentValues["Id"]) ?? 0;
-            if (!entry.CurrentValues.Properties.Any(x=>x.Name.Equals("Id"))) return null;
+            if (entry.State == EntityState.Unchanged) continue;
 
-            if (entry.State == EntityState.Added)
-            {
-                if (entry.Entity.GetType() == typeof(EntityChange))
-                    return null;
-                entityChanges.Add(new EntityChange
-                {
-                    EntityName = entry.Entity.GetType().Name,
-                    EntityKey = entry.CurrentValues["Id"]?.ToString(),
-                    Action = "Added",
-                    NewValue = JsonConvert.SerializeObject(entry.CurrentValues.ToObject()),
-                    ActionBy = Actor,
-                    ActionWhen = DateTime.Now
-                });
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                var oldValues = entry.OriginalValues;
-                var newValues = entry.CurrentValues;
+	        var hasId = entry.CurrentValues.Properties.Any(x => x.Name == "Id");
+	        if (!hasId || entry.Entity.GetType() == typeof(EntityChange))
+		        continue;
 
-                var propertiesChanged = entry.OriginalValues.Properties
-                    .Where(p => !Equals(oldValues[p], newValues[p]))
-                    .Select(p => p);
+	        entityChanges ??= new List<EntityChange>();
 
-                foreach (var property in propertiesChanged)
-                {
-                    entityChanges.Add(new EntityChange
-                    {
-                        EntityName = entry.Entity.GetType().Name,
-                        EntityKey = entry.OriginalValues["Id"]?.ToString(),
-                        Action = "Modified",
-                        Field = property.Name,
-                        OldValue = JsonConvert.SerializeObject(oldValues[property]),
-                        NewValue = JsonConvert.SerializeObject(newValues[property]),
-                        ActionBy = Actor,
-                        ActionWhen = DateTime.Now
-                    });
-                }
-            }
-            else if (entry.State == EntityState.Deleted)
-            {
-                entityChanges.Add(new EntityChange
-                {
-                    EntityName = entry.Entity.GetType().Name,
-                    EntityKey = entry.OriginalValues["Id"]?.ToString(),
-                    Action = "Deleted",
-                    OldValue = JsonConvert.SerializeObject(entry.OriginalValues.ToObject()),
-                    ActionBy = Actor,
-                    ActionWhen = DateTime.Now
-                });
-            }
+	        var idValue = entry.CurrentValues["Id"];
+	        var entityName = entry.Entity.GetType().Name;
+	        switch (entry.State)
+			{
+				case EntityState.Added:
+					entityChanges.Add(new EntityChange
+					{
+						EntityName = entityName,
+						EntityKey = idValue?.ToString(),
+						Action = "Added",
+						NewValue = JsonConvert.SerializeObject(entry.CurrentValues.ToObject()),
+						ActionBy = Actor,
+						ActionWhen = DateTime.Now
+					});
+					break;
+				case EntityState.Modified:
+				{
+					var oldValues = entry.OriginalValues;
+					var newValues = entry.CurrentValues;
+
+					var propertiesChanged = entry.OriginalValues.Properties
+						.Where(p => !Equals(oldValues[p], newValues[p]))
+						.Select(p => p);
+
+					foreach (var property in propertiesChanged)
+					{
+						entityChanges.Add(new EntityChange
+						{
+							EntityName = entityName,
+							EntityKey = idValue?.ToString(),
+							Action = "Modified",
+							Field = property.Name,
+							OldValue = JsonConvert.SerializeObject(oldValues[property]),
+							NewValue = JsonConvert.SerializeObject(newValues[property]),
+							ActionBy = Actor,
+							ActionWhen = DateTime.Now
+						});
+					}
+
+					break;
+				}
+				case EntityState.Deleted:
+					entityChanges.Add(new EntityChange
+					{
+						EntityName = entityName,
+						EntityKey = idValue?.ToString(),
+						Action = "Deleted",
+						OldValue = JsonConvert.SerializeObject(entry.OriginalValues.ToObject()),
+						ActionBy = Actor,
+						ActionWhen = DateTime.Now
+					});
+					break;
+			}
         }
 
         return entityChanges;

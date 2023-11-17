@@ -30,6 +30,9 @@ namespace HaveshApp.Admin.Dashboard.Personal.Widgets
         public string Title { get; set; } = "Title";
 
         [Parameter]
+        public bool? IsInline { get; set; }
+
+        [Parameter]
         public string? Value { get; set; }
     }
 }

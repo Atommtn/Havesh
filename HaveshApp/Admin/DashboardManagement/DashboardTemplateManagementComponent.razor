@@ -363,15 +363,23 @@
 
     private void AddWidgetToDashboardClick(Dashboard selectedDashboard, DashboardTemplateWidget context)
     {
-        context.CanAdd = false;
-        var widgetSetting = new DashboardWidgetSetting()
-            {
-                Dashboard = selectedDashboard,
-                Widget = context.Widget,
-                WidgetGroup = SelectedWidgetGroup
-            };
-        selectedDashboard.DashboardWidgets.Add(widgetSetting);
-        _dashboardProvider.UpdateDashboard(selectedDashboard);
+	    try
+	    {
+		    context.CanAdd = false;
+		    var widgetSetting = new DashboardWidgetSetting()
+		    {
+			    Dashboard = selectedDashboard,
+			    Widget = context.Widget,
+			    WidgetGroup = SelectedWidgetGroup
+		    };
+
+		    selectedDashboard.DashboardWidgets?.Add(widgetSetting);
+		    _dashboardProvider.UpdateDashboard(selectedDashboard);
+	    }
+	    catch (Exception e)
+	    {
+		    _snackBar.Add(e.Message);
+	    }
     }
 
     private void RemoveWidgetSettingFromDashboardClick(Dashboard dashboard, DashboardTemplateWidget dtw)

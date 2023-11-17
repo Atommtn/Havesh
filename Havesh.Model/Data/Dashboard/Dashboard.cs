@@ -118,6 +118,7 @@ namespace Havesh.Model.Data.Dashboard
         }
 
         public bool? Hidden { get; set; }
+        public bool? IsInline { get; set; }
     }
 
     public class Widget
@@ -133,7 +134,9 @@ namespace Havesh.Model.Data.Dashboard
         public int? IconSize { get; set; } = 54;
         public string? BreakPoints { get; set; } = "xs=12,sm=6,md=3";
 
-        public bool AllowRemove { get; set; } = false;
+        public bool? IsInline { get; set; }
+
+		public bool AllowRemove { get; set; } = false;
         public bool AllowHidden { get; set; } = false;
 
         public List<DashboardTemplateWidget>? DashboardTemplateWidgets { get; set; }

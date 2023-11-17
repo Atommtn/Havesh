@@ -1,0 +1,23 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@using DNTPersianUtils.Core
+@using Havesh.Model.Model
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+
+<SmallWidgetContainer WidgetSetting="WidgetSetting">
+    @_interval?.Title
+</SmallWidgetContainer>
+
+@code
+{
+	private ShokouhPardisInterval? _interval;
+
+	[Inject]
+	public SupervisorWidgetsService? SupervisorWidgetsService { get; set; }
+
+	protected override void OnInitialized()
+	{
+		_interval = SupervisorWidgetsService?.GetCurrentInterval();
+		base.OnInitialized();
+	}
+}

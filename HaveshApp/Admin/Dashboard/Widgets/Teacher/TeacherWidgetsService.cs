@@ -7,7 +7,7 @@ using MudBlazor;
 
 namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 {
-    public class TeacherWidgetsService
+    public class TeacherWidgetsService : WidgetServiceBase
     {
         private readonly DataProviderService _dataProvider;
         private readonly ISnackbar _snackBar;

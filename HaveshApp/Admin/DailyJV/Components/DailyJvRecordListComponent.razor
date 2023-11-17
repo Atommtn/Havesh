@@ -54,7 +54,7 @@
         <RowTemplate Context="dJV">
             <MudTd></MudTd>
             <MudTd DataLabel="نام زبان آموز">@dJV.Student</MudTd>
-            <MudTh>@dJV.CurrentDate?.Date</MudTh>
+            <MudTh>@dJV.CurrentDate?.Date.ToPersianDateTextify()</MudTh>
             <MudTd DataLabel="شیوه پرداخت">@dJV.PaymentType</MudTd>
             <MudTd DataLabel="بابت">@dJV.FeeFor</MudTd>
             <MudTd DataLabel="مبلغ">@dJV.Fee</MudTd>

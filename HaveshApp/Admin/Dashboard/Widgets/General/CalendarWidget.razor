@@ -1,0 +1,8 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@using DNTPersianUtils.Core
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+
+<SmallWidgetContainer WidgetSetting="WidgetSetting">
+    @DateTime.Now.ToPersianDateTextify(true)
+</SmallWidgetContainer>

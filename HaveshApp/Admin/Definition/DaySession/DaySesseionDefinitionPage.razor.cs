@@ -8,9 +8,9 @@ namespace HaveshApp.Admin.Definition.DaySession;
 
 public partial class DaySesseionDefinitionPage
 {
-	[Inject] DataProviderService DataProvider { get; set; }
-	[Inject] IDialogService DialogService { get; set; }
-	[Inject] ISnackbar Snackbar { get; set; }
+	//[Inject] DataProviderService DataProvider { get; set; }
+	//[Inject] IDialogService DialogService { get; set; }
+	//[Inject] ISnackbar Snackbar { get; set; }
 
 	List<ShokouhPardisDaySession>? daySessions = null;
 	MudTable<ShokouhPardisDaySession>? table;
@@ -27,7 +27,7 @@ public partial class DaySesseionDefinitionPage
 	}
 	void RefreshData()
 	{
-		daySessions = DataProvider.GetDaySessions(SelectedTerm);
+		daySessions = _dataProvider.GetDaySessions(SelectedTerm);
 
 	}
 
@@ -37,8 +37,8 @@ public partial class DaySesseionDefinitionPage
 	async Task NewDaySessionClick()
 	{
 		var daySession = ShokouhPardisDaySession.CreateDaySession(SelectedTerm.Id);
-		daySession.WeekDay = DataProvider.GetFirstWeekDays();
-		daySession.Interval = DataProvider.GetFirstIntervalByTerm(SelectedTerm);
+		daySession.WeekDay = _dataProvider.GetFirstWeekDays();
+		daySession.Interval = _dataProvider.GetFirstIntervalByTerm(SelectedTerm);
 
 		await EditButtonClick(daySession);
 	}
@@ -50,7 +50,7 @@ public partial class DaySesseionDefinitionPage
 
 	async Task OpenNewDaySessionDialog(ShokouhPardisDaySession daySessions)
 	{
-		var dialogReference = DialogService.Show<DaySesseionDefinitionDialog>(
+		var dialogReference = await _dialogService.ShowAsync<DaySesseionDefinitionDialog>(
 			(daySessions.Id > 0 ? "ویرایش " : "جدید ") + "روز سانس ",
 			new DialogParameters
 			{
@@ -63,16 +63,16 @@ public partial class DaySesseionDefinitionPage
 				MaxWidth = MaxWidth.Large
 			});
 		var dialogResult = await dialogReference.Result;
-		if (dialogResult.Cancelled == false)
+		if (dialogResult.Canceled == false)
 		{
 			var retData = (ShokouhPardisDaySession)dialogResult.Data;
-			var result = DataProvider.SaveEditDaySession(retData);
+			var result = _dataProvider.SaveEditDaySession(retData);
 
 			if (result)
 			{
 				var parameters = new DialogParameters();
 
-				bool? result1 = await DialogService.ShowMessageBox(
+				bool? result1 = await _dialogService.ShowMessageBox(
 					"خطا",
 					(MarkupString)
 					@$"روز-سانس با این مشخصات قبلا ذخیره شده است!
@@ -82,7 +82,7 @@ public partial class DaySesseionDefinitionPage
 			}
 			else
 			{
-				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
+				_snackBar.Add("با موفقیت ذخیره شد.", Severity.Success);
 				Log.Warning("User {UserName} Save-Update DaySession {DaySessionId}", _userSession.Payload.UserName, retData.Id);
 			}
 

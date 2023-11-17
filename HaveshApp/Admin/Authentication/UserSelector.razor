@@ -1,6 +1,6 @@
 ﻿@using Havesh.Model.Model
 
-<MudSelect T="User?" Label="کاربر" @bind-Value="User">
+<MudSelect T="User" Label="کاربر" @bind-Value="User">
     @if (AllowNull)
     {
         <MudSelectItem Value="@((User)null)">None</MudSelectItem>

@@ -5,11 +5,13 @@
              Icon="@(WidgetSetting.Icon ?? WidgetSetting.Widget.Icon)"
              IconColor="@(WidgetSetting.IconColor ?? WidgetSetting.Widget.IconColor)"
              Height="@(WidgetSetting.Height ?? WidgetSetting.Widget.Height)"
+             IsInline="@(WidgetSetting.IsInline ?? WidgetSetting.Widget.IsInline)"
              IconSize="@(WidgetSetting.IconSize ?? WidgetSetting.Widget.IconSize)"
              TitleClass="@(WidgetSetting.TitleClass ?? WidgetSetting.Widget.TitleClass)"
              BreakPoints="@(WidgetSetting.BreakPoints ?? WidgetSetting.Widget.BreakPoints)">
-    @ChildContent
+	@ChildContent
 </SmallWidget>
+
 @code {
 
 

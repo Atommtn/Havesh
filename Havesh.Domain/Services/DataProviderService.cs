@@ -1696,24 +1696,34 @@ public class DataProviderService
         return weekDay;
     }
 
-    public ShokouhPardisTimeTable? GetTeacherTimeTable(ShokouhPardisTermClass term,
+    public ShokouhPardisTimeTable? GetTeacherTimeTable(int termId,
+	    int teacherId,
+	    int weekdayId,
+	    int intervalId)
+    {
+	    var tt = DbContext
+		    .ShokouhPardisTimeTables
+		    .Include(x => x.Schedule)
+		    .ThenInclude(x => x.Programs)
+		    .ThenInclude(x => x.DaySession)
+		    .ThenInclude(x => x.Interval)
+		    .FirstOrDefault(x =>
+			    x.TermId == termId &&
+			    x.TeacherId == teacherId &&
+			    x.Schedule.Programs.Any(p => p.DaySession.IntervalId == intervalId &&
+			                                 p.DaySession.WeekdayId == weekdayId));
+	    return tt;
+
+	}
+
+	public ShokouhPardisTimeTable? GetTeacherTimeTable(ShokouhPardisTermClass term,
         ShokouhPardisTeacherClass teacher,
         ShokouhPardisWeekDay weekday,
         ShokouhPardisInterval interval)
     {
-        var tt = DbContext
-            .ShokouhPardisTimeTables
-            .Include(x => x.Schedule)
-            .ThenInclude(x => x.Programs)
-            .ThenInclude(x => x.DaySession)
-            .ThenInclude(x => x.Interval)
-            .FirstOrDefault(x =>
-                x.TermId == term.Id &&
-                x.TeacherId == teacher.Id &&
-                x.Schedule.Programs.Any(p => p.DaySession.IntervalId == interval.Id &&
-                                             p.DaySession.WeekdayId == weekday.Id));
-        return tt;
-    }
+        return GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
+
+	}
 
     public TimeTableSession GetTimeTableSession(int sessionId)
     {
@@ -2167,6 +2177,20 @@ public class DataProviderService
             .ThenInclude(x => x.Teacher)
 
             .FirstOrDefault(x => x.Id == sessionId);
+    }
+
+    public IEnumerable<ShokouhPardisTeacherClass> GetTeachersInInterval(int termId,int wdId, int intervalId)
+    {
+	    var list = DbContext.ShokouhPardisTeacherTimeSheets
+		    .Include(x=>x.Teacher)
+		    .Where(x => 
+			    x.TermId == termId &&
+			    x.WeekDayId == wdId &&
+			    x.IntervalId == intervalId)
+		    .Select(x=>x.Teacher)
+		    .ToList();
+
+	    return list;
     }
 }
 

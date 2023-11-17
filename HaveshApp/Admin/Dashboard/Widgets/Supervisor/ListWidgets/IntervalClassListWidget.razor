@@ -1,0 +1,17 @@
+﻿<h3>IntervalClassListWidget</h3>
+
+
+
+@code {
+	
+	[Inject]
+	SupervisorWidgetsService SupervisorWidgetsService { get; set; }
+
+	protected override void OnInitialized()
+	{
+		var term = SupervisorWidgetsService.GetCurrentTerm();
+
+		base.OnInitialized();
+	}
+
+}
