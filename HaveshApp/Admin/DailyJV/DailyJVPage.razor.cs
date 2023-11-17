@@ -21,7 +21,7 @@ namespace HaveshApp.Admin.DailyJV;
 public partial class DailyJVPage
 {
 
-        
+	
 	[Inject] IDialogService DialogService { get; set; }
 	[Inject] ISnackbar Snackbar { get; set; }
 	[Inject] NavigationManager NavigationManager { get; set; }

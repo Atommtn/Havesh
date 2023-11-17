@@ -212,6 +212,22 @@ public class DataProviderService
         return classRooms;
     }
 
+    public List<ShokouhPardisTimeTable> GetTimeTables(ShokouhPardisInterval interval , ShokouhPardisWeekDay weekDay)
+    {
+	    var timeTables = DbContext.ShokouhPardisTimeTables
+		    .Include(x=>x.Teacher)
+		    .Include(x=>x.ClassRoom)
+		    .Include(x=>x.Schedule)
+		    .ThenInclude(x=>x.Programs)
+		    .ThenInclude(x=>x.DaySession)
+		    .Include(x=>x.Sessions)
+		    .OrderBy(x=>x.ClassRoom.ClassRoomName)
+		    .Where(x=>x.Schedule.Programs.Any(z=>z.DaySession.IntervalId == interval.Id && 
+		                                         z.DaySession.WeekdayId == weekDay.Id))
+		    .ToList();
+	    return timeTables;
+    }
+
     public void AddStudentsToTeacherTimeSheet(ShokouhPardisTimeTable timeTable,
         List<ShokouhPardisStudentClass> selectedStudents)
     {

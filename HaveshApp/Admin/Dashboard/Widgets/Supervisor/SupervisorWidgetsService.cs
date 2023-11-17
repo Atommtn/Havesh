@@ -2,7 +2,6 @@
 using Havesh.Model.Model;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes.Auth;
-
 using MudBlazor;
 
 namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor;
@@ -12,6 +11,7 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	private readonly DataProviderService _dataProvider;
 	private readonly ISnackbar _snackBar;
 	private readonly UserSessionService _userSession;
+	private List<ShokouhPardisTimeTable> _timeTables;
 
 	private IEnumerable<ShokouhPardisTeacherClass>? _teachers;
 	private ShokouhPardisTermClass? _term;
@@ -34,7 +34,8 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	//readonly DateTime _dateTime = DateTime.Today;
 	readonly DateTime _dateTime = DateTime.Today.AddDays(1);
 
-
+	public List<ShokouhPardisTimeTable> IntervalTimeTables => _timeTables;
+	public List<ShokouhPardisClassRoom> IntervalClassrooms => _timeTables.Select(x=>x.ClassRoom).ToList();
 
 	private void ReloadData()
 	{
@@ -59,19 +60,15 @@ public class SupervisorWidgetsService : WidgetServiceBase
 
 		if (_interval is null || _teachers is null)
 			return;
+		
+		_timeTables = _dataProvider.GetTimeTables(_interval,_weekday);
 
 		/*
-		_timeTable = GetTeacherTimeTable(0);
 		_students = _dataProvider.GetTimeTableStudents(_timeTable);
 
 		if (_students != null && _timeTable != null)
 			_timeTable.StudentsCount = _students.Count();
 
-		_session = GetCurrentTimeTableSession(_timeTable);
-		if (_session != null)
-		{
-			_activities = _dataProvider.GetSessionActivities(_session);
-		}
 	*/
 	}
 
@@ -100,12 +97,6 @@ public class SupervisorWidgetsService : WidgetServiceBase
 		return _dataProvider.GetTeacherTimeTable(_term.Id, teacherId, _weekday.Id, _interval.Id);
 	}
 
-	public TimeTableSession GetCurrentTimeTableSession(ShokouhPardisTimeTable? shokouhPardisTimeTable)
-	{
-		return _dataProvider.GetTimeTableSession(shokouhPardisTimeTable, _dateTime) 
-		       ?? new TimeTableSession() { };
-	}
-
 	public ShokouhPardisWeekDay GetWeekday()
 	{
 		//var weekday = _dataProvider.GetTodayWeekday();
@@ -113,6 +104,8 @@ public class SupervisorWidgetsService : WidgetServiceBase
 
 		return weekday;
 	}
+
+	public ShokouhPardisInterval? CurrentInterval => GetCurrentInterval();
 
 	public ShokouhPardisInterval? GetCurrentInterval(ShokouhPardisTermClass? term = null)
 	{

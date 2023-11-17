@@ -1,16 +1,45 @@
-﻿<h3>IntervalClassListWidget</h3>
+﻿@using Havesh.Model.Model
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
+<LargWidgetContainer WidgetSetting="WidgetSetting">
 
+	<MudTable T="ShokouhPardisTimeTable" Items="SupervisorWidgetsService.IntervalTimeTables">
+		<HeaderContent>
+			<MudTh>کلاس</MudTh>
+			<MudTh>معلم</MudTh>
+			<MudTh>جلسه</MudTh>
+			<MudTh>حاضرین</MudTh>
+			<MudTh>غایبین</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd>
+				<MudChip Label="true">
+					@context.ClassRoom.ClassRoomName
+				</MudChip>
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.body1" Color="Color.Warning">
+					@context.Teacher.FullName
+				</MudText>
+			</MudTd>
+			<MudTd>
+				<MudChip Label="true" Size="Size.Small" Color="Color.Success">
+					@context.Sessions.FirstOrDefault(x => x.SessionDate >= DateTime.Today)?.SessionNumber -
+					@context.Sessions.FirstOrDefault(x => x.SessionDate >= DateTime.Today)?.SessionStatus
+				</MudChip>
+			</MudTd>
+			<MudTd></MudTd>
+			<MudTd></MudTd>
+		</RowTemplate>
+	</MudTable>
+</LargWidgetContainer>
 
 @code {
-	
-	[Inject]
-	SupervisorWidgetsService SupervisorWidgetsService { get; set; }
+	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; }
 
 	protected override void OnInitialized()
 	{
-		var term = SupervisorWidgetsService.GetCurrentTerm();
-
 		base.OnInitialized();
 	}
 
