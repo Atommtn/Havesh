@@ -33,6 +33,10 @@
         const newTab = window.open(url, '_blank');
         newTab.focus();
     },
+    OpenInCurrentTab: function (url) {
+        const newTab = window.open(url, '_self');
+        newTab.focus();
+    },
 
     PrintPage: function() {
         window.print();

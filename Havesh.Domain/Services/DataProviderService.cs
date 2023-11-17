@@ -589,7 +589,8 @@ public class DataProviderService
                 (x.Term.TermName != null && x.Term.TermName.Contains(searchText)) ||
                 (x.Description != null && x.Description.Contains(searchText)) ||
                 x.Schedule.Title.Contains(searchText) ||
-                x.Level.LevelName.Contains(searchText)
+                x.Level.LevelName.Contains(searchText) ||
+                x.Id.ToString() == searchText
             );
         }
 

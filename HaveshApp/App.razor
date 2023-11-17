@@ -11,21 +11,79 @@
                     </MudText>
                 </Authorizing>
                 <NotAuthorized>
-                    <MudCard>
-                        <MudCardHeader>
-                           ورود به سیستم
-                        </MudCardHeader>
-                        <MudCardContent>
-                            اگر نام کاربری و رمز عبور دارید لطفا وارد شوید.
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Login" Variant="Variant.Text" Href="/LoginPage">
-                                ورود
-                            </MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                   @*  <WebPageComponent></WebPageComponent> *@
-                    @*
+                    <MudContainer Class="mt-16">
+                    
+                        <MudGrid Class="mt-8">
+                            <MudItem xs="12" sm="12" md="4">
+
+                                <MudCard Elevation="25" Class="rounded-lg pb-4">
+                                    <MudCardHeader Typo="Typo.h5" Align="Align.Center">
+                                        ورود به سیستم
+                                    </MudCardHeader>
+                                    <MudCardContent>
+                                        <div class="d-flex justify-center">
+                                            <MudText Typo="Typo.h5">اگر نام کاربری و رمز عبور دارید لطفا وارد شوید.</MudText>
+                                        </div>
+                                        <MudList Class="mx-auto mt-4" Style="width:300px;">
+                                            <MudListItem IconColor="Color.Info" Icon="@Icons.Material.Filled.CastForEducation">
+                                                حضور و غیاب
+                                            </MudListItem>
+                                            <MudListItem IconColor="Color.Success" Icon="@Icons.Material.Filled.StarRate">
+                                                نمره دهی آنلاین
+                                            </MudListItem>
+                                            <MudListItem IconColor="Color.Warning" Icon="@Icons.Material.Filled.HistoryEdu">
+                                                عملکرد آموزشی
+                                            </MudListItem>
+                                            <MudListItem IconColor="Color.Error" Icon="@Icons.Material.Filled.VerifiedUser">
+                                                عملکرد انضباطی
+                                            </MudListItem>
+                                        </MudList>
+                                    </MudCardContent>
+                                    <MudCardActions Class="d-flex justify-center">
+                                        <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Login" Variant="Variant.Filled" Href="/LoginPage">
+                                            ورود
+                                        </MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="4">
+
+                                <MudCard Elevation="25" Class="rounded-lg pb-4">
+                                    <MudCardHeader Typo="Typo.h5" Align="Align.Center">
+                                        وب سایت آکادمی تخصصی هاوِش
+                                    </MudCardHeader>
+                                    <MudCardContent>
+                                        <div class="d-flex justify-center">
+                                            <MudText Typo="Typo.h5">وب سایت آکادمی تخصصی هاوِش  : اخبار، برنامه ها</MudText>
+                                        </div>
+                                        <MudList Class="mx-auto mt-4" Style="width:300px;">
+                                            <MudListItem IconColor="Color.Info" Icon="@Icons.Material.Filled.Web">
+                                                درباره آکادمی
+                                            </MudListItem>
+                                            <MudListItem IconColor="Color.Success" Icon="@Icons.Material.Filled.Description">
+                                                برنامه های آکادمی
+                                            </MudListItem>
+                                            <MudListItem IconColor="Color.Warning" Icon="@Icons.Material.Filled.Newspaper">
+                                                اخبار و برنامه ها
+                                            </MudListItem>
+                                            <MudListItem IconColor="Color.Error" Icon="@Icons.Material.Filled.ContactPhone">
+                                                تماس با آکادمی
+                                            </MudListItem>
+                                        </MudList>
+                                    </MudCardContent>
+                                    <MudCardActions Class="d-flex justify-center">
+                                        <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Web" Variant="Variant.Filled" OnClick="WebsiteClick">
+                                            ورود به وب سایت
+                                        </MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                            </MudItem>
+                        </MudGrid>
+                    </MudContainer>
+
+                    
+                    @* <WebPageComponent></WebPageComponent> *@
+                    @* 
                     <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
                         <MudCarouselItem Transition="transition" Color="@Color.Primary">
                             <div class="d-flex" style="height:100%">

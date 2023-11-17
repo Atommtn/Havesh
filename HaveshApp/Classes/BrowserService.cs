@@ -34,5 +34,8 @@ public class BrowserService
 	public async Task OpenInNewTabAsync(string url)
 	{
 		await _jsRuntime.InvokeVoidAsync("blazorExtensions.OpenInNewTab", url);
+	}public async Task OpenInCurrentTabAsync(string url)
+	{
+		await _jsRuntime.InvokeVoidAsync("blazorExtensions.OpenInCurrentTab", url);
 	}
 }

@@ -25,8 +25,10 @@ public partial class DailyJVPage
 	[Inject] IDialogService DialogService { get; set; }
 	[Inject] ISnackbar Snackbar { get; set; }
 	[Inject] NavigationManager NavigationManager { get; set; }
-        
-	ShokouhPardisStudentClass? _selectedStudent;
+
+    [Inject] public BrowserService BrowserService { get; set; }
+
+    ShokouhPardisStudentClass? _selectedStudent;
 	ShokouhPardisTermClass SelectedTerm { get; set; }
         
 	MudTabs? tabs;
@@ -205,8 +207,9 @@ public partial class DailyJVPage
 			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
 			await _dailyJVListComponent.FilterData();
 			await Reset();
+            await PrintDailyJvFishClick();
 
-		}
+        }
 		catch (Exception e)
 		{
 			Snackbar.Add(e.Message, Severity.Error);
@@ -214,9 +217,12 @@ public partial class DailyJVPage
 		//NavigationManager.NavigateTo(NavigationManager.Uri);
 
 	}
+    async Task PrintDailyJvFishClick()
+    {
+        await BrowserService.OpenInNewTabAsync($"/BillPrint/{_dailyJV.Id}");
+    }
 
-
-	async Task<ShokouhPardisLevelClass?> GetStudentLevel(ShokouhPardisStudentClass? student, ShokouhPardisTermClass term)
+    async Task<ShokouhPardisLevelClass?> GetStudentLevel(ShokouhPardisStudentClass? student, ShokouhPardisTermClass term)
 	{
         if (student == null) 
             return null;

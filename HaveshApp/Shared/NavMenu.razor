@@ -1,15 +1,17 @@
 ﻿@using Havesh.Model.Data.Dashboard
 <MudNavMenu>
-    @foreach (var dic in _userDashboardMenuItems)
+    @if (_userDashboardMenuItems is {})
     {
-        <MudNavGroup Title="@dic.Key" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
-            @foreach (var dashboardT in dic.Value)
-            {
-                <MudNavLink Href="@($"/Dashboard/{dashboardT.Id}")" Match="NavLinkMatch.All">@dashboardT.Name</MudNavLink>
-            }
-        </MudNavGroup>
+        @foreach (var dic in _userDashboardMenuItems)
+        {
+            <MudNavGroup Title="@dic.Key" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
+                @foreach (var dashboardT in dic.Value)
+                {
+                    <MudNavLink Href="@($"/Dashboard/{dashboardT.Id}")" Match="NavLinkMatch.All">@dashboardT.Name</MudNavLink>
+                }
+            </MudNavGroup>
+        }
     }
-
     <AuthorizeView Roles="Admin">
         <Authorized>
             @*<MudNavLink Href="/" Match="NavLinkMatch.All">Students Menu</MudNavLink>

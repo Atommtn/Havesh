@@ -8,16 +8,16 @@
 @using Log = Serilog.Log
 @using Havesh.Model.Model
 
-<MudPaper Class="m-5 p-5" Elevation="3">
-    <MudGrid Class="m-2">
-        <MudItem sm="12" md="12">
+<MudPaper Class="m-3 p-3" Elevation="3">
+    <MudGrid Class="m-3 p-3">
+        <MudItem sm="12" md="12" xl="3">
             <MudText Typo="Typo.h5">Login</MudText>
             <MudDivider />
         </MudItem>
-        <MudItem sm="12" md="6">
-            <MudTextField @bind-Value="UserName" Label="User name"></MudTextField>
+        <MudItem sm="12" md="6" xl="3">
+            <MudTextField  @bind-Value="UserName" Label="User name"></MudTextField>
         </MudItem>
-        <MudItem sm="12" md="6">
+        <MudItem sm="12" md="6" xl="3">
             <MudTextField @bind-Value="Password" Label="Password" InputType="InputType.Password"></MudTextField>
         </MudItem>
     </MudGrid>
@@ -27,7 +27,8 @@
         {
             <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Login" OnClick="LoginClick">
                 Login
-            </MudButton>
+            </MudButton> 
+            
 
         }
         else
@@ -35,7 +36,14 @@
             <MudProgressLinear Striped="true" Size="Size.Medium" Color="Color.Primary" Indeterminate="true" Class="my-7" />
         }
     </MudToolBar>
-    Version 1.0.3
+    <MudButton Variant="Variant.Text" Color="Color.Info" StartIcon="@Icons.TwoTone.ArrowBack" OnClick="BackClick">
+        Back
+    </MudButton>
+    <MudText Typo="Typo.subtitle2" Color="Color.Default" >
+        Version 1.0.4 - Update on 17 Nov
+    </MudText>
+
+    
 </MudPaper>
 
 @code {
@@ -92,5 +100,12 @@
 	    }
         Log.Information("User {UserName} Successfully logged-in to application.",UserName);
     }
+    [Inject] public BrowserService BrowserService { get; set; }
+
+    private async Task BackClick()
+    {
+        await BrowserService.OpenInCurrentTabAsync($"https://haveshapp.ir");
+    }
+   
 
 }
