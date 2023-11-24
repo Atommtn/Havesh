@@ -19,8 +19,6 @@ namespace HaveshApp.Managment;
 public partial class StudentListRollCallComponenets
 {
 
-	bool? CheckBox2 { get; set; } = null;
-
 	[Inject] public StudentService StudentService { get; set; }
 
 	MudTable<ShokouhPardisStudentClass>? table;
@@ -38,7 +36,7 @@ public partial class StudentListRollCallComponenets
 
 	async Task<TableData<ShokouhPardisStudentClass>> ServerReload(TableState state)
 	{
-		var list = StudentService.GetStudentsInTimeTable(TimeTableSession.TimeTable);
+		var list = StudentService.GetStudentsInTimeTable(TimeTableSession.TimeTableFk);
 		list.ForEach(x => x.OrderNumber = list.IndexOf(x) + 1);
 		return new TableData<ShokouhPardisStudentClass>
 		{
@@ -85,6 +83,7 @@ public partial class StudentListRollCallComponenets
 			StudentSessionActivityLastModified = DateTime.Now,
 			StudentSessionActivityGuid = Guid.NewGuid(),
 			ActivityDateTime = DateTime.Now,
+			TimeTableFk = TimeTableSession!.TimeTableFk,
 			TimeTableSessionFk = TimeTableSession!.Id,
 			StudentFk = obj.Item1.Id,
 			ActivityFk = obj.Item2.Id,

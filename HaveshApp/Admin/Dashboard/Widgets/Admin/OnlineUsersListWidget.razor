@@ -1,0 +1,65 @@
+﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Havesh.Model.Data.Dashboard
+@using Havesh.Model.Model
+@using Havesh.OrleansClient
+@using Olive
+@using Havesh.GrainInterfaces
+@using System.Text.Encodings.Web
+@using global::AdminDashboard.Server.Class.Extensions
+@implements IDisposable
+@using Havesh.OrleansClient
+@using Havesh.Model.Model
+@using Olive
+@using Havesh.GrainInterfaces.Manager
+@using global::AdminDashboard.Server.Class.Extensions
+@using Havesh.GrainInterfaces.Type
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_onlineUsers">
+	<MudTable Items="_onlineUsers">
+		<HeaderContent>
+			<MudTh>نام کاربری</MudTh>
+			<MudTh>نام و نام خانوادگی</MudTh>
+			<MudTh>نقش</MudTh>
+			<MudTh>IP</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd>@context.Key.UserName</MudTd>
+			<MudTd>@context.Key.FullName</MudTd>
+			<MudTd>@context.Key.Roles.Select(x=>x.Name).ToFormatString("{0}"," , ")</MudTd>
+			<MudTd>
+				<ol>
+					@((MarkupString)(context.Value.Select(x1 => x1.Ip.WithWrappers("<li><b>","</b></li>")).ToStringHavesh()))
+				</ol>
+			</MudTd>
+		</RowTemplate>
+	</MudTable>
+</LargWidgetContainer>
+
+@code {
+
+	[Inject] public required SignalrGrainClientService SignalrGrainClientService { get; set; }
+
+	Dictionary<User, List<Connection>>? _onlineUsers;
+
+	protected override async Task OnInitializedAsync()
+	{
+		SignalrGrainClientService.OnlineUserChanged += SignalrGrainClientServiceOnOnlineUserChanged;
+		_onlineUsers = await SignalrGrainClientService.GetOnlineUsersConnections();
+		await base.OnInitializedAsync();
+	}
+
+	private async Task SignalrGrainClientServiceOnOnlineUserChanged(User[] users)
+	{
+		_onlineUsers = await SignalrGrainClientService.GetOnlineUsersConnections();
+		Console.Beep();
+		await InvokeAsync(StateHasChanged);
+	}
+
+	public void Dispose()
+	{
+		SignalrGrainClientService.OnlineUserChanged -= SignalrGrainClientServiceOnOnlineUserChanged;
+		SignalrGrainClientService.Dispose();
+	}
+
+}

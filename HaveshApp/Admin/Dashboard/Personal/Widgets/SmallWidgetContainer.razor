@@ -9,7 +9,14 @@
              IconSize="@(WidgetSetting.IconSize ?? WidgetSetting.Widget.IconSize)"
              TitleClass="@(WidgetSetting.TitleClass ?? WidgetSetting.Widget.TitleClass)"
              BreakPoints="@(WidgetSetting.BreakPoints ?? WidgetSetting.Widget.BreakPoints)">
-	@ChildContent
+	@if (ViewRequired == null)
+	{
+		<MudProgressCircular Indeterminate="true" Size="Size.Medium" Color="Color.Primary" />
+	}
+	else
+	{
+		@ChildContent
+	}
 </SmallWidget>
 
 @code {

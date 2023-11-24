@@ -8,6 +8,7 @@ using HaveshApp.Classes.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using HaveshApp.Classes.ExtensionMethods;
 using HaveshApp.Services;
+using Havesh.OrleansClient;
 
 namespace Havesh.Domain.Services;
 
@@ -16,15 +17,15 @@ public class MessageService
 	private IHubContext<HaveshAppHub> HubContext { get; }
 
 	private readonly MessageDataProviderService _messageDataProvider;
-	private readonly UserConnectionManagerService _connectionManagerService;
+    private readonly SignalrGrainClientService _signalrGrainClientService;
 
 	public MessageService(MessageDataProviderService messageDataProvider , 
 		IHubContext<HaveshAppHub> hubContext,
-		UserConnectionManagerService connectionManagerService)
+        SignalrGrainClientService signalrGrainClientService)
 	{
 		HubContext = hubContext;
 		_messageDataProvider = messageDataProvider;
-		_connectionManagerService = connectionManagerService;
+        _signalrGrainClientService = signalrGrainClientService;
 	}
 
 	public async Task<List<Message>> GetMessages()
@@ -49,27 +50,27 @@ public class MessageService
 	public async Task SendMessageAsync(Message message)
 	{
 		await _messageDataProvider.SendMessageAsync(message);
-		var connections = _connectionManagerService.GetOnlineUserConnections(message.To);
-		foreach (var connection in connections)
-		{
-			await HubContext.Clients.Client(connection).SendAsync("HandleIncomingMessage", message.Dto());
-		}
-			
-	}
+		var connections = await _signalrGrainClientService.GetOnlineUserConnections(message.To);
+        if (connections != null)
+            foreach (var connection in connections)
+            {
+                await HubContext.Clients.Client(connection).SendAsync("HandleIncomingMessage", message.Dto());
+            }
+    }
 
 	public async Task SendMessageToRolesAsync(Message message , string[] roles)
 	{
 		await _messageDataProvider.SendMessageAsync(message);
-		var connections = _connectionManagerService.GetOnlineConnectionsUserInRole(roles);
-		foreach (var connection in connections)
-		{
-			await HubContext
-				.Clients
-				.Client(connection)
-				.SendAsync("HandleIncomingMessage", message.Dto());
-		}
-			
-	}
+		var connections = await _signalrGrainClientService.GetOnlineConnectionsUserInRole(roles);
+        if (connections != null)
+            foreach (var connection in connections)
+            {
+                await HubContext
+                    .Clients
+                    .Client(connection.ConnectionId)
+                    .SendAsync("HandleIncomingMessage", message.Dto());
+            }
+    }
 
 }
 

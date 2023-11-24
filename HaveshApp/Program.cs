@@ -1,44 +1,33 @@
-using System.Net;
-using Amazon;
 using Amazon.Extensions.NETCore.Setup;
-using Amazon.Internal;
 using Amazon.Runtime;
 using Amazon.S3;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
-using MudBlazor.Extensions;
 using MudBlazor.Services;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
-using HaveshApp.Admin.Audit;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes;
 using HaveshApp.Classes.Serilog;
 using HaveshApp.Classes.SignalR;
 using HaveshApp.Managment.Session;
 using Havesh.Domain.Services;
-using Log = Serilog.Log;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.ResponseCompression;
 using Append.Blazor.Notifications;
 using System.Globalization;
+using Havesh.Common;
 using Microsoft.AspNetCore.Localization;
-using Havesh.Model.Data;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Dashboard.Widgets.Supervisor;
 using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using HaveshApp.Services;
+using Havesh.OrleansClient;
+using Orleans.Streams;
 
 // Configure logging to log to MSSqlServer database
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 // Add services to the container.
 //builder.Services.AddElectron();
@@ -56,23 +45,27 @@ builder.Services.AddMudServices();
 
 var conStr = builder.Configuration["ConnectionStrings:ArvanConnection"];
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .Enrich.With(new MtnUserEnricher(builder.Services))
-    //.Enrich.WithProperty("Type","UserActivity")
-    //.Enrich.WithProperty("User","UserName")
-    .WriteTo.MSSqlServer(
-        //connectionString: "Data Source=94.232.174.176;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;",
-        //connectionString: "Data Source=94.101.189.165;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;",
-        connectionString: conStr,
-        sinkOptions: new MSSqlServerSinkOptions
-        {
-            TableName = "HaveshAppLogs", // Table name in the database for logging
-            AutoCreateSqlTable = true // Create the table if it doesn't exist
-        },
-        restrictedToMinimumLevel: LogEventLevel.Information)
-    .CreateLogger();
+	.MinimumLevel.Information()
+	.Enrich.With(new MtnUserEnricher(builder.Services))
+	//.Enrich.WithProperty("Type","UserActivity")
+	//.Enrich.WithProperty("User","UserName")
+	.WriteTo.MSSqlServer(
+		//connectionString: "Data Source=94.232.174.176;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;",
+		//connectionString: "Data Source=94.101.189.165;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;",
+		connectionString: conStr,
+		sinkOptions: new MSSqlServerSinkOptions
+		{
+			TableName = "HaveshAppLogs", // Table name in the database for logging
+			AutoCreateSqlTable = true // Create the table if it doesn't exist
+		},
+		restrictedToMinimumLevel: LogEventLevel.Information)
+	.CreateLogger();
 
 builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddScoped<DataProviderService>();
+
+builder.Services.AddSingleton<SignalrGrainClientService>();
+
 
 builder.Services.AddScoped<TeacherWidgetsService>();
 builder.Services.AddScoped<SupervisorWidgetsService>();
@@ -87,7 +80,6 @@ builder.Services.AddScoped<MessageHandlingService>();
 
 builder.Services.AddScoped<DashboardService>();
 
-builder.Services.AddScoped<DataProviderService>();
 builder.Services.AddScoped<MessageService>();
 builder.Services.AddScoped<MessageDataProviderService>();
 builder.Services.AddScoped<RemoteCommandHandlerService>();
@@ -119,10 +111,10 @@ builder.Services.AddScoped<HttpClient>();
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
 {
-    Credentials = new BasicAWSCredentials("8a8ca63e-8326-440f-b51b-448b89511442", 
-        "93ac2a95f48cd48ec2d595b107fb6a8f16dcdf23af6cc1fa4235821b285e6ef4"),
-    DefaultClientConfig = { ServiceURL = "https://s3.ir-thr-at1.arvanstorage.com" }
-    
+	Credentials = new BasicAWSCredentials("8a8ca63e-8326-440f-b51b-448b89511442",
+		"93ac2a95f48cd48ec2d595b107fb6a8f16dcdf23af6cc1fa4235821b285e6ef4"),
+	DefaultClientConfig = { ServiceURL = "https://s3.ir-thr-at1.arvanstorage.com" }
+
 });
 
 builder.Services.AddResponseCompression(opts =>
@@ -143,10 +135,25 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 	options.SupportedCultures = supportedCultures;
 	options.SupportedUICultures = supportedCultures;
 });
+
 AuthorizationPolicies.AddAuthorizarionPolicies(builder.Services);
+
+builder.Services.AddOrleansClient(clientBuilder =>
+{
+	clientBuilder
+		//.AddStreaming()
+
+		.AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
+
+		.UseLocalhostClustering()
+		.ConfigureServices(services =>
+		{
+		});
+});
 
 
 var app = builder.Build();
+
 
 /*
 app.Use(async (context, next) =>
@@ -165,8 +172,8 @@ if (!app.Environment.IsDevelopment())
 {
 	app.UseResponseCompression();
 	app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();

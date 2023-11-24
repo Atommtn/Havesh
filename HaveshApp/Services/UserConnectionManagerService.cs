@@ -46,7 +46,7 @@ public class UserConnectionManagerService
 		}
 	}
 
-	public HashSet<string> GetOnlineUserConnections(User user)
+	public HashSet<string> GetOnlineUserConnectionsX(User user)
 	{
 		lock (_userConnections)
 		{
@@ -55,7 +55,7 @@ public class UserConnectionManagerService
 			return userConnections;
 		}
 	}
-	public HashSet<string> GetOnlineConnectionsUserInRole(string[] roles)
+	public HashSet<string> GetOnlineConnectionsUserInRoleX(string[] roles)
 	{
 		lock (_userConnections)
 		{

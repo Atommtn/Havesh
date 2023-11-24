@@ -1,15 +1,23 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
+@using Havesh.Model.Model
 @using HaveshApp.Classes
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
-    @TeacherWidgetsService.CurrentSession.SessionNumber از @TeacherWidgetsService.CurrentTeacherTimetable.Sessions.Count(x=>x.SessionStatus != SessionStatuses.Canceled)
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSession">
+	@_timetableSession?.SessionNumber از @_timetable?.Sessions.Count(x=>x.SessionStatus != SessionStatuses.Canceled)
 </SmallWidgetContainer>
 
 @code {
-    
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+	ShokouhPardisTimeTable? _timetable;
+	TimeTableSession? _timetableSession;
+
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_timetable = await TeacherWidgetsService.GetTeacherTimeTable();
+		_timetableSession = await TeacherWidgetsService.GetTimeTableSession();
+		await base.OnInitializedAsync();
+	}
 
 
 }

@@ -11,5 +11,7 @@ namespace HaveshApp.Admin.Dashboard.Personal.Widgets
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        [Parameter] public object? ViewRequired { get; set; } = false;
+
     }
 }

@@ -1,4 +1,10 @@
 ﻿using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Common;
+using Havesh.GrainInterfaces.Entity;
+using Havesh.GrainInterfaces.Manager;
+using Havesh.Grains;
+using Havesh.Grains.Entity;
+using Havesh.Grains.Manager;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes.Auth;
@@ -9,113 +15,115 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 {
 	public class TeacherWidgetsService : WidgetServiceBase
 	{
-		private readonly DataProviderService _dataProvider;
+		IClusterClient ClusterClient { get; }
 		private readonly ISnackbar _snackBar;
 		private readonly UserSessionService _userSession;
 
-		public ShokouhPardisTimeTable CurrentTeacherTimetable
-		{
-			get
-			{
-				_timeTable ??= GetTeacherTimeTable();
-				return _timeTable!;
-			}
-		}
-
-		public TimeTableSession CurrentSession => _session ??= GetTimeTableSession(_timeTable ??= GetTeacherTimeTable());
-
-
-		private ShokouhPardisTimeTable? _timeTable;
-		private TimeTableSession? _session;
-		private List<SessionActivity> _activities;
-		private ShokouhPardisTeacherClass? _teacher;
-		private ShokouhPardisInterval? _interval;
-		private ShokouhPardisWeekDay? _weekday;
-		private ShokouhPardisTermClass? _term;
-		private IEnumerable<ShokouhPardisStudentClass>? _students;
-		public IEnumerable<ShokouhPardisStudentClass>? Students => _students;
-		public IEnumerable<SessionActivity> SessionActivities => _activities;
-
 		public TeacherWidgetsService(
-			DataProviderService dataProvider,
+			IClusterClient clusterClient,
 			ISnackbar snackBar,
 			UserSessionService userSession)
 		{
-			_dataProvider = dataProvider;
+			ClusterClient = clusterClient;
 			_snackBar = snackBar;
 			_userSession = userSession;
-
-
-			ReloadData();
 		}
 
-		//readonly DateTime _dateTime = DateTime.Today;
-		readonly DateTime _dateTime = DateTime.Today.AddDays(1);
+#if DEBUG
+		readonly DateTime _dateTime = new(2023 , 11 , 26);
+#else
+		readonly DateTime _dateTime = DateTime.Today;
+#endif
 
-		private void ReloadData()
+		public async Task<ShokouhPardisTermClass?> GetTerm()
 		{
-			_term = _dataProvider.GetTermsInRangeToday(_dateTime);
-
-			if (_term is null)
-			{
+			var termManager = ClusterClient.GetGrain<ITermGrainManager>(Guid.Empty);
+			var term = await termManager.GetTermsInRangeToday(_dateTime);
+			
+			if(term == null) 
 				_snackBar.Add("There is not any Term in today range");
-				return;
-			}
 
-			_teacher = GetTeacher();
-
-			_interval = GetInterval(_term);
-
-			if (_interval is null || _teacher is null)
-				return;
-
-			_weekday = GetWeekday();
-			_timeTable = GetTeacherTimeTable();
-			_students = _dataProvider.GetTimeTableStudents(_timeTable);
-			if (_students != null && _timeTable != null)
-				_timeTable.StudentsCount = _students.Count();
-
-			_session = GetTimeTableSession(_timeTable);
-			if (_session != null)
-			{
-				_activities = _dataProvider.GetSessionActivities(_session);
-			}
+			return term;
 		}
 
-		private ShokouhPardisTimeTable? GetTeacherTimeTable()
+		public async Task<int> GetClassSessionStudentCount()
 		{
-			_term ??= _dataProvider.GetTermsInRangeToday();
-			_teacher ??= GetTeacher();
-			_weekday ??= GetWeekday();
-			if (_term == null) return null;
+			var teacherTimeTable = await GetTeacherTimeTable();
+			if (teacherTimeTable == null) 
+				return 0;
 
-			_interval ??= GetInterval(_term);
-			return _dataProvider.GetTeacherTimeTable(_term,
-				_teacher,
-				_weekday,
-				_interval);
-
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(teacherTimeTable.Id);
+			return await timeTableGrain.GetStudentCount();
 		}
 
-		private TimeTableSession? GetTimeTableSession(ShokouhPardisTimeTable? shokouhPardisTimeTable)
+		public async Task<ShokouhPardisTimeTable?> GetTeacherTimeTable()
 		{
-			return _dataProvider.GetTimeTableSession(shokouhPardisTimeTable, _dateTime);
+			var term = await GetTerm();
+			var teacher = await GetTeacher();
+			var weekday = await GetWeekday();
+			var interval = await GetInterval(term);
+			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty);
+			if (term == null || teacher == null || interval == null) return null;
+
+			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
+			return timeTable;
+		}
+		public async Task<IEnumerable<ShokouhPardisStudentClass>?> GetTimeTableStudents()
+		{
+			var term = await GetTerm();
+			var teacher = await GetTeacher();
+			var weekday = await GetWeekday();
+			var interval = await GetInterval(term);
+			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty);
+			if (term == null || teacher == null || interval == null) return null;
+
+			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
+			if (timeTable == null) return null;
+
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
+			var students = await timeTableGrain.GetStudents();
+			return students;
+
 		}
 
-		private ShokouhPardisWeekDay GetWeekday()
+		public async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities()
+		{
+			var timeTable = await GetTeacherTimeTable();
+			if (timeTable == null) return null;
+
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
+			var timeTableSession = await timeTableGrain.GetTodaySession();
+			if (timeTableSession == null) return null;
+
+			var sessionGrain = ClusterClient.GetGrain<ISessionGrain>(timeTableSession.Id);
+			var activities = await sessionGrain.GetActivities();
+			return activities;
+
+		}
+
+		public async Task<TimeTableSession?> GetTimeTableSession()
+		{
+			var timeTable = await GetTeacherTimeTable();
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
+			var timeTableSession = await timeTableGrain.GetTodaySession();
+			return timeTableSession;
+		}
+
+		public async Task<ShokouhPardisWeekDay> GetWeekday()
 		{
 #if DEBUG
+			var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(Guid.Empty);
+			
 			var weekday = Environment.GetEnvironmentVariable("FRZ_TEST") == "true"
-				? _dataProvider.GetTodayWeekday(0)
-				: _dataProvider.GetTodayWeekday();
+				? await weekdayManagerGrain.GetTodayWeekDay(0)!
+				: await weekdayManagerGrain.GetTodayWeekDay()!;
 #else
-			var weekday = _dataProvider.GetTodayWeekday();
-
+			var weekday = await weekdayManagerGrain.GetTodayWeekDay()!;
 #endif
 			return weekday;
 		}
 
-		private ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term)
+		public async Task<ShokouhPardisInterval?> GetInterval(ShokouhPardisTermClass? term = null)
 		{
 			// _TODO: Should be remark ->
 			//var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
@@ -128,21 +136,24 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			var startTime = DateTime.Now.TimeOfDay;
 #endif
 
-
+			term ??= await GetTerm();
+			var termGrain = ClusterClient.GetGrain<ITermGrain>(term.Id);
 			var fromMinutes = TimeSpan.FromMinutes(3);
-			var interval = _dataProvider.GetInterval(term, startTime, fromMinutes);
-			return interval;
+			return await termGrain.GetIntervalByStartTime(startTime , fromMinutes);
 		}
 
-		private ShokouhPardisTeacherClass? GetTeacher()
+		public async Task<ShokouhPardisTeacherClass?> GetTeacher()
 		{
-			//_UserDo = ProviderService.GetLog();
-			var payload = _userSession.Payload;
-			if (!(payload?.Roles?.Contains(AuthorizeRolesConstant.Teacher) ?? false))
+			if (_userSession.User == null) 
 				return null;
 
-			var teacher = _dataProvider.GetTeacherByUserId(_userSession.User?.Id);
+			var teacherManagerGrain = ClusterClient.GetGrain<ITeacherManagerGrain>(Guid.Empty);
+			var userGrain = ClusterClient.GetGrain<IHaveshGrain<User>>(_userSession.User.Id);
+			var user = await userGrain.Get();
+			var teacher = await teacherManagerGrain.GetTeacherByUserId(user?.Id);
+
 			return teacher;
+
 		}
 	}
 

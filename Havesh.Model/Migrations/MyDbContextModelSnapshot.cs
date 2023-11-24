@@ -3448,6 +3448,9 @@ namespace HaveshApp.Migrations
                     b.Property<DateTime>("StudentSessionActivityLastModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TimeTableFk")
+                        .HasColumnType("int");
+
                     b.Property<int>("TimeTableSessionFk")
                         .HasColumnType("int");
 

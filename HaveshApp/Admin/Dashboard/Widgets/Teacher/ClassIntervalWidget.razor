@@ -1,15 +1,20 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
+@using Havesh.Model.Model
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
-    @TeacherWidgetsService.CurrentTeacherTimetable.Schedule.Programs.First().DaySession.Interval.Title
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_interval">
+	@_interval?.Title
 </SmallWidgetContainer>
 
 @code {
+	private ShokouhPardisInterval? _interval;
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
-
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_interval = await TeacherWidgetsService.GetInterval();
+		await base.OnInitializedAsync();
+	}
 
 }

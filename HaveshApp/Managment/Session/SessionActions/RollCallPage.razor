@@ -1,29 +1,34 @@
 ﻿@page "/RollCall/{SessionId:int}/{SessionActivityId:int}"
 @using DNTPersianUtils.Core
 @using Havesh.Model.Model
+@using Microsoft.EntityFrameworkCore
 @using PersianDate.Standard
 @layout PersianPagesLayout
 
 <StudentListRollCallComponenets 
     RowStyle="true" 
     RowsPerPage="25" 
-    TimeTableSession="_sessionItem" 
-    SessionActivity="_sessionActivity" />
+    TimeTableSession="SessionItem" 
+    SessionActivity="SessionActivity" />
 
 @code {
     private int _sessionId;
     private int _sessionActivityId;
-    TimeTableSession? _sessionItem;
-    SessionActivity? _sessionActivity;
+	
+	public TimeTableSession? SessionItem { get; private set; }
+	public SessionActivity? SessionActivity { get; private set; }
 
-    [Parameter]
+	[Parameter]
     public int SessionId
     {
         get => _sessionId;
         set
         {
             _sessionId = value;
-            _sessionItem = _dataProvider.GetTimeTableSession(_sessionId);
+            SessionItem = _dataProvider.GetTimeTableSessionById(_sessionId , 
+	            q=>
+	            q.Include(x => x.TimeTable)
+	             .ThenInclude(x => x.Level));
         }
     }
 
@@ -34,7 +39,7 @@
         set
         {
             _sessionActivityId = value;
-            _sessionActivity = _dataProvider.GetSessionActivity(_sessionActivityId);
+            SessionActivity = _dataProvider.GetSessionActivity(_sessionActivityId);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using Havesh.Domain.Services;
+using Havesh.OrleansClient;
 using HaveshApp.Services;
 using Microsoft.AspNetCore.SignalR;
 
@@ -9,29 +10,28 @@ namespace HaveshApp.Classes.SignalR;
 
 public class HaveshAppHub : Hub
 {
-	private readonly UserConnectionManagerService _userConnectionManager;
-	private readonly DataProviderService _dataProviderService;
+	private readonly SignalrGrainClientService _signalrGrainClientService;
 
-	public HaveshAppHub(UserConnectionManagerService userConnectionManager , DataProviderService dataProviderService)
+	public HaveshAppHub(SignalrGrainClientService signalrGrainClientService)
 	{
-		_userConnectionManager = userConnectionManager;
-		_dataProviderService = dataProviderService;
+		_signalrGrainClientService = signalrGrainClientService;
 	}
 
 	public override async Task OnConnectedAsync()
 	{
 		var userId = Convert.ToInt32(Context.GetHttpContext()?.Request.Query["UserId"]);
-		var user = _dataProviderService.GetUserByUseId(userId);
-		_userConnectionManager.AddConnection(user, Context.ConnectionId);
+        var ip = Context.GetHttpContext()?.Connection.RemoteIpAddress?.ToString();
+        await _signalrGrainClientService.RegisterUser(userId,ip, Context.ConnectionId);
+
 		await base.OnConnectedAsync();
 	}
 
-	public override Task OnDisconnectedAsync(Exception? exception)
+	public override async Task OnDisconnectedAsync(Exception? exception)
 	{
 		var userId = Convert.ToInt32(Context.GetHttpContext()?.Request.Query["UserId"]);
-		var user = _dataProviderService.GetUserByUseId(userId);
-		_userConnectionManager.RemoveConnection(user, Context.ConnectionId);
-		return base.OnDisconnectedAsync(exception);
+		await _signalrGrainClientService.UnregisterUser(userId, Context.ConnectionId);
+
+		await base.OnDisconnectedAsync(exception);
 	}
 
 }

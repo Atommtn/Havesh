@@ -8,5 +8,10 @@ namespace AdminDashboard.Server.Class.Extensions
         {
             return Convert.ToInt32(text);
         }
+
+        public static string ToStringHavesh(this IEnumerable<string> listStr)
+        {
+	        return listStr.Aggregate("", (current, str) => current + str);
+        }
     }
 }

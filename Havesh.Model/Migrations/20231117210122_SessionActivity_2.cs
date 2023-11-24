@@ -1,0 +1,31 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Havesh.Model.Migrations
+{
+    /// <inheritdoc />
+    public partial class SessionActivity_2 : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<int>(
+                name: "TimeTableFk",
+                schema: "ShoukouhPardis12DBAdmin",
+                table: "ShokouhPardis_StudentSessionActivity",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "TimeTableFk",
+                schema: "ShoukouhPardis12DBAdmin",
+                table: "ShokouhPardis_StudentSessionActivity");
+        }
+    }
+}

@@ -4,7 +4,7 @@
 @using Havesh.Model.Model
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_interval">
     @_interval?.Title
 </SmallWidgetContainer>
 

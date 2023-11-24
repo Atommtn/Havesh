@@ -1,15 +1,22 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
+@using Havesh.Model.Model
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
-    @TeacherWidgetsService.CurrentSession.SessionStatus
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSession">
+	@_timetableSession?.SessionStatus
 </SmallWidgetContainer>
 
 @code {
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+	TimeTableSession? _timetableSession;
+
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_timetableSession = await TeacherWidgetsService.GetTimeTableSession();
+		await base.OnInitializedAsync();
+	}
 
 
 }

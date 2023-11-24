@@ -2,21 +2,31 @@
 using Havesh.Model.Data;
 using Havesh.Model.Data.Dashboard;
 using Olive;
+using Orleans;
 
 namespace Havesh.Model.Model;
 
-
+[GenerateSerializer]
+[Serializable]
 public class User : BranchBaseModel
 {
-
+    [Id(1)]
     public bool? Gender { get; set; }
+    [Id(2)]
     public string UserName { get; set; }
+	[Id(3)]
     public string Password { get; set; }
+	[Id(4)]
     public string? FirstName { get; set; }
+	[Id(5)]
     public string? LastName { get; set; }
+	[Id(6)]
     public string? Email { get; set; }
+	[Id(7)]
     public string? Phone { get; set; }
+    [Id(8)]
     public List<Role> Roles { get; } = new();
+    [Id(9)]
     public bool IsActive { get; set; }
 
     [NotMapped] public string FullName => FirstName + " " + LastName;
@@ -74,11 +84,16 @@ public class User : BranchBaseModel
     }
 }
 
+[GenerateSerializer]
+[Serializable]
 public class Role : BranchBaseModel
 {
+	[Id(1)]
     public string Name { get; set; }
+	[Id(2)]
     public List<User> Users { get; } = new();
 
+    [Id(3)]
     public List<Permission> Permissions { get; } = new();
 
     public bool HasPermission(string permission)
@@ -109,10 +124,14 @@ public class Role : BranchBaseModel
 }
 
 
+[Serializable]
+[GenerateSerializer]
 public class Permission : BranchBaseModel
 {
 
+	[Id(1)]
     public bool Allow { get; set; }
+	[Id(2)]
     public string Title { get; set; }
     public List<Role> Roles { get; } = new();
 

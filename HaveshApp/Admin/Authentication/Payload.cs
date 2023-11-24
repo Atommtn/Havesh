@@ -12,6 +12,8 @@ public class Payload
     public string? Mobile { get; set; }
     public DateTime? Expire { get; set; }
 
+    public string? IP { get; set; }
+    public DateTime? LoginTime { get; set; }
     public override string ToString()
     {
         return $"[{UserName}] ({Gender} {FirstName} {LastName})";

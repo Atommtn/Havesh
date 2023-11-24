@@ -1,11 +1,37 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
+@using Havesh.Model.Model
+@using Havesh.OrleansClient
+@implements IDisposable
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
-    10 نفر
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_onlineUsers">
+    @_onlineUsers?.Length نفر
 </SmallWidgetContainer>
 
 @code {
 
+	[Inject] public required SignalrGrainClientService SignalrGrainClientService { get; set; }
+
+	User[]? _onlineUsers;
+
+	protected override async Task OnInitializedAsync()
+	{
+		SignalrGrainClientService.OnlineUserChanged += SignalrGrainClientServiceOnOnlineUserChanged;
+		_onlineUsers = await SignalrGrainClientService.GetOnlineUsers();
+		await base.OnInitializedAsync();
+	}
+
+	private async Task SignalrGrainClientServiceOnOnlineUserChanged(User[] users)
+	{
+		_onlineUsers = users;
+		Console.Beep();
+		await InvokeAsync(StateHasChanged);
+	}
+
+	public void Dispose()
+	{
+		SignalrGrainClientService.OnlineUserChanged -= SignalrGrainClientServiceOnOnlineUserChanged;
+		SignalrGrainClientService.Dispose();
+	}
 
 }

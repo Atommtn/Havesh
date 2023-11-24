@@ -2,7 +2,7 @@
 @using Havesh.Model.Data.Dashboard
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_userSession.FullName">
     @_userSession.FullName
 </SmallWidgetContainer>
 

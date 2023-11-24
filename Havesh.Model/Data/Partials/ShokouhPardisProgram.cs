@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havesh.Model.Model;
 
+[Serializable]
+[GenerateSerializer]
 public partial class ShokouhPardisProgram
 {
     public static void Setup(ModelBuilder modelBuilder)
@@ -19,10 +21,12 @@ public partial class ShokouhPardisProgram
     }
     
     [ForeignKey(nameof(Model.ShokouhPardisProgram.ScheduleId))]
-    public ShokouhPardisSchedule Schedule { get; set; }
+	[Id(0)]
+	public ShokouhPardisSchedule Schedule { get; set; }
 
     [ForeignKey(nameof(Model.ShokouhPardisProgram.DaysessionId))]
-    public ShokouhPardisDaySession DaySession { get; set; }
+	[Id(1)]
+	public ShokouhPardisDaySession DaySession { get; set; }
 
     public static ShokouhPardisProgram CreateProgram(ShokouhPardisDaySession daySession,
         ShokouhPardisSchedule schedule)
@@ -61,13 +65,7 @@ public partial class ShokouhPardisDaySession
 
 public partial class ShokouhPardisTimeTable
 {
-    ShokouhPardisTermClass _term;
-    ShokouhPardisSchedule _schedule;
-    ShokouhPardisTeacherClass _teacher;
-    ShokouhPardisLevelClass _level;
-    ShokouhPardisClassRoom _classRoom;
-
-    public static void Setup(ModelBuilder modelBuilder)
+	public static void Setup(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ShokouhPardisTimeTable>()
             .HasOne(x => x.Term);
@@ -82,57 +80,32 @@ public partial class ShokouhPardisTimeTable
             .HasOne(x => x.Level);
     }
 
-    public ShokouhPardisTermClass Term
-    {
-        get => _term;
-        set
-        {
-            _term = value;
-            TermId = _term.Id;
-        }
-    }
 
-    public ShokouhPardisSchedule Schedule
-    {
-        get => _schedule;
-        set
-        {
-            _schedule = value;
-            ScheduleId = _schedule.Id;
-        }
-    }
+    [Id(10)]
+    [ForeignKey(nameof(TermId))]
+    public ShokouhPardisTermClass Term { get; set; }
 
-    public ShokouhPardisTeacherClass Teacher
-    {
-        get => _teacher;
-        set
-        {
-            _teacher = value;
-            TeacherId = _teacher.Id;
-        }
-    }
+    [Id(11)]
+    [ForeignKey(nameof(ScheduleId))]
+    public ShokouhPardisSchedule Schedule { get; set; }
 
-    public ShokouhPardisLevelClass Level
-    {
-        get => _level;
-        set
-        {
-            _level = value;
-            LevelId = _level.Id;
-        }
-    }
-    [Required]
-    public ShokouhPardisClassRoom ClassRoom
-    {
-        get => _classRoom;
-        set
-        {
-            _classRoom = value;
-            ClassRoomId = _classRoom.Id;
-        }
-    }
+    [Id(12)]
+    [ForeignKey(nameof(TeacherId))]
+    public ShokouhPardisTeacherClass Teacher { get; set; }
 
-    [NotMapped]
+    [Id(13)]
+    [ForeignKey(nameof(LevelId))]
+    public ShokouhPardisLevelClass Level { get; set; }
+
+    [Id(14)]
+    [ForeignKey(nameof(ClassRoomId))]
+    public ShokouhPardisClassRoom ClassRoom { get; set; }
+
+	[Id(15)]
+	[ForeignKey("TimeTableFk")]
+	public List<TimeTableSession> Sessions { get; set; }
+    
+	[NotMapped]
     public int StudentsCount { get; set; }
 
     [NotMapped]
@@ -140,9 +113,6 @@ public partial class ShokouhPardisTimeTable
 
     [NotMapped]
     public bool Selected { get; set; }
-
-    [ForeignKey("TimeTableFk")]
-    public List<TimeTableSession> Sessions { get; set; }
 
     [NotMapped]
     public string Tag { get; set; }

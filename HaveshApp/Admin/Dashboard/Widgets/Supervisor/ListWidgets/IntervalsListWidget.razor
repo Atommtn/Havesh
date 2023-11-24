@@ -2,7 +2,7 @@
 @using HaveshApp.Admin.Dashboard.Personal.Widgets
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting">
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_intervals">
 
 	<MudTable T="ShokouhPardisInterval" Items="_intervals">
 		<HeaderContent>
@@ -19,7 +19,7 @@
 </LargWidgetContainer>
 
 @code {
-	private List<ShokouhPardisInterval> _intervals;
+	private List<ShokouhPardisInterval>? _intervals;
 
 	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; }
 

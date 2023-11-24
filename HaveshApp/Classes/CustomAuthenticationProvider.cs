@@ -39,7 +39,11 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 			NotifyAuthenticationStateChanged(authenticationStateAsync);
 			_sessionService.Token = token;
 			_sessionService.State = authenticationStateAsync;
-			_sessionService.Payload = payload;
+            
+            if (payload != null) 
+                payload.IP = GetClientIpAddress(_accessor.HttpContext);
+
+            _sessionService.Payload = payload;
             _authAttemps++;
 
             if ((_sessionService.User?.IsActive ?? false) )
@@ -59,7 +63,20 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 		return fromResult;
 
 	}
+    string? GetClientIpAddress(HttpContext? context)
+    {
+        // Try to get the IP address from the HttpContext
+        var ipAddress = context?.Connection.RemoteIpAddress?.ToString();
 
+        // If the IP address is not available from the HttpContext, you can try other sources
+        if (string.IsNullOrEmpty(ipAddress) && (context?.Request.Headers.ContainsKey("X-Forwarded-For") ?? true))
+        {
+            // Check for the X-Forwarded-For header in case the request passes through a proxy
+            ipAddress = context?.Request.Headers["X-Forwarded-For"];
+        }
+
+        return ipAddress;
+    }
     private static string? GetTokenParser(out JwtTokenParser parser, HttpContext? httpContext, IConfiguration configuration)
 	{
 		var jwtSection = configuration.GetSection("JWT");

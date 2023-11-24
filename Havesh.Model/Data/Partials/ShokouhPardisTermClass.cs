@@ -13,8 +13,9 @@ public partial class ShokouhPardisTermClass
             ;
     }
 
-    [ForeignKey(nameof(Model.ShokouhPardisTermClass.YearId))]
-    public ShokouhPardisYearClass Year { get; set; }
+    [Id(6)]
+	[ForeignKey(nameof(Model.ShokouhPardisTermClass.YearId))]
+	public ShokouhPardisYearClass Year { get; set; }
 
     public static ShokouhPardisTermClass CreateTerm()
     {

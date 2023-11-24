@@ -2,24 +2,31 @@
 @using Havesh.Model.Model
 @using HaveshApp.Admin.Definition.LessonPlan
 @using Olive
+@using Havesh.Model.Data
 
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting">
-    <MudGrid>
-        @foreach (var act in TeacherWidgetsService.SessionActivities)
-        {
-            <MudItem md="6">
-                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Class" Variant="Variant.Outlined" FullWidth="true" Style="height:100px" OnClick="() => ClassSessionClick(act)">
-                    <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
-                        @act.ActivityTitle
-                    </MudText>
-                </MudButton>
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSessionActivities">
+	<MudGrid>
+		@if (_timetableSessionActivities is not null)
+		{
+			@foreach (var act in _timetableSessionActivities)
+			{
+				<MudItem md="6">
+					<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Class" Variant="Variant.Outlined" 
+					           FullWidth="true" 
+					           Style="height: 100px" 
+					           OnClick="() => ClassSessionClick(act)">
+						<MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+							@act.ActivityTitle
+						</MudText>
+					</MudButton>
 
-            </MudItem>
-        }
+				</MudItem>
+			}
+		}
 
-    </MudGrid>
+	</MudGrid>
 
 
 
@@ -27,12 +34,19 @@
 
 @code {
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
-    
-    private void ClassSessionClick(SessionActivity sessionActivity)
+    IEnumerable<SessionActivity>? _timetableSessionActivities;
+
+    [Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+    protected override async Task OnInitializedAsync()
     {
-        _navigationManager.NavigateTo($"/RollCall/{TeacherWidgetsService.CurrentSession.Id}/{sessionActivity.Id}");
+        _timetableSessionActivities = await TeacherWidgetsService.GetTimeTableSessionActivities();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ClassSessionClick(BaseModel sessionActivity)
+    {
+	    var timeTableSession = await TeacherWidgetsService.GetTimeTableSession();
+	    _navigationManager.NavigateTo($"/RollCall/{timeTableSession?.Id}/{sessionActivity.Id}");
     }
 
 }

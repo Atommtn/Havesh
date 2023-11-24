@@ -80,13 +80,18 @@ public class StudentService
 		return students.Count();
 	}
 
-	public List<ShokouhPardisStudentClass> GetStudentsInTimeTable(ShokouhPardisTimeTable timeTable)
+	public List<ShokouhPardisStudentClass> GetStudentsInTimeTable(int timeTableId)
 	{
-		var students = GetStudentInTimeTableQuery(timeTable);
-            
+		var students = GetStudentInTimeTableQuery(timeTableId);
+
 		var data = students.Select(x => x.Student)
 			.ToList();
 		return data;
+	}
+
+	public List<ShokouhPardisStudentClass> GetStudentsInTimeTable(ShokouhPardisTimeTable timeTable)
+	{
+		return GetStudentsInTimeTable(timeTable.Id);
 	}
 
 	public List<ShokouhPardisStudentClass> GetStudentsInTimeTablePaged(ShokouhPardisTimeTable timeTable, int page,
@@ -102,13 +107,17 @@ public class StudentService
 		return data;
 	}
 
-	IQueryable<ShokouhPardisTimeTableStudent> GetStudentInTimeTableQuery(ShokouhPardisTimeTable timeTable)
+	IQueryable<ShokouhPardisTimeTableStudent> GetStudentInTimeTableQuery(int timeTableId)
 	{
 		var students = _dbConntext
 			.ShokouhPardisTimeTableStudents
 			.Include(x => x.Student)
-			.Where(x => x.TimeTableId == timeTable.Id);
+			.Where(x => x.TimeTableId == timeTableId);
 		return students;
+	}
+	IQueryable<ShokouhPardisTimeTableStudent> GetStudentInTimeTableQuery(ShokouhPardisTimeTable timeTable)
+	{
+		return GetStudentInTimeTableQuery(timeTable.Id);
 	}
 	IQueryable<ShokouhPardisTimeTableStudent> GetStudentInTimeTableQuery(ShokouhPardisTimeTable timeTable, string? searchText)
 	{

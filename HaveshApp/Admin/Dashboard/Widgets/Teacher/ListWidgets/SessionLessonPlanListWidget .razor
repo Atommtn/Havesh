@@ -5,15 +5,24 @@
 
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting">
-    <TeacherLessonPlanComponent Session="TeacherWidgetsService.CurrentSession">
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_session">
+	
+	<TeacherLessonPlanComponent Session="_session">
 
-    </TeacherLessonPlanComponent>
+	</TeacherLessonPlanComponent>
+
 </LargWidgetContainer>
 
-    @code {
+@code {
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+	TimeTableSession? _session;
+
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_session = await TeacherWidgetsService.GetTimeTableSession();
+
+		await base.OnInitializedAsync();
+	}
 
 }

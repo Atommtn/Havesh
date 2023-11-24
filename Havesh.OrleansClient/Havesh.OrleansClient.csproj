@@ -10,6 +10,12 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
     <PackageReference Include="Microsoft.Orleans.Client" Version="7.2.3" />
+    <PackageReference Include="Microsoft.Orleans.Streaming" Version="7.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Havesh.Common\Havesh.Common.csproj" />
+    <ProjectReference Include="..\Havesh.Grains\Havesh.Grains.csproj" />
   </ItemGroup>
 
 </Project>

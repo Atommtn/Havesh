@@ -6,12 +6,16 @@ using Microsoft.EntityFrameworkCore;
 namespace Havesh.Model.Model;
 
 [Table("ShokouhPardis_LessonPlan")]
+[Serializable]
+[GenerateSerializer]
 public partial class LessonPlan : BranchBaseModel
 {
 
-	//public string Title { get; set; }
+	[Id(0)]
 	public int LevelFk { get; set; }
+	[Id(1)]
 	public int SessionNumber { get; set; }
+	[Id(2)]
 	public string? Title { get; set; }
 
 
@@ -31,18 +35,24 @@ public partial class LessonPlan
 	}
 }
 
+[Serializable]
+[GenerateSerializer]
 [Table("ShokouhPardis_LessonPlanAttachments")]
 public class LessonPlanAttachment
 {
+	[Id(0)]
 	public int LessonPlanId { get; set; }
 	
+
 	[ForeignKey(nameof(LessonPlanId))]
 	public LessonPlan LessonPlan { get; set; }
 
+	[Id(1)]
 	public int AttachmentId { get; set; }
 	
 	[ForeignKey(nameof(AttachmentId))]
 	public ShokouhPardisMediaAttachment Attachment { get; set; }
+
 
 	public static void Setup(ModelBuilder modelBuilder)
 	{
@@ -51,18 +61,22 @@ public class LessonPlanAttachment
 	}
 }
 
-
+[Serializable]
+[GenerateSerializer]
 [Table("ShokouhPardis_LessonPlanSectionType")]
 public class LessonPlanSectionType : BranchBaseModel
 {
+	[Id(0)]
 	public int Id { get; set; }
+	[Id(1)]
 	public string Title { get; set; }
 }
 
 [Table("ShokouhPardis_LessonPlanSection")]
+[Serializable]
+[GenerateSerializer]
 public partial class LessonPlanSection : BranchBaseModel
 {
-	public int Id { get; set; }
 
 	public int LessonPlanFk { get; set; }
 	
@@ -91,7 +105,7 @@ public partial class LessonPlanSection
 
 
 [Table("ShokouhPardis_LessonPlanSectionItem")]
-public class LessonPlanSectionItem
+public class LessonPlanSectionItem : BranchBaseModel
 {
 	public int Id { get; set; }
 
@@ -107,8 +121,6 @@ public class LessonPlanSectionItem
 [Table("ShokouhPardis_MediaAttachment")]
 public class ShokouhPardisMediaAttachment : BranchBaseModel
 {
-	public int Id { get; set; }
-
 	public string? FileName { get; set; }
 
 	[DataType("varbinary(max)")]

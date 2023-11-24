@@ -4,7 +4,6 @@ using Havesh.Model.Data;
 
 namespace Havesh.Model.Model;
 
-[Serializable]
 public partial class StudentSessionActivity 
 {
 	[ForeignKey(nameof(StudentFk))]
@@ -19,20 +18,32 @@ public partial class StudentSessionActivity
 }
 
 
+[Serializable]
+[GenerateSerializer]
 [Table("ShokouhPardis_StudentSessionActivity")]
 public partial class StudentSessionActivity : BranchBaseModel
 {
+	[Id(0)]
 	public int TimeTableSessionFk { get; set; }
-
+	[Id(1)]
 	public int StudentFk { get; set; }
+	[Id(2)]
 	public int ActivityFk { get; set; }
+	[Id(3)]
 	public string? ActivityValue { get; set; }
+	[Id(4)]
 	public string? Status { get; set; }
+	[Id(5)]
 	public string? Description { get; set; }
-
+	[Id(6)]
+	public int TimeTableFk { get; set; }
+	[Id(7)]
 	public DateTime? ActivityDateTime { get; set; }
+	[Id(8)]
 	public DateTime? ActivityDeletedDateTime { get; set; }
 
+	[Id(9)]
 	public Guid StudentSessionActivityGuid { get; set; }
+	[Id(10)]
 	public DateTime StudentSessionActivityLastModified { get; set; }
 }

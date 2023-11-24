@@ -1,15 +1,22 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
+@using Havesh.Model.Model
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting">
-    @TeacherWidgetsService.CurrentTeacherTimetable.Schedule.Title
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetable">
+    @_timetable?.Schedule.Title
 </SmallWidgetContainer>
 
 @code {
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+	ShokouhPardisTimeTable? _timetable;
+
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_timetable = await TeacherWidgetsService.GetTeacherTimeTable();
+		await base.OnInitializedAsync();
+	}
 
 
 }

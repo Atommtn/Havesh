@@ -4,31 +4,37 @@
 
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting">
-    <MudTable T="ShokouhPardisStudentClass"
-              Items="TeacherWidgetsService.Students"
-              Bordered="true"
-              Breakpoint="Breakpoint.Xs"
-              Dense="true"
-              Class="p-3">
-        <HeaderContent>
-            <MudTh>ردیف</MudTh>
-            <MudTh>نام</MudTh>
-            <MudTh>نام خانوادگی</MudTh>
-            <MudTh>وضعیت</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="ردیف">@(TeacherWidgetsService.Students.IndexOf(context) + 1)</MudTd>
-            <MudTd DataLabel="نام">@context.StudentName</MudTd>
-            <MudTd DataLabel="نام خانوادگی">@context.StudentFamily</MudTd>
-            <MudTd DataLabel="وضعیت"></MudTd>
-            </RowTemplate>
-        </MudTable>
-    </LargWidgetContainer>
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_students">
+	<MudTable T="ShokouhPardisStudentClass"
+			  Items="_students"
+			  Bordered="true"
+			  Breakpoint="Breakpoint.Xs"
+			  Dense="true"
+			  Class="p-3">
+		<HeaderContent>
+			<MudTh>ردیف</MudTh>
+			<MudTh>نام</MudTh>
+			<MudTh>نام خانوادگی</MudTh>
+			<MudTh>وضعیت</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="ردیف">@(_students.IndexOf(context) + 1)</MudTd>
+				<MudTd DataLabel="نام">@context.StudentName</MudTd>
+				<MudTd DataLabel="نام خانوادگی">@context.StudentFamily</MudTd>
+				<MudTd DataLabel="وضعیت"></MudTd>
+			</RowTemplate>
+		</MudTable>
+	</LargWidgetContainer>
 
-    @code {
+@code {
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
+	IEnumerable<ShokouhPardisStudentClass>? _students;
+
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_students = await TeacherWidgetsService.GetTimeTableStudents();
+		await base.OnInitializedAsync();
+	}
 
 }

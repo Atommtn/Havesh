@@ -2,40 +2,44 @@
 @using Havesh.Model.Model
 @using HaveshApp.Admin.Definition.LessonPlan
 @using Olive
+@using Havesh.Model.Data
 
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting">
-    <MudGrid>
-        @foreach (var act in TeacherWidgetsService.SessionActivities)
-        {
-            <MudItem md="6" xs="12" sm="6">
-                <MudCard Elevation="1" Outlined="true" Style="width:100%">
-                    <MudCardHeader>
-                        <MudStack Row="true">
-                            <MudIcon Icon="@act.Icon" Color="@(act.IconColor ?? Color.Default)" Size="Size.Medium"></MudIcon>
-                            <MudText Typo="Typo.body1" Color="Color.Default" GutterBottom="true">
-                                @act.ActivityTitle
-                            </MudText>
-                        </MudStack>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        @act.Description
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Color="@(act.IconColor ?? Color.Info)"
-                                   StartIcon="@act.Icon" IconSize="Size.Large" Size="Size.Large" Variant="Variant.Filled" FullWidth="true" 
-                                   OnClick="() => ClassSessionClick(act)">
-                            @act.ActivityTitle
-                        </MudButton>
-                    </MudCardActions>
-                </MudCard>
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSessionActivities">
+	<MudGrid>
+		@if (_timetableSessionActivities is not null)
+		{
+			@foreach (var act in _timetableSessionActivities)
+			{
+				<MudItem md="6" xs="12" sm="6">
+					<MudCard Elevation="1" Outlined="true" Style="width: 100%">
+						<MudCardHeader>
+							<MudStack Row="true">
+								<MudIcon Icon="@act.Icon" Color="@(act.IconColor ?? Color.Default)" Size="Size.Medium"></MudIcon>
+								<MudText Typo="Typo.body1" Color="Color.Default" GutterBottom="true">
+									@act.ActivityTitle
+								</MudText>
+							</MudStack>
+						</MudCardHeader>
+						<MudCardContent>
+							@act.Description
+						</MudCardContent>
+						<MudCardActions>
+							<MudButton Color="@(act.IconColor ?? Color.Info)"
+							           StartIcon="@act.Icon" IconSize="Size.Large" Size="Size.Large" Variant="Variant.Filled" FullWidth="true"
+							           OnClick="() => ClassSessionClick(act)">
+								@act.ActivityTitle
+							</MudButton>
+						</MudCardActions>
+					</MudCard>
 
 
-            </MudItem>
-        }
+				</MudItem>
+			}
+		}
 
-    </MudGrid>
+	</MudGrid>
 
 
 
@@ -43,12 +47,19 @@
 
 @code {
 
-    [Inject]
-    public TeacherWidgetsService TeacherWidgetsService { get; set; }
-    
-    private void ClassSessionClick(SessionActivity sessionActivity)
-    {
-        _navigationManager.NavigateTo($"/RollCall/{TeacherWidgetsService.CurrentSession.Id}/{sessionActivity.Id}");
-    }
+	IEnumerable<SessionActivity>? _timetableSessionActivities;
+
+	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		_timetableSessionActivities = await TeacherWidgetsService.GetTimeTableSessionActivities();
+		await base.OnInitializedAsync();
+	}
+
+	private async Task ClassSessionClick(BaseModel sessionActivity)
+	{
+		var timeTableSession = await TeacherWidgetsService.GetTimeTableSession();
+		_navigationManager.NavigateTo($"/RollCall/{timeTableSession?.Id}/{sessionActivity.Id}");
+	}
 
 }

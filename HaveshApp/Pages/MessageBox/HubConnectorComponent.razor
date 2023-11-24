@@ -9,53 +9,59 @@
 @code {
 	private HubConnection? hubConnection;
 	[Inject] NavigationManager Navigation { get; set; }
-	[Inject] UserSessionService UserSessionService { get; set; }
 	[Inject] MessageHandlingService MessageHandlingService { get; set; }
+	[Inject] ILogger<HubConnectorComponent> Logger { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		var userId = UserSessionService.User?.Id ?? 0;
-		var absoluteUri = Navigation.ToAbsoluteUri($"/apphub?UserId={userId}");
-		Console.WriteLine(" ========== Hub URL ========== ");
-		Console.WriteLine(" ==================== " + absoluteUri);
-		Console.WriteLine(" ==================== ");
-		hubConnection = new HubConnectionBuilder()
-			.WithUrl(absoluteUri, options =>
-			{
-				options.WebSocketConfiguration = conf =>
+		await base.OnAfterRenderAsync(firstRender);
+		if (firstRender)
+		{
+			var userId = _userSession.User?.Id ?? 0;
+			Logger.LogInformation("************ USERID : " + userId);
+			var absoluteUri = Navigation.ToAbsoluteUri($"/apphub?UserId={userId}");
+			Console.WriteLine(" ===== Hub URL ====== ");
+			Logger.LogInformation(" ===== " + absoluteUri);
+			Console.WriteLine(" ==================== ");
+			hubConnection = new HubConnectionBuilder()
+				.WithUrl(absoluteUri, options =>
 				{
-					conf.RemoteCertificateValidationCallback = (message, cert, chain, errors) => true;
-				};
-				options.HttpMessageHandlerFactory = factory => new HttpClientHandler
+					options.WebSocketConfiguration = conf =>
 					{
-						ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+						conf.RemoteCertificateValidationCallback = (message, cert, chain, errors) => true;
 					};
-				//options.AccessTokenProvider = () => Task.FromResult(Token);
-			})
-			.Build();
+					options.HttpMessageHandlerFactory = factory => new HttpClientHandler
+						{
+							ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+						};
+					//options.AccessTokenProvider = () => Task.FromResult(Token);
+				})
+				.Build();
 
-		hubConnection.On<MessageDto>("HandleIncomingMessage", (message) =>
-		{
-			MessageHandlingService.HandleIncomingMessage(message);
-		});
+			hubConnection.On<MessageDto>("HandleIncomingMessage", (message) =>
+			{
+				MessageHandlingService.HandleIncomingMessage(message);
+			});
 
 
-		try
-		{
-			await hubConnection.StartAsync();
+			try
+			{
+				await hubConnection.StartAsync();
 
-			Console.WriteLine($" @@@@@@@@@@@");
-			Console.WriteLine($" @@@@@@@@@@@ Connected : {hubConnection.ConnectionId}");
-			Console.WriteLine($" @@@@@@@@@@@");
+				Console.WriteLine($" @@@@@@@@@@@");
+				Console.WriteLine($" @@@@@@@@@@@ Connected : {hubConnection.ConnectionId}");
+				Console.WriteLine($" @@@@@@@@@@@");
 
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine(new string('=', 80));
-			Console.WriteLine(new string('=', 80));
-			Console.WriteLine(e);
-			Console.WriteLine(new string('=', 80));
-			Console.WriteLine(new string('=', 80));
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(new string('=', 80));
+				Console.WriteLine(new string('=', 80));
+				Console.WriteLine(e);
+				Console.WriteLine(new string('=', 80));
+				Console.WriteLine(new string('=', 80));
+			}
+
 		}
 	}
 

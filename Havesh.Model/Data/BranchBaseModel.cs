@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
+using Orleans;
 
 namespace Havesh.Model.Data;
 
@@ -20,9 +21,11 @@ public class Branch
 	
 	[ForeignKey(nameof(ParentBranchFk))]
 	public Branch? ParentBranch { get; set; }
+
 }
 
 [Serializable]
+[GenerateSerializer]
 public class BranchBaseModel : BaseModel
 {
 
@@ -35,14 +38,21 @@ public class BranchBaseModel : BaseModel
 
 }
 
+[Serializable]
+[GenerateSerializer]
 public class BaseModel : ICanBeSoftDeleted
 {
-    public int Id { get; set; }
+	[Id(0)]
+	public int Id { get; set; }
 
+    [Id(1)]
+    public Guid Guid { get; set; } = Guid.NewGuid();
+
+
+    [Id(2)]
     public bool IsDeleted { get; set; }
 
-    public Guid Guid { get; set; } = Guid.NewGuid();
-    
+	[Id(3)]
     public int CreatedByUserId { get; set; } = 4;
 	
     /*

@@ -5,7 +5,7 @@
 @using Newtonsoft.Json
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting">
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timeTables">
 
 	<MudTable T="ShokouhPardisTimeTable" Items="_timeTables">
 		<HeaderContent>
@@ -67,7 +67,13 @@
 				if (sessionActivity == null) return Task.CompletedTask;
 
 				var activity = SupervisorWidgetsService.SessionActivities.First(x => x.Id == sessionActivity.ActivityFk);
-				var timeTableSession = SupervisorWidgetsService.TimeTableSessions.First(x => x.TimeTableFk == sessionActivity.TimeTableSessionFk);
+				var timeTableSession = SupervisorWidgetsService.TimeTableSessions.FirstOrDefault(x =>
+				{
+					Console.WriteLine(x.TimeTableFk);
+					Console.WriteLine(sessionActivity.TimeTableFk);
+					Console.WriteLine(x.TimeTableFk == sessionActivity.TimeTableFk);
+					return x.TimeTableFk == sessionActivity.TimeTableFk;
+				});
 				
 				if (activity.ActivityTitle == "حضور و غیاب")
 				{
