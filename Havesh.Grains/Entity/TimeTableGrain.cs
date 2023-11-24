@@ -72,11 +72,13 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 		return tableSessions;
 	}
 
-	public async Task<TimeTableSession?> GetTodaySession()
-	{
+
+	public async Task<TimeTableSession?> GetTodaySession(DateTime? dateTime = null)
+	{	
 		var timeTableId = (int)this.GetPrimaryKeyLong();
 		var sessionManagerGrain = GrainFactory.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
-		var timeTableSession = await sessionManagerGrain.GetSessionByDate(timeTableId, DateTime.Today);
+		dateTime ??= DateTime.Today;
+		var timeTableSession = await sessionManagerGrain.GetSessionByDate(timeTableId, dateTime);
 		return timeTableSession;
 	}
 }

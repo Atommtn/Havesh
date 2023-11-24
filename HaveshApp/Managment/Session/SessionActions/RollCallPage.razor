@@ -1,45 +1,62 @@
 ﻿@page "/RollCall/{SessionId:int}/{SessionActivityId:int}"
 @using DNTPersianUtils.Core
 @using Havesh.Model.Model
+@using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Microsoft.EntityFrameworkCore
 @using PersianDate.Standard
 @layout PersianPagesLayout
+@if (SessionItem is null || SessionActivityItem is null)
+{
+	<MudProgressCircular Indeterminate="true" Color="Color.Warning" />
+}
+else
+{
+	<MudPaper Outlined="true" Elevation="3" Class="p-3 m-3">
+		<MudText Typo="Typo.h5" Color="Color.Info" GutterBottom="true" Class="p-2">
+			@SessionItem.TimeTable.Level.LevelName
+		</MudText>
+		<MudText Typo="Typo.h6" Color="Color.Warning" GutterBottom="true" Class="p-2">
+			جلسه @SessionItem?.SessionNumber - @SessionItem?.SessionDate.ToFa("D") - @SessionItem?.SessionTime
+		</MudText>
+	</MudPaper>
 
-<StudentListRollCallComponenets 
-    RowStyle="true" 
-    RowsPerPage="25" 
-    TimeTableSession="SessionItem" 
-    SessionActivity="SessionActivity" />
+	<MudPaper Outlined="true" Elevation="3" Class="p-3 m-3">
+		<MudStack Row="true">
+			<MudIcon Icon="@SessionActivityItem.Icon" Color="@(SessionActivityItem.IconColor ?? Color.Info)" Size="Size.Large"></MudIcon>
+			<MudText Typo="Typo.h5" Color="@(SessionActivityItem.IconColor ?? Color.Info)" GutterBottom="true">
+				@SessionActivityItem.ActivityTitle
+			</MudText>
+
+			<MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+				@SessionActivityItem.Description
+			</MudText>
+		</MudStack>
+	</MudPaper>
+
+
+	<StudentListRollCallComponenets 
+		RowStyle="true" 
+		RowsPerPage="25" 
+		TimeTableSession="SessionItem" 
+		SessionActivity="SessionActivityItem" />
+}
 
 @code {
-    private int _sessionId;
-    private int _sessionActivityId;
-	
+
+	[Inject] TeacherWidgetsService TeacherWidgetsService { get; set; } = null!;
+
 	public TimeTableSession? SessionItem { get; private set; }
-	public SessionActivity? SessionActivity { get; private set; }
+	public SessionActivity? SessionActivityItem { get; private set; }
 
-	[Parameter]
-    public int SessionId
-    {
-        get => _sessionId;
-        set
-        {
-            _sessionId = value;
-            SessionItem = _dataProvider.GetTimeTableSessionById(_sessionId , 
-	            q=>
-	            q.Include(x => x.TimeTable)
-	             .ThenInclude(x => x.Level));
-        }
-    }
+	[Parameter] public int SessionId { get; set; }
+	[Parameter] public int SessionActivityId { get; set; }
 
-    [Parameter]
-    public int SessionActivityId
-    {
-        get => _sessionActivityId;
-        set
-        {
-            _sessionActivityId = value;
-            SessionActivity = _dataProvider.GetSessionActivity(_sessionActivityId);
-        }
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		SessionItem = await TeacherWidgetsService.GetTimeTableSessionById(SessionId);
+		SessionActivityItem = await TeacherWidgetsService.GetTimeTableSessionActivityById(SessionActivityId);
+
+		await base.OnInitializedAsync();
+	}
+
 }

@@ -1,18 +1,15 @@
-﻿using System.Text.Json;
-using Havesh.Model.Model;
+﻿using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Serilog;
-using HaveshApp.Admin;
-using HaveshApp.Admin.Authentication;
-using HaveshApp.Admin.Student;
-using HaveshApp.Managment.Session.Activity;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
+using Havesh.GrainInterfaces.Manager;
+using Havesh.Grains.Entity;
+using Havesh.Grains.Manager;
 using Havesh.Model.Data;
-using static HaveshApp.Admin.Planning.CompleteTimeTablePage;
-using System.Text.Json.Serialization;
+using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using Newtonsoft.Json;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+using Olive;
 
 namespace HaveshApp.Managment;
 
@@ -29,20 +26,25 @@ public partial class StudentListRollCallComponenets
 	[Parameter] public int RowsPerPage { get; set; } = 15;
 	[Parameter] public SessionActivity SessionActivity { get; set; }
 
-	[Inject] IDialogService DialogService { get; set; }
-
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; }
 
 	async Task<TableData<ShokouhPardisStudentClass>> ServerReload(TableState state)
 	{
-		var list = StudentService.GetStudentsInTimeTable(TimeTableSession.TimeTableFk);
-		list.ForEach(x => x.OrderNumber = list.IndexOf(x) + 1);
+		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(TimeTableSession.TimeTableFk);
+		var students = await ttGrain.GetStudents();
+		if (students == null) 
+			return new TableData<ShokouhPardisStudentClass>();
+
+
+		var shokouhPardisStudentClasses = students.ToList();
+		shokouhPardisStudentClasses.ForEach(x=>x.OrderNumber = shokouhPardisStudentClasses.IndexOf(x) + 1);
 		return new TableData<ShokouhPardisStudentClass>
 		{
-			TotalItems = list.Count,
-			Items = list
+			TotalItems = shokouhPardisStudentClasses.Count(),
+			Items = shokouhPardisStudentClasses
 		};
+
 	}
 
 	private Dictionary<int, List<StudentSessionActivity>>? _stuActiv;
@@ -73,8 +75,7 @@ public partial class StudentListRollCallComponenets
 	{
 	}
 
-	[Inject]
-	private MessageService MessageService { get; set; }
+	[Inject] IClusterClient ClusterClient { get; set; }
 
 	private async Task Exec((ShokouhPardisStudentClass, SessionActivity, SessionActivityValueOption) obj)
 	{
@@ -83,31 +84,18 @@ public partial class StudentListRollCallComponenets
 			StudentSessionActivityLastModified = DateTime.Now,
 			StudentSessionActivityGuid = Guid.NewGuid(),
 			ActivityDateTime = DateTime.Now,
-			TimeTableFk = TimeTableSession!.TimeTableFk,
-			TimeTableSessionFk = TimeTableSession!.Id,
+			TimeTableFk = TimeTableSession.TimeTableFk,
+			TimeTableSessionFk = TimeTableSession.Id,
 			StudentFk = obj.Item1.Id,
 			ActivityFk = obj.Item2.Id,
 			ActivityValue = obj.Item3.Value
 		};
 
+		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
+		await manager.CreateStudentSessionActivity(studentSessionActivity);
 
-		if (!string.IsNullOrEmpty(obj.Item3.BroadcastToRoles))
-		{
-			var roles = obj.Item3.BroadcastToRoles.Split(',', StringSplitOptions.RemoveEmptyEntries);
-			var serializeObject = JsonConvert.SerializeObject(studentSessionActivity, Formatting.Indented);
-			await MessageService.SendMessageToRolesAsync(
-				new Message()
-				{
-					From = _userSession.User!,
-					To = _userSession.User!,
-					CreateDateTime = DateTime.Now,
-					Type = MessageTypeEnum.Broadcast,
-					Command = "StudentActivity",
-					CommandArg = serializeObject
-				}, roles);
-		}
-
-		_dataProvider.SaveStudentActivity(studentSessionActivity);
+		var studentGrain = ClusterClient.GetGrain<IStudentGrain>(studentSessionActivity.StudentFk);
+		await studentGrain.SessionActivityPerformed(studentSessionActivity);
 		UpdateDict();
 	}
 

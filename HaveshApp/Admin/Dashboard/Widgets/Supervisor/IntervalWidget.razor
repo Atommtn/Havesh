@@ -2,9 +2,10 @@
 @using Havesh.Model.Data.Dashboard
 @using DNTPersianUtils.Core
 @using Havesh.Model.Model
+@using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_interval">
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_interval" ToRoles="...Supervisor">
     @_interval?.Title
 </SmallWidgetContainer>
 
@@ -13,11 +14,12 @@
 	private ShokouhPardisInterval? _interval;
 
 	[Inject]
-	public SupervisorWidgetsService? SupervisorWidgetsService { get; set; }
+	public required SupervisorWidgetsService SupervisorWidgetsService { get; set; }
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		_interval = SupervisorWidgetsService?.GetCurrentInterval();
-		base.OnInitialized();
+		_interval = await SupervisorWidgetsService.GetInterval();
+		await base.OnInitializedAsync();
 	}
+
 }

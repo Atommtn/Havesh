@@ -4,18 +4,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Havesh.Model.Model;
 
+[Serializable]
+[GenerateSerializer]
 [Table("ShokouhPardis_SessionActivityValueOption")]
 public partial class SessionActivityValueOption : BranchBaseModel
 {
+	[Id(0)]
+	public int SessionActivityFk { get; set; }
 
-    public int SessionActivityFk { get; set; }
+	[Id(1)]
+	public string? Title { get; set; }
+	[Id(2)]
+	public string? Color { get; set; }
+	[Id(3)]
+	public string? Value { get; set; }
 
-    public string? Title { get; set; }
-    public string? Color { get; set; }
-    public string? Value { get; set; }
+	[Id(4)]
+	public string? ShowByValue { get; set; }
 
-    public string? ShowByValue { get; set; }
-
-    public string? BroadcastToRoles { get; set; }
+	[Id(5)]
+	public string? BroadcastToRoles { get; set; }
 
 }

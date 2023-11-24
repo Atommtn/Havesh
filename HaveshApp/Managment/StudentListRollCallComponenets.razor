@@ -5,27 +5,6 @@
 @inherits HaveshApp.Classes.SizeSupportComponentBase
 
 <MudContainer Style="@($"max-height: {BrowserHeight - 140}px;overflow-y:scroll; direction:RTL")">
-    <MudPaper Outlined="true" Elevation="3" Class="p-3 m-3">
-            <MudText Typo="Typo.h5" Color="Color.Info" GutterBottom="true" Class="p-2">
-                @TimeTableSession.TimeTable.Level.LevelName
-            </MudText>
-            <MudText Typo="Typo.h6" Color="Color.Warning" GutterBottom="true" Class="p-2">
-                جلسه @TimeTableSession?.SessionNumber - @TimeTableSession?.SessionDate.ToFa("D") - @TimeTableSession?.SessionTime
-            </MudText>
-    </MudPaper>
-
-    <MudPaper Outlined="true" Elevation="3" Class="p-3 m-3">
-        <MudStack Row="true">
-            <MudIcon Icon="@SessionActivity.Icon" Color="@(SessionActivity.IconColor ?? Color.Info)" Size="Size.Large"></MudIcon>
-            <MudText Typo="Typo.h5" Color="@(SessionActivity.IconColor ?? Color.Info)" GutterBottom="true">
-                @SessionActivity.ActivityTitle
-            </MudText>
-
-            <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
-                @SessionActivity.Description
-            </MudText>
-        </MudStack>
-    </MudPaper>
 
     <MudTable @ref="table"
     @attributes="@AdditionalAttributes"
