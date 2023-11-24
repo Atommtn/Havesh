@@ -3,7 +3,7 @@
 @using Havesh.Model.Model
 @using HaveshApp.Classes
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
-<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSession">
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSession" ToRoles="...Teacher">
 	@_timetableSession?.SessionNumber از @_timetable?.Sessions.Count(x=>x.SessionStatus != SessionStatuses.Canceled)
 </SmallWidgetContainer>
 

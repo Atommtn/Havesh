@@ -5,7 +5,9 @@ namespace HaveshApp.Admin.Dashboard.Personal.Widgets
 {
     public class WidgetContainerBase : ComponentBase
     {
-        [Parameter]
+	    private string _addToRole;
+
+	    [Parameter]
         public DashboardWidgetSetting WidgetSetting { get; set; }
 
         [Parameter]
@@ -13,5 +15,18 @@ namespace HaveshApp.Admin.Dashboard.Personal.Widgets
 
         [Parameter] public object? ViewRequired { get; set; } = false;
 
+        private const string DefaultRoles = "Admin";
+
+        [Parameter]
+        public string ToRoles
+        {
+	        get => _addToRole;
+	        set
+	        {
+		        _addToRole = value;
+		        if (_addToRole.StartsWith("..."))
+			        _addToRole = string.Join(",", DefaultRoles, _addToRole.Replace("...", null));
+	        }
+        }
     }
 }

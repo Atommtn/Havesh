@@ -3,7 +3,7 @@
 @using Havesh.Model.Model
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetable">
+<SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetable" ToRoles="...Teacher">
     @_timetable?.Schedule.Title
 </SmallWidgetContainer>
 

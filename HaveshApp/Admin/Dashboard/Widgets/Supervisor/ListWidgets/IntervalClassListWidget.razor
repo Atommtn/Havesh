@@ -2,10 +2,11 @@
 @using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using System.Text.Json
 @using Havesh.Model.Data
+@using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Newtonsoft.Json
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
-
-<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timeTables">
+@implements IDisposable
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timeTables" ToRoles="...Supervisor">
 
 	<MudTable T="ShokouhPardisTimeTable" Items="_timeTables">
 		<HeaderContent>
@@ -51,57 +52,24 @@
 @code {
 	Dictionary<int, int> Absents = new Dictionary<int, int>();
 	Dictionary<int, int> Presents = new Dictionary<int, int>();
-	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; }
+	[Inject]  SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
 
-	List<ShokouhPardisTimeTable>? _timeTables;
-
-	protected override void OnInitialized()
+	IEnumerable<ShokouhPardisTimeTable>? _timeTables;
+	protected override async Task OnInitializedAsync()
 	{
-		_timeTables = SupervisorWidgetsService.IntervalTimeTables;
+		SupervisorWidgetsService.OnStudentActivityPerformed +=	SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		_timeTables = await SupervisorWidgetsService.GetIntervalTimeTables();
+		await base.OnInitializedAsync();
+	}
 
-		WidgetSetting.MessageReceived = msg =>
-		{
-			if (msg is { MessageType: MessageTypeEnum.Broadcast, Command: "StudentActivity" })
-			{
-				var sessionActivity = JsonConvert.DeserializeObject<StudentSessionActivity>(msg.CommandArg!);
-				if (sessionActivity == null) return Task.CompletedTask;
+	private Task SupervisorWidgetsServiceOnOnStudentActivityPerformed(StudentSessionActivity arg)
+	{
+		throw new NotImplementedException();
+	}
 
-				var activity = SupervisorWidgetsService.SessionActivities.First(x => x.Id == sessionActivity.ActivityFk);
-				var timeTableSession = SupervisorWidgetsService.TimeTableSessions.FirstOrDefault(x =>
-				{
-					Console.WriteLine(x.TimeTableFk);
-					Console.WriteLine(sessionActivity.TimeTableFk);
-					Console.WriteLine(x.TimeTableFk == sessionActivity.TimeTableFk);
-					return x.TimeTableFk == sessionActivity.TimeTableFk;
-				});
-				
-				if (activity.ActivityTitle == "حضور و غیاب")
-				{
-					switch (sessionActivity.ActivityValue)
-					{
-						case "Absent":
-							if (Absents.TryGetValue(timeTableSession.TimeTableFk, out var count))
-							{
-								Absents[timeTableSession.TimeTableFk]++;
-								break;
-							}
-							Absents.Add(timeTableSession.TimeTableFk, 1);
-							break;
-						case "Present":
-							if (Presents.TryGetValue(timeTableSession.TimeTableFk, out var countPresents))
-							{
-								Presents[timeTableSession.TimeTableFk]++;
-								break;
-							}
-							Presents.Add(timeTableSession.TimeTableFk, 1);
-							break;
-					}
-				}
-			}
-			StateHasChanged();
-			return Task.CompletedTask;
-		};
-		base.OnInitialized();
+	public void Dispose()
+	{
+		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnOnStudentActivityPerformed;
 	}
 
 }

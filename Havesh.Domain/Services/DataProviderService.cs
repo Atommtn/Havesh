@@ -210,21 +210,54 @@ public class DataProviderService
         return classRooms;
     }
 
-    public List<ShokouhPardisTimeTable> GetTimeTables(ShokouhPardisInterval interval , ShokouhPardisWeekDay weekDay)
+    public List<ShokouhPardisTimeTable> GetTimeTables(int intervalId, int weekDayId)
     {
 	    var timeTables = DbContext.ShokouhPardisTimeTables
-		    .Include(x=>x.Teacher)
-		    .Include(x=>x.ClassRoom)
-		    .Include(x=>x.Schedule)
-		    .ThenInclude(x=>x.Programs)
-		    .ThenInclude(x=>x.DaySession)
-		    .Include(x=>x.Sessions)
-		    .OrderBy(x=>x.ClassRoom.ClassRoomName)
-		    .Where(x=>x.Schedule.Programs.Any(z=>z.DaySession.IntervalId == interval.Id && 
-		                                         z.DaySession.WeekdayId == weekDay.Id))
+		    .Include(x => x.Teacher)
+		    
+		    .Include(x => x.ClassRoom)
+		    
+		    .Include(x => x.Schedule)
+		    .ThenInclude(x => x.Programs)
+		    
+		    .ThenInclude(x => x.DaySession)
+		    .Include(x => x.Sessions)
+		    
+		    .OrderBy(x => x.ClassRoom.ClassRoomName)
+		    .Where(x => x.Schedule.Programs.Any(z => z.DaySession.IntervalId == intervalId &&
+		                                             z.DaySession.WeekdayId == weekDayId))
 		    .ToList();
 	    return timeTables;
-    }
+
+	}
+    public List<TimeTableSession> GetTimeTableSessions(TimeSpan sessionStartTime , DateTime? dateTime = null )
+    {
+        dateTime??= DateTime.Today;
+	    var timeTables = DbContext.TimeTableSessions
+		    .Include(x => x.Teacher)
+		    
+		    .Include(x => x.ClassRoom)
+
+		    .Include(x => x.TimeTable)
+		    // .ThenInclude(x => x.Schedule)
+		    // .ThenInclude(x => x.Programs)
+		    // .ThenInclude(x => x.DaySession)
+
+		    .Where(x => x.SessionTime == sessionStartTime && 
+								  	  x.SessionDate == dateTime && 
+									  x.SessionStatus != SessionStatuses.Canceled)
+
+			.OrderBy(x => x.ClassRoom.ClassRoomName)
+
+		    .ToList();
+	    return timeTables;
+
+	}
+	public List<ShokouhPardisTimeTable> GetTimeTables(ShokouhPardisInterval interval , ShokouhPardisWeekDay weekDay)
+	{
+		return GetTimeTables(interval.Id, weekDay.Id);
+
+	}
 
     public void AddStudentsToTeacherTimeSheet(ShokouhPardisTimeTable timeTable,
         List<ShokouhPardisStudentClass> selectedStudents)
@@ -1718,6 +1751,12 @@ public class DataProviderService
         SaveAll();
     }
 
+    public ShokouhPardisInterval? GetIntervalById(int intervalId)
+    {
+	    var shokouhPardisInterval = DbContext.ShokouhPardisIntervals.Find(intervalId);
+        return shokouhPardisInterval;
+
+	}
     public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time, TimeSpan offset)
     {
         //throw new NotImplementedException();
@@ -1751,6 +1790,7 @@ public class DataProviderService
 		    .ShokouhPardisTimeTables
 		    .Include(x => x.ClassRoom)
 		    .Include(x => x.Level)
+		    .Include(x => x.Sessions)
 		    .Include(x => x.Schedule)
 		    .ThenInclude(x => x.Programs)
 		    .ThenInclude(x => x.DaySession)
@@ -1842,12 +1882,27 @@ public class DataProviderService
 
     }
 
-    public void SaveStudentActivity(StudentSessionActivity activity)
+    public StudentSessionActivity? GetStudentSessionActivity(int ssaId)
     {
-        DbContext.Update(activity);
-        SaveAll();
+	    var studentSessionActivity = DbContext.StudentSessionActivities.Find(ssaId);
+	    return studentSessionActivity;
+
+    }
+    public void SaveStudentSessionActivity(StudentSessionActivity activity)
+    {
+	    DbContext.Update(activity);
+	    SaveAll();
     }
 
+    public List<StudentSessionActivity> GetSessionActivityPerformed(TimeTableSession session)
+    {
+        var activities = DbContext
+                .StudentSessionActivities
+                .Where(x => x.TimeTableSessionFk == session.Id)
+                .ToList()
+            ;
+        return activities;
+    }
     public Dictionary<int, List<StudentSessionActivity>> GetStudentsSessionActivities(TimeTableSession session)
     {
         var activities = DbContext
@@ -1866,7 +1921,7 @@ public class DataProviderService
         SaveAll();
     }
 
-    public SessionActivity GetSessionActivity(int sessionActivityId)
+    public SessionActivity? GetSessionActivity(int sessionActivityId)
     {
         var sessionActivity = DbContext.SessionActivities
             .Include(x => x.ValueOptions)
@@ -2288,6 +2343,12 @@ public class DataProviderService
     public ShokouhPardisTeacherClass? GetTeacher(int id)
     {
 	    return DbContext.ShokouhPardisTeacherClasses.Find(id);
+    }
+
+    public SessionActivityValueOption? GetSessionActivityValueOption(int id)
+    {
+	    var sessionActivityValueOption = DbContext.SessionActivityValueOptions.Find(id);
+	    return sessionActivityValueOption;
     }
 }
 

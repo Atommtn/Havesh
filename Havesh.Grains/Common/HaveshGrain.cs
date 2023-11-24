@@ -18,7 +18,7 @@ public abstract class HaveshGrain<T>
     protected readonly IPersistentState<HaveshGrainState<T>> PersistentState;
     private readonly IGrainContext _grainContext;
     protected readonly DataProviderService DataProviderService;
-    private readonly ILogger<HaveshGrain<T>> _logger;
+    protected ILogger<HaveshGrain<T>> Logger { get; }
 
     protected readonly CacheManager CacheManager;
     protected int GrainKey => (int)this.GetPrimaryKeyLong();
@@ -32,22 +32,22 @@ public abstract class HaveshGrain<T>
         PersistentState = persistentState;
         _grainContext = grainContext;
         DataProviderService = dataProviderService;
-        _logger = logger;
+        Logger = logger;
         CacheManager = new CacheManager(new MemoryCache(new MemoryCacheOptions()));
     }
 
 	public async Task<T?> Get()
     {
-        var primaryKey = (int)this.GetPrimaryKeyLong();
-        _logger.LogInformation(nameof(Get) + " requested by Id: " + primaryKey);
+        
+        Logger.LogInformation(typeof(T).Name + " - " + nameof(Get) + " requested by Id: " + GrainKey);
 
 		if (PersistentState.State.Item != null)
             return PersistentState.State.Item;
 
-        if (primaryKey == 0)
+        if (GrainKey <= 0)
             return default(T);
 
-        PersistentState.State.Item = GetEntity(primaryKey);
+        PersistentState.State.Item = GetEntity(GrainKey);
         PersistentState.State.IsInitialized = true;
 
 		return PersistentState.State.Item;
@@ -66,7 +66,7 @@ public abstract class HaveshGrain<T>
         }
 
         PersistentState.State.Item = entity;
-        _logger.LogTrace($"{this}<{GetType().Name}> State Updated for id[{this.GetPrimaryKeyLong()}]");
+        Logger.LogTrace($"{this}<{GetType().Name}> State Updated for id[{this.GetPrimaryKeyLong()}]");
     }
 
     public virtual async Task Update(T? entityState)

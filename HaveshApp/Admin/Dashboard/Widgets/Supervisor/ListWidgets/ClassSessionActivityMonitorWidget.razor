@@ -1,0 +1,134 @@
+﻿@using Havesh.Model.Model
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using System.Text.Json
+@using Havesh.GrainInterfaces.Common
+@using Havesh.Grains.Entity
+@using Havesh.Grains.Manager
+@using Havesh.Model.Data
+@using HaveshApp.Admin.Dashboard.Widgets.Teacher
+@using Newtonsoft.Json
+@using System.Collections.Concurrent
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+@implements IDisposable
+
+@*
+@foreach (var msg in TestMessage)
+{
+	<p>
+		<MudText Typo="Typo.h6">@msg</MudText>
+	</p>
+}
+*@
+
+@if (_dictionary is null)
+{
+	<MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Info">
+		Please waite ...
+	</MudProgressCircular>
+}
+else
+{
+	<MudTabs Centered="true" IconColor="Color.Info">
+		@foreach (var sessionActivity in _dictionary)
+		{
+			<MudTabPanel Text="@($"فعالیت  - {sessionActivity.Key.ActivityTitle}")">
+				<LargWidgetContainer Title="@($"فعالیت  - {sessionActivity.Key.ActivityTitle}")" WidgetSetting="WidgetSetting" ToRoles="...Supervisor">
+
+					<MudTable T="TimeTableSession" Items="sessionActivity.Value">
+						<HeaderContent>
+							<MudTh>کلاس</MudTh>
+							<MudTh>معلم</MudTh>
+							<MudTh>جلسه</MudTh>
+							<MudTh>فعالیت</MudTh>
+						</HeaderContent>
+						<RowTemplate>
+							<MudTd>
+								<MudChip Label="true">
+									@context.ClassRoom.ClassRoomName
+								</MudChip>
+							</MudTd>
+							<MudTd>
+								<MudText Typo="Typo.body1" Color="Color.Warning">
+									@context.Teacher.FullName
+								</MudText>
+							</MudTd>
+							<MudTd>
+								<MudChip Label="true" Size="Size.Small" Color="Color.Success">
+									@context.SessionNumber -
+									@context.SessionStatus
+								</MudChip>
+							</MudTd>
+							<MudTd>
+								@context.Tag
+							</MudTd>
+						</RowTemplate>
+					</MudTable>
+				</LargWidgetContainer>
+
+			</MudTabPanel>
+
+		}
+	</MudTabs>
+
+
+}
+
+@code {
+	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
+	[Inject] IClusterClient ClusterCLient { get; set; }
+	readonly ConcurrentDictionary<SessionActivity, IEnumerable<TimeTableSession>>? _dictionary = new();
+
+	List<string> TestMessage = new List<string>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		SupervisorWidgetsService.OnStudentActivityPerformed += SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+
+		var _timeTableSessions = await SupervisorWidgetsService.GetTimeTableSessions();
+
+		var managerGrain = ClusterCLient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+		var _activities = await managerGrain.GetSesionActivities();
+
+		if (_activities == null || _timeTableSessions == null)
+		{
+			return;
+		}
+		
+		foreach (var sessionActivity in _activities)
+		{
+			if (_timeTableSessions != null)
+				_dictionary?.TryAdd(sessionActivity, new List<TimeTableSession>(_timeTableSessions.ToArray()));
+		}
+
+
+		await base.OnInitializedAsync();
+	}
+
+	private async Task SupervisorWidgetsServiceOnOnStudentActivityPerformed(StudentSessionActivity arg)
+	{
+		var sessionActivityGrain = ClusterCLient.GetGrain<ITimeTableSessionGrain>(arg.TimeTableSessionFk);
+
+		var result = await sessionActivityGrain.ActivityPerformed(arg);
+		var activityGrain = ClusterCLient.GetGrain<IHaveshGrain<SessionActivity>>(arg.ActivityFk);
+		var sessionActivity = await activityGrain.Get();
+		if (sessionActivity != null && _dictionary != null )
+		{
+			var sessions = _dictionary.FirstOrDefault(x => x.Key.Id == sessionActivity.Id).Value;
+
+			var session = sessions.FirstOrDefault(x=>x.Id == arg.TimeTableSessionFk);
+			if (session != null) 
+				session.Tag = result;
+		}
+		TestMessage.Add("Activity Performed : " + arg.ActivityValue);
+		await InvokeAsync(StateHasChanged);
+
+	}
+
+	public void Dispose()
+	{
+		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+	}
+
+
+
+}

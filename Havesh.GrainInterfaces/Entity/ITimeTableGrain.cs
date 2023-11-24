@@ -7,5 +7,5 @@ public interface ITimeTableGrain : IGrainWithIntegerKey
 	Task<int> GetStudentCount();
 	Task<IEnumerable<ShokouhPardisStudentClass>?> GetStudents();
 	Task<IEnumerable<TimeTableSession>?> GetSessions();
-	Task<TimeTableSession?> GetTodaySession();
+	Task<TimeTableSession?> GetTodaySession(DateTime? dateTime = null);
 }

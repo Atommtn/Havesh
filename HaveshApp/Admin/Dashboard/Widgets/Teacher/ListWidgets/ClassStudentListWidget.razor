@@ -4,7 +4,7 @@
 
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_students">
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_students" ToRoles="...Teacher">
 	<MudTable T="ShokouhPardisStudentClass"
 			  Items="_students"
 			  Bordered="true"

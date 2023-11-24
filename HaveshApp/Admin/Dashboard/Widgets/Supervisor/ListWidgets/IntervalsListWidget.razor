@@ -1,8 +1,9 @@
 ﻿@using Havesh.Model.Model
 @using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
-<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_intervals">
+<LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_intervals" ToRoles="...Supervisor">
 
 	<MudTable T="ShokouhPardisInterval" Items="_intervals">
 		<HeaderContent>
