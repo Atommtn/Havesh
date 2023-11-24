@@ -117,7 +117,8 @@ public class SupervisorWidgetsService : WidgetServiceBase
 		var weekday = _dataProvider.GetTodayWeekday();
 
 #endif
-		return weekday;
+	
+        return weekday;
 	}
 
 	public ShokouhPardisInterval? CurrentInterval => GetCurrentInterval();
