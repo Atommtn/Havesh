@@ -4,16 +4,27 @@ using Havesh.Model.Data;
 
 namespace Havesh.Model.Model;
 
+
 public partial class StudentSessionActivity 
 {
 	[ForeignKey(nameof(StudentFk))]
+	[Id(11)]
 	public ShokouhPardisStudentClass Student { get; set; }
 
 	[ForeignKey(nameof(TimeTableSessionFk))]
+	[Id(12)]
 	public TimeTableSession TimeTableSession { get; set; }
 
 	[ForeignKey(nameof(ActivityFk))]
+	[Id(13)]
 	public SessionActivity Activity { get; set; }
+
+	[Id(14)]
+	public int ActivityValueOptionFk { get; set; }
+	
+	[Id(15)]
+	[ForeignKey(nameof(ActivityValueOptionFk))]
+	public SessionActivityValueOption ActivityValueOption { get; set; }
 
 }
 
@@ -31,6 +42,7 @@ public partial class StudentSessionActivity : BranchBaseModel
 	public int ActivityFk { get; set; }
 	[Id(3)]
 	public string? ActivityValue { get; set; }
+
 	[Id(4)]
 	public string? Status { get; set; }
 	[Id(5)]

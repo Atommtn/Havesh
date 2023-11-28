@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.GrainInterfaces.Manager;
 using Havesh.Grains.Entity;
@@ -33,12 +34,12 @@ public partial class StudentListRollCallComponenets
 	{
 		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(TimeTableSession.TimeTableFk);
 		var students = await ttGrain.GetStudents();
-		if (students == null) 
+		if (students == null)
 			return new TableData<ShokouhPardisStudentClass>();
 
 
 		var shokouhPardisStudentClasses = students.ToList();
-		shokouhPardisStudentClasses.ForEach(x=>x.OrderNumber = shokouhPardisStudentClasses.IndexOf(x) + 1);
+		shokouhPardisStudentClasses.ForEach(x => x.OrderNumber = shokouhPardisStudentClasses.IndexOf(x) + 1);
 		return new TableData<ShokouhPardisStudentClass>
 		{
 			TotalItems = shokouhPardisStudentClasses.Count(),
@@ -47,23 +48,25 @@ public partial class StudentListRollCallComponenets
 
 	}
 
-	private Dictionary<int, List<StudentSessionActivity>>? _stuActiv;
-	protected override void OnInitialized()
+	private List<StudentSessionActivity>? _activities;
+	protected override async Task OnInitializedAsync()
 	{
-		UpdateDict();
-		base.OnInitialized();
+		await ReloadActivities();
+		await base.OnInitializedAsync();
 	}
 
-	private void UpdateDict()
+	private async Task UpdateActivities(StudentSessionActivity? studentSessionActivity)
 	{
-		_stuActiv = _dataProvider.GetStudentsSessionActivities(TimeTableSession);
+		if (studentSessionActivity != null) 
+			_activities?.Add(studentSessionActivity);
+
+		await InvokeAsync(StateHasChanged);
 	}
 
-	async Task ReloadData()
+	private async Task ReloadActivities()
 	{
-		if (table != null)
-			await table.ReloadServerData();
-
+		var ttsGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(TimeTableSession.Id);
+		_activities = (await ttsGrain.GetStudentSessionActivities() ?? Array.Empty<StudentSessionActivity>()).ToList();
 	}
 
 	private string RowStyleFunc(ShokouhPardisStudentClass student, int index)
@@ -71,32 +74,31 @@ public partial class StudentListRollCallComponenets
 		return "";
 	}
 
-	private void Callback(SessionActivity activity, string value)
-	{
-	}
-
 	[Inject] IClusterClient ClusterClient { get; set; }
 
 	private async Task Exec((ShokouhPardisStudentClass, SessionActivity, SessionActivityValueOption) obj)
 	{
+
 		var studentSessionActivity = new StudentSessionActivity
 		{
 			StudentSessionActivityLastModified = DateTime.Now,
 			StudentSessionActivityGuid = Guid.NewGuid(),
 			ActivityDateTime = DateTime.Now,
 			TimeTableFk = TimeTableSession.TimeTableFk,
-			TimeTableSessionFk = TimeTableSession.Id,
+			TimeTableSession = TimeTableSession,
 			StudentFk = obj.Item1.Id,
+			Student = obj.Item1,
 			ActivityFk = obj.Item2.Id,
-			ActivityValue = obj.Item3.Value
+			Activity = obj.Item2,
+			ActivityValueOptionFk = obj.Item3.Id,
+			ActivityValueOption = obj.Item3,
+			ActivityValue = obj.Item3.Value,
 		};
 
 		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
 		await manager.CreateStudentSessionActivity(studentSessionActivity);
 
-		var studentGrain = ClusterClient.GetGrain<IStudentGrain>(studentSessionActivity.StudentFk);
-		await studentGrain.SessionActivityPerformed(studentSessionActivity);
-		UpdateDict();
+		await UpdateActivities(studentSessionActivity);
 	}
 
 	private void CancelStudentSessionActivity(StudentSessionActivity sac)

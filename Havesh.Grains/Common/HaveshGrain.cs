@@ -36,12 +36,21 @@ public abstract class HaveshGrain<T>
         CacheManager = new CacheManager(new MemoryCache(new MemoryCacheOptions()));
     }
 
-	public async Task<T?> Get()
-    {
-        
-        Logger.LogInformation(typeof(T).Name + " - " + nameof(Get) + " requested by Id: " + GrainKey);
+	protected void EnusureState()
+	{
+		if (PersistentState.State.Item != null && PersistentState.State.IsInitialized) 
+			return;
 
-		if (PersistentState.State.Item != null)
+		PersistentState.State.Item = GetEntity(GrainKey);
+		PersistentState.State.IsInitialized = true;
+
+	}
+	public async Task<T?> Get(bool? forceFromDb = null)
+    {
+
+		Logger.LogInformation(typeof(T).Name + " - " + nameof(Get) + " requested by Id: " + GrainKey);
+
+		if (forceFromDb is null or false && PersistentState.State.Item != null)
             return PersistentState.State.Item;
 
         if (GrainKey <= 0)
@@ -54,6 +63,7 @@ public abstract class HaveshGrain<T>
     }
 
     protected abstract T? GetEntity(int id);
+
 
     public virtual async Task Set(T? entity)
     {

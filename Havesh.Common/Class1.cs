@@ -7,7 +7,7 @@
 		public const string OrleansSimpleMessageProviderName = "SMS";
 		public const string OnlineUsersStreamNamespace = "OnlineUsersMQ";
 		public const string SessionActivityStreamNamespace = "SessionActivityMQ";
-		public const string StudentSessionActivityToRoleStreamNamespace = "StudentSessionActivityToRoleMQ";
 		public const string StudentSessionActivityStreamNamespace = "StudentSessionActivityMQ";
+		public const string GeneralKey = "GENERAL";
 	}
 }

@@ -38,7 +38,7 @@ public class WidgetServiceBase
 
 	protected async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
 	{
-		var sessionGrain = ClusterClient.GetGrain<ISessionGrain>(sessionId);
+		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(sessionId);
 		var activities = await sessionGrain.GetActivities();
 		return activities;
 
@@ -57,11 +57,11 @@ public class WidgetServiceBase
 		return activities;
 	}
 
-	public async Task<TimeTableSession?> GetTimeTableSessionById(int sessionId)
+	public async Task<TimeTableSession?> GetTimeTableSessionById(int sessionId,bool? reloadFromDb = null)
 	{
-		var sessionGrain = ClusterClient.GetGrain<IHaveshGrain<TimeTableSession>>(sessionId);
+		var sessionGrain = ClusterClient.GetGrain<IHaveshGrain<TimeTableSessionGrainState>>(sessionId);
 		var session = await sessionGrain.Get();
-		return session;
+		return session.TimeTableSession;
 	}
 	public async Task<SessionActivity?> GetTimeTableSessionActivityById(int activityId)
 	{

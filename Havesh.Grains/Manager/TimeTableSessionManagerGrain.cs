@@ -1,5 +1,6 @@
 ﻿using Havesh.Domain.Services;
 using Havesh.GrainInterfaces.Common;
+using Havesh.Grains.Entity;
 using Havesh.Model.Model;
 using Microsoft.Extensions.Caching.Memory;
 using Olive;
@@ -48,4 +49,11 @@ public class TimeTableSessionManagerGrain : Grain, ITimeTableSessionManagerGrain
 			TimeSpan.FromHours(1));
 	}
 
+	public async Task<IEnumerable<SessionActivityValueOption>?> GetSessionActivityPerforms(int timeTableSessionId)
+	{
+		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(timeTableSessionId);
+		var activities = await ttsGrain.GetStudentSessionActivities();
+		var sessionActivityValueOptions = activities?.Select(x => x.ActivityValueOption).ToArray();
+		return sessionActivityValueOptions;
+	}
 }

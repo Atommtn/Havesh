@@ -53,7 +53,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		SessionItem = await TeacherWidgetsService.GetTimeTableSessionById(SessionId);
+		SessionItem = await TeacherWidgetsService.GetTimeTableSessionById(SessionId , true);
 		SessionActivityItem = await TeacherWidgetsService.GetTimeTableSessionActivityById(SessionActivityId);
 
 		await base.OnInitializedAsync();

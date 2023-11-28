@@ -50,4 +50,7 @@ public partial class SessionActivity : BranchBaseModel
 	public Guid SessionActivityGuid { get; set; }
 	[Id(15)]
 	public DateTime SessionActivityLastModified { get; set; }
+
+	[Id(16)]
+	public bool IsDefault { get; set; }
 }
