@@ -6,8 +6,7 @@
 
 <MudContainer Style="@($"max-height: {BrowserHeight - 140}px;overflow-y:scroll; direction:RTL")">
 
-    <MudTable @ref="table"
-    @attributes="@AdditionalAttributes"
+    <MudTable @attributes="@AdditionalAttributes"
               RowStyleFunc="RowStyleFunc"
               Breakpoint="Breakpoint.None"
               ServerData="ServerReload"

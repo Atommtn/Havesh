@@ -18,11 +18,7 @@ public partial class StudentListRollCallComponenets
 {
 
 	[Inject] public StudentService StudentService { get; set; }
-
-	MudTable<ShokouhPardisStudentClass>? table;
-
 	[Parameter] public TimeTableSession TimeTableSession { get; set; }
-
 	[Parameter] public bool RowStyle { get; set; }
 	[Parameter] public int RowsPerPage { get; set; } = 15;
 	[Parameter] public SessionActivity SessionActivity { get; set; }
