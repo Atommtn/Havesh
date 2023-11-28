@@ -21,5 +21,5 @@ public partial class TimeTableSession
 	public ShokouhPardisClassRoom ClassRoom { get; set; }
 
 	[NotMapped]
-	public string Tag { get; set; }
+	public object? Tag { get; set; }
 }

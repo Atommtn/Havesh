@@ -20,31 +20,31 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher;
 
 public class SupervisorWidgetsService : WidgetServiceBase
 {
-	private readonly ILogger<StudentSessionActivityStreamConsumer> _logger;
-	private StudentSessionActivityStreamConsumer _consumer1;
-	private StudentSessionActivityStreamConsumer _consumer2;
+	private readonly ILogger<SupervisorWidgetsService> _logger;
+	private HaveshStreamConsumer<StudentSessionActivity> _consumer;
 	public SupervisorWidgetsService(
 		IClusterClient clusterClient,
 		UserSessionService userSession,
-		ILogger<StudentSessionActivityStreamConsumer> logger)
+		ILogger<SupervisorWidgetsService> logger)
 		: base(clusterClient, userSession)
 	{
 		_logger = logger;
 		var streamProvider = clusterClient.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
-		var stream1 = streamProvider.GetStream<StudentSessionActivity>(StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, 0));
-		_consumer1 = new StudentSessionActivityStreamConsumer(OnStudentSessionActivityPerform);
-		stream1.SubscribeAsync(_consumer1);
+		var stream1 = streamProvider.GetStream<StudentSessionActivity>(StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, HaveshConstants.GeneralKey));
+		_consumer = new HaveshStreamConsumer<StudentSessionActivity>(OnStudentSessionActivityPerform);
+		stream1.SubscribeAsync(_consumer);
 
 		// var stream2 = streamProvider.GetStream<StudentSessionActivity>(StreamId.Create(HaveshConstants.StudentSessionActivityToRoleStreamNamespace, "Supervisor"));
-		// _consumer2 = new StudentSessionActivityStreamConsumer(OnStudentSessionActivityPerform);
+		// _consumer2 = new HaveshStreamConsumer(OnStudentSessionActivityPerform);
 		// stream1.SubscribeAsync(_consumer2);
 
 	}
 
-	private void OnStudentSessionActivityPerform(StudentSessionActivity obj)
+	private void OnStudentSessionActivityPerform(StudentSessionActivity arg)
 	{
-		_logger.Info($"Received Student Activity Performed by Student Id : {obj.StudentFk} Value: {obj.ActivityValue}");
-		OnStudentActivityPerformed?.Invoke(obj);
+
+		_logger.Info($"Received Student Activity Performed by Student Id : {arg.StudentFk} Value: {arg.ActivityValue}");
+		OnStudentActivityPerformed?.Invoke(arg);
 	}
 
 	public event Func<StudentSessionActivity, Task>? OnStudentActivityPerformed;

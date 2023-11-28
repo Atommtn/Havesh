@@ -8,127 +8,122 @@
 @using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Newtonsoft.Json
 @using System.Collections.Concurrent
+@using Olive
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 @implements IDisposable
 
-@*
-@foreach (var msg in TestMessage)
-{
-	<p>
-		<MudText Typo="Typo.h6">@msg</MudText>
-	</p>
-}
-*@
 
-@if (_dictionary is null)
-{
-	<MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Info">
-		Please waite ...
-	</MudProgressCircular>
-}
-else
-{
-	<MudTabs Centered="true" IconColor="Color.Info">
-		@foreach (var sessionActivity in _dictionary)
-		{
-			<MudTabPanel Text="@($"فعالیت  - {sessionActivity.Key.ActivityTitle}")">
-				<LargWidgetContainer Title="@($"فعالیت  - {sessionActivity.Key.ActivityTitle}")" WidgetSetting="WidgetSetting" ToRoles="...Supervisor">
+<LargWidgetContainer Title="@($"فعالیت  - {_activitiey?.ActivityTitle}")" WidgetSetting="WidgetSetting" ToRoles="...Supervisor" ViewRequired="_activitiey">
 
-					<MudTable T="TimeTableSession" Items="sessionActivity.Value">
-						<HeaderContent>
-							<MudTh>کلاس</MudTh>
-							<MudTh>معلم</MudTh>
-							<MudTh>جلسه</MudTh>
-							<MudTh>فعالیت</MudTh>
-						</HeaderContent>
-						<RowTemplate>
-							<MudTd>
-								<MudChip Label="true">
-									@context.ClassRoom.ClassRoomName
-								</MudChip>
-							</MudTd>
-							<MudTd>
-								<MudText Typo="Typo.body1" Color="Color.Warning">
-									@context.Teacher.FullName
-								</MudText>
-							</MudTd>
-							<MudTd>
-								<MudChip Label="true" Size="Size.Small" Color="Color.Success">
-									@context.SessionNumber -
-									@context.SessionStatus
-								</MudChip>
-							</MudTd>
-							<MudTd>
-								@context.Tag
-							</MudTd>
-						</RowTemplate>
-					</MudTable>
-				</LargWidgetContainer>
-
-			</MudTabPanel>
-
-		}
-	</MudTabs>
-
-
-}
+	<MudTable T="TimeTableSession" Items="_timeTableSessions">
+		<HeaderContent>
+			<MudTh>کلاس</MudTh>
+			<MudTh>معلم</MudTh>
+			<MudTh>جلسه</MudTh>
+			<MudTh>فعالیت</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd>
+				<MudChip Label="true">
+					@context.ClassRoom.ClassRoomName
+				</MudChip>
+			</MudTd>
+			<MudTd>
+				<MudText Typo="Typo.body1" Color="Color.Warning">
+					@context.Teacher.FullName
+				</MudText>
+			</MudTd>
+			<MudTd>
+				<MudChip Label="true" Size="Size.Small" Color="Color.Success">
+					@context.SessionNumber -
+					@context.SessionStatus
+				</MudChip>
+			</MudTd>
+			<MudTd>
+				@foreach (var itm in GetReport(context.Tag))
+				{
+					<MudChip Size="Size.Small"> @itm </MudChip>
+				}
+				
+			</MudTd>
+		</RowTemplate>
+	</MudTable>
+</LargWidgetContainer>
 
 @code {
 	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
 	[Inject] IClusterClient ClusterCLient { get; set; }
-	readonly ConcurrentDictionary<SessionActivity, IEnumerable<TimeTableSession>>? _dictionary = new();
+	List<TimeTableSession>? _timeTableSessions;
+	SessionActivity? _activitiey;
 
-	List<string> TestMessage = new List<string>();
 
 	protected override async Task OnInitializedAsync()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed += SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		SupervisorWidgetsService.OnStudentActivityPerformed += SupervisorWidgetsServiceOnStudentActivityPerformed;
 
-		var _timeTableSessions = await SupervisorWidgetsService.GetTimeTableSessions();
+		_timeTableSessions = ((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList();
+
 
 		var managerGrain = ClusterCLient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
-		var _activities = await managerGrain.GetSesionActivities();
+		_activitiey = await managerGrain.GetDefaultSesionActivity();
 
-		if (_activities == null || _timeTableSessions == null)
+		var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+		_timeTableSessions.ForEach(async tts =>
 		{
-			return;
-		}
-		
-		foreach (var sessionActivity in _activities)
-		{
-			if (_timeTableSessions != null)
-				_dictionary?.TryAdd(sessionActivity, new List<TimeTableSession>(_timeTableSessions.ToArray()));
-		}
+			var sessionActivityValueOptions = await sessionManagerGrain.GetSessionActivityPerforms(tts.Id);
 
+			tts.Tag = (sessionActivityValueOptions ?? Array.Empty<SessionActivityValueOption>()).ToList();
+		});
 
 		await base.OnInitializedAsync();
 	}
 
-	private async Task SupervisorWidgetsServiceOnOnStudentActivityPerformed(StudentSessionActivity arg)
+	private async Task SupervisorWidgetsServiceOnStudentActivityPerformed(StudentSessionActivity arg)
 	{
-		var sessionActivityGrain = ClusterCLient.GetGrain<ITimeTableSessionGrain>(arg.TimeTableSessionFk);
 
-		var result = await sessionActivityGrain.ActivityPerformed(arg);
-		var activityGrain = ClusterCLient.GetGrain<IHaveshGrain<SessionActivity>>(arg.ActivityFk);
-		var sessionActivity = await activityGrain.Get();
-		if (sessionActivity != null && _dictionary != null )
+		if (_activitiey != null && 
+		    _timeTableSessions != null &&
+		    arg.ActivityFk == _activitiey.Id
+		    )
 		{
-			var sessions = _dictionary.FirstOrDefault(x => x.Key.Id == sessionActivity.Id).Value;
-
-			var session = sessions.FirstOrDefault(x=>x.Id == arg.TimeTableSessionFk);
-			if (session != null) 
-				session.Tag = result;
+			var activityValueOptionGrain = ClusterCLient.GetGrain<IHaveshGrain<SessionActivityValueOption>>(arg.ActivityValueOptionFk);
+			var sessionActivityValueOption = await activityValueOptionGrain.Get();
+			var timeTableSession = Enumerable.FirstOrDefault(_timeTableSessions, x => x.Id == arg.TimeTableSessionFk);
+			if (timeTableSession?.Tag is List<SessionActivityValueOption> lst)
+			{
+				if (sessionActivityValueOption != null)
+				{
+					lst.Add(sessionActivityValueOption);
+				}
+			}
+			else
+			{
+				if (timeTableSession != null && sessionActivityValueOption != null)
+					timeTableSession.Tag = new List<SessionActivityValueOption> 
+						{ sessionActivityValueOption };
+			}
 		}
-		TestMessage.Add("Activity Performed : " + arg.ActivityValue);
 		await InvokeAsync(StateHasChanged);
 
 	}
 
 	public void Dispose()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnStudentActivityPerformed;
 	}
 
 
+	private IEnumerable<string> GetReport(object? tag)
+	{
+		string[] list = { };
+		if (tag is List<SessionActivityValueOption> {Count: > 0 } lst)
+		{
+			list = lst
+				.GroupBy(x => x.Value)
+				.Select(x => $"{x.Key} - {x.Count()}")
+				.ToArray();
+		}
+		return list;
+	}
 
 }

@@ -1,0 +1,54 @@
+﻿@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using HaveshApp.Admin.Dashboard.Widgets.Teacher
+@using Havesh.Model.Model
+@using Havesh.GrainInterfaces.Common
+@implements IDisposable
+
+<LargWidgetContainer WidgetSetting="WidgetSetting" ToRoles="@WidgetSetting.Widget.BelongToRoles">
+	<MudStack Row="false" Style="max-height: 100%;overflow-y: scroll">
+		<MudPaper Outlined="true" Elevation="1">
+			@foreach (var msg in _testMessage)
+			{
+				<MudChip Label="true" Size="Size.Medium" Color="Color.Info">@msg</MudChip>
+			}
+		</MudPaper>
+	</MudStack>
+</LargWidgetContainer>
+
+@code {
+
+
+	[Inject] IClusterClient ClusterClient { get; set; }
+
+	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
+	readonly List<string> _testMessage = new List<string>();
+
+	protected override void OnInitialized()
+	{
+		SupervisorWidgetsService.OnStudentActivityPerformed += SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		base.OnInitialized();
+	}
+
+	private async Task SupervisorWidgetsServiceOnOnStudentActivityPerformed(StudentSessionActivity arg)
+	{
+
+		await InvokeAsync(() =>
+		{
+			_testMessage.Add($"{arg.Activity.ActivityTitle} " +
+			                 $"زبان آموز {arg.Student.FullName} " +
+			                 $"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
+			                 $"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
+			                 $"{arg.ActivityValueOption?.Title} " +
+			                 $"ثبت شد" );
+			StateHasChanged();
+		});
+	}
+
+	public void Dispose()
+	{
+		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+
+	}
+
+}

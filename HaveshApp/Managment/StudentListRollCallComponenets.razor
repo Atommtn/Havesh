@@ -6,8 +6,7 @@
 
 <MudContainer Style="@($"max-height: {BrowserHeight - 140}px;overflow-y:scroll; direction:RTL")">
 
-    <MudTable @ref="table"
-    @attributes="@AdditionalAttributes"
+    <MudTable @attributes="@AdditionalAttributes"
               RowStyleFunc="RowStyleFunc"
               Breakpoint="Breakpoint.None"
               ServerData="ServerReload"
@@ -19,30 +18,59 @@
             <MudTd>@student.StudentFamily</MudTd>
 
             <MudTd>
+	            @*
                 @if (_stuActiv != null &&
                 _stuActiv.TryGetValue(student.Id, out var xx) &&
                 xx.Any(x => x.ActivityFk == SessionActivity.Id &&
                 x.ActivityDeletedDateTime == null))
-                {
-                    @foreach (var sac in 
-										xx.Where(x => x.ActivityFk == SessionActivity.Id 
-																		&& x.ActivityDeletedDateTime == null))
-                    {
-                        <MudChip Size="Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)">
-                            @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
-                        </MudChip>
+                *@
 
-                        <DependentSessionActivityItemComponent Student="student" SessionActivity="SessionActivity" AllStudentSessionActivities="xx" StudentSessionActivity="sac" ActivityExec="Exec" />
-                    }
-                    @if (SessionActivity.ValueOptionsCanMultiple is true)
-                    {
-                        <SessionActivityItemComponent Student="student" SessionActivity="SessionActivity" ActivityExec="Exec"></SessionActivityItemComponent>
-                    }
-                }
-                else
-                {
-                    <SessionActivityItemComponent Student="student" SessionActivity="SessionActivity" ActivityExec="Exec"></SessionActivityItemComponent>
-                }
+	            @if (_activities != null)
+	            {
+		            var studentSessionActivities = _activities
+			            .Where(x => x.StudentFk == student.Id && 
+			                        x.ActivityFk == SessionActivity.Id && 
+			                        x.ActivityDeletedDateTime == null)
+			            .ToList();
+
+		            if(studentSessionActivities.Any())
+		            {
+			            <MudText Typo="Typo.body1">1</MudText>
+
+			            foreach (var sac in studentSessionActivities)
+			            {
+				            <MudChip Size="@Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="@Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)">
+					            @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
+				            </MudChip>
+
+				            <DependentSessionActivityItemComponent 
+					            Student="@student" 
+					            SessionActivity="@SessionActivity" 
+					            AllStudentSessionActivities="@studentSessionActivities" 
+					            StudentSessionActivity="@sac" 
+					            ActivityExec="Exec" />
+			            }
+
+
+			            if (SessionActivity.ValueOptionsCanMultiple is true)
+			            {
+				            <SessionActivityItemComponent 
+					            Student="@student" 
+					            SessionActivity="@SessionActivity" 
+					            ActivityExec="Exec" />
+			            }
+		            }
+		            else
+		            {
+						<MudText Typo="Typo.body1">1</MudText>
+
+			            <SessionActivityItemComponent 
+				            Student="@student" 
+				            SessionActivity="@SessionActivity" 
+				            ActivityExec="Exec" />
+		            }
+	            }
+
             </MudTd>
         </RowTemplate>
     </MudTable>

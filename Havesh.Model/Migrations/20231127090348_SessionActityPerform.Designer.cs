@@ -4,16 +4,19 @@ using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HaveshApp.Migrations
+namespace Havesh.Model.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231127090348_SessionActityPerform")]
+    partial class SessionActityPerform
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3438,9 +3441,6 @@ namespace HaveshApp.Migrations
                     b.Property<string>("ActivityValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ActivityValueOptionFk")
-                        .HasColumnType("int");
-
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -3489,8 +3489,6 @@ namespace HaveshApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityFk");
-
-                    b.HasIndex("ActivityValueOptionFk");
 
                     b.HasIndex("BranchFk");
 
@@ -4702,10 +4700,6 @@ namespace HaveshApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Havesh.Model.Model.SessionActivityValueOption", "ActivityValueOption")
-                        .WithMany()
-                        .HasForeignKey("ActivityValueOptionFk");
-
                     b.HasOne("Havesh.Model.Data.Branch", "Branch")
                         .WithMany()
                         .HasForeignKey("BranchFk")
@@ -4725,8 +4719,6 @@ namespace HaveshApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Activity");
-
-                    b.Navigation("ActivityValueOption");
 
                     b.Navigation("Branch");
 
