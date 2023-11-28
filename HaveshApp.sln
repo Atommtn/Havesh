@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Domain", "Havesh.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Workflow", "Havesh.Workflow\Havesh.Workflow.csproj", "{F8E3FEEC-A9B6-4602-981B-955D2B2284AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havesh.Common", "Havesh.Common\Havesh.Common.csproj", "{0288045C-CACE-485E-9EF8-9BFE72275231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Common", "Havesh.Common\Havesh.Common.csproj", "{0288045C-CACE-485E-9EF8-9BFE72275231}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
