@@ -1,18 +1,19 @@
 ﻿@using HaveshApp.Admin.Components
 @using System.Globalization
 @using Havesh.Model.Model
+@using HaveshApp.Classes
 
 <MtnDialog>
     <ChildComponent>
         <MudGrid>
             <MudItem sm="12" md="6">
-                <MudTextField @bind-Value="TermSessionTemplateDate.SessionNumber" Label="Session Number" ReadOnly="true"></MudTextField>
+                <MudTextField @bind-Value="Session.SessionNumber" Label="Session Number" ReadOnly="true"></MudTextField>
             </MudItem>
             <MudItem sm="12" md="6">
-                <MudDatePicker   @bind-Date="@TermSessionTemplateDate.Date"  Label="Session Date" Culture="_persianCulture"></MudDatePicker>
+                <MudDatePicker @bind-Date="@Session.SessionDate" Label="Session Date" Culture="_persianCulture"></MudDatePicker>
             </MudItem>
             <MudItem sm="12" md="12">
-                <MudTextField @bind-Value="TermSessionTemplateDate.Description" Label="Description" Lines="4"></MudTextField>
+                <MudTextField @bind-Value="Session.SessionDescription" Label="Description" Lines="4"></MudTextField>
             </MudItem>
         </MudGrid>
     </ChildComponent>
@@ -34,7 +35,7 @@
 @code {
 
     [Parameter]
-    public TermSessionTemplateDate TermSessionTemplateDate { get; set; }
+    public TimeTableSession Session { get; set; }
 
     [CascadingParameter]
     public MudDialogInstance DialogInstance { get; set; }
@@ -43,8 +44,8 @@
 
     void SaveDateClick()
     {
-        _dataProvider.SaveTermSessionTemplateDate(TermSessionTemplateDate);
-        DialogInstance.Close(DialogResult.Ok(true));
+        
+        DialogInstance.Close(DialogResult.Ok(Session));
     }
 
     void CloseClick()

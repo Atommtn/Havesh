@@ -76,15 +76,29 @@ public class DataProviderService
 
 
 	public bool SaveTeacherTimeTable(ShokouhPardisTimeTable teacherTimesheet)
-	{
-		var title =
-			$"{teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName} -> {teacherTimesheet.Schedule.Title}";
+    {
+        string title;
+        bool isDuplicate = false;
+        if (teacherTimesheet.IsPrivate)
+        {
+            title =
+                $"خصوصی {teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName}";
+        }
+        else
+        {
+            title =
+                $"{teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName} -> {teacherTimesheet.Schedule.Title}";
+        }
+		
 		teacherTimesheet.Title = title;
-		var isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
-		if (isDuplicate)
-			return isDuplicate;
+        if (!teacherTimesheet.IsPrivate)
+        {
+            isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
+            if (isDuplicate)
+                return isDuplicate;
+        }
 
-		DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
+        DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
 		SaveAll();
 		return isDuplicate;
 	}

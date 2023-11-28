@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Havesh.Domain.Services;
+using HaveshApp.Classes;
 using HaveshApp.Managment.Session;
 
 namespace HaveshApp.Admin.Planning;
@@ -66,7 +67,13 @@ public partial class PrivateTimesTableDialog
 
 			return;
 		}
-
+		foreach (var timeTableSession in TimeTableItem?.Sessions)
+        {
+            timeTableSession.ClassRoom = TimeTableItem.ClassRoom;
+            timeTableSession.Teacher= TimeTableItem.Teacher;
+            timeTableSession.TimeTable = TimeTableItem;
+            timeTableSession.SessionStatus = SessionStatuses.Pending;
+        }
 		DialogInstance.Close(DialogResult.Ok(TimeTableItem));
 	}
 
@@ -141,15 +148,18 @@ public partial class PrivateTimesTableDialog
     private async Task DateChoiceClick()
     {
         var x = string.Join(',', Days.Where(x => x.Value == true).Select(x => x.Key));
-        
+        TimeTableItem.Sessions ??= new List<TimeTableSession>();
         TermSessionTemplate = new TermSessionTemplate()
         {
+			Term = TermPram,
 			TermFk = TermPram.Id,
 			WeekdayIds = x
         };
     await DialogService.ShowAsync<PrivateTimeTableDatesDialog>("Dates", new DialogParameters()
         {
-            ["TermSessionTemplate"] = TermSessionTemplate
+            ["TermSessionTemplate"] = TermSessionTemplate,
+		    ["Sessions"] = TimeTableItem.Sessions
     });
+
     }
 }

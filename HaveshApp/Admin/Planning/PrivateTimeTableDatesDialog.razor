@@ -5,7 +5,7 @@
 @using PersianDate.Standard
 <MtnDialog>
     <ChildComponent>
-        <MudTable Items="_dates">
+        <MudTable Items="Sessions">
             <ToolBarContent>
                 <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Add" OnClick="NewDateClick">
                     Add New Date
@@ -22,12 +22,12 @@
             </HeaderContent>
             <RowTemplate>
                 <MudTd>@context.SessionNumber</MudTd>
-                <MudTd>@context.Date.ToFa("D")</MudTd>
-                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.SessionDate.ToFa("D")</MudTd>
+                <MudTd>@context.SessionDescription</MudTd>
                 <MudTd>
-                    @if (_dates.LastOrDefault() == context)
+                    @if (Sessions.LastOrDefault() == context)
                     {
-                        <MudIconButton Icon="@Icons.TwoTone.Delete" Color="Color.Error" OnClick="() => DeleteSessionClick(context)"></MudIconButton>
+                        <MudIconButton Icon="@Icons.TwoTone.Delete" Color="Color.Error" OnClick="() => DeleteSessionClick()"></MudIconButton>
                     }
                 </MudTd>
             </RowTemplate>
@@ -41,6 +41,8 @@
 @code {
     [Parameter]
     public TermSessionTemplate TermSessionTemplate { get; set; }
+    [Parameter]
+    public List<TimeTableSession> Sessions { get; set; }
 
     public List<TermSessionTemplate> TermSessionTemplateDates { get; set; } = new();
 
@@ -48,15 +50,17 @@
     {
         _weekDays = _dataProvider.GetWeekDays();
         UpdateDates();
+        
         base.OnInitialized();
     }
 
     void UpdateDates()
     {
-        _dates = _dataProvider.GetTermSessionTemplateDates(TermSessionTemplate);
+        
+        //_dates = _dataProvider.GetTermSessionTemplateDates(TermSessionTemplate);
     }
 
-    List<TermSessionTemplateDate> _dates;
+    
     List<ShokouhPardisWeekDay> _weekDays;
 
     [Inject]
@@ -64,13 +68,13 @@
 
     async Task NewDateClick()
     {
-        var lastItem = _dates.LastOrDefault();
+        var lastItem = Sessions.LastOrDefault();
         var dt = (DateTime)TermSessionTemplate.Term.StartDate;
         if (lastItem != null)
         {
-            dt = (DateTime)lastItem.Date;
+            dt = (DateTime)lastItem.SessionDate;
 
-            var dayOfWeek = ((int)lastItem.Date?.GetPersianWeekDayNumber())!;
+            var dayOfWeek = ((int)lastItem.SessionDate?.GetPersianWeekDayNumber())!;
             var strings = TermSessionTemplate.WeekdayIds.Split(',').Select(x => Convert.ToInt32(x)).ToArray();
 
             var nextItem = strings[(strings.IndexOf(dayOfWeek) + 1) % strings.Length];
@@ -87,37 +91,39 @@
                 }
             */
         }
-        var date = new TermSessionTemplateDate()
+        var date = new TimeTableSession()
             {
-                SessionNumber = _dates.Count + 1,
-                TermSessionTemplate = TermSessionTemplate,
-                Date = dt
+                SessionNumber = Sessions.Count + 1,
+                SessionDate = dt
             };
-        var dref = await DialogService.ShowAsync<PrivateTimeTableSessionDialog>("Date", new DialogParameters()
+        var dref = await DialogService.ShowAsync<PrivateTimeTableSessionDialog>(
+            "Date", new DialogParameters()
             {
-                ["TermSessionTemplateDate"] = date
+                ["Session"] = date
             },
             new DialogOptions()
                 {
                     MaxWidth = MaxWidth.Medium,
-                    FullWidth = true
+                    FullWidth = true,
+                    CloseButton = true
                 });
         var dialogResult = await dref.Result;
         if (!dialogResult.Canceled)
         {
-            UpdateDates();
+            var dialogResultData = dialogResult.Data;
+            Sessions.Add((TimeTableSession)dialogResultData);
         }
 
     }
 
-    async Task DeleteSessionClick(TermSessionTemplateDate context)
+    async Task DeleteSessionClick()
     {
-        var msg = await _dialogService.ShowMessageBox("Warning", "Are you sure you want delete this Session Template Date ?",
+        var msg = await _dialogService.ShowMessageBox("Warning", "Are you sure you want delete this Session Date ?",
             "Yes", "No");
         if (msg is true)
         {
-            _dataProvider.DeleteTermSessionTemplateDate(context);
-            _snackBar.Add("Template Session Date Deleted");
+            Sessions.RemoveAt(Sessions.Count - 1);
+            _snackBar.Add("Session Date Deleted");
             UpdateDates();
         }
     }

@@ -24,13 +24,13 @@
 
             <MudItem md="6">
 
-                <MudSelect @bind-Value="TimeTableItem.Schedule" Label="برنامه زمانی" Dense="true">
+                
                     <WeekdaySelectorComponent @bind-CheckedDays="Days"></WeekdaySelectorComponent>
                     <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Filled" OnClick="DateChoiceClick">
                         انتخاب تاریخ
                     </MudButton>
 
-                </MudSelect>
+                
             </MudItem>
             <MudItem md="6">
                     <MudSelect @bind-Value="Level" Label="سطح کلاس" Required="true" RequiredError="true" ErrorText="سطح را باید انتخاب نمایید" Dense="true">
