@@ -1,0 +1,88 @@
+﻿@using HaveshApp.Admin.Components
+
+
+
+<MtnDialog>
+    <ChildComponent>
+        <MudForm Model="TimeTableItem" @ref="_form">
+        <MudGrid>
+
+            <MudItem md="6">
+                <TeacherSelectorComponent @bind-Teacher="TimeTableItem.Teacher" Label="استاد" Term="TermPram"/>
+            </MudItem>
+            <MudItem md="6">
+                @if (_teacherTimeSheet is { })
+                {
+                    @foreach (var shokouhPardisTeacherTimeSheet in _teacherTimeSheet)
+                    {
+                        <MudChip Size="Size.Small">
+                            @shokouhPardisTeacherTimeSheet.WeekDay.Title @shokouhPardisTeacherTimeSheet.Interval.Title
+                        </MudChip>
+                    }
+                }
+            </MudItem>
+
+            <MudItem md="6">
+
+                
+                    <WeekdaySelectorComponent @bind-CheckedDays="Days"></WeekdaySelectorComponent>
+                    <MudButton Color="Color.Success" StartIcon="@Icons.Filled.Add" Variant="Variant.Filled" OnClick="DateChoiceClick">
+                        انتخاب تاریخ
+                    </MudButton>
+
+                
+            </MudItem>
+            <MudItem md="6">
+                    <MudSelect @bind-Value="Level" Label="سطح کلاس" Required="true" RequiredError="true" ErrorText="سطح را باید انتخاب نمایید" Dense="true">
+                    @foreach (var levels in DataProvider.GetLevels())
+                    {
+                        <MudSelectItem Value="levels">@levels.LevelName</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem md="6">
+                <MudSelect @bind-Value="TimeTableItem.ClassRoom" Label="انتخاب کلاس" Dense="true" Required="true" RequiredError="true" ErrorText="کلاس را باید انتخاب نمایید">
+                    @foreach (var room in DataProvider.GetClassRooms())
+                    {
+                        <MudSelectItem Value="@room">@room.ClassRoomName (@room.Capacity) </MudSelectItem>
+                    }
+                </MudSelect>
+
+            </MudItem>
+
+            <MudItem md="6">
+                @if (Level is { } && _bookPrice is { })
+                {
+
+                    <MudChip Size="Size.Medium" Color="Color.Secondary" Icon="@Icons.Material.Filled.MenuBook">
+                        @_bookPrice.BookPrice
+                    </MudChip>
+                    <MudChip Size="Size.Medium" Color="Color.Success" Icon="@Icons.Material.Filled.Payment">
+                        @_bookPrice.TuitionAmount
+                    </MudChip>
+                }
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="TimeTableItem.Title" Label="عنوان" Clearable="true"/>
+            </MudItem>
+            <MudItem md="6">
+                <MudTextField @bind-Value="TimeTableItem.Description" Label="توضیحات" Clearable="true"/>
+            </MudItem>
+            
+
+        </MudGrid>
+        </MudForm>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            Save
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+

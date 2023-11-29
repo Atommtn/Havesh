@@ -74,8 +74,13 @@ public partial class TimeTablePage
 
 		return EditButtonClick(timeTable);
 	}
-
-	async Task<TableData<ShokouhPardisTimeTable>> ServerReload(TableState state)
+    Task NewPrivateTimesheetClick()
+    {
+        var timeTable = ShokouhPardisTimeTable.CreateTimeTable();
+        timeTable.IsPrivate = true;
+        return PrivateEditButtonClick(timeTable);
+    }
+    async Task<TableData<ShokouhPardisTimeTable>> ServerReload(TableState state)
 	{
 		Init();
 
@@ -109,8 +114,11 @@ public partial class TimeTablePage
 	{
 		return OpenTimesTableDialog(timeTable);
 	}
-
-	async Task OpenTimesTableDialog(ShokouhPardisTimeTable context)
+    Task PrivateEditButtonClick(ShokouhPardisTimeTable timeTable)
+    {
+        return OpenPrivateTimesTableDialog(timeTable);
+    }
+    async Task OpenTimesTableDialog(ShokouhPardisTimeTable context)
 	{
 		var dialogReference = DialogService.Show<TimesTableDialog>(
 			(context.Id > 0 ? "Edit " : "New ") + "Time-Table " + Term.TermName,
@@ -152,8 +160,49 @@ public partial class TimeTablePage
 			StateHasChanged();
 		}
 	}
+    async Task OpenPrivateTimesTableDialog(ShokouhPardisTimeTable context)
+    {
+        var dialogReference = DialogService.Show<PrivateTimesTableDialog>(
+            (context.Id > 0 ? "Edit " : "New ") + "Private " + Term.TermName,
+            new DialogParameters
+            {
+                ["TimeTableItem"] = context,
+                ["TermPram"] = Term,
+            },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.Large
+            });
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Cancelled == false)
+        {
+            var retData = (ShokouhPardisTimeTable)dialogResult.Data;
+            var result = DataProvider.SaveTeacherTimeTable(retData);
+            if (result)
+            {
+                bool? result1 = await DialogService.ShowMessageBox(
+                    "خطا",
+                    (MarkupString)
+                    @$"کلاسی با این مشخصات قبلا ذخیره شده است!
+                        <br/>{retData.Teacher.TeacherName}
+                        <br/>{retData.Teacher.TeacherFamily}
+                        <br/>{retData.Level.LevelName}
+                        <br/>{retData.Schedule.Title}",
+                    yesText: "متوجه شدم!");
+            }
+            else
+            {
+                //TODO :: ALSO CHANGE TEACHERfk IN SESSIONS
+                Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
+                Log.Warning("User {UserName} Save TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
+            }
 
-	async Task DeleteButtonClick(ShokouhPardisTimeTable context)
+            await table?.ReloadServerData()!;
+            StateHasChanged();
+        }
+    }
+    async Task DeleteButtonClick(ShokouhPardisTimeTable context)
 	{
 		var result = await DialogService.ShowMessageBox("Delete Timesheet Item", "Are you sure to delete this item ?", "Yes", "No");
 		if (result is true)
@@ -193,4 +242,6 @@ public partial class TimeTablePage
 			});
             
 	}
+
+    
 }

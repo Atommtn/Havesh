@@ -1,0 +1,131 @@
+﻿@using HaveshApp.Admin.Components
+@using DNTPersianUtils.Core
+@using Havesh.Model.Model
+@using Olive
+@using PersianDate.Standard
+<MtnDialog>
+    <ChildComponent>
+        <MudTable Items="Sessions">
+            <ToolBarContent>
+                <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Add" OnClick="NewDateClick">
+                    Add New Date
+                </MudButton>
+
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>جلسه</MudTh>
+                <MudTh>تاریخ</MudTh>
+                <MudTh>توضیح</MudTh>
+                <MudTh>
+
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.SessionNumber</MudTd>
+                <MudTd>@context.SessionDate.ToFa("D")</MudTd>
+                <MudTd>@context.SessionDescription</MudTd>
+                <MudTd>
+                    @if (Sessions.LastOrDefault() == context)
+                    {
+                        <MudIconButton Icon="@Icons.TwoTone.Delete" Color="Color.Error" OnClick="() => DeleteSessionClick()"></MudIconButton>
+                    }
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </ChildComponent>
+    <DialogAction>
+
+    </DialogAction>
+</MtnDialog>
+
+@code {
+    [Parameter]
+    public TermSessionTemplate TermSessionTemplate { get; set; }
+    [Parameter]
+    public List<TimeTableSession> Sessions { get; set; }
+
+    public List<TermSessionTemplate> TermSessionTemplateDates { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        _weekDays = _dataProvider.GetWeekDays();
+        UpdateDates();
+        
+        base.OnInitialized();
+    }
+
+    void UpdateDates()
+    {
+        
+        //_dates = _dataProvider.GetTermSessionTemplateDates(TermSessionTemplate);
+    }
+
+    
+    List<ShokouhPardisWeekDay> _weekDays;
+
+    [Inject]
+    public IDialogService DialogService { get; set; }
+
+    async Task NewDateClick()
+    {
+        var lastItem = Sessions.LastOrDefault();
+        var dt = (DateTime)TermSessionTemplate.Term.StartDate;
+        if (lastItem != null)
+        {
+            dt = (DateTime)lastItem.SessionDate;
+
+            var dayOfWeek = ((int)lastItem.SessionDate?.GetPersianWeekDayNumber())!;
+            var strings = TermSessionTemplate.WeekdayIds.Split(',').Select(x => Convert.ToInt32(x)).ToArray();
+
+            var nextItem = strings[(strings.IndexOf(dayOfWeek) + 1) % strings.Length];
+            var add = 0;
+            if (nextItem <= dayOfWeek)
+                add = 7 - dayOfWeek + nextItem;
+            else
+                add = nextItem - dayOfWeek;
+            dt = dt.AddDays(add);
+            /*
+                if (dt.IsHoliday())
+                {
+
+                }
+            */
+        }
+        var date = new TimeTableSession()
+            {
+                SessionNumber = Sessions.Count + 1,
+                SessionDate = dt
+            };
+        var dref = await DialogService.ShowAsync<PrivateTimeTableSessionDialog>(
+            "Date", new DialogParameters()
+            {
+                ["Session"] = date
+            },
+            new DialogOptions()
+                {
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true,
+                    CloseButton = true
+                });
+        var dialogResult = await dref.Result;
+        if (!dialogResult.Canceled)
+        {
+            var dialogResultData = dialogResult.Data;
+            Sessions.Add((TimeTableSession)dialogResultData);
+        }
+
+    }
+
+    async Task DeleteSessionClick()
+    {
+        var msg = await _dialogService.ShowMessageBox("Warning", "Are you sure you want delete this Session Date ?",
+            "Yes", "No");
+        if (msg is true)
+        {
+            Sessions.RemoveAt(Sessions.Count - 1);
+            _snackBar.Add("Session Date Deleted");
+            UpdateDates();
+        }
+    }
+
+}

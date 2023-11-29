@@ -1,0 +1,56 @@
+﻿@using HaveshApp.Admin.Components
+@using System.Globalization
+@using Havesh.Model.Model
+@using HaveshApp.Classes
+
+<MtnDialog>
+    <ChildComponent>
+        <MudGrid>
+            <MudItem sm="12" md="6">
+                <MudTextField @bind-Value="Session.SessionNumber" Label="Session Number" ReadOnly="true"></MudTextField>
+            </MudItem>
+            <MudItem sm="12" md="6">
+                <MudDatePicker @bind-Date="@Session.SessionDate" Label="Session Date" Culture="_persianCulture"></MudDatePicker>
+            </MudItem>
+            <MudItem sm="12" md="12">
+                <MudTextField @bind-Value="Session.SessionDescription" Label="Description" Lines="4"></MudTextField>
+            </MudItem>
+        </MudGrid>
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.TwoTone.Add" OnClick="SaveDateClick">
+            Save
+        </MudButton>
+
+        <MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.TwoTone.Close" OnClick="CloseClick">
+            Close
+        </MudButton>
+
+
+    </DialogAction>
+</MtnDialog>
+
+
+
+@code {
+
+    [Parameter]
+    public TimeTableSession Session { get; set; }
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; }
+
+    readonly CultureInfo _persianCulture = new("fa-IR");
+
+    void SaveDateClick()
+    {
+        
+        DialogInstance.Close(DialogResult.Ok(Session));
+    }
+
+    void CloseClick()
+    {
+        DialogInstance.Close(DialogResult.Cancel());
+    }
+
+}
