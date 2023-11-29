@@ -12,6 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Transactions;
 using System.Xml;
 using Amazon.Util;
+using Havesh.Domain;
 using Havesh.Model.Model;
 using Serilog;
 using HaveshApp.Admin.Authentication;

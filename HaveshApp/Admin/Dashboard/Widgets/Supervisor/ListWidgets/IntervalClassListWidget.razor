@@ -57,19 +57,20 @@
 	IEnumerable<ShokouhPardisTimeTable>? _timeTables;
 	protected override async Task OnInitializedAsync()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed +=	SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		await SupervisorWidgetsService.InitSubscribeToStudentActivityPerformAsync();
+		SupervisorWidgetsService.OnStudentActivityPerformedEvent +=	SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
 		_timeTables = await SupervisorWidgetsService.GetIntervalTimeTables();
 		await base.OnInitializedAsync();
 	}
 
-	private Task SupervisorWidgetsServiceOnOnStudentActivityPerformed(StudentSessionActivity arg)
+	private Task SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent(StudentSessionActivity arg)
 	{
 		throw new NotImplementedException();
 	}
 
 	public void Dispose()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		SupervisorWidgetsService.OnStudentActivityPerformedEvent -= SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
 	}
 
 }

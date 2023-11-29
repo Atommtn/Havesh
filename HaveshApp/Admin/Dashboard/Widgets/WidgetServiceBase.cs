@@ -5,6 +5,7 @@ using Havesh.Grains.Entity;
 using Havesh.Grains.Manager;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Authentication;
+using Olive;
 
 namespace HaveshApp.Admin.Dashboard.Widgets;
 
@@ -39,7 +40,7 @@ public class WidgetServiceBase
 	protected async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
 	{
 		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(sessionId);
-		var activities = await sessionGrain.GetActivities();
+		var activities = await sessionGrain.GetStudentSessionActivities().Select(x => x.Activity).ToList(); 
 		return activities;
 
 	}

@@ -12,7 +12,6 @@
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 @implements IDisposable
 
-
 <LargWidgetContainer Title="@($"فعالیت  - {_activitiey?.ActivityTitle}")" WidgetSetting="WidgetSetting" ToRoles="...Supervisor" ViewRequired="_activitiey">
 
 	<MudTable T="TimeTableSession" Items="_timeTableSessions">
@@ -44,7 +43,7 @@
 				{
 					<MudChip Size="Size.Small"> @itm </MudChip>
 				}
-				
+
 			</MudTd>
 		</RowTemplate>
 	</MudTable>
@@ -59,7 +58,18 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed += SupervisorWidgetsServiceOnStudentActivityPerformed;
+
+		Console.WriteLine("---------------------------------");
+		Console.WriteLine("---------------------------------");
+		Console.WriteLine("---------------------------------");
+		Console.WriteLine("---------------------------------> SupervisorWidgetsService.OnStudentActivityPerformedEvent ");
+		Console.WriteLine("---------------------------------");
+		Console.WriteLine("---------------------------------");
+		Console.WriteLine("---------------------------------");
+		
+		await SupervisorWidgetsService.InitSubscribeToStudentActivityPerformAsync();
+
+		SupervisorWidgetsService.OnStudentActivityPerformedEvent += SupervisorWidgetsServiceOnStudentActivityPerformedEvent;
 
 		_timeTableSessions = ((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList();
 
@@ -70,38 +80,40 @@
 		var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
 		_timeTableSessions.ForEach(async tts =>
 		{
-			var sessionActivityValueOptions = await sessionManagerGrain.GetSessionActivityPerforms(tts.Id);
+			var sessionActivityValueOptions = await sessionManagerGrain.GetSessionActivitiesPerformed(tts.Id);
 
-			tts.Tag = (sessionActivityValueOptions ?? Array.Empty<SessionActivityValueOption>()).ToList();
+			var activityValueOptions = (sessionActivityValueOptions ?? Array.Empty<SessionActivityValueOption>()).ToList();
+			if (activityValueOptions.Count > 0)
+				Console.WriteLine();
+
+			tts.Tag = activityValueOptions;
 		});
 
 		await base.OnInitializedAsync();
 	}
 
-	private async Task SupervisorWidgetsServiceOnStudentActivityPerformed(StudentSessionActivity arg)
-	{
 
-		if (_activitiey != null && 
-		    _timeTableSessions != null &&
-		    arg.ActivityFk == _activitiey.Id
-		    )
+
+	private async Task SupervisorWidgetsServiceOnStudentActivityPerformedEvent(StudentSessionActivity arg)
+	{
+		Console.Beep(1000, 500);
+
+		if (_activitiey != null &&
+			_timeTableSessions != null &&
+			arg.ActivityFk == _activitiey.Id
+			)
 		{
-			var activityValueOptionGrain = ClusterCLient.GetGrain<IHaveshGrain<SessionActivityValueOption>>(arg.ActivityValueOptionFk);
-			var sessionActivityValueOption = await activityValueOptionGrain.Get();
-			var timeTableSession = Enumerable.FirstOrDefault(_timeTableSessions, x => x.Id == arg.TimeTableSessionFk);
-			if (timeTableSession?.Tag is List<SessionActivityValueOption> lst)
-			{
-				if (sessionActivityValueOption != null)
-				{
-					lst.Add(sessionActivityValueOption);
-				}
-			}
-			else
-			{
-				if (timeTableSession != null && sessionActivityValueOption != null)
-					timeTableSession.Tag = new List<SessionActivityValueOption> 
-						{ sessionActivityValueOption };
-			}
+			var timeTableSession = _timeTableSessions.FirstOrDefault(x => x.Id == arg.TimeTableSessionFk);
+			var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+			var sessionActivityValueOptions = await sessionManagerGrain.GetSessionActivitiesPerformed(timeTableSession.Id);
+
+			var activityValueOptions = (sessionActivityValueOptions ?? Array.Empty<SessionActivityValueOption>())
+				.ToList();
+			
+			if (activityValueOptions.Count > 0)
+				Console.WriteLine();
+
+			timeTableSession.Tag = activityValueOptions;
 		}
 		await InvokeAsync(StateHasChanged);
 
@@ -109,14 +121,14 @@
 
 	public void Dispose()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnStudentActivityPerformed;
+		SupervisorWidgetsService.OnStudentActivityPerformedEvent -= SupervisorWidgetsServiceOnStudentActivityPerformedEvent;
 	}
 
 
 	private IEnumerable<string> GetReport(object? tag)
 	{
 		string[] list = { };
-		if (tag is List<SessionActivityValueOption> {Count: > 0 } lst)
+		if (tag is List<SessionActivityValueOption> { Count: > 0 } lst)
 		{
 			list = lst
 				.GroupBy(x => x.Value)

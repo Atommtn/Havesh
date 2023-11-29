@@ -3,7 +3,6 @@ using System.Globalization;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Olive;
-using HaveshApp.Classes;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore.Query;
 using MudBlazor;
@@ -1902,13 +1901,14 @@ public class DataProviderService
 		//DbContext.Entry(activity).Reload();
 	}
 
-	public List<StudentSessionActivity> GetStudentSessionActivityPerformed(TimeTableSession session, Func<IQueryable<StudentSessionActivity>, IQueryable<StudentSessionActivity>>? include = null)
+	public List<StudentSessionActivity> GetStudentSessionActivityPerformed(int ttSessionid, Func<IQueryable<StudentSessionActivity>, IQueryable<StudentSessionActivity>>? include = null)
 	{
 		var activities = DbContext.StudentSessionActivities.AsQueryable();
 		if (include != null) 
 			activities = include(activities);
 
-		var list = activities.Where(x => x.TimeTableSessionFk == session.Id)
+		var list = activities.Where(x => x.ActivityDeletedDateTime == null && 
+														    x.TimeTableSessionFk == ttSessionid)
 			.ToList();
 		return list;
 	}

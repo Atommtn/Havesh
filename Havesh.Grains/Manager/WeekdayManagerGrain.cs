@@ -39,10 +39,3 @@ public class WeekdayManagerGrain : Grain, IWeekdayManagerGrain
 		return weekDay;
 	}
 }
-
-public interface IWeekdayManagerGrain : IGrainWithGuidKey
-{
-	Task<List<ShokouhPardisWeekDay>>? GetWeekDays();
-	Task<ShokouhPardisWeekDay>? GetTodayWeekDay(int? test_dayofweek = null);
-
-}

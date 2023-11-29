@@ -51,18 +51,12 @@ public partial class StudentListRollCallComponenets
 		await base.OnInitializedAsync();
 	}
 
-	private async Task UpdateActivities(StudentSessionActivity? studentSessionActivity)
-	{
-		if (studentSessionActivity != null) 
-			_activities?.Add(studentSessionActivity);
-
-		await InvokeAsync(StateHasChanged);
-	}
-
 	private async Task ReloadActivities()
 	{
 		var ttsGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(TimeTableSession.Id);
+		await Task.Delay(300);
 		_activities = (await ttsGrain.GetStudentSessionActivities() ?? Array.Empty<StudentSessionActivity>()).ToList();
+		StateHasChanged();
 	}
 
 	private string RowStyleFunc(ShokouhPardisStudentClass student, int index)
@@ -94,11 +88,13 @@ public partial class StudentListRollCallComponenets
 		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
 		await manager.CreateStudentSessionActivity(studentSessionActivity);
 
-		await UpdateActivities(studentSessionActivity);
+		await ReloadActivities();
 	}
 
-	private void CancelStudentSessionActivity(StudentSessionActivity sac)
+	private async Task CancelStudentSessionActivity(StudentSessionActivity sac)
 	{
-		_dataProvider.SetActivityDeleteTime(sac);
+		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
+		await manager.RemoveStudentSessionActivity(sac);
+		await ReloadActivities();
 	}
 }

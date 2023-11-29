@@ -7,6 +7,7 @@ using Castle.Core.Logging;
 using Havesh.Common;
 using Havesh.Domain.Services;
 using Havesh.GrainInterfaces.Common;
+using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
@@ -14,28 +15,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Orleans.Runtime;
 using Orleans.Streams;
-using static System.Collections.Specialized.BitVector32;
+
 
 namespace Havesh.Grains.Entity;
 
-[Serializable]
-[GenerateSerializer]
-public class TimeTableSessionGrainState
-{
-	[Id(0)]
-	public List<StudentSessionActivity> Activities { get; set; } = new();
-
-	[Id(1)]
-	public TimeTableSession TimeTableSession { get; set; }
-}
-
-
-public class TimeTableSessionGrain : 
+public class TimeTableSessionGrain :
 	HaveshGrain<TimeTableSessionGrainState>
 	, ITimeTableSessionGrain
 	, IAsyncObserver<StudentSessionActivity>
 {
-	private StreamSubscriptionHandle<StudentSessionActivity> _subscription;
+	private StreamSubscriptionHandle<StudentSessionActivity>? _subscription = null;
 	public TimeTableSessionGrain(
 		[PersistentState(nameof(TimeTableSessionGrain) , HaveshConstants.GrainStorageProviderName)]
 		IPersistentState<HaveshGrainState<TimeTableSessionGrainState>> persistentState,
@@ -52,12 +41,13 @@ public class TimeTableSessionGrain :
 		await SubscribeToStream();
 		await base.OnActivateAsync(cancellationToken);
 	}
+
 	async Task SubscribeToStream()
 	{
 		var streamProvider = this.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
 		var streamId = StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, HaveshConstants.GeneralKey);
 		var stream = streamProvider.GetStream<StudentSessionActivity>(streamId);
-		_subscription = await stream.SubscribeAsync(this);
+		_subscription = await stream.SubscribeAsync(OnNextAsync);
 
 	}
 	public async Task OnNextAsync(StudentSessionActivity item, StreamSequenceToken? token = null)
@@ -68,6 +58,22 @@ public class TimeTableSessionGrain :
 			Console.Beep();
 			await ActivityPerformed(item);
 		}
+	}
+
+	private async Task ActivityPerformed(StudentSessionActivity activity)
+	{
+		EnusureState();
+		if (activity.ActivityDeletedDateTime is not null)
+		{
+			var index = PersistentState.State.Item?.Activities.FindIndex(x => x.Id == activity.Id);
+			if (index is >= 0)
+			{
+				PersistentState.State.Item?.Activities.RemoveAt((int)index);
+				return;
+			}
+		}
+		PersistentState.State.Item?.Activities.Add(activity);
+
 	}
 
 	public Task OnCompletedAsync()
@@ -82,40 +88,41 @@ public class TimeTableSessionGrain :
 
 	public override async Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
 	{
-		await _subscription.UnsubscribeAsync();
+		await _subscription?.UnsubscribeAsync()!;
 		await base.OnDeactivateAsync(reason, cancellationToken);
-	}
-
-	private string Result(int activityId)
-	{
-		var activities = PersistentState.State.Item?
-			.Activities
-			.Where(x => x.ActivityFk == activityId)
-			.GroupBy(x => x.ActivityValue)
-			.Select(group => $"[{group.Key}] : {group.Count()}");
-		var result = string.Join(",", activities);
-		return result;
 	}
 
 	protected override TimeTableSessionGrainState? GetEntity(int id)
 	{
-		var ttSesion = DataProviderService.GetTimeTableSessionById(id , q=>
+		var ttSesion = DataProviderService.GetTimeTableSessionById(id, q =>
 			q
 				.Include(x => x.Teacher)
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Teacher)
 
-				.Include(x=>x.TimeTable)
-				.ThenInclude(x=>x.ClassRoom)
-				
-				.Include(x=>x.TimeTable)
-				.ThenInclude(x=>x.Level)
-				
+				.Include(x => x.TimeTable)
+				.ThenInclude(x => x.ClassRoom)
+
+				.Include(x => x.TimeTable)
+				.ThenInclude(x => x.Level)
+
 				)
 			;
 
-		var activities = DataProviderService.GetStudentSessionActivityPerformed(ttSesion);
+		var activities = DataProviderService.GetStudentSessionActivityPerformed(ttSesion.Id,
+
+			q => q
+				.Include(x => x.ActivityValueOption)
+				.Include(x => x.Activity)
+				.Include(x => x.Student)
+				.Include(x => x.TimeTableSession)
+				.ThenInclude(x => x.Teacher)
+				.Include(x => x.TimeTableSession)
+				.ThenInclude(x => x.TimeTable)
+				.ThenInclude(x => x.Teacher)
+			);
+
 		return new TimeTableSessionGrainState
 		{
 			TimeTableSession = ttSesion,
@@ -130,46 +137,8 @@ public class TimeTableSessionGrain :
 
 	public async Task<IEnumerable<StudentSessionActivity>?> GetStudentSessionActivities()
 	{
-		
-		var sessionSesionActivities = CacheManager.GetOrSet("StudentSessionActivities-" + GrainKey,
-			() =>
-			{
-				EnusureState();
-				return PersistentState.State.Item?.TimeTableSession is null
-					? null
-					: DataProviderService.GetStudentSessionActivityPerformed(PersistentState.State.Item.TimeTableSession,
-						q => q
-							.Include(x => x.ActivityValueOption)
-							.Include(x => x.Activity)
-							//.Include(x => x.TimeTableSession)
-							);
-			}, TimeSpan.FromHours(1));
-		
-		return sessionSesionActivities;
-	}
-
-	public Task ActivityPerformed(StudentSessionActivity activity)
-	{
 		EnusureState();
-		PersistentState.State.Item?.Activities.Add(activity);
-		return Task.CompletedTask;
+		return PersistentState.State.Item?.Activities;
 	}
 
-	public async Task<IEnumerable<SessionActivity>?> GetActivities()
-	{
-		EnusureState();
-		var activities = PersistentState.State.Item?.Activities.Select(x=>x.Activity);
-		return activities;
-	}
-
-
-
-}
-
-public interface ITimeTableSessionGrain : IGrainWithIntegerKey
-{
-	Task<IEnumerable<StudentSessionActivity>?> GetStudentSessionActivities();
-	Task<IEnumerable<SessionActivity>?> GetActivities();
-
-	Task ActivityPerformed(StudentSessionActivity activity);
 }

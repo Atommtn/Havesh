@@ -10,7 +10,7 @@
 		<MudPaper Outlined="true" Elevation="1">
 			@foreach (var msg in _testMessage)
 			{
-				<MudChip Label="true" Size="Size.Medium" Color="Color.Info">@msg</MudChip>
+				<MudChip Label="true" Size="Size.Small" Color="@(msg.Item2.ActivityDeletedDateTime is null ? Color.Info : Color.Error)">@msg.Item1</MudChip>
 			}
 		</MudPaper>
 	</MudStack>
@@ -22,32 +22,43 @@
 	[Inject] IClusterClient ClusterClient { get; set; }
 
 	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
-	readonly List<string> _testMessage = new List<string>();
+	readonly List<(string, StudentSessionActivity)> _testMessage = new();
 
 	protected override void OnInitialized()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed += SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		SupervisorWidgetsService.OnStudentActivityPerformedEvent += SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
 		base.OnInitialized();
 	}
 
-	private async Task SupervisorWidgetsServiceOnOnStudentActivityPerformed(StudentSessionActivity arg)
+	private async Task SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent(StudentSessionActivity arg)
 	{
 
 		await InvokeAsync(() =>
 		{
-			_testMessage.Add($"{arg.Activity.ActivityTitle} " +
+			if (arg.ActivityDeletedDateTime is not null)
+			{
+				_testMessage.Add(($"حدف {arg.Activity.ActivityTitle} " +
+				                 $"زبان آموز {arg.Student.FullName} " +
+				                 $"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
+				                 $"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
+				                 $"از {arg.ActivityValueOption?.Title} انجام شد." , arg )
+					);
+				StateHasChanged();
+				return;
+			}
+			_testMessage.Add(($"{arg.Activity.ActivityTitle} " +
 			                 $"زبان آموز {arg.Student.FullName} " +
 			                 $"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
 			                 $"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
 			                 $"{arg.ActivityValueOption?.Title} " +
-			                 $"ثبت شد" );
+			                 $"ثبت شد",arg ));
 			StateHasChanged();
 		});
 	}
 
 	public void Dispose()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformed -= SupervisorWidgetsServiceOnOnStudentActivityPerformed;
+		SupervisorWidgetsService.OnStudentActivityPerformedEvent -= SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
 
 	}
 

@@ -1,6 +1,6 @@
-﻿namespace HaveshApp.Classes;
+﻿namespace Havesh.Domain.Services;
 
-public class SessionStatuses
+public static class SessionStatuses
 {
 	public const string Pending = "برگزار نشده";
 	public const string Completed = "برگزار شده";

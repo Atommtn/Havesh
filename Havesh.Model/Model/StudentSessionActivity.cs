@@ -11,18 +11,22 @@ public partial class StudentSessionActivity
 	[Id(11)]
 	public ShokouhPardisStudentClass Student { get; set; }
 
-	[ForeignKey(nameof(TimeTableSessionFk))]
+	[ForeignKey(nameof(TimeTableFk))]
 	[Id(12)]
+	public TimeTableSession TimeTable { get; set; }
+
+	[ForeignKey(nameof(TimeTableSessionFk))]
+	[Id(13)]
 	public TimeTableSession TimeTableSession { get; set; }
 
 	[ForeignKey(nameof(ActivityFk))]
-	[Id(13)]
+	[Id(14)]
 	public SessionActivity Activity { get; set; }
 
-	[Id(14)]
+	[Id(15)]
 	public int ActivityValueOptionFk { get; set; }
 	
-	[Id(15)]
+	[Id(16)]
 	[ForeignKey(nameof(ActivityValueOptionFk))]
 	public SessionActivityValueOption ActivityValueOption { get; set; }
 

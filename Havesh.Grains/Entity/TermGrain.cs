@@ -1,5 +1,6 @@
 ﻿using Havesh.Common;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
@@ -40,47 +41,4 @@ public class TermGrain : HaveshGrain<ShokouhPardisTermClass> , ITermGrain
 		var interval = DataProviderService.GetInterval(PersistentState.State.Item, startTime, fromMinutes);
 		return interval;
 	}
-}
-
-public interface ITermGrain : IGrainWithIntegerKey
-{
-	public Task<ShokouhPardisInterval?> GetIntervalByStartTime(TimeSpan startTime, TimeSpan fromMinutes);
-
-}
-
-public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervlalGrain
-{
-	public IntervalGrain(
-		[PersistentState(nameof(IntervalGrain) , HaveshConstants.GrainStorageProviderName)]
-		IPersistentState<HaveshGrainState<ShokouhPardisInterval>> persistentState,
-		IGrainContext grainContext,
-		DataProviderService dataProviderService,
-		ILogger<HaveshGrain<ShokouhPardisInterval>> logger) 
-			: base(persistentState, grainContext, dataProviderService, logger)
-	{
-	}
-
-	protected override ShokouhPardisInterval? GetEntity(int id)
-	{
-		return DataProviderService.GetIntervalById(id);
-	}
-
-	protected override void UpdateEntity(ShokouhPardisInterval entity)
-	{
-		throw new NotImplementedException();
-	}
-
-	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables(int weekdayId)
-	{
-		return CacheManager.GetOrSet("TT_" + weekdayId, 
-			() => DataProviderService.GetTimeTables(GrainKey, weekdayId)
-			, TimeSpan.FromHours(1));
-		
-	}
-
-}
-
-public interface IIntervlalGrain  : IGrainWithIntegerKey
-{
-	Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables(int weekdayId);
 }

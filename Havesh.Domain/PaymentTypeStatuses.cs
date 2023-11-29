@@ -1,4 +1,4 @@
-﻿namespace HaveshApp.Classes;
+﻿namespace Havesh.Domain;
 
 public class PaymentTypeStatuses
 {

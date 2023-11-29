@@ -5,17 +5,20 @@ namespace Havesh.OrleansClient;
 
 public class HaveshStreamConsumer<T> : IAsyncObserver<T>
 {
-	private readonly Action<T>? _onStreamPerformed;
+	private readonly Func<T, Task>? _onStreamPerformed;
 
-	public HaveshStreamConsumer(Action<T>? onStreamPerformed)
+	public HaveshStreamConsumer(Func<T,Task>? onStreamPerformed)
 	{
 		_onStreamPerformed = onStreamPerformed;
 	}
 
 	public Task OnNextAsync(T item, StreamSequenceToken? token = null)
 	{
-		_onStreamPerformed?.Invoke(item);
-		return Task.CompletedTask;
+		Console.WriteLine(" ---------------> token.EventIndex :" + token?.EventIndex);
+		Console.WriteLine(" ---------------> token.SequenceNumber :" + token?.SequenceNumber);
+		return _onStreamPerformed == null ? 
+			Task.CompletedTask : 
+			_onStreamPerformed.Invoke(item);
 	}
 
 	public Task OnCompletedAsync()

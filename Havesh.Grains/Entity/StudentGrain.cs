@@ -2,6 +2,7 @@
 using Havesh.Common;
 using Havesh.Domain.Services;
 using Havesh.GrainInterfaces.Common;
+using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
@@ -35,8 +36,4 @@ public class StudentGrain : HaveshGrain<ShokouhPardisStudentClass>, IStudentGrai
 
 
 
-}
-
-public interface IStudentGrain : IGrainWithIntegerKey
-{
 }
