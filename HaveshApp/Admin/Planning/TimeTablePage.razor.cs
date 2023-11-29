@@ -32,8 +32,9 @@ public partial class TimeTablePage
 		{
 			_isPrivate = value;
 			if (table == null) return;
-			table.ReloadServerData();
-		}
+            InvokeAsync(table.ReloadServerData);
+
+        }
 	}
 
 	ShokouhPardisTermClass? Term
@@ -111,9 +112,9 @@ public partial class TimeTablePage
 	}
 
 	Task EditButtonClick(ShokouhPardisTimeTable timeTable)
-	{
-		return OpenTimesTableDialog(timeTable);
-	}
+    {
+        return isPrivate ? OpenPrivateTimesTableDialog(timeTable) : OpenTimesTableDialog(timeTable);
+    }
     Task PrivateEditButtonClick(ShokouhPardisTimeTable timeTable)
     {
         return OpenPrivateTimesTableDialog(timeTable);
@@ -162,7 +163,7 @@ public partial class TimeTablePage
 	}
     async Task OpenPrivateTimesTableDialog(ShokouhPardisTimeTable context)
     {
-        var dialogReference = DialogService.Show<PrivateTimesTableDialog>(
+        var dialogReference = await DialogService.ShowAsync<PrivateTimesTableDialog>(
             (context.Id > 0 ? "Edit " : "New ") + "Private " + Term.TermName,
             new DialogParameters
             {

@@ -3,7 +3,7 @@
 
 @layout PersianPagesLayout
 
-<h3>LessonPlan تعریف  </h3>
+<h3>LessonPlan</h3>
 
 <LevelSelectorComponenet @bind-Level="SelectedLevel"></LevelSelectorComponenet>
 
@@ -14,10 +14,10 @@
           Items="LessonPlans"
           Style="background-color: #3c4043;">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">جدول لسن پلن</MudText>
+        <MudText Typo="Typo.h6">Lesson Plan Table</MudText>
         <MudSpacer />
         <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewLessonPlanClick">
-            اضافه کردن لسن پلن
+            Add New Lesson Plan
         </MudButton>
 
     </ToolBarContent>
@@ -41,7 +41,7 @@
     <ChildRowContent>
         <MudTr>
             <MudTd colspan="3">
-                <SectionListComponent LessonPlan="@context"></SectionListComponent>
+                <SectionListComponent LessonPlanItem="@context"></SectionListComponent>
             </MudTd>
         </MudTr>
     </ChildRowContent>

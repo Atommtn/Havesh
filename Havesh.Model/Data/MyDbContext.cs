@@ -28,7 +28,7 @@ public partial class MyDbContext : DbContext
     }
     public DbSet<EntityChange> EntityChanges { get; set; }
 
-    public override int SaveChanges()
+    public int SaveChangesx()
     {
         var entityChanges = CaptureEntityChanges();
 

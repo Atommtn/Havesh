@@ -2,8 +2,7 @@
 <style type="text/css" media="all">
     .SectionList .mud-table-row {
         background-color: darkcyan;
-        }
-    
+    }
 </style>
 <MudTable @ref="table"
           Hover="true"
@@ -12,15 +11,17 @@
           Class="SectionList"
           Style="background-color: #3c4043; width:100%">
     <ToolBarContent>
-                  
+
         <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewSectionClick">
             Add Section
+        </MudButton><MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.AttachFile" Variant="Variant.Filled" OnClick="NewAttachmentClick">
+            Add Attachment
         </MudButton>
 
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>SectionType</MudTh>
         <MudTh>Title</MudTh>
+        <MudTh>SectionType</MudTh>
         <MudTh>Duration</MudTh>
         <MudTh>SelectionObjective</MudTh>
         <MudTh></MudTh>
@@ -28,22 +29,23 @@
 
     </HeaderContent>
     <RowTemplate>
-        <MudTd>@context.SectionType </MudTd>
         <MudTd>@context.SectionTitle</MudTd>
+        <MudTd>@context.SectionType.Title </MudTd>
         <MudTd>@context.Duration</MudTd>
         <MudTd>@context.SectionObjective</MudTd>
         <MudTd>
             <MudButton Color="Color.Success" Variant="Variant.Text" OnClick="()=>ShowItems(context)">
-               Show Items
+                Show Items
             </MudButton>
         </MudTd>
-        
+
         <MudTd>
-            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.PlaylistAddCircle" Size="Size.Small" OnClick="() => AddEditSectionItemClick(context)"></MudIconButton>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.AddChart" Size="Size.Small" OnClick="() => AddEditSectionItem(context)"></MudIconButton>
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() => AddEditSection(context)"></MudIconButton>
         </MudTd>
 
     </RowTemplate>
-    <ChildRowContent >
+    <ChildRowContent>
         @if (context.ShowDetail)
         {
             <MudTr>
@@ -53,7 +55,7 @@
             </MudTr>
         }
     </ChildRowContent>
-    
+
 
 </MudTable>
 
@@ -61,13 +63,15 @@
 @code {
 
 
-    [Parameter] public LessonPlan LessonPlan { get; set; }
+    [Parameter] public LessonPlan LessonPlanItem { get; set; }
 
     [Inject]
     public IDialogService DialogService { get; set; }
     [Inject] ISnackbar Snackbar { get; set; }
     MudTable<LessonPlanSection>? table;
-    public List<LessonPlanSection> Sections { get; set; }
+    private LessonPlanSection _section;
+    private ShokouhPardisFileAttachment _attachment;
+    public List<LessonPlanSection>? Sections { get; set; }
     protected override void OnInitialized()
     {
         RefreshData();
@@ -77,25 +81,121 @@
     private void RefreshData()
     {
 
-        Sections = _dataProvider.GetLessonPlanSection(LessonPlan);
+        Sections = _dataProvider.GetLessonPlanSection(LessonPlanItem);
 
     }
 
-    
 
-    private void NewSectionClick()
+
+    private async Task NewSectionClick()
     {
-        throw new NotImplementedException();
+        _section = new LessonPlanSection()
+            {
+                Guid = Guid.NewGuid(),
+                CreatedWhen = DateTime.Now,
+                LessonPlanFk = LessonPlanItem.Id,
+                LessonPlan = LessonPlanItem
+            };
+
+        await AddEditSection(_section);
     }
-   
 
-    private async Task AddEditSectionItemClick(LessonPlanSection section)
+
+    private async Task AddEditSection(LessonPlanSection section)
     {
-        var dialogReference = DialogService.Show<LessonPlanSectionItemDialog>(
-            "add SectionItem",
+
+        var dialogReference = await DialogService.ShowAsync<LessonPlanSectionDialog>(
+            (section.Id > 0 ? "Edit " : "New ") + "Section",
+            new DialogParameters
+                {
+                    ["Section"] = section
+                },
+            new DialogOptions()
+                {
+                    CloseButton = true,
+                    MaxWidth = MaxWidth.ExtraLarge
+                });
+
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Canceled == false)
+        {
+            try
+            {
+                var retData = (LessonPlanSection)dialogResult.Data;
+                var result = _dataProvider.SaveEditlessonPlanSection(retData);
+
+                if (result)
+                {
+                    var result1 = await _dialogService.ShowMessageBox(
+                        "Error",
+                        (MarkupString)
+                            @$"For this lessonplan has section with section Type - {retData.SectionTypeFk}",
+                        yesText: "Got it!");
+                }
+                else
+                {
+                    _snackBar.Add("LessonPlan Section create successfully.", Severity.Success);
+                    Log.Warning("User {UserName} Save-Update Section {SectionId} for LessonPlan {LessonPlanId}",
+                        _userSession.Payload.UserName, retData.Id, retData.LessonPlanFk);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(" lesson plan Section save-Edit fail" + ex.Message);
+
+            }
+
+            RefreshData();
+            StateHasChanged();
+        }
+    }
+
+    private void ShowItems(LessonPlanSection context)
+    {
+        context.ShowDetail = true;
+    }
+
+    private async Task AddEditSectionItem(LessonPlanSection section)
+    {
+        var dialogReference = await DialogService.ShowAsync<LessonPlanSectionItemDialog>(
+            "Add Section Item",
+            new DialogParameters
+                {
+                    ["Section"] = section,
+                    ["SectionTypeTitle"]= section.SectionType.Title
+                },
+            new DialogOptions()
+                {
+                    DisableBackdropClick = true,
+                    CloseButton = false,
+                    MaxWidth = MaxWidth.ExtraLarge
+                });
+
+        var dialogResult = await dialogReference.Result;
+        if ((bool)dialogResult.Data)
+        {
+            RefreshData();
+            StateHasChanged();
+        }
+    }
+    private async Task NewAttachmentClick()
+    {
+        _attachment = new ShokouhPardisFileAttachment()
+        {
+            Guid = Guid.NewGuid(),
+            CreatedWhen = DateTime.Now
+           
+        };
+
+        await AddEditAttachment(_attachment);
+    }
+    private async Task AddEditAttachment(ShokouhPardisFileAttachment attachment)
+    {
+        var dialogReference = await DialogService.ShowAsync<LessonPlanAttachmentDialog>(
+            "add Lesson Plan Attachment",
             new DialogParameters
             {
-                ["Section"] = section
+                    ["Attachment"] = attachment
             },
             new DialogOptions()
             {
@@ -103,47 +203,14 @@
                 MaxWidth = MaxWidth.ExtraLarge
             });
 
-        var dialogResult = await dialogReference.Result;
-        if (dialogResult.Canceled == false)
-        {
-            //try
-            //{
-            //    var retData = (Model.LessonPlan)dialogResult.Data;
-            //    var result = _dataProvider.SaveEditlessonPlan(retData);
+        // var dialogResult = await dialogReference.Result;
+        // if ((bool)dialogResult.Data)
+        // {
 
-            //    if (result)
-            //    {
-            //        var parameters = new DialogParameters();
-
-            //        bool? result1 = await DialogService.ShowMessageBox(
-            //            "خطا",
-            //            (MarkupString)
-            //                @$"برای این سطح و این شماره سیشن قبلا لسن پلن نوشته شده است
-            //            <br/>{retData.Level.LevelName}
-            //            <br/>{retData.SessionNumber}",
-            //            yesText: "متوجه شدم!");
-            //    }
-            //    else
-            //    {
-            //        Snackbar.Add("لسن پلن با موفقیت ذخیره شد.", Severity.Success);
-            //        Log.Warning("User {UserName} Save-Update LessonPlan {lessonPlanID}",
-            //            _userSession.Payload.UserName, retData.LessonPlanId);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception(" lesson plan save-edite fail" + ex.Message);
-
-            //}
-
-            //RefreshData();
-            //StateHasChanged();
-        }
-    }
-
-    private void ShowItems(LessonPlanSection context)
-    {
-        context.ShowDetail = true;
+          //todo save leseon plan attachment
+        //     RefreshData();
+        //     StateHasChanged();
+        // }
     }
 
 }

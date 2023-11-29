@@ -4,7 +4,7 @@
     {
         @foreach (var dic in _userDashboardMenuItems)
         {
-            <MudNavGroup Title="@dic.Key" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
+            <MudNavGroup Title="@dic.Key" Expanded="false" Icon="@Icons.Material.Filled.Dashboard">
                 @foreach (var dashboardT in dic.Value)
                 {
                     <MudNavLink Href="@($"/Dashboard/{dashboardT.Id}")" Match="NavLinkMatch.All">@dashboardT.Name</MudNavLink>

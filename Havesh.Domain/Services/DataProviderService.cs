@@ -7,6 +7,7 @@ using HaveshApp.Classes;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore.Query;
 using MudBlazor;
+using static System.Collections.Specialized.BitVector32;
 
 
 /*
@@ -66,8 +67,7 @@ public class DataProviderService
 			.ShokouhPardisTeacherTermClasses
 			.Include(x => x.Teacher)
 			.Where(x => (term != null && x.TermFk == term.Id) &&
-						(x.Teacher.TeacherName.Contains(search) || x.Teacher.TeacherFamily.Contains(search))
-			)
+			(x.Teacher.TeacherName.Contains(search) || x.Teacher.TeacherFamily.Contains(search)))
 			.Select(x => x.Teacher)
 			.ToList();
 
@@ -132,7 +132,8 @@ public class DataProviderService
 	{
 		var result = DbContext.ShokouhPardisTeacherClasses.Any(x =>
 			x.TeacherName == teacher.TeacherName &&
-			x.TeacherFamily == teacher.TeacherFamily);
+			x.TeacherFamily == teacher.TeacherFamily &&
+            x.Id != teacher.Id);
 		return result;
 	}
 
@@ -575,13 +576,14 @@ public class DataProviderService
 
 	}
 
-	public int GetTotalTimeTablesCount(int termTermClassId, string? searchText = null, bool? isPrivate = false)
+	public int GetTotalTimeTablesCount(int termTermClassId, string? searchText = null, bool isPrivate = false)
 	{
-		var dbConntextShokouhPardisTimeTables = DbContext.ShokouhPardisTimeTables.AsQueryable();
+		var dbConntextShokouhPardisTimeTables = DbContext.ShokouhPardisTimeTables
+            .Where(x=>x.IsPrivate == isPrivate)
+            .AsQueryable();
 		if (!string.IsNullOrEmpty(searchText))
 			dbConntextShokouhPardisTimeTables = dbConntextShokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
-		if (isPrivate is true)
-			dbConntextShokouhPardisTimeTables = dbConntextShokouhPardisTimeTables.Where(x => x.IsPrivate == true);
+		
 
 		var count = dbConntextShokouhPardisTimeTables.Count(x => x.TermId == termTermClassId);
 		return count;
@@ -644,7 +646,7 @@ public class DataProviderService
 				.Include(x => x.ClassRoom)
 
 				.Include(x => x.Teacher)
-				//.AsQueryable()
+				.Include(x=>x.Sessions)
 				.Where(x => x.TermId == term.Id && x.IsPrivate == isPrivate)
 			;
 
@@ -1420,7 +1422,8 @@ public class DataProviderService
 	{
 		var result = DbContext.ShokouhPardisLevelBookPrices.Any(x =>
 			x.LevelId == levelBookPrice.LevelId &&
-			x.TermId == selectedTerm.Id);
+			x.TermId == selectedTerm.Id &&
+            x.Id != levelBookPrice.Id);
 
 		return result;
 	}
@@ -1468,7 +1471,8 @@ public class DataProviderService
 			x.FeeFor == dailyJv.FeeFor &&
 			x.PaymentType == dailyJv.PaymentType &&
 			x.TermId == dailyJv.TermId &&
-			x.BillNo == dailyJv.BillNo);
+			x.BillNo == dailyJv.BillNo &&
+            x.Id != dailyJv.Id);
 		return result;
 	}
 
@@ -2020,7 +2024,8 @@ public class DataProviderService
 			x.LevelFk == preRegistration.LevelFk &&
 			x.DailyJVFk == preRegistration.DailyJVFk &&
 			x.StudentFk == preRegistration.StudentFk &&
-			x.TermFk == preRegistration.TermFk);
+			x.TermFk == preRegistration.TermFk &&
+            x.Id != preRegistration.Id);
 		return result;
 	}
 
@@ -2052,7 +2057,8 @@ public class DataProviderService
 	{
 		var result = DbContext.LessonPlans.Any(x =>
 			x.LevelFk == lessonPlan.LevelFk &&
-			x.SessionNumber == lessonPlan.SessionNumber);
+			x.SessionNumber == lessonPlan.SessionNumber &&
+            x.Id != lessonPlan.Id);
 		return result;
 	}
 
@@ -2113,8 +2119,7 @@ public class DataProviderService
 			return null;
 		return DbContext.LessonPlanSections
 			.Include(x => x.SectionType)
-			.Where(
-			x => x.LessonPlanFk == lessonPlan.Id).ToList();
+			.Where(x => x.LessonPlanFk == lessonPlan.Id).ToList();
 	}
 
 	public List<LessonPlanSectionItem> GetLessonPlanSectionItems(LessonPlanSection section)
@@ -2380,5 +2385,37 @@ public class DataProviderService
 		var sessionActivityValueOption = DbContext.SessionActivityValueOptions.Find(id);
 		return sessionActivityValueOption;
 	}
+
+    public List<LessonPlanSectionType> GetSectionType()
+    {
+        return DbContext.LessonPlanSectionTypes.ToList();
+    }
+
+    public bool SaveEditlessonPlanSection(LessonPlanSection section)
+    {
+        bool isDuplicate = LessonPlanSectionDuplicate(section);
+        if (isDuplicate)
+        {
+			
+        }
+        else
+        {
+            DbContext.LessonPlanSections.Update(section);
+            SaveAll();
+        }
+
+        return isDuplicate;
+    }
+
+    bool LessonPlanSectionDuplicate(LessonPlanSection section)
+    {
+        var result = DbContext.LessonPlanSections.Any(x =>
+            x.LessonPlanFk == section.LessonPlanFk &&
+            x.SectionTypeFk == section.SectionTypeFk &&
+            x.Id != section.Id);
+
+        return result;
+    }
+
 }
 

@@ -7,7 +7,7 @@
 <MtnDialog>
     <ChildComponent>
        
-        <h3>@Section.SectionType </h3>
+        <h3>@SectionTypeTitle </h3>
         
         <MudTable @ref="table"
                   Hover="true"
@@ -15,10 +15,7 @@
                   Items="SectionItems"
                   Style="background-color: #355167;">
             <ToolBarContent>
-                <MudTextField @bind-Value="NewSectionItemTitle" Label="NewSectionItem"/>
-                <MudSpacer></MudSpacer>
-                <MudTextField @bind-Value="NewSectionItemOrder" Label="Item Order"/>
-                <MudSpacer></MudSpacer>
+                
                 <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewSectionItemClick">
                     Add Section Item
                 </MudButton>
@@ -64,10 +61,12 @@
 
     [Parameter]
     public LessonPlanSection? Section { get; set; }
+    [Parameter]
+    public String? SectionTypeTitle { get; set; }
 
     public string? NewSectionItemTitle { get; set; }
     public int NewSectionItemOrder { get; set; }
-
+    public bool _changes = false;
 
     protected override void OnInitialized()
     {
@@ -85,30 +84,58 @@
 
     private void CloseDialogClick()
     {
-        DialogInstance.Cancel();
+        DialogInstance.Close(DialogResult.Ok(_changes));
     }
 
  
-    private void NewSectionItemClick()
+    private async Task OpenNewEditSectionItem(LessonPlanSectionItem secItem)
     {
-        if (NewSectionItemTitle is not null && NewSectionItemOrder != 0)
-        {
-            var lessonPlanSectionItem = new LessonPlanSectionItem()
+        var dialogReference = _dialogService.Show<LessonPlanNewSectionItemDialog>(
+            (secItem.Id > 0 ? "Edit " : "New ") + "Section Item ",
+            new DialogParameters
             {
-                LessonPlanSectionFk = Section.Id,
-                Order = NewSectionItemOrder,
-                SectionItemTitle = NewSectionItemTitle
-            };
-            _dataProvider.SaveSectionItem(lessonPlanSectionItem);
-            Snackbar.Add("New Section Item Succsecfullu Add", Severity.Success);
-            StateHasChanged();
-        }
+             ["SectionItem"] = secItem
+            },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraLarge
+            });
+
+        var dialogResult = await dialogReference.Result;
+            if (dialogResult.Canceled == false)
+            {
+                
+                var retData = (LessonPlanSectionItem)dialogResult.Data;
+                 _dataProvider.SaveSectionItem(retData);
+                 
+                Snackbar.Add("New Section Item Succsecfullu Add", Severity.Success);
+                Log.Warning("User {UserName} Save-Update Section Item {SectionItemId}",
+                            _userSession.Payload.UserName, retData.Id);
+                RefreshData();
+                StateHasChanged(); 
+            }
+      
+
+       
     }
 
     private void EditButtonClick(LessonPlanSectionItem secItem)
     {
-        NewSectionItemOrder = secItem.Order;
-        NewSectionItemTitle = secItem.SectionItemTitle;
+        OpenNewEditSectionItem(secItem);
+        
+    }
+
+    private void NewSectionItemClick()
+    {
+        var secItem = new LessonPlanSectionItem()
+        {
+            Guid = new Guid(),
+            CreatedWhen = DateTime.Now,
+            LessonPlanSectionFk = Section.LessonPlanFk,
+            Section = Section
+        };
+        OpenNewEditSectionItem(secItem);
     }
 
 }
