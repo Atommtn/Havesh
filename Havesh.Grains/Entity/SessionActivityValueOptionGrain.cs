@@ -1,5 +1,6 @@
 ﻿using Havesh.Common;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
@@ -31,9 +32,4 @@ public class SessionActivityValueOptionGrain : HaveshGrain<SessionActivityValueO
 	{
 		throw new NotImplementedException();
 	}
-}
-
-public interface ISessionActivityValueOptionGrain : IGrainWithIntegerKey
-{
-
 }

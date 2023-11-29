@@ -59,4 +59,9 @@ public class CacheManager
 
 		return cacheEntry;
 	}
+
+	public T? Update<TK,T>(TK key , T value)
+	{
+		return _cache.Set(key, value);
+	}
 }

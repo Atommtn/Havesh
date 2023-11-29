@@ -15,39 +15,69 @@ using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using Olive;
 using Orleans.Runtime;
+using Orleans.Streams;
 
 namespace HaveshApp.Admin.Dashboard.Widgets.Teacher;
 
 public class SupervisorWidgetsService : WidgetServiceBase
 {
+	private readonly IClusterClient _clusterClient;
+
 	private readonly ILogger<SupervisorWidgetsService> _logger;
-	private HaveshStreamConsumer<StudentSessionActivity> _consumer;
+	//private HaveshStreamConsumer<StudentSessionActivity> _consumer;
 	public SupervisorWidgetsService(
 		IClusterClient clusterClient,
 		UserSessionService userSession,
 		ILogger<SupervisorWidgetsService> logger)
 		: base(clusterClient, userSession)
 	{
+		_clusterClient = clusterClient;
 		_logger = logger;
-		var streamProvider = clusterClient.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
-		var stream1 = streamProvider.GetStream<StudentSessionActivity>(StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, HaveshConstants.GeneralKey));
-		_consumer = new HaveshStreamConsumer<StudentSessionActivity>(OnStudentSessionActivityPerform);
-		stream1.SubscribeAsync(_consumer);
-
-		// var stream2 = streamProvider.GetStream<StudentSessionActivity>(StreamId.Create(HaveshConstants.StudentSessionActivityToRoleStreamNamespace, "Supervisor"));
-		// _consumer2 = new HaveshStreamConsumer(OnStudentSessionActivityPerform);
-		// stream1.SubscribeAsync(_consumer2);
-
 	}
 
-	private void OnStudentSessionActivityPerform(StudentSessionActivity arg)
+	private StreamSubscriptionHandle<StudentSessionActivity>? _streamSubscriptionHandle;
+	public async Task InitSubscribeToStudentActivityPerformAsync()
 	{
+		if (_streamSubscriptionHandle != null) return;
 
-		_logger.Info($"Received Student Activity Performed by Student Id : {arg.StudentFk} Value: {arg.ActivityValue}");
-		OnStudentActivityPerformed?.Invoke(arg);
+		var streamProvider = _clusterClient.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
+		var stream1 = streamProvider.GetStream<StudentSessionActivity>(
+			StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, HaveshConstants.GeneralKey));
+		var consumer = new HaveshStreamConsumer<StudentSessionActivity>(OnStudentSessionActivityPerform);
+		_streamSubscriptionHandle = await stream1.SubscribeAsync(consumer);
 	}
 
-	public event Func<StudentSessionActivity, Task>? OnStudentActivityPerformed;
+	private Func<StudentSessionActivity, Task>? _onStudentActivityPerformedEvent;
+	private readonly object _eventLock = new();
+	private Task OnStudentSessionActivityPerform(StudentSessionActivity arg)
+	{
+		_logger.Info($"Received Student Activity Performed by Student Id : {arg.StudentFk} Value: {arg.ActivityValue}");
+		return _onStudentActivityPerformedEvent != null 
+			? _onStudentActivityPerformedEvent.Invoke(arg) 
+			: Task.CompletedTask;
+	}
+
+	private int _onStudentActivityPerformedCount = 0;
+
+	public event Func<StudentSessionActivity, Task>? OnStudentActivityPerformedEvent
+	{
+		add
+		{
+			lock (_eventLock)
+			{
+				_onStudentActivityPerformedEvent += value;
+				Console.WriteLine("         ***********************  OnStudentActivityPerformedEvent ****** ADD -> Count : " + ++_onStudentActivityPerformedCount);
+			}
+		}
+		remove
+		{
+			lock (_eventLock)
+			{
+				_onStudentActivityPerformedEvent -= value;
+				Console.WriteLine("         ========================  OnStudentActivityPerformedEvent ======== REMOVE -> Count : " + --_onStudentActivityPerformedCount);
+			}
+		}
+	}
 
 
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables()
@@ -68,4 +98,5 @@ public class SupervisorWidgetsService : WidgetServiceBase
 		var timeTableSessions = await managerGrain.GetTimeTableSessions(interval.StartTime.Value, _dateTime);
 		return timeTableSessions;
 	}
+
 }

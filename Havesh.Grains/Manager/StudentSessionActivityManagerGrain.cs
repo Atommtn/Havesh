@@ -48,6 +48,13 @@ public class StudentSessionActivityManagerGrain : Grain , IStudentSessionActivit
 		}, TimeSpan.FromHours(1));
 	}
 
+	public async Task RemoveStudentSessionActivity(StudentSessionActivity ssa)
+	{
+		_dataProviderService.SetActivityDeleteTime(ssa);
+		
+		await NotifySessionActivity(ssa);
+	}
+
 	private async Task NotifySessionActivity(StudentSessionActivity ssa)
 	{
 		// Notify connected clients about StudentSessionActivity

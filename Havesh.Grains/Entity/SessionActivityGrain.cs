@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Havesh.Common;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
@@ -34,9 +35,4 @@ public class SessionActivityGrain : HaveshGrain<SessionActivity> , ISessionActiv
 	{
 		DataProviderService.SaveSessionActivity(entity);
 	}
-}
-
-public interface ISessionActivityGrain : IGrainWithIntegerKey
-{
-
 }

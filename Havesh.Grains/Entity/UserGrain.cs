@@ -1,5 +1,6 @@
 ﻿using Havesh.Common;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
@@ -24,9 +25,3 @@ public class UserGrain : HaveshGrain<User> , IUserGrain
 
 	protected override void UpdateEntity(User user) => DataProviderService.SaveUser(user);
 }
-
-public interface IUserGrain : IGrainWithIntegerKey
-{
-
-}
-

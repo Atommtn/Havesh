@@ -36,9 +36,9 @@ public abstract class HaveshGrain<T>
         CacheManager = new CacheManager(new MemoryCache(new MemoryCacheOptions()));
     }
 
-	protected void EnusureState()
+	protected void EnusureState(bool forceDbLoad = false)
 	{
-		if (PersistentState.State.Item != null && PersistentState.State.IsInitialized) 
+		if (forceDbLoad == false && PersistentState.State.Item != null && PersistentState.State.IsInitialized) 
 			return;
 
 		PersistentState.State.Item = GetEntity(GrainKey);
