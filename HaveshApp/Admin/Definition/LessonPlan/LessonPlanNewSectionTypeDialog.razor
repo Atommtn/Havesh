@@ -1,0 +1,46 @@
+﻿@using Havesh.Model.Model
+<MtnDialog>
+    <ChildComponent>
+
+        <MudTextField @bind-Value="_sectionType" Label="SectionType" />
+
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Filled.Close" Variant="Variant.Filled" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            Save
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public string SectionType
+    {
+        get => _sectionType;
+        set => _sectionType = value;
+    }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Close();
+    }
+
+
+    private void SaveDialogClick()
+    {
+        
+        DialogInstance.Close(DialogResult.Ok(SectionType));
+    }
+
+    private string _sectionType;
+}

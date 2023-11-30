@@ -1,9 +1,14 @@
 ﻿@page "/LessonPlanDefinition"
 @using HaveshApp.Admin.Clone
 
+
 @layout PersianPagesLayout
 
 <h3>LessonPlan</h3>
+<MudButton Color="Color.Secondary" StartIcon="@Icons.Filled.AddCard" Variant="Variant.Filled" OnClick="SectionTypeClick">
+    Section Type
+</MudButton>
+
 
 <LevelSelectorComponenet @bind-Level="SelectedLevel"></LevelSelectorComponenet>
 

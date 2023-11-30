@@ -102,24 +102,15 @@ public partial class LessonPlanDefinitionPage
 		await EditButtonClick(lessonPlan);
 	}
 
-	private async Task AddSectionClick(Havesh.Model.Model.LessonPlan lessonPlan)
-	{
-		var dialogReference = DialogService.Show<SectionDefinitionDialog>(
-			(lessonPlan.Id > 0 ? "Edit " : "New ") + "Section ",
-			new DialogParameters
-			{
-				["LessonPlan"] = lessonPlan
-			},
-			new DialogOptions()
-			{
-				CloseButton = true,
-				MaxWidth = MaxWidth.Large
-			});
-		var dialogResult = await dialogReference.Result;
-		if (dialogResult.Canceled == false)
-		{
-		}
-		RefreshData();
-		StateHasChanged();
-	}
+    private async Task SectionTypeClick()
+    {
+        var dialogReference = DialogService.Show<LessonPlanSectionTypeDialog>(
+            "Section Type",
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.Medium
+            });
+       
+    }
 }

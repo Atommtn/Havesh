@@ -2417,5 +2417,10 @@ public class DataProviderService
         return result;
     }
 
+    public void SaveSectionType(LessonPlanSectionType sectionType)
+    {
+        DbContext.LessonPlanSectionTypes.Update(sectionType);
+        SaveAll();
+    }
 }
 
