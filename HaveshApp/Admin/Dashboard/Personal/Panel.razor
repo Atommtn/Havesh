@@ -31,11 +31,12 @@
 			_dashboardTemplateId = value;
 
 			_ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User)
-						?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User);
+     			  ?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User);
 
 			_widgets = _ds?
 				.DashboardWidgets?
-				.OrderBy(x => x.Order).ToList();
+				.OrderBy(x => x.Order)
+				.ToList();
 
 			StateHasChanged();
 		}

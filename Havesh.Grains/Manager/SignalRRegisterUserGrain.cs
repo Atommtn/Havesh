@@ -97,7 +97,7 @@ public class SignalRRegisterUserGrain : Grain, ISignalRRegisterUserGrain
 
         // Notify connected clients about the change in user list
         var streamProvider = this.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
-        var streamId = StreamId.Create(HaveshConstants.OnlineUsersStreamNamespace, 0);
+        var streamId = StreamId.Create(HaveshConstants.OnlineUsersStreamNamespace, HaveshConstants.GeneralKey);
         var stream = streamProvider.GetStream<User[]>(streamId);
         var users = _persistentState.State.ConnectedUsers
             .Select(x => x.Key)

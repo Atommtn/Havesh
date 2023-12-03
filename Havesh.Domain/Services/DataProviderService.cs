@@ -253,6 +253,10 @@ public class DataProviderService
 			.Include(x => x.ClassRoom)
 
 			.Include(x => x.TimeTable)
+			.ThenInclude(x => x.Teacher)
+
+			.Include(x => x.TimeTable)
+			.ThenInclude(x => x.Level)
 			// .ThenInclude(x => x.Schedule)
 			// .ThenInclude(x => x.Programs)
 			// .ThenInclude(x => x.DaySession)
@@ -1786,7 +1790,8 @@ public class DataProviderService
 
 	public ShokouhPardisTeacherClass? GetTeacherByUserId(int? userId)
 	{
-		var teacher = DbContext.ShokouhPardisTeacherClasses.SingleOrDefault(x => x.UserId == userId);
+		var teacher = DbContext.ShokouhPardisTeacherClasses
+			.SingleOrDefault(x => x.UserId == userId);
 		return teacher;
 	}
 
@@ -1879,8 +1884,10 @@ public class DataProviderService
 			);
 	}
 
-	public List<SessionActivity> GetSessionActivities(TimeTableSession session)
+	public List<SessionActivity> GetSessionActivities(TimeTableSession? session)
 	{
+		if (session is null) return null;
+
 		var sessionActivitiesQuery = DbContext
 			.SessionActivities
 			.Include(x => x.ValueOptions)
@@ -2378,6 +2385,14 @@ public class DataProviderService
 	public SessionActivityValueOption? GetSessionActivityValueOption(int id)
 	{
 		var sessionActivityValueOption = DbContext.SessionActivityValueOptions.Find(id);
+		return sessionActivityValueOption;
+	}
+
+	public SessionActivityValueOption? GetSessionActivityValueOptionByValue(int sessionActivityid , string value)
+    {
+        var sessionActivityValueOption =
+            DbContext.SessionActivityValueOptions.FirstOrDefault(x =>
+                x.SessionActivityFk == sessionActivityid && x.Value == value);
 		return sessionActivityValueOption;
 	}
 }

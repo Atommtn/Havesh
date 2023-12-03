@@ -34,8 +34,6 @@
 
 		            if(studentSessionActivities.Any())
 		            {
-			            <MudText Typo="Typo.body1">1</MudText>
-
 						foreach (var sac in studentSessionActivities)
 			            {
 				            <MudChip Size="@Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="@Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)">
@@ -53,7 +51,6 @@
 
 			            if (SessionActivity.ValueOptionsCanMultiple is true)
 			            {
-				            <MudText Typo="Typo.body1">3</MudText>
 				            <SessionActivityItemComponent 
 					            Student="@student" 
 					            SessionActivity="@SessionActivity" 
@@ -62,8 +59,6 @@
 		            }
 		            else
 		            {
-						<MudText Typo="Typo.body1">2</MudText>
-
 			            <SessionActivityItemComponent 
 				            Student="@student" 
 				            SessionActivity="@SessionActivity" 

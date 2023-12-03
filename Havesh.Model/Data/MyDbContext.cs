@@ -1,12 +1,15 @@
-﻿using Havesh.Model.Data;
+﻿using System.Reflection;
+using Havesh.Model.Data;
 using Havesh.Model.Data.Dashboard;
 using Havesh.Model.Filter;
 using Havesh.Model.Model;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static Havesh.Model.Model.MyDbContext;
 
 namespace Havesh.Model.Model;
 
@@ -28,12 +31,54 @@ public partial class MyDbContext : DbContext
     }
     public DbSet<EntityChange> EntityChanges { get; set; }
 
-    public override int SaveChanges()
+    public event Action<EntityEntry>? EntityAdded;
+    public event Action<EntityEntry>? EntityChanged;
+    public event Action<EntityEntry>? EntityDeleted;
+    
+    protected virtual void OnEntityAdded(EntityEntry entry)
+    {
+	    EntityAdded?.Invoke(entry);
+    }
+
+    protected virtual void OnEntityChanged(EntityEntry entry)
+    {
+	    EntityChanged?.Invoke(entry);
+    }
+
+    protected virtual void OnEntityDeleted(EntityEntry entry)
+    {
+	    EntityDeleted?.Invoke(entry);
+    }
+
+	public override int SaveChanges()
     {
         var entityChanges = CaptureEntityChanges();
 
-        // Save changes to the database
-        var result = base.SaveChanges();
+        foreach (var entry in ChangeTracker.Entries())
+        {
+	        var entityType = entry.Entity.GetType(); //== typeof(EntityChange);
+	        var isValid = entityType.IsAssignableFrom(typeof(BaseModel)) && entry.CurrentValues.Properties.Any(x => x.Name == "Id");
+	        if (!isValid) continue;
+            
+	        switch (entry.State)
+	        {
+		        case EntityState.Added:
+                    
+			        OnEntityAdded(entry);
+			        break;
+		        case EntityState.Modified:
+			        OnEntityChanged(entry);
+			        break;
+		        case EntityState.Deleted:
+			        OnEntityDeleted(entry);
+			        break;
+	        }
+        }
+
+
+
+		// Save changes to the database
+		var result = base.SaveChanges();
 
         // Save the entity changes to a separate table or storage
         if (entityChanges == null) 
@@ -235,4 +280,5 @@ public partial class MyDbContext : DbContext
         }
     */
     }
+
 }

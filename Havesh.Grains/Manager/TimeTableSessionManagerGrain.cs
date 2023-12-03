@@ -1,10 +1,15 @@
-﻿using Havesh.Domain.Services;
+﻿using System.Security.Cryptography.X509Certificates;
+using Havesh.Common;
+using Havesh.Domain.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Entity;
 using Havesh.Model.Model;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Olive;
+using Orleans.Runtime;
+using Orleans.Streams;
 
 namespace Havesh.Grains.Manager;
 
@@ -59,4 +64,15 @@ public class TimeTableSessionManagerGrain : Grain, ITimeTableSessionManagerGrain
 			.ToArray();
 		return sessionActivityValueOptions;
 	}
+	public async Task<IEnumerable<StudentSessionActivity>?> GetSessionStudentActivitiesPerformed(int timeTableSessionId)
+	{
+		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(timeTableSessionId);
+		var activities = await ttsGrain.GetStudentSessionActivities();
+		
+		if (activities == null) 
+			throw new ArgumentNullException(nameof(activities));
+
+		return activities;
+	}
+
 }

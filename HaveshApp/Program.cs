@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Localization;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Dashboard.Widgets.Supervisor;
 using HaveshApp.Admin.Dashboard.Widgets.Teacher;
-using HaveshApp.Services;
 using Havesh.OrleansClient;
 using Orleans.Streams;
 
@@ -66,12 +65,8 @@ builder.Services.AddScoped<DataProviderService>();
 
 builder.Services.AddSingleton<SignalrGrainClientService>();
 
-
 builder.Services.AddScoped<TeacherWidgetsService>();
 builder.Services.AddScoped<SupervisorWidgetsService>();
-
-builder.Services.AddSingleton<UserConnectionManagerService>();
-
 
 builder.Services.AddScoped<Navigation>();
 builder.Services.AddScoped<AuthenticationService>();
@@ -151,6 +146,7 @@ builder.Services.AddOrleansClient(clientBuilder =>
 		});
 });
 
+builder.Services.AddHostedService<SignalrGrainClientInitializationService>();
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ namespace Havesh.Model.Model;
 [Serializable]
 [GenerateSerializer]
 [Table("ShokouhPardis_SessionActivityValueOption")]
-public partial class SessionActivityValueOption : BranchBaseModel
+public partial class SessionActivityValueOption : BranchBaseModel , IEqualityComparer<SessionActivityValueOption>
 {
 	[Id(0)]
 	public int SessionActivityFk { get; set; }
@@ -25,4 +25,19 @@ public partial class SessionActivityValueOption : BranchBaseModel
 	[Id(5)]
 	public string? BroadcastToRoles { get; set; }
 
+	[Id(6)]
+	public string? IconName { get; set; }
+	
+	[Id(7)]
+	public string? Icon { get; set; }
+
+	public bool Equals(SessionActivityValueOption? x, SessionActivityValueOption? y)
+	{
+		return x?.Id == y?.Id;
+	}
+
+	public int GetHashCode(SessionActivityValueOption obj)
+	{
+		return obj?.Id.GetHashCode() ?? 0;
+	}
 }

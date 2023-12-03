@@ -6,4 +6,5 @@ public static class SessionStatuses
 	public const string Completed = "برگزار شده";
 	public const string Canceled = "کنسل شده";
 	public const string Replaced = "جایگزین شده";
+	public const string Running = "درحال برگزاری";
 }

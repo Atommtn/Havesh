@@ -7,7 +7,6 @@ using Havesh.Model.Model;
 using HaveshApp.Classes.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using HaveshApp.Classes.ExtensionMethods;
-using HaveshApp.Services;
 using Havesh.OrleansClient;
 
 namespace Havesh.Domain.Services;

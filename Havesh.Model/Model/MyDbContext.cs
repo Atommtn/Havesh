@@ -4,6 +4,7 @@ using Havesh.Model.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Havesh.Model.Model;
 
@@ -57,21 +58,20 @@ public partial class MyDbContext : DbContext
         
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		if (!optionsBuilder.IsConfigured)
+		if (optionsBuilder.IsConfigured) 
+			return;
+
+		var conStr = _configuration["ConnectionStrings:ArvanConnection"];
+		optionsBuilder
+			.UseSqlServer(conStr)
+			//.AddInterceptors(new CustomQueryInterceptor())
+			;
+		optionsBuilder.UseLoggerFactory(
+			LoggerFactory.Create(builder => builder.AddConsole()));
+		optionsBuilder.ConfigureWarnings(warnings =>
 		{
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-			//optionsBuilder.UseSqlServer("Data Source=94.232.174.176;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;");
-			var conStr = _configuration["ConnectionStrings:ArvanConnection"];
-			//optionsBuilder.UseSqlServer("Data Source=94.101.189.165;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;");
-			optionsBuilder
-                .UseSqlServer(conStr)
-                //.AddInterceptors(new CustomQueryInterceptor())
-                ;
-            optionsBuilder.ConfigureWarnings(warnings =>
-            {
-                warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
-            });
-        }
+			warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
+		});
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

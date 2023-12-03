@@ -25,8 +25,11 @@ public class StudentSessionActivityManagerGrain : Grain , IStudentSessionActivit
 	public async Task CreateStudentSessionActivity(StudentSessionActivity ssa)
 	{
 		_dataProviderService.SaveStudentSessionActivity(ssa);
+		
 		var sessionActivityGrain = GrainFactory.GetGrain<IHaveshGrain<StudentSessionActivity>>(ssa.Id);
 		await sessionActivityGrain.Set(ssa);
+
+
 		await NotifySessionActivity(ssa);
 	}
 

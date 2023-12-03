@@ -23,7 +23,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 		_accessor = accessor;
 		_configuration = configuration;
 	}
-	public override Task<AuthenticationState> GetAuthenticationStateAsync()
+	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
 		var token = GetTokenParser(out var parser, _accessor.HttpContext, _configuration);
 
@@ -44,11 +44,12 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
                 payload.IP = GetClientIpAddress(_accessor.HttpContext);
 
             _sessionService.Payload = payload;
+            await _sessionService.GetUserOrLoadAsync();
             _authAttemps++;
 
             if ((_sessionService.User?.IsActive ?? false) )
             {
-                return authenticationStateAsync;
+                return await authenticationStateAsync;
             }
         }
 
@@ -59,8 +60,9 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 		NotifyAuthenticationStateChanged(fromResult);
 		_sessionService.Token = null;
 		_sessionService.State = fromResult;
+		_sessionService.ResetUser();
         _authAttemps = 0;
-		return fromResult;
+		return await fromResult;
 
 	}
     string? GetClientIpAddress(HttpContext? context)

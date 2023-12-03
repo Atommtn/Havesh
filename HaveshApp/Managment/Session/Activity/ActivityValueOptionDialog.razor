@@ -8,6 +8,9 @@
             <MudItem md="6">
                 <MudTextField @bind-Value="ValueOption.Color" Label="Color" />
             </MudItem>
+	        <MudItem md="6">
+		        <IconSelectorComponent @bind-Icon="ValueOption.Icon" @bind-IconName="ValueOption.IconName"></IconSelectorComponent>
+	        </MudItem>
             <MudItem md="6">
                 <MudTextField @bind-Value="ValueOption.Value" Label="Value" />
             </MudItem>

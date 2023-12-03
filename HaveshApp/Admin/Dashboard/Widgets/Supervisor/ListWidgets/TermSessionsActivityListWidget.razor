@@ -1,0 +1,48 @@
+﻿@using Havesh.Model.Model
+@using Havesh.Grains.Manager
+@using Havesh.GrainInterfaces.Entity
+
+<MudGrid>
+	<MudDataGrid T="TimeTableSession" Items="_timeTableSessions">
+		<Columns>
+			
+		</Columns>
+	</MudDataGrid>	
+</MudGrid>
+<MudCard>
+
+</MudCard>
+
+@code {
+
+	[Inject] public required IClusterClient ClusterClient { get; set; }
+	[Inject] public required SupervisorWidgetsService SupervisorWidgetsService{ get; set; }
+	List<TimeTableSession> _timeTableSessions;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_timeTableSessions = await InitUiObjects(((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList());
+		await base.OnInitializedAsync();
+	}
+
+	private async Task<List<TimeTableSession>> InitUiObjects(List<TimeTableSession> ttsArg)
+	{
+		var sessionManagerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+		foreach (var tts in ttsArg)
+		{
+			var sessionActivityValueOptions =
+				await sessionManagerGrain.GetSessionStudentActivitiesPerformed(tts.Id);
+			var sessionActivities =
+				(sessionActivityValueOptions ?? Array.Empty<StudentSessionActivity>())
+					.ToList();
+			tts.Tag = sessionActivities;
+
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(tts.TimeTableFk);
+			tts.TimeTable.Students = await timeTableGrain.GetStudents();
+		}
+
+		StateHasChanged();
+		return ttsArg;
+	}
+
+}

@@ -6,7 +6,7 @@
 @using Havesh.GrainInterfaces
 @using System.Text.Encodings.Web
 @using global::AdminDashboard.Server.Class.Extensions
-@implements IDisposable
+@implements IAsyncDisposable
 @using Havesh.OrleansClient
 @using Havesh.Model.Model
 @using Olive
@@ -55,10 +55,10 @@
 		await InvokeAsync(StateHasChanged);
 	}
 
-	public void Dispose()
+	public async ValueTask DisposeAsync()
 	{
 		SignalrGrainClientService.OnlineUserChanged -= SignalrGrainClientServiceOnOnlineUserChanged;
-		SignalrGrainClientService.Dispose();
+		await SignalrGrainClientService.DisposeAsync();
 	}
 
 }

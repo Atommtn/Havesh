@@ -105,8 +105,6 @@ public partial class ShokouhPardisTimeTable
 	[ForeignKey("TimeTableFk")]
 	public List<TimeTableSession> Sessions { get; set; }
     
-	[NotMapped]
-    public int StudentsCount { get; set; }
 
     [NotMapped]
     public int SourceId { get; set; }
@@ -116,6 +114,12 @@ public partial class ShokouhPardisTimeTable
 
     [NotMapped]
     public string Tag { get; set; }
+
+    [NotMapped]
+    public int StudentsCount { get; set; }
+
+    [NotMapped]
+    public IEnumerable<ShokouhPardisStudentClass>? Students { get; set; } = new List<ShokouhPardisStudentClass>();
 
     public static ShokouhPardisTimeTable CreateTimeTable()
     {
