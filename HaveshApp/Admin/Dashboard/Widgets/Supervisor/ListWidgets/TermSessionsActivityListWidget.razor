@@ -1,6 +1,22 @@
 ﻿@using Havesh.Model.Model
 @using Havesh.Grains.Manager
 @using Havesh.GrainInterfaces.Entity
+@using Havesh.GrainInterfaces.Manager
+@using Havesh.Common
+
+<MudGrid>
+	<MudItem md="12">
+		<TermSelectorComponent @bind-Term="_term" Title="ترم را انتخاب کنید" />
+	</MudItem>
+	<MudItem>
+		<MudDataGrid Bordered="true">
+			<Columns>
+
+			</Columns>
+		</MudDataGrid>
+	</MudItem>
+	<MudItem></MudItem>
+</MudGrid>
 
 <MudGrid>
 	<MudDataGrid T="TimeTableSession" Items="_timeTableSessions">
@@ -15,13 +31,26 @@
 
 @code {
 
+	ShokouhPardisTermClass? _term;
+
 	[Inject] public required IClusterClient ClusterClient { get; set; }
 	[Inject] public required SupervisorWidgetsService SupervisorWidgetsService{ get; set; }
-	List<TimeTableSession> _timeTableSessions;
+	IEnumerable<ShokouhPardisTimeTable>? _timeTables;
+	IEnumerable<TimeTableSession>? _timeTableSessions;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_timeTableSessions = await InitUiObjects(((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList());
+		var termGrainManager = ClusterClient.GetGrain<ITermGrainManager>(HaveshConstants.GeneralKey);
+		_term = await termGrainManager.GetTermsInRangeToday();
+
+		var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(HaveshConstants.GeneralKey);
+		if (_term != null)
+		{
+			_timeTables = await timeTableManagerGrain.GetTermTimeTablesIncludeSeaaions(_term.Id);
+
+			_timeTableSessions = await InitUiObjects(((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList());
+		}
+
 		await base.OnInitializedAsync();
 	}
 

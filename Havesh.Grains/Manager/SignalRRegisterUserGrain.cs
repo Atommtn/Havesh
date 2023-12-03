@@ -12,7 +12,7 @@ using System.Collections.Concurrent;
 
 namespace Havesh.Grains.Manager;
 
-public class SignalRRegisterUserGrain : Grain, ISignalRRegisterUserGrain
+public class SignalRRegisterUserGrain : HaveshManagerGrain, ISignalRRegisterUserGrain
 {
 
     private readonly IPersistentState<ConnectionsState> _persistentState;

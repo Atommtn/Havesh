@@ -11,11 +11,10 @@ using Havesh.Model.Model;
 
 namespace Havesh.Grains.Manager;
 
-public class SessionActivityOptionManagerGrain : Grain , ISessionActivityOptionManagerGrain
+public class SessionActivityOptionManagerGrain : HaveshManagerGrain , ISessionActivityOptionManagerGrain
 {
     private readonly DataProviderService _dataProviderService;
     private readonly ILogger<SessionActivityOptionManagerGrain> _logger;
-    readonly CacheManager _cacheManager = new CacheManager(new MemoryCache(new MemoryCacheOptions()));
 
     public SessionActivityOptionManagerGrain(
         DataProviderService dataProviderService,

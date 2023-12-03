@@ -10,9 +10,8 @@ using Orleans.Concurrency;
 namespace Havesh.Grains.Manager;
 
 //[StatelessWorker]
-public class TermManagerGrain : Grain, ITermGrainManager
+public class TermManagerGrain : HaveshManagerGrain, ITermGrainManager
 {
-	private CacheManager CacheManager { get; } = new(new MemoryCache(new MemoryCacheOptions()));
 	DataProviderService DataProviderService { get; }
 
 	public TermManagerGrain(DataProviderService dataProviderService)
@@ -28,13 +27,14 @@ public class TermManagerGrain : Grain, ITermGrainManager
 			{
 				var term = DataProviderService.GetTermsInRangeToday(overrideDate,
 					q => q.Include(x => x.Year));
-				if (term == null) return null;
+				if (term == null) 
+					return null;
 
 				var termGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTermClass>>(term.Id);
 				await termGrain.Set(term);
 				return term;
 			}
-			, TimeSpan.FromHours(1));
+			, CacheExpireTime);
 		
 		return term;
 

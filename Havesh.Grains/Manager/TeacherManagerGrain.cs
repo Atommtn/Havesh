@@ -12,7 +12,7 @@ using Olive;
 
 namespace Havesh.Grains.Manager;
 
-public class TeacherManagerGrain : Grain , ITeacherManagerGrain
+public class TeacherManagerGrain : HaveshManagerGrain , ITeacherManagerGrain
 {
 	private readonly ConcurrentDictionary<int, IHaveshGrain<ShokouhPardisTeacherClass>> _userTeacherDictionary = new();
 	DataProviderService DataProviderService { get; }

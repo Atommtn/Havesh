@@ -13,16 +13,13 @@ using Orleans.Streams;
 
 namespace Havesh.Grains.Manager;
 
-public class TimeTableSessionManagerGrain : Grain, ITimeTableSessionManagerGrain
+public class TimeTableSessionManagerGrain : HaveshManagerGrain, ITimeTableSessionManagerGrain
 {
-	private CacheManager CacheManager { get; }
 	private DataProviderService DataProviderService { get; }
 
 	public TimeTableSessionManagerGrain(DataProviderService dataProviderService)
 	{
 		DataProviderService = dataProviderService;
-		// Create CacheManager instance
-		CacheManager = new CacheManager(new MemoryCache(new MemoryCacheOptions()));
 	}
 
 	public async Task<IEnumerable<TimeTableSession>?> GetTimeTableSessions(int timeTableId)
@@ -31,7 +28,7 @@ public class TimeTableSessionManagerGrain : Grain, ITimeTableSessionManagerGrain
 		{
 			var timeTableSessions = DataProviderService.GetTimeTableSessions(timeTableId);
 			return timeTableSessions;
-		}, TimeSpan.FromHours(1));
+		}, CacheExpireTime);
 
 	}
 
@@ -42,7 +39,7 @@ public class TimeTableSessionManagerGrain : Grain, ITimeTableSessionManagerGrain
 		var sessionByDate = CacheManager.GetOrSet($"{timeTableId}-{datetime?.ToShortDateString()}",
 			() => GetTimeTableSessions(timeTableId)
 				.FirstOrDefault(x => x.SessionDate == datetime)
-			, TimeSpan.FromHours(1));
+			, CacheExpireTime);
 
 		return sessionByDate;
 	}
@@ -52,7 +49,7 @@ public class TimeTableSessionManagerGrain : Grain, ITimeTableSessionManagerGrain
 		dateTime ??= DateTime.Today;
 		return CacheManager.GetOrSet("TTS_" + dateTime?.ToShortDateString(),
 			() => DataProviderService.GetTimeTableSessions(sessionStartTime , dateTime),
-			TimeSpan.FromHours(1));
+			CacheExpireTime);
 	}
 
 	public async Task<IEnumerable<SessionActivityValueOption>?> GetSessionActivitiesPerformed(int timeTableSessionId)

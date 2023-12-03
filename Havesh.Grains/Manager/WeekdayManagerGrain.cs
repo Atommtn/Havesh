@@ -8,7 +8,7 @@ using Havesh.Model.Model;
 
 namespace Havesh.Grains.Manager;
 
-public class WeekdayManagerGrain : Grain, IWeekdayManagerGrain
+public class WeekdayManagerGrain : HaveshManagerGrain, IWeekdayManagerGrain
 {
 	DataProviderService DataProviderService { get; }
 

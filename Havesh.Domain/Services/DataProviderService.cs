@@ -574,9 +574,9 @@ public class DataProviderService
 	}
 	public List<ShokouhPardisStudentClass>? GetTimeTableStudents(ShokouhPardisTimeTable? timeTable)
 	{
-		if (timeTable == null) return null;
-		return GetTimeTableStudents(timeTable.Id);
-
+		return timeTable == null 
+			? null 
+			: GetTimeTableStudents(timeTable.Id);
 	}
 
 	public int GetTotalTimeTablesCount(int termTermClassId, string? searchText = null, bool isPrivate = false)
@@ -592,13 +592,17 @@ public class DataProviderService
 		return count;
 	}
 
-	public List<ShokouhPardisTimeTable> GetTimeTables(ShokouhPardisTermClass fromTerm, string? searchText = null,
-		int? page = null, int? pageSize = null)
+	public List<ShokouhPardisTimeTable> GetTimeTables(int fromTermId, string? searchText = null,
+		int? page = null, int? pageSize = null,Func<IQueryable<ShokouhPardisTimeTable>, IQueryable<ShokouhPardisTimeTable>>? include = null)
 	{
-		var shokouhPardisTimeTables = ShokouhPardisTimeTablesQuery(fromTerm);
+		var shokouhPardisTimeTables = ShokouhPardisTimeTablesQuery(fromTermId);
+		
+		if (include != null)
+			shokouhPardisTimeTables = include(shokouhPardisTimeTables);
+
 		if (!string.IsNullOrEmpty(searchText))
 		{
-			shokouhPardisTimeTables = shokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
+			shokouhPardisTimeTables = shokouhPardisTimeTables.Where(x => x.Title != null && x.Title.Contains(searchText));
 		}
 
 		if (page != null && pageSize != null)
@@ -609,9 +613,15 @@ public class DataProviderService
 		return shokouhPardisTimeTables
 			.OrderBy(x => x.Schedule.Title)
 			.ToList();
+
+	}
+	public List<ShokouhPardisTimeTable> GetTimeTables(ShokouhPardisTermClass fromTerm, string? searchText = null,
+		int? page = null, int? pageSize = null)
+	{
+		return GetTimeTables(fromTerm.Id, searchText, page, pageSize);
 	}
 
-	IQueryable<ShokouhPardisTimeTable> ShokouhPardisTimeTablesQuery(ShokouhPardisTermClass fromTerm)
+	IQueryable<ShokouhPardisTimeTable> ShokouhPardisTimeTablesQuery(int fromTermId)
 	{
 		var shokouhPardisTimeTables = DbContext
 			.ShokouhPardisTimeTables
@@ -619,8 +629,13 @@ public class DataProviderService
 			.Include(x => x.ClassRoom)
 			.Include(x => x.Level)
 			.Include(x => x.Teacher)
-			.Where(x => x.TermId == fromTerm.Id);
+			.Where(x => x.TermId == fromTermId);
 		return shokouhPardisTimeTables;
+
+	}
+	IQueryable<ShokouhPardisTimeTable> ShokouhPardisTimeTablesQuery(ShokouhPardisTermClass fromTerm)
+	{
+		return ShokouhPardisTimeTablesQuery(fromTerm.Id);
 	}
 
 	public IEnumerable<ShokouhPardisTimeTable>
