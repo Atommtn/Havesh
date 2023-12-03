@@ -1,0 +1,44 @@
+﻿@using Havesh.Model.Model
+<MtnDialog>
+    <ChildComponent>
+
+        <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+            File Attachment Cooming Soon...
+        </MudText>
+
+     
+    </ChildComponent>
+    <DialogAction>
+  
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    
+    
+    
+    
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisFileAttachment? Attachment { get; set; }
+
+    
+    
+    
+    private void CloseDialogClick()
+    {
+        DialogInstance.Close();
+    }
+
+ 
+    
+
+   
+
+}

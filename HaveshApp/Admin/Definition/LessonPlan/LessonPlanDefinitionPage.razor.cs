@@ -44,7 +44,7 @@ public partial class LessonPlanDefinitionPage
 	private async Task OpenNewLessonPlanDialog(Havesh.Model.Model.LessonPlan lessonPlan)
 	{
 		var dialogReference = DialogService.Show<LessonPlanDefinitionDialog>(
-			(lessonPlan.Id > 0 ? "ویرایش " : "جدید ") + "لسن پلن ",
+			(lessonPlan.Id > 0 ? "Edit " : "New ") + "LessonPlan ",
 			new DialogParameters
 			{
 				["LessonPlan"] = lessonPlan
@@ -68,16 +68,16 @@ public partial class LessonPlanDefinitionPage
 					var parameters = new DialogParameters();
 
 					bool? result1 = await DialogService.ShowMessageBox(
-						"خطا",
+						"Error",
 						(MarkupString)
-						@$"برای این سطح و این شماره سیشن قبلا لسن پلن نوشته شده است
+						@$"For this session number save any LessopnPlan
                         <br/>{retData.Level.LevelName}
                         <br/>{retData.SessionNumber}",
-						yesText: "متوجه شدم!");
+						yesText: "Got it!");
 				}
 				else
 				{
-					Snackbar.Add("لسن پلن با موفقیت ذخیره شد.", Severity.Success);
+					Snackbar.Add("lesson plan save successfully.", Severity.Success);
 					Log.Warning("User {UserName} Save-Update LessonPlan {lessonPlanID}",
 						_userSession.Payload.UserName, retData.Id);
 				}
@@ -102,24 +102,15 @@ public partial class LessonPlanDefinitionPage
 		await EditButtonClick(lessonPlan);
 	}
 
-	private async Task AddSectionClick(Havesh.Model.Model.LessonPlan lessonPlan)
-	{
-		var dialogReference = DialogService.Show<SectionDefinitionDialog>(
-			(lessonPlan.Id > 0 ? "Edit " : "New ") + "Section ",
-			new DialogParameters
-			{
-				["LessonPlan"] = lessonPlan
-			},
-			new DialogOptions()
-			{
-				CloseButton = true,
-				MaxWidth = MaxWidth.Large
-			});
-		var dialogResult = await dialogReference.Result;
-		if (dialogResult.Canceled == false)
-		{
-		}
-		RefreshData();
-		StateHasChanged();
-	}
+    private async Task SectionTypeClick()
+    {
+        var dialogReference = DialogService.Show<LessonPlanSectionTypeDialog>(
+            "Section Type",
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.Medium
+            });
+       
+    }
 }

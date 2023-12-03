@@ -1,0 +1,114 @@
+﻿@using Havesh.Model.Model
+<MtnDialog>
+    <ChildComponent>
+
+        <MudTable @ref="table"
+                  Hover="true"
+                  Breakpoint="Breakpoint.None"
+                  Items="SectionTypes"
+                  Style="background-color: #355167;">
+            <ToolBarContent>
+
+                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewSectionItemClick">
+                    Add Section Item
+                </MudButton>
+
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Title</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate >
+                <MudTd>@context.Title</MudTd>
+                <MudTd>
+                    <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() => EditButtonClick(context)"></MudIconButton>
+
+                </MudTd>
+
+            </RowTemplate>
+
+
+
+        </MudTable>
+
+     
+    </ChildComponent>
+    <DialogAction>
+  
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            Close
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+@code {
+
+    
+    
+    MudTable<LessonPlanSectionType>? table;
+    
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    LessonPlanSectionType SectionType;
+    public List<LessonPlanSectionType> SectionTypes { get; set; }
+    protected override void OnInitialized()
+    {
+        SectionTypes = _dataProvider.GetSectionType();
+        base.OnInitialized();
+    }
+
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Close();
+    }
+
+
+    private void NewSectionItemClick()
+    {
+        SectionType = new LessonPlanSectionType()
+        {
+            Guid = new Guid(),
+            CreatedWhen = DateTime.Now,
+            Title = ""
+                
+        };
+        OpenAddEditeDialog(SectionType.Title);
+    }
+
+    private async Task OpenAddEditeDialog(string sectionTypeTitle)
+    {
+        var dialogReference = _dialogService.Show<LessonPlanNewSectionTypeDialog>(
+            (sectionTypeTitle.Length != 0 ? "Edit " : "New ") + "Section Type ",
+            new DialogParameters
+            {
+                    ["SectionType"] = sectionTypeTitle
+            },
+
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.ExtraLarge
+            });
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Canceled == false)
+        {
+            var retData = (string)dialogResult.Data;
+            SectionType.Title = retData;
+            _dataProvider.SaveSectionType(SectionType);
+            _snackBar.Add("Section New-Edit Succesessfully Save.", Severity.Success);
+           
+                StateHasChanged();
+            
+        }
+       
+    }
+
+    private void EditButtonClick(LessonPlanSectionType context)
+    {
+        SectionType = context;
+        OpenAddEditeDialog(context.Title);
+    }
+
+}

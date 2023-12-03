@@ -4,7 +4,7 @@
     {
         @foreach (var dic in _userDashboardMenuItems)
         {
-            <MudNavGroup Title="@dic.Key" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
+            <MudNavGroup Title="@dic.Key" Expanded="false" Icon="@Icons.Material.Filled.Dashboard">
                 @foreach (var dashboardT in dic.Value)
                 {
                     <MudNavLink Href="@($"/Dashboard/{dashboardT.Id}")" Match="NavLinkMatch.All">@dashboardT.Name</MudNavLink>
@@ -58,6 +58,8 @@
     </AuthorizeView>
     <AuthorizeView Roles="Admin,Modiator,Supervisor">
         <Authorized>
+          
+           
             <MudNavGroup Title="Dashboard" Expanded="true">
                 <MudNavLink Href="/ClassProgram" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonalVideo" IconColor="Color.Warning">جدول برنامه کلاس ها</MudNavLink>
                 <MudNavLink Href="/TeacherTimeTable" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonPin" IconColor="Color.Error">برنامه کلاس معلمین</MudNavLink>
@@ -72,7 +74,34 @@
             </MudNavGroup>
         </Authorized>
     </AuthorizeView>
+    <AuthorizeView Roles="Supervisor">
+        <Authorized>
+            <MudText Typo="Typo.caption" Color="Color.Info" GutterBottom="true">
+                Supervisor Menu
+            </MudText>
 
+            <MudNavGroup Title="Definition" Icon="@Icons.Material.Filled.AddModerator">
+
+
+                <MudNavLink Href="/TeacherDefinition" Match="NavLinkMatch.Prefix">Teacher Definition</MudNavLink>
+                <MudNavLink Href="/LessonPlanDefinition" Match="NavLinkMatch.Prefix">Lesson Plan Definition</MudNavLink>
+                <MudDivider/>
+                <MudNavLink Href="/LevelPriceDefinition" Match="NavLinkMatch.Prefix">Level Price Definition</MudNavLink>
+                <MudDivider/>
+                <MudNavLink Href="/IntervalDefinition" Match="NavLinkMatch.Prefix">Interval Definition</MudNavLink>
+                <MudNavLink Href="/DaySesseionDefinition" Match="NavLinkMatch.Prefix">DaySession Definition</MudNavLink>
+                <MudNavLink Href="/ScheduleDefinition" Match="NavLinkMatch.Prefix">Schedule Definition</MudNavLink>
+
+                <MudNavGroup Title="Sessions" Icon="@Icons.Material.Filled.MeetingRoom">
+                    <MudNavLink Href="/TermSessionTemplate" Match="NavLinkMatch.Prefix">Term Session Template Definition</MudNavLink>
+                    <MudNavLink Href="/SessionActiviy" Match="NavLinkMatch.Prefix">Session Activity</MudNavLink>
+                    <MudNavLink Href="/ClassProgram/SessionGenerator" Match="NavLinkMatch.Prefix">Term Session Generator</MudNavLink>
+                    <MudNavLink Href="/ClassProgram/SessionCancel" Match="NavLinkMatch.Prefix">Term Session Cancelation</MudNavLink>
+                </MudNavGroup>
+
+            </MudNavGroup>
+        </Authorized>
+    </AuthorizeView>
     <AuthorizeView Roles="Teacher">
         <Authorized>
         </Authorized>

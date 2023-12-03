@@ -1,4 +1,5 @@
-﻿using Havesh.Model.Model;
+﻿using DNTPersianUtils.Core;
+using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Havesh.Domain.Services;
@@ -41,13 +42,27 @@ public partial class PrivateTimesTableDialog
 			TimeTableItem.Term = TermPram;
 			_teacherTimeSheet = GetTimeSheet(TimeTableItem);
 			_bookPrice = GetBookPrice(TimeTableItem);
-
+            Days = GetDaysOfSessions(TimeTableItem);
 			StateHasChanged();
 		}
 		base.OnAfterRender(firstRender);
 	}
 
-	private void CloseDialogClick()
+    private Dictionary<int, bool> GetDaysOfSessions(ShokouhPardisTimeTable timeTableItem)
+    {
+        var days = timeTableItem.Sessions.Select(x => x.SessionDate.GetPersianWeekDayNumber());
+            
+        Dictionary<int, bool> bools = new();
+        for (var i = 0; i < 7; i++) bools.Add(i + 1, false);
+        foreach (var x in days)
+        {
+            bools[(int)x] = true;
+        }
+        return bools;
+        
+    }
+
+    private void CloseDialogClick()
 	{
 		DialogInstance.Cancel();
 	}
@@ -148,13 +163,16 @@ public partial class PrivateTimesTableDialog
     private async Task DateChoiceClick()
     {
         var x = string.Join(',', Days.Where(x => x.Value == true).Select(x => x.Key));
-        TimeTableItem.Sessions ??= new List<TimeTableSession>();
-        TermSessionTemplate = new TermSessionTemplate()
-        {
-			Term = TermPram,
-			TermFk = TermPram.Id,
-			WeekdayIds = x
-        };
+        
+            TimeTableItem.Sessions ??= new List<TimeTableSession>();
+            TermSessionTemplate = new TermSessionTemplate()
+            {
+                Term = TermPram,
+                TermFk = TermPram.Id,
+                WeekdayIds = x
+            };
+        
+        
     await DialogService.ShowAsync<PrivateTimeTableDatesDialog>("Dates", new DialogParameters()
         {
             ["TermSessionTemplate"] = TermSessionTemplate,
