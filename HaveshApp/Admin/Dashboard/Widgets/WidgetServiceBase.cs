@@ -37,10 +37,12 @@ public class WidgetServiceBase
 		return term;
 	}
 
-	protected async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
+	private async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
 	{
 		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(sessionId);
-		var activities = await sessionGrain.GetStudentSessionActivities().Select(x => x.Activity).ToList(); 
+		var activities = await sessionGrain
+			.GetSessionActivities()
+			.ToList(); 
 		return activities;
 
 	}

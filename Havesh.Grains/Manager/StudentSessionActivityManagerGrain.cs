@@ -8,11 +8,10 @@ using Orleans.Runtime;
 
 namespace Havesh.Grains.Manager;
 
-public class StudentSessionActivityManagerGrain : Grain , IStudentSessionActivityManagerGrain
+public class StudentSessionActivityManagerGrain : HaveshManagerGrain , IStudentSessionActivityManagerGrain
 {
 	private readonly DataProviderService _dataProviderService;
 	private readonly ILogger<StudentSessionActivityManagerGrain> _logger;
-	readonly CacheManager _cacheManager = new CacheManager(new MemoryCache(new MemoryCacheOptions()));
 
 	public StudentSessionActivityManagerGrain(
 		DataProviderService dataProviderService,
@@ -25,27 +24,30 @@ public class StudentSessionActivityManagerGrain : Grain , IStudentSessionActivit
 	public async Task CreateStudentSessionActivity(StudentSessionActivity ssa)
 	{
 		_dataProviderService.SaveStudentSessionActivity(ssa);
+		
 		var sessionActivityGrain = GrainFactory.GetGrain<IHaveshGrain<StudentSessionActivity>>(ssa.Id);
 		await sessionActivityGrain.Set(ssa);
+
+
 		await NotifySessionActivity(ssa);
 	}
 
 	public Task<IEnumerable<SessionActivity>?> GetSesionActivities()
 	{
-		return _cacheManager.GetOrSet("SessionActivities", () =>
+		return CacheManager.GetOrSet("SessionActivities", () =>
 		{
 			var sessionActivities = _dataProviderService.GetSessionActivities().AsEnumerable();
 			return Task.FromResult(sessionActivities);
-		} , TimeSpan.FromHours(1));
+		} , CacheExpireTime);
 	}
 
 	public Task<SessionActivity?> GetDefaultSesionActivity()
 	{
-		return _cacheManager.GetOrSet("SessionActivities", () =>
+		return CacheManager.GetOrSet("SessionActivities", () =>
 		{
 			var sessionActivities = _dataProviderService.GetDefaultSessionActivity();
 			return Task.FromResult(sessionActivities);
-		}, TimeSpan.FromHours(1));
+		}, CacheExpireTime);
 	}
 
 	public async Task RemoveStudentSessionActivity(StudentSessionActivity ssa)

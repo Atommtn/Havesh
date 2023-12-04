@@ -3,7 +3,11 @@
 @using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Havesh.Model.Model
 @using Havesh.GrainInterfaces.Common
-@implements IDisposable
+@using Havesh.OrleansClient
+@using Orleans.Runtime
+@using Orleans.Streams
+@using Havesh.Common
+@implements IAsyncDisposable
 
 <LargWidgetContainer WidgetSetting="WidgetSetting" ToRoles="@WidgetSetting.Widget.BelongToRoles">
 	<MudStack Row="false" Style="max-height: 100%;overflow-y: scroll">
@@ -23,43 +27,57 @@
 
 	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
 	readonly List<(string, StudentSessionActivity)> _testMessage = new();
+	private StreamSubscriptionHandle<StudentSessionActivity>? _streamSubscriptionHandle;
 
-	protected override void OnInitialized()
+	private async Task InitSubscribeToStudentActivityPerformAsync()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformedEvent += SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
-		base.OnInitialized();
+		if (_streamSubscriptionHandle != null)
+			await _streamSubscriptionHandle.UnsubscribeAsync();
+
+		var streamProvider = ClusterClient.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
+		var stream1 = streamProvider.GetStream<StudentSessionActivity>(
+			StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, HaveshConstants.GeneralKey));
+		var consumer = new HaveshStreamConsumer<StudentSessionActivity>(OnStudentActivityPerformedEvent);
+		_streamSubscriptionHandle = await stream1.SubscribeAsync(consumer);
 	}
 
-	private async Task SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent(StudentSessionActivity arg)
+	protected override async Task OnInitializedAsync()
 	{
+		await InitSubscribeToStudentActivityPerformAsync();
+		await base.OnInitializedAsync();
+	}
+
+	private async Task OnStudentActivityPerformedEvent(StudentSessionActivity arg)
+	{
+
 
 		await InvokeAsync(() =>
 		{
 			if (arg.ActivityDeletedDateTime is not null)
 			{
 				_testMessage.Add(($"حدف {arg.Activity.ActivityTitle} " +
-				                 $"زبان آموز {arg.Student.FullName} " +
-				                 $"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
-				                 $"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
-				                 $"از {arg.ActivityValueOption?.Title} انجام شد." , arg )
+									$"زبان آموز {arg.Student.FullName} " +
+									$"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
+									$"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
+									$"از {arg.ActivityValueOption?.Title} انجام شد." , arg )
 					);
 				StateHasChanged();
 				return;
 			}
 			_testMessage.Add(($"{arg.Activity.ActivityTitle} " +
-			                 $"زبان آموز {arg.Student.FullName} " +
-			                 $"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
-			                 $"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
-			                 $"{arg.ActivityValueOption?.Title} " +
-			                 $"ثبت شد",arg ));
+								$"زبان آموز {arg.Student.FullName} " +
+								$"در کلاس {arg.TimeTableSession.ClassRoom.ClassRoomName} " +
+								$"مدرس {arg.TimeTableSession.Teacher?.FullName ?? arg.TimeTableSession.TimeTable?.Teacher?.FullName} " +
+								$"{arg.ActivityValueOption?.Title} " +
+								$"ثبت شد",arg ));
 			StateHasChanged();
 		});
 	}
 
-	public void Dispose()
+	public async ValueTask DisposeAsync()
 	{
-		SupervisorWidgetsService.OnStudentActivityPerformedEvent -= SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
-
+		if (_streamSubscriptionHandle != null) await 
+			_streamSubscriptionHandle.UnsubscribeAsync();
 	}
 
 }

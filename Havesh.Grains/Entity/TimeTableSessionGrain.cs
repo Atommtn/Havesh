@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Core.Logging;
-using Havesh.Common;
+﻿using Havesh.Common;
 using Havesh.Domain.Services;
-using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 using Orleans.Runtime;
 using Orleans.Streams;
 
@@ -50,12 +45,13 @@ public class TimeTableSessionGrain :
 		_subscription = await stream.SubscribeAsync(OnNextAsync);
 
 	}
+
 	public async Task OnNextAsync(StudentSessionActivity item, StreamSequenceToken? token = null)
 	{
 		if (item.TimeTableSessionFk == GrainKey)
 		{
 			Logger.LogInformation($"Received Student Activity to {nameof(TimeTableSessionGrain)} {GrainKey}: {item.ActivityValue}");
-			Console.Beep();
+			Console.Beep(1000,100);
 			await ActivityPerformed(item);
 		}
 	}
@@ -65,14 +61,14 @@ public class TimeTableSessionGrain :
 		EnusureState();
 		if (activity.ActivityDeletedDateTime is not null)
 		{
-			var index = PersistentState.State.Item?.Activities.FindIndex(x => x.Id == activity.Id);
+			var index = PersistentState.State.Item?.StudentsActivities.FindIndex(x => x.Id == activity.Id);
 			if (index is >= 0)
 			{
-				PersistentState.State.Item?.Activities.RemoveAt((int)index);
+				PersistentState.State.Item?.StudentsActivities.RemoveAt((int)index);
 				return;
 			}
 		}
-		PersistentState.State.Item?.Activities.Add(activity);
+		PersistentState.State.Item?.StudentsActivities.Add(activity);
 
 	}
 
@@ -126,7 +122,7 @@ public class TimeTableSessionGrain :
 		return new TimeTableSessionGrainState
 		{
 			TimeTableSession = ttSesion,
-			Activities = activities
+			StudentsActivities = activities
 		};
 	}
 
@@ -138,7 +134,12 @@ public class TimeTableSessionGrain :
 	public async Task<IEnumerable<StudentSessionActivity>?> GetStudentSessionActivities()
 	{
 		EnusureState();
-		return PersistentState.State.Item?.Activities;
+		return PersistentState.State.Item?.StudentsActivities;
 	}
 
+	public async Task<IEnumerable<SessionActivity>?> GetSessionActivities()
+	{
+		EnusureState();
+		return CacheManager.GetOrSet("SA-" + GrainKey, () => DataProviderService.GetSessionActivities(PersistentState.State.Item?.TimeTableSession), TimeSpan.FromHours(1));
+	}
 }

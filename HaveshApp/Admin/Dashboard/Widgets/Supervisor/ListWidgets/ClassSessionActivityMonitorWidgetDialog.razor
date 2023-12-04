@@ -1,0 +1,139 @@
+﻿@using Havesh.Model.Model
+@using Microsoft.EntityFrameworkCore.ChangeTracking
+@using Olive
+@using DNTPersianUtils.Core
+<MudDialog >
+	<DialogContent>
+		<MudTable T="ShokouhPardisStudentClass" Items="Students">
+			<HeaderContent>
+				<MudTh>ردیف</MudTh>
+				<MudTh>نام خانوادگی</MudTh>
+				<MudTh>نام</MudTh>
+				<MudTh>@SessionActivity.ActivityTitle</MudTh>
+				<MudTh>سایر فعالیت ها</MudTh>
+			</HeaderContent>
+			<RowTemplate>
+				<MudTd>@(Students.IndexOf(context) + 1)</MudTd>
+				<MudTd>@context.StudentFamily </MudTd>
+				<MudTd>@context.StudentName</MudTd>
+				<MudTd>@GetActivityStatus(context)</MudTd>
+				<MudTd>@GetOtherActivityStatus(context)</MudTd>
+			</RowTemplate>
+		</MudTable>
+	</DialogContent>
+	<DialogActions>
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="ClockClick">
+			Close
+		</MudButton>
+
+	</DialogActions>
+</MudDialog>
+	@code {
+
+	[Parameter]
+	public TimeTableSession TimeTableSession { get; set; }
+
+	[Parameter]
+	public SessionActivity SessionActivity { get; set; }
+
+	public ShokouhPardisStudentClass[] Students
+		=> TimeTableSession
+			.TimeTable
+			.Students
+			.OrEmpty()
+			.OrderBy(x => x.StudentFamily)
+			.ToArray();
+
+	private RenderFragment GetActivityStatus(ShokouhPardisStudentClass context) =>
+		__builder =>
+		{
+			if (TimeTableSession.Tag is not List<StudentSessionActivity> { Count: > 0 } lst)
+				return;
+
+			var acts = lst.Where(x =>
+				x.ActivityFk == SessionActivity.Id
+				&& x.Student.Id == context.Id)
+				.ToArray();
+			@if (acts.Length == 0)
+			{
+				<MudChip Label="true" Size="Size.Small" Color="Color.Dark">نامعین</MudChip>
+			}
+			@foreach (var act in acts)
+			{
+				<MudChip Color="GetButtonColor(act)" Size="@Size.Large" Icon="@act.ActivityValueOption.Icon" Class="py-6">
+					<MudStack Row="false" Spacing="1">
+						<MudText Typo="Typo.body1">@act.ActivityValueOption.Title</MudText>
+						<MudText Typo="Typo.body1" Color="Color.Default" Style="font-size: 8pt;font-family: Tahoma">
+							@act.ActivityDateTime?.ToFriendlyPersianDateTextify()
+						</MudText>
+					</MudStack>
+
+
+				</MudChip>
+			}
+		};
+
+	[CascadingParameter]
+	MudDialogInstance DialogInstance { get; set; }
+	private void ClockClick()
+	{
+		DialogInstance.Cancel();
+	}
+
+	private Color GetButtonColor(StudentSessionActivity ssa)
+	{
+		if (ssa.ActivityValueOption.Color == null)
+			return Color.Default;
+
+		return ssa.ActivityValueOption.Color.ToLower() switch
+		{
+			"green" => Color.Success,
+			"yellow" => Color.Warning,
+			"red" => Color.Error,
+			"blue" => Color.Primary,
+			_ => Color.Default
+		};
+	}
+
+	private RenderFragment GetOtherActivityStatus(ShokouhPardisStudentClass context) =>
+		__builder =>
+	{
+		if (TimeTableSession.Tag is not List<StudentSessionActivity> { Count: > 0 } lst)
+			return;
+
+		var acts = lst
+			.Where(x => x.ActivityFk != SessionActivity.Id
+											&& x.Student.Id == context.Id)
+			.GroupBy(x => x.Activity,
+				new ValueComparer<SessionActivity>(
+					(x, y) =>
+						(x != null && y != null) &&
+						x.Id == y.Id,
+					option => option.Id.GetHashCode()));
+		@foreach (var act in acts)
+		{
+			<MudChip Label="true" Color="Color.Dark">
+				@act.Key.ActivityTitle :
+				@foreach (var actItem in act)
+				{
+					<MudTooltip Arrow="true" Color="Color.Dark">
+						<TooltipContent>
+							<MudText Typo="Typo.body1" Color="Color.Default" Style="font-size: 10pt;font-family: Tahoma">
+								@actItem.ActivityDateTime?.ToFriendlyPersianDateTextify()
+							</MudText>
+						</TooltipContent>
+						<ChildContent>
+							<MudChip Color="GetButtonColor(actItem)" Size="@Size.Large" Icon="@actItem.ActivityValueOption.Icon">
+								<MudText Typo="Typo.body1">@actItem.ActivityValueOption.Title</MudText>
+							</MudChip>
+						</ChildContent>
+					</MudTooltip>
+				}
+			</MudChip>
+
+		}
+	};
+
+	}
+
+

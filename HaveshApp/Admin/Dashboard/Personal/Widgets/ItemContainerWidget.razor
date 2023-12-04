@@ -1,5 +1,6 @@
 ﻿@using Olive
 @using global::AdminDashboard.Server.Class.Extensions
+
 @if (BreakPoints is  null)
 {
     @ChildContent
@@ -11,13 +12,17 @@ else
              md="@GetBR("md")"
              lg="@GetBR("lg")"
              xl="@GetBR("xl")"
-             xxl="@GetBR("xxl")">
+             xxl="@GetBR("xxl")" >
 
         @ChildContent
     </MudItem>
 }
 
 @code {
+    
+	// [Parameter(CaptureUnmatchedValues = true)]
+ //    public Dictionary<string, object?> xAttr { get; set; }
+
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 

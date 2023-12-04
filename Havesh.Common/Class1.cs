@@ -8,6 +8,6 @@
 		public const string OnlineUsersStreamNamespace = "OnlineUsersMQ";
 		public const string SessionActivityStreamNamespace = "SessionActivityMQ";
 		public const string StudentSessionActivityStreamNamespace = "StudentSessionActivityMQ";
-		public const string GeneralKey = "GENERAL";
+		public static readonly Guid GeneralKey = Guid.Empty;
 	}
 }

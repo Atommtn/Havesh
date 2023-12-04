@@ -2,7 +2,7 @@
 @using Havesh.Model.Data.Dashboard
 @using Havesh.Model.Model
 @using Havesh.OrleansClient
-@implements IDisposable
+@implements IAsyncDisposable
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 <SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_onlineUsers">
     @_onlineUsers?.Length نفر
@@ -28,10 +28,10 @@
 		await InvokeAsync(StateHasChanged);
 	}
 
-	public void Dispose()
+	public async ValueTask DisposeAsync()
 	{
 		SignalrGrainClientService.OnlineUserChanged -= SignalrGrainClientServiceOnOnlineUserChanged;
-		SignalrGrainClientService.Dispose();
+		await SignalrGrainClientService.DisposeAsync();
 	}
 
 }

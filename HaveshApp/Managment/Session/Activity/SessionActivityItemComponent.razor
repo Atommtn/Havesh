@@ -39,7 +39,7 @@
         await ActivityExec.InvokeAsync((Student, SessionActivity, sao));
     }
 
-    private MudBlazor.Color GetButtonColor(SessionActivityValueOption sao)
+    private Color GetButtonColor(SessionActivityValueOption sao)
     {
         if (sao.Color == null)
             return Color.Default;

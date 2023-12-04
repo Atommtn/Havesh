@@ -53,9 +53,11 @@ public partial class StudentListRollCallComponenets
 
 	private async Task ReloadActivities()
 	{
+		StateHasChanged();
 		var ttsGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(TimeTableSession.Id);
 		await Task.Delay(300);
-		_activities = (await ttsGrain.GetStudentSessionActivities() ?? Array.Empty<StudentSessionActivity>()).ToList();
+        var studentSessionActivities = await ttsGrain.GetStudentSessionActivities();
+        _activities = (studentSessionActivities ?? Array.Empty<StudentSessionActivity>()).ToList();
 		StateHasChanged();
 	}
 
@@ -84,17 +86,36 @@ public partial class StudentListRollCallComponenets
 			ActivityValueOption = obj.Item3,
 			ActivityValue = obj.Item3.Value,
 		};
-
-		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
+		
+		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
 		await manager.CreateStudentSessionActivity(studentSessionActivity);
 
+        if (studentSessionActivity.ActivityValueOption.ShowByValue != null)
+        {
+            var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(studentSessionActivity.ActivityFk);
+            var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(studentSessionActivity
+                .ActivityValueOption.ShowByValue);
+            if (valueOption != null)
+            {
+                var sessionActivity = _activities.FirstOrDefault(x =>
+                    x.TimeTableSessionFk == studentSessionActivity.TimeTableSession.Id &&
+                    x.StudentFk == studentSessionActivity.Student.Id &&
+                    x.ActivityFk == studentSessionActivity.Activity.Id &&
+                    x.ActivityValueOptionFk == valueOption.Id);
+                await CancelStudentSessionActivity(sessionActivity , false);
+            }
+        }
+
+		_activities?.Add(studentSessionActivity);
 		await ReloadActivities();
 	}
 
-	private async Task CancelStudentSessionActivity(StudentSessionActivity sac)
+	private async Task CancelStudentSessionActivity(StudentSessionActivity sac, bool reload = true)
 	{
 		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
 		await manager.RemoveStudentSessionActivity(sac);
-		await ReloadActivities();
+		_activities?.Add(sac);
+		if(reload)
+		    await ReloadActivities();
 	}
 }

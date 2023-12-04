@@ -96,8 +96,4 @@ public class AuthenticationService
 		return _userSession.UserName!;
 	}
 
-	public User GetUser(int userId)
-	{
-		return _dataProviderService.GetUserByUseId(userId);
-	}
 }

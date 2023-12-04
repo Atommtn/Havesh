@@ -2,74 +2,108 @@
 using Havesh.GrainInterfaces.Manager;
 using Havesh.GrainInterfaces.Type;
 using Havesh.Model.Model;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Olive;
 using Orleans.Runtime;
-using static MudBlazor.CategoryTypes;
+using Orleans.Streams;
 
 namespace Havesh.OrleansClient;
 
-public class SignalrGrainClientService : IDisposable
+public class SignalrGrainClientService : IAsyncDisposable
 {
-	private readonly IClusterClient _client;
+	private readonly IClusterClient _clusterClient;
 	private readonly ILogger<SignalrGrainClientService> _logger;
 	public event Func<User[],Task>? OnlineUserChanged;
-	ISignalRRegisterUserGrain connectedUsersGrain;
-	private OnlineUsersStreamConsumer _consumer;
 
-	public SignalrGrainClientService(IClusterClient client,ILogger<SignalrGrainClientService> logger)
+    public SignalrGrainClientService(IClusterClient clusterClient,ILogger<SignalrGrainClientService> logger)
 	{
-		_client = client;
+		_clusterClient = clusterClient;
 		_logger = logger;
-		connectedUsersGrain = _client.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
-		var streamProvider = _client.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
-		var stream = streamProvider.GetStream<User[]>(StreamId.Create(HaveshConstants.OnlineUsersStreamNamespace, 0));
-		_consumer = new OnlineUsersStreamConsumer(OnOnlineUserChanged);
-		stream.SubscribeAsync(_consumer);
+
 	}
 
-	private void OnOnlineUserChanged(User[] items)
+    private StreamSubscriptionHandle<User[]>? _handleOnlineUserStreamSubscribtaionAsync;
+	
+    public async Task InitOnlineUserStreamSubscribtaionAsync()
+    {
+		    var streamProvider = _clusterClient.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
+		    var streamId = StreamId.Create(HaveshConstants.OnlineUsersStreamNamespace,HaveshConstants.GeneralKey);
+		    var stream = streamProvider.GetStream<User[]>(streamId);
+		    var consumer = new OnlineUsersStreamConsumer(OnOnlineUserChanged);
+		    Console.Beep();
+			await stream.SubscribeAsync(consumer);
+    }
+
+    private void OnOnlineUserChanged(User[] items)
 	{
-		_logger.Info("Received online users on client: " + string.Join(", ", items.Select(x => x.UserName)));
+		_logger.Info("Received online users on clusterClient: " + string.Join(", ", items.Select(x => x.UserName)));
 		OnlineUserChanged?.Invoke(items);
 	}
 
 	public async Task RegisterUser(int userId, string? ip, string connectionId)
 	{
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
 		await connectedUsersGrain.RegisterUser(userId,ip, connectionId);
 	}
 
 	public async Task UnregisterUser(int userId , string connectionId)
 	{
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
 		await connectedUsersGrain.UnregisterUser(userId, connectionId);
 	}
 
 	public Task<User[]> GetOnlineUsers()
 	{
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
 		return connectedUsersGrain.GetOnlineUsers();
 	}
 
 	public Task<Dictionary<User, List<Connection>>> GetOnlineUsersConnections()
 	{
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
 		return connectedUsersGrain.GetRegisteredUsersConnections();
 
 	}
 
-	public void Dispose()
-	{
-			
-	}
-
     public async Task<IEnumerable<string>?> GetOnlineUserConnections(User user)
     {
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
         var connections = await connectedUsersGrain.GetUserConnections(user);
         return connections;
     }
 
     public async Task<IEnumerable<Connection>?> GetOnlineConnectionsUserInRole(string[] roles)
     {
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
         var userConnections = await connectedUsersGrain.GetUserConnectionsInRoles(roles);
         var connections = userConnections.SelectMany(x=>x.Value);
 		return connections;
     }
+
+    public async ValueTask DisposeAsync()
+    {
+		if(_handleOnlineUserStreamSubscribtaionAsync != null)
+			await _handleOnlineUserStreamSubscribtaionAsync.UnsubscribeAsync();
+    }
+}
+
+public class SignalrGrainClientInitializationService : IHostedService
+{
+	private readonly IServiceProvider _serviceProvider;
+
+	public SignalrGrainClientInitializationService(IServiceProvider serviceProvider)
+	{
+		_serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+	}
+
+	public async Task StartAsync(CancellationToken cancellationToken)
+	{
+		using var scope = _serviceProvider.CreateScope();
+		var signalrGrainClientService = scope.ServiceProvider.GetRequiredService<SignalrGrainClientService>();
+		await signalrGrainClientService.InitOnlineUserStreamSubscribtaionAsync();
+	}
+
+	public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

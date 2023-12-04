@@ -5,7 +5,6 @@
 @using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Newtonsoft.Json
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
-@implements IDisposable
 <LargWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timeTables" ToRoles="...Supervisor">
 
 	<MudTable T="ShokouhPardisTimeTable" Items="_timeTables">
@@ -13,8 +12,7 @@
 			<MudTh>کلاس</MudTh>
 			<MudTh>معلم</MudTh>
 			<MudTh>جلسه</MudTh>
-			<MudTh>حاضرین</MudTh>
-			<MudTh>غایبین</MudTh>
+			<MudTh></MudTh>
 		</HeaderContent>
 		<RowTemplate>
 			<MudTd>
@@ -33,44 +31,18 @@
 					@context.Sessions.FirstOrDefault(x => x.SessionDate >= DateTime.Today)?.SessionStatus
 				</MudChip>
 			</MudTd>
-			<MudTd>
-				@if (Absents.TryGetValue(context.Id, out var ac))
-				{
-					@ac
-				}
-			</MudTd>
-			<MudTd>
-				@if (Presents.TryGetValue(context.Id, out var pc))
-				{
-					@pc
-				}
-			</MudTd>
 		</RowTemplate>
 	</MudTable>
 </LargWidgetContainer>
 
 @code {
-	Dictionary<int, int> Absents = new Dictionary<int, int>();
-	Dictionary<int, int> Presents = new Dictionary<int, int>();
 	[Inject]  SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
 
 	IEnumerable<ShokouhPardisTimeTable>? _timeTables;
 	protected override async Task OnInitializedAsync()
 	{
-		await SupervisorWidgetsService.InitSubscribeToStudentActivityPerformAsync();
-		SupervisorWidgetsService.OnStudentActivityPerformedEvent +=	SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
 		_timeTables = await SupervisorWidgetsService.GetIntervalTimeTables();
 		await base.OnInitializedAsync();
-	}
-
-	private Task SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent(StudentSessionActivity arg)
-	{
-		throw new NotImplementedException();
-	}
-
-	public void Dispose()
-	{
-		SupervisorWidgetsService.OnStudentActivityPerformedEvent -= SupervisorWidgetsServiceOnOnStudentActivityPerformedEvent;
 	}
 
 }

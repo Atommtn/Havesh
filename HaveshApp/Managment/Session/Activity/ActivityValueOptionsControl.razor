@@ -67,7 +67,7 @@
         var dialogReferenceResult = await dialogReference.Result;
         if (!dialogReferenceResult.Canceled)
         {
-            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.Id);
+            SessionActivity = _dataProvider.GetSessionActivity(SessionActivity.Id)!;
         }
     }
 
