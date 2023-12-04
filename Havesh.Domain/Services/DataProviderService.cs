@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Xml.Linq;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Olive;
@@ -96,7 +97,18 @@ public class DataProviderService
             if (isDuplicate)
                 return isDuplicate;
         }
+        
+        var timeTableSessions = DbContext.TimeTableSessions.Where
+        (x=>x.TimeTable.Id == teacherTimesheet.Id).ToList();
+		foreach (var timeTableSession in timeTableSessions)
+        {
+			
+            timeTableSession.TeacherFk  = teacherTimesheet.TeacherId;
+            timeTableSession.Teacher  = teacherTimesheet.Teacher;
+			
+        }
 
+        DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
         DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
 		SaveAll();
 		return isDuplicate;

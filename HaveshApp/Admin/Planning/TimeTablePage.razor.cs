@@ -194,9 +194,8 @@ public partial class TimeTablePage
             }
             else
             {
-                //TODO :: ALSO CHANGE TEACHERfk IN SESSIONS
                 Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-                Log.Warning("User {UserName} Save TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
+                Log.Warning("User {UserName} Save Private TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
             }
 
             await table?.ReloadServerData()!;
