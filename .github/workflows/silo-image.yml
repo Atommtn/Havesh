@@ -13,8 +13,6 @@ jobs:
     - name: Publish Silo to Registry
       uses: elgohr/Publish-Docker-Github-Action@v5
       with:
-        name: pharzath/haveshsilo
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        name: pharzath/havesh-silo
         dockerfile: Havesh.Silo/Dockerfile
         tags: "SiloV1"
