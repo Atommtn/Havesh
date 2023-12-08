@@ -32,7 +32,7 @@ public class SignalrGrainClientService : IAsyncDisposable
 		    var streamId = StreamId.Create(HaveshConstants.OnlineUsersStreamNamespace,HaveshConstants.GeneralKey);
 		    var stream = streamProvider.GetStream<User[]>(streamId);
 		    var consumer = new OnlineUsersStreamConsumer(OnOnlineUserChanged);
-		    Console.Beep();
+		    //Console.Beep();
 			await stream.SubscribeAsync(consumer);
     }
 

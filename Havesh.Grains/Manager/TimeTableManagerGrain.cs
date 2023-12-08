@@ -60,7 +60,7 @@ public class TimeTableManagerGrain : HaveshManagerGrain, ITimeTableManagerGrain
 					.Include(x=>x.Level)
 					.Include(x=>x.Teacher)
 				);
-			Console.Beep();
+			//Console.Beep();
 			return Task.FromResult(timeTables);
 
 		}, search.IsEmpty() ? CacheExpireTime : TimeSpan.FromMinutes(2));

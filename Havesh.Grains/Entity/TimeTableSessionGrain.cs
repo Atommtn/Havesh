@@ -51,7 +51,7 @@ public class TimeTableSessionGrain :
 		if (item.TimeTableSessionFk == GrainKey)
 		{
 			Logger.LogInformation($"Received Student Activity to {nameof(TimeTableSessionGrain)} {GrainKey}: {item.ActivityValue}");
-			Console.Beep(1000,100);
+			//Console.Beep(1000,100);
 			await ActivityPerformed(item);
 		}
 	}
