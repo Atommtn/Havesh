@@ -51,7 +51,6 @@ namespace HaveshApp.Admin.DailyJV
                         _nextLevel.Id);
             }
         }
-
         public string? FeeFor
         {
             get => _dailyJV.FeeFor;
@@ -76,7 +75,6 @@ namespace HaveshApp.Admin.DailyJV
                 _dailyJV.Fee = (int)x;
             }
         }
-
         private async Task<Task> OnSelectStudentAction(List<ShokouhPardisStudentClass> arg)
         {
             var dialogTerm = await _dialogService.ShowAsync<TermSelectorDialog>("انتخاب ترم پیش ثبت نام",
@@ -172,10 +170,6 @@ namespace HaveshApp.Admin.DailyJV
             return Task.CompletedTask;
         }
 
-
-
-
-
         private void PreRegister()
         {
 
@@ -189,9 +183,6 @@ namespace HaveshApp.Admin.DailyJV
             var culture = new CultureInfo("fa-IR");
             return culture;
         }
-
-
-
 
         void SetDay(int i)
         {
@@ -210,10 +201,6 @@ namespace HaveshApp.Admin.DailyJV
 
         async Task SaveClick()
         {
-
-
-
-
             try
             {
                 _dailyJV.TermId = NextTerm.Id;
@@ -268,6 +255,31 @@ namespace HaveshApp.Admin.DailyJV
         async Task PrintDailyJvFishClick()
         {
             await BrowserService.OpenInNewTabAsync($"/BillPrint/{_dailyJV.Id}");
+        }
+
+        private async Task ChangeLevel()
+        {
+            var dialogref = await _dialogService.ShowAsync<PreRegistrationSelectLevelDialog>(
+                "انتخاب سطح مورد نظر پیش ثبت نام", new DialogParameters()
+                {
+                    ["SelectedLevel"] = NextLevel
+
+                }, new DialogOptions()
+                {
+                    FullWidth = true,
+                    MaxWidth = MaxWidth.Large
+                });
+            var result = await dialogref.Result;
+            if (!result.Canceled)
+            {
+                NextLevel = result.Data as ShokouhPardisLevelClass;
+
+                _snackBar.Add("سطح جدید مورد نظر با موفقیت انتخاب شد.", Severity.Success);
+            }
+            else
+            {
+                _snackBar.Add("سطح جدیدی برای پیش ثبت نام انتخاب نگردید.", Severity.Success);
+            }
         }
     }
 }

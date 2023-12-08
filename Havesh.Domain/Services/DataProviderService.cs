@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Xml.Linq;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Olive;
@@ -90,14 +91,14 @@ public class DataProviderService
 		}
 
 		teacherTimesheet.Title = title;
-		if (!teacherTimesheet.IsPrivate)
-		{
-			isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
-			if (isDuplicate)
-				return isDuplicate;
-		}
+        if (!teacherTimesheet.IsPrivate)
+        {
+            isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
+            if (isDuplicate)
+                return isDuplicate;
+        }
 
-		DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
+        DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
 		SaveAll();
 		return isDuplicate;
 	}

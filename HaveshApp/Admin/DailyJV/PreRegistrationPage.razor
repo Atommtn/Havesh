@@ -6,6 +6,8 @@
 @using DNTPersianUtils.Core
 @using Olive
 @using HaveshApp.Admin.Clone
+
+
 @layout PersianPagesLayout
 @attribute [Authorize]
 
@@ -61,6 +63,7 @@
                         <MudCardActions>
                             <MudButton Variant="Variant.Text" Color="Color.Success" OnClick="PreRegister">پیش ثبت نام</MudButton>
                             <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="RestForm">حذف</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="ChangeLevel">تغییر سطح</MudButton>
                         </MudCardActions>
                     </MudCard>
                 }
