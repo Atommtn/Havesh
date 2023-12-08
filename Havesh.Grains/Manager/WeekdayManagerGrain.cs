@@ -20,13 +20,13 @@ public class WeekdayManagerGrain : HaveshManagerGrain, IWeekdayManagerGrain
 	private List<ShokouhPardisWeekDay>? weekDays;
 	private List<ShokouhPardisWeekDay> WeekDays => weekDays ??= DataProviderService.GetWeekDays();
 
-	public async Task<List<ShokouhPardisWeekDay>>? GetWeekDays()
+	public async Task<List<ShokouhPardisWeekDay>?> GetWeekDays()
 	{
 		return WeekDays;
 	}
 
 	
-	public async Task<ShokouhPardisWeekDay>? GetTodayWeekDay(int? test_dayofweek = null)
+	public async Task<ShokouhPardisWeekDay?> GetTodayWeekDay(int? test_dayofweek = null)
 	{
 		var dayOfWeek = (int)DateTime.Today.DayOfWeek;
 		if (test_dayofweek is not null)

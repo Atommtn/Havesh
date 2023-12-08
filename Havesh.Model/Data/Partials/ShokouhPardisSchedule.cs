@@ -13,9 +13,6 @@ public partial class ShokouhPardisSchedule
 
     }
 
-    //[ForeignKey(nameof(ScheduleId))]
-    public List<ShokouhPardisProgram> Programs { get; set; }
-
     [NotMapped]
     public int SourceId { get; set; }
 

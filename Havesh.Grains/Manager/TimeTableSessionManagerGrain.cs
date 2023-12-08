@@ -32,7 +32,27 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrain, ITimeTableSessio
 
 	}
 
-	
+	public async Task<IDictionary<TimeTableSession, IEnumerable<IEnumerable<StudentSessionActivity>>>?> GetTimeTableSessionsIncludeActivities(int timeTableId)
+	{
+		throw new Exception();
+/*
+//		return CacheManager.GetOrSet("Sessions-withActivities-" + timeTableId, () =>
+		//{
+			Dictionary<TimeTableSession, IEnumerable<IEnumerable<StudentSessionActivity>>> dictionary = new();
+			var timeTableSessions = GetTimeTableSessions(timeTableId);
+			var ids = timeTableSessions.Select(x => x.Id);
+			var managerGrain = GrainFactory.GetGrain<IStudentSessionActivityManagerGrain>(HaveshConstants.GeneralKey);
+			var sessionActivities = await managerGrain.GetSesionActivities();
+			var managerGrain2 = GrainFactory.GetGrain<ISessionActivityOptionManagerGrain>(HaveshConstants.GeneralKey);
+
+
+			return timeTableSessions;
+		//}, CacheExpireTime);
+
+	*/
+	}
+
+
 	public Task<TimeTableSession?> GetSessionByDate(int timeTableId, DateTime? datetime = null)
 	{
 		datetime ??= DateTime.Today;

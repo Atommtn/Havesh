@@ -1,77 +1,249 @@
-﻿@using Havesh.Model.Model
+﻿@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+@using Havesh.Model.Model
 @using Havesh.Grains.Manager
 @using Havesh.GrainInterfaces.Entity
 @using Havesh.GrainInterfaces.Manager
 @using Havesh.Common
+@using Havesh.Model.Data
+@using HaveshApp.Admin.Dashboard.Personal.Widgets
+@using Olive
 
-<MudGrid>
-	<MudItem md="12">
-		<TermSelectorComponent @bind-Term="_term" Title="ترم را انتخاب کنید" />
-	</MudItem>
-	<MudItem>
-		<MudDataGrid Bordered="true">
-			<Columns>
+<LargWidgetContainer WidgetSetting="WidgetSetting">
+	<MudGrid>
+		<MudItem md="12">
+			<TermSelectorComponent @bind-Term="Term" Title="ترم را انتخاب کنید" />
+		</MudItem>
+		<MudItem sm="12" md="6">
+			<MudStack Row="true" Spacing="2" AlignItems="AlignItems.Start">
+				<MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center" Style="width: 100%">
+					<MudPaper Outlined="true">
+						<MudText Typo="Typo.body1">روزهای زوج</MudText>
+						<MudSwitch @bind-Checked="OddEvenSwitch"></MudSwitch>
+						<MudText Typo="Typo.body1">روزهای فرد</MudText>
+					</MudPaper>
+				</MudStack>
+				<MudStack Row="true" Spacing="3" AlignItems="AlignItems.Center" Justify="Justify.Center" Style="width: 100%">
+					<MudPaper Outlined="true">
+						<MudText Typo="Typo.body1">صبح</MudText>
+						<MudSwitch @bind-Checked="IsPm"></MudSwitch>
+						<MudText Typo="Typo.body1">بعد از ظهر</MudText>
+					</MudPaper>
+				</MudStack>
+			</MudStack>
+		</MudItem>
+		<MudItem sm="12" md="6">
+			<MudSelect Label="انتخاب روز های هفته" MultiSelection="true" @bind-SelectedValues="SelectedWeekdays">
+				@if (_weekdays != null)
+				{
+					foreach (var weekday in _weekdays)
+					{
+						<MudSelectItem Value="@weekday" Class="mud-rtl">
+							@weekday.Title @weekday.Id
+						</MudSelectItem>
+					}
+				}
+			</MudSelect>
+		</MudItem>
 
-			</Columns>
-		</MudDataGrid>
-	</MudItem>
-	<MudItem></MudItem>
-</MudGrid>
+		<MudItem md="12">
+			<MudSimpleTable Dense="true" Bordered="true" FixedHeader="true" Striped="true" Elevation="1">
+				<thead>
+					<tr>
+						<td style="width: 50px">
+						</td>
+						@if (_intervals is not null)
+						{
+							foreach (var interval in _intervals.Where(x => x.StartTime != null && ((IsPm && x.StartTime.Value.Hours >= 12) || (!IsPm && x.StartTime.Value.Hours < 12))))
+							{
+								<td style="@("width:300px"))">
+									<MudChip Label="true" Color="Color.Info" Variant="Variant.Filled" Class="w-100">
+										@interval.Title
+									</MudChip>
+								</td>
+							}
+						}
+					</tr>
+				</thead>
+				<tbody>
 
-<MudGrid>
-	<MudDataGrid T="TimeTableSession" Items="_timeTableSessions">
-		<Columns>
-			
-		</Columns>
-	</MudDataGrid>	
-</MudGrid>
-<MudCard>
+					@if (_classRooms is not null && _timeTables is not null)
+					{
+						foreach (var classRoom in _classRooms.Where(x => _timeTables.Select(z => z.ClassRoomId).DistinctBy(z => z).Contains(x.Id)))
+						{
+							<tr>
+								<td>
+									<MudButton Style="width: 50px">
+										@classRoom.ClassRoomName
+									</MudButton>
+								</td>
+								@if (_intervals != null)
+								{
+									foreach (var interval in _intervals.Where(x => x.StartTime != null && ((IsPm && x.StartTime.Value.Hours >= 12) || (!IsPm && x.StartTime.Value.Hours < 12))))
+									{
+										<td style="@("width:300px")">
 
-</MudCard>
+											@{
+												var timeTable = GetTimeTable(interval, classRoom, SelectedWeekdays);
+											}
+
+											<TimeTableItemComponent Style="width: 100%;" TimeTable="@timeTable" Dense="true">
+												<ChildContent>
+													<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="()=>ViewTimetableSessions(timeTable)">
+														View
+													</MudButton>
+
+												</ChildContent>
+												<NoContent>
+													<MudPaper Class="w-100 text-center" Elevation="0">
+														<MudIcon Icon="@Icons.Material.Filled.Warning" Color="@Color.Warning"></MudIcon>
+													</MudPaper>
+												</NoContent>
+											</TimeTableItemComponent>
+										</td>
+									}
+								}
+
+							</tr>
+						}
+					}
+				</tbody>
+
+			</MudSimpleTable>
+		</MudItem>
+		<MudItem>
+
+		</MudItem>
+	</MudGrid>
+</LargWidgetContainer>
+
+
 
 @code {
+	readonly int[] _oddDayIds = { 2, 4 };
+	readonly int[] _evenDayIds = { 1, 5 };
 
-	ShokouhPardisTermClass? _term;
+	public ShokouhPardisTermClass? Term
+	{
+		get => _term;
+		private set
+		{
+			_term = value;
+			InvokeAsync(FilterUi);
+		}
+	}
+
+	List<ShokouhPardisWeekDay>? _weekdays;
+	bool _isPm = true;
+
+	IEnumerable<ShokouhPardisWeekDay> SelectedWeekdays
+	{
+		get => _selectedWeekdays;
+		set
+		{
+			if (_selectedWeekdays == value) return;
+			_selectedWeekdays = value;
+			InvokeAsync(FilterUi);
+		}
+	}
+
+	bool? _oddEvenSwitch;
+	public bool? OddEvenSwitch
+	{
+		get => _oddEvenSwitch;
+		set
+		{
+			if (_oddEvenSwitch == value) return;
+			_oddEvenSwitch = value;
+			if (_weekdays != null)
+				SelectedWeekdays = _oddEvenSwitch is true ?
+					_weekdays.Where(x => _oddDayIds.Contains(x.Id)) :
+					_weekdays.Where(x => _evenDayIds.Contains(x.Id));
+		}
+	}
+
+	public bool IsPm
+	{
+		get => _isPm;
+		set
+		{
+			if (_isPm == value) return;
+			_isPm = value;
+			InvokeAsync(FilterUi);
+		}
+	}
+
+	async Task FilterUi()
+	{
+		var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(HaveshConstants.GeneralKey);
+		if (Term is not null)
+		{
+			_timeTables = (await timeTableManagerGrain.GetTermTimeTables(Term.Id, SelectedWeekdays.Select(x => x.Id).ToArray())).ToArray();
+		}
+		StateHasChanged();
+
+	}
+
 
 	[Inject] public required IClusterClient ClusterClient { get; set; }
-	[Inject] public required SupervisorWidgetsService SupervisorWidgetsService{ get; set; }
-	IEnumerable<ShokouhPardisTimeTable>? _timeTables;
-	IEnumerable<TimeTableSession>? _timeTableSessions;
+	[Inject] public required SupervisorWidgetsService SupervisorWidgetsService { get; set; }
+	ShokouhPardisTimeTable[]? _timeTables;
+	IEnumerable<ShokouhPardisWeekDay> _selectedWeekdays;
+	IEnumerable<ShokouhPardisInterval>? _intervals;
+	IEnumerable<ShokouhPardisClassRoom>? _classRooms;
+	private ShokouhPardisTermClass? _term;
 
 	protected override async Task OnInitializedAsync()
 	{
+
 		var termGrainManager = ClusterClient.GetGrain<ITermGrainManager>(HaveshConstants.GeneralKey);
-		_term = await termGrainManager.GetTermsInRangeToday();
+		Term = await termGrainManager.GetTermsInRangeToday();
 
-		var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(HaveshConstants.GeneralKey);
-		if (_term != null)
+		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(HaveshConstants.GeneralKey);
+		if (weekdayManagerGrain != null)
 		{
-			_timeTables = await timeTableManagerGrain.GetTermTimeTablesIncludeSeaaions(_term.Id);
-
-			_timeTableSessions = await InitUiObjects(((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList());
+			_weekdays = await weekdayManagerGrain.GetWeekDays();
 		}
+
+		var intervalManagerGrain = ClusterClient.GetGrain<IIntervalManagerGrain>(HaveshConstants.GeneralKey);
+		if (Term != null)
+			_intervals = await intervalManagerGrain.GetIntervals(Term.Id);
+		_classRooms = await intervalManagerGrain.GetClassRooms();
+
+		_isPm = DateTime.Now.Hour >= 12;
+		OddEvenSwitch = DateTime.Now.DayOfWeek is not (DayOfWeek.Saturday or DayOfWeek.Monday or DayOfWeek.Wednesday);
 
 		await base.OnInitializedAsync();
 	}
 
-	private async Task<List<TimeTableSession>> InitUiObjects(List<TimeTableSession> ttsArg)
+	private ShokouhPardisTimeTable? GetTimeTable(
+		BaseModel interval,
+		BaseModel classRoom,
+		IEnumerable<ShokouhPardisWeekDay> wds)
 	{
-		var sessionManagerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
-		foreach (var tts in ttsArg)
+		var days = wds as ShokouhPardisWeekDay[] ?? wds.ToArray();
+		if (!days.Any()) return null;
+
+
+		var timeTable = _timeTables.FirstOrDefault(x =>
 		{
-			var sessionActivityValueOptions =
-				await sessionManagerGrain.GetSessionStudentActivitiesPerformed(tts.Id);
-			var sessionActivities =
-				(sessionActivityValueOptions ?? Array.Empty<StudentSessionActivity>())
-					.ToList();
-			tts.Tag = sessionActivities;
+			if (x.ClassRoomId != classRoom.Id)
+				return false;
+			return x.Schedule.Programs.All(p => days.Select(w => w.Id).Contains(p.DaySession.WeekdayId)) && x.Schedule.Programs.Any(p => p.DaySession.IntervalId == interval.Id);
+		});
+		return timeTable;
+	}
 
-			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(tts.TimeTableFk);
-			tts.TimeTable.Students = await timeTableGrain.GetStudents();
-		}
-
-		StateHasChanged();
-		return ttsArg;
+	private async Task ViewTimetableSessions(ShokouhPardisTimeTable timeTable)
+	{
+		await _dialogService.ShowAsync<TimeTableSessionsArchiveDialog>("Sessions",
+			new DialogParameters<TimeTableSessionsArchiveDialog> {
+				{ x=>x.TimeTable, timeTable }
+					},
+			new DialogOptions
+			{
+					MaxWidth = MaxWidth.Medium,
+					FullWidth = true
+				});
 	}
 
 }
