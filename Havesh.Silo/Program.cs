@@ -46,6 +46,11 @@ builder.Host.UseOrleans(siloBuilder =>
 						})));
 			//options.GrainStorageSerializer = new OrleansGrainStorageSerializer(new OrleansJsonSerializer())
 		}))
+		.UseAdoNetClustering(options =>
+		{
+			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+		})
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
 #if DEBUG
 		.UseLocalhostClustering()
