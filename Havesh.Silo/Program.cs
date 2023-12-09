@@ -88,7 +88,8 @@ builder.Host.UseOrleans(siloBuilder =>
 });
 
 var app = builder.Build();
-app.Map("/dashboard", x => x.UseOrleansDashboard());
+
+//app.Map("/dashboard", x => x.UseOrleansDashboard());
 //var grainFactory = app.Services.GetRequiredService<IGrainFactory>();
 
 // Configure the HTTP request pipeline.
