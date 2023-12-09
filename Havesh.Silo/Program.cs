@@ -57,7 +57,7 @@ builder.Host.UseOrleans(siloBuilder =>
 
 		.Configure<EndpointOptions>(options =>
 		{
-			options.AdvertisedIPAddress = IPAddress.Parse("");  // POD IP
+			//options.AdvertisedIPAddress = IPAddress.Parse("");  // POD IP
 			options.SiloPort = 11111;
 			options.GatewayPort = 30000;
 
