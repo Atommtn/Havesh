@@ -79,10 +79,11 @@ builder.Host.UseOrleans(siloBuilder =>
 			
 		})
 #endif
-		.UseDashboard(options =>
-			{
-				options.HostSelf = true;
-			});
+		// .UseDashboard(options =>
+		// 	{
+		// 		options.HostSelf = true;
+		// 	})
+		;
 
 });
 
