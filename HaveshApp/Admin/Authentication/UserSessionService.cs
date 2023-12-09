@@ -31,8 +31,11 @@ public class UserSessionService
         _user = await userGrain.Get();
 
         _dataProviderService ??= _serviceProvider.GetService<DataProviderService>();
-        if (_dataProviderService != null) 
-            _dataProviderService.DbContext.Actor ??= _user;
+        if (_dataProviderService != null)
+        {
+            _dataProviderService.DbContext.Entry(_user).Reload();
+	        _dataProviderService.DbContext.Actor ??= _user;
+        }
 
         return _user!;
     }

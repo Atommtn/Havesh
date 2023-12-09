@@ -1,3 +1,4 @@
+using System.Net;
 using Havesh.Common;
 using Havesh.Domain.Services;
 using Havesh.Model.Model;
@@ -45,9 +46,34 @@ builder.Host.UseOrleans(siloBuilder =>
 						})));
 			//options.GrainStorageSerializer = new OrleansGrainStorageSerializer(new OrleansJsonSerializer())
 		}))
-
+		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
+#if DEBUG
 		.UseLocalhostClustering()
+#else
+		.Configure<SiloOptions>(options =>
+		{
+			options.SiloName = "haveshapp-silo"; // POD name
+		})
 
+		.Configure<EndpointOptions>(options =>
+		{
+			options.AdvertisedIPAddress = IPAddress.Parse("");  // POD IP
+			options.SiloPort = 11111;
+			options.GatewayPort = 30000;
+
+		})
+
+		.Configure<ClusterOptions>(options =>
+		{
+			options.ClusterId = "havesh-main-cluster";
+			options.ServiceId = "haveshapp-silo";
+		})
+
+		.UseKubernetesHosting(optionsBuilder =>
+		{
+			
+		})
+#endif
 		.UseDashboard(options =>
 			{
 				options.HostSelf = true;

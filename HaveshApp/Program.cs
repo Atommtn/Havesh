@@ -22,6 +22,7 @@ using Havesh.Model.Model;
 using HaveshApp.Admin.Dashboard.Widgets.Supervisor;
 using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using Havesh.OrleansClient;
+using Orleans.Configuration;
 using Orleans.Streams;
 
 // Configure logging to log to MSSqlServer database
@@ -136,14 +137,22 @@ AuthorizationPolicies.AddAuthorizarionPolicies(builder.Services);
 builder.Services.AddOrleansClient(clientBuilder =>
 {
 	clientBuilder
-		//.AddStreaming()
+		.AddStreaming()
 
 		.AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
-
+#if DEBUG
 		.UseLocalhostClustering()
+#else
+		.Configure<ClusterOptions>(options =>
+		{
+			options.ClusterId = "havesh-main-cluster";
+			options.ServiceId = "haveshapp-silo";
+		})
+#endif
 		.ConfigureServices(services =>
 		{
-		});
+		})
+		;
 });
 
 builder.Services.AddHostedService<SignalrGrainClientInitializationService>();

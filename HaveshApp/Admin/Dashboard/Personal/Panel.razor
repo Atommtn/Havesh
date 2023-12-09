@@ -30,8 +30,8 @@
 		{
 			_dashboardTemplateId = value;
 
-			_ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User)
-     			  ?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User);
+			_ds = _dashboardProvider.GetDashboardByUserTemplateId(_dashboardTemplateId, _userSession.User.Id)
+     			  ?? _dashboardProvider.GenerateUserDashboardByDashboardTemplateId(_dashboardTemplateId, _userSession.User.Id);
 
 			_widgets = _ds?
 				.DashboardWidgets?

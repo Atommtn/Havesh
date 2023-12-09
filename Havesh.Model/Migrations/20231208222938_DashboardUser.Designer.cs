@@ -4,16 +4,19 @@ using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HaveshApp.Migrations
+namespace Havesh.Model.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231208222938_DashboardUser")]
+    partial class DashboardUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -849,7 +852,7 @@ namespace HaveshApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ActionByFk")
+                    b.Property<int?>("ActionById")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ActionWhen")
@@ -873,7 +876,7 @@ namespace HaveshApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionByFk");
+                    b.HasIndex("ActionById");
 
                     b.ToTable("EntityChanges", "ShoukouhPardis12DBAdmin");
                 });
@@ -4098,7 +4101,7 @@ namespace HaveshApp.Migrations
                 {
                     b.HasOne("Havesh.Model.Model.User", "ActionBy")
                         .WithMany()
-                        .HasForeignKey("ActionByFk");
+                        .HasForeignKey("ActionById");
 
                     b.Navigation("ActionBy");
                 });

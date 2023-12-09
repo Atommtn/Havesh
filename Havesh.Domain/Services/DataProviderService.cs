@@ -1942,7 +1942,7 @@ public class DataProviderService
 	}
 	public void SaveStudentSessionActivity(StudentSessionActivity activity)
 	{
-		DbContext.Update(activity);
+		DbContext.StudentSessionActivities.Update(activity);
 		SaveAll();
 
 		//DbContext.Entry(activity).Reload();
@@ -1980,6 +1980,7 @@ public class DataProviderService
 	public SessionActivity? GetDefaultSessionActivity()
 	{
 		var sessionActivity = DbContext.SessionActivities
+			.AsNoTracking()
 			.Include(x => x.ValueOptions)
 			.FirstOrDefault(x => x.IsDefault == true);
 		return sessionActivity;

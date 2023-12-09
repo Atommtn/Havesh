@@ -65,7 +65,8 @@ public partial class MyDbContext : DbContext
 		optionsBuilder
 			.UseSqlServer(conStr)
 			//.AddInterceptors(new CustomQueryInterceptor())
-			;
+			.EnableSensitiveDataLogging();
+
 		optionsBuilder.UseLoggerFactory(
 			LoggerFactory.Create(builder => builder.AddConsole()));
 		optionsBuilder.ConfigureWarnings(warnings =>
