@@ -143,6 +143,12 @@ builder.Services.AddOrleansClient(clientBuilder =>
 #if DEBUG
 		.UseLocalhostClustering()
 #else
+		.UseAdoNetClustering(options =>
+		{
+			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+		})
+
 		.Configure<ClusterOptions>(options =>
 		{
 			options.ClusterId = "havesh-main-cluster";
