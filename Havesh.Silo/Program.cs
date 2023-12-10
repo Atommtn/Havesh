@@ -52,7 +52,7 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
-#if DEBUG
+#if DEBUG1
 		.UseLocalhostClustering()
 #else
 		.Configure<SiloOptions>(options =>
@@ -62,7 +62,8 @@ builder.Host.UseOrleans(siloBuilder =>
 
 		.Configure<EndpointOptions>(options =>
 		{
-			//options.AdvertisedIPAddress = IPAddress.Parse("");  // POD IP
+			
+			options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("SiloIP") ?? "127.0.0.1");  // POD IP
 			options.SiloPort = 11111;
 			options.GatewayPort = 30000;
 
@@ -74,10 +75,10 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.ServiceId = "haveshapp-silo";
 		})
 
-		.UseKubernetesHosting(optionsBuilder =>
+		/*.UseKubernetesHosting(optionsBuilder =>
 		{
 			
-		})
+		})*/
 #endif
 		// .UseDashboard(options =>
 		// 	{
