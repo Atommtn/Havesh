@@ -85,14 +85,14 @@ public class WidgetServiceBase
 
 	protected async Task<ShokouhPardisWeekDay> GetWeekday()
 	{
-#if DEBUG
 		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(Guid.Empty);
+#if DEBUG
 
 		var weekday = Environment.GetEnvironmentVariable("FRZ_TEST") == "true"
 			? await weekdayManagerGrain.GetTodayWeekDay(0)!
 			: await weekdayManagerGrain.GetTodayWeekDay()!;
 #else
-			var weekday = await weekdayManagerGrain.GetTodayWeekDay()!;
+		var weekday = await weekdayManagerGrain.GetTodayWeekDay()!;
 #endif
 		return weekday;
 	}
