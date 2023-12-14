@@ -64,6 +64,7 @@ public partial class MyDbContext : DbContext
 		var conStr = _configuration["ConnectionStrings:ArvanConnection"];
 		optionsBuilder
 			.UseSqlServer(conStr)
+			//.UseQueryTrackingBehavior()
 			//.AddInterceptors(new CustomQueryInterceptor())
 			.EnableSensitiveDataLogging();
 

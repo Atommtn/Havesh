@@ -38,7 +38,9 @@ public abstract class HaveshGrain<T>
 
 	protected void EnusureState(bool forceDbLoad = false)
 	{
-		if (forceDbLoad == false && PersistentState.State.Item != null && PersistentState.State.IsInitialized) 
+		if (forceDbLoad == false && 
+		    PersistentState.State.Item != null && 
+		    PersistentState.State.IsInitialized) 
 			return;
 
 		PersistentState.State.Item = GetEntity(GrainKey);

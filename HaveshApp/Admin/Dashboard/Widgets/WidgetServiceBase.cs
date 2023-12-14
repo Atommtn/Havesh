@@ -40,8 +40,8 @@ public class WidgetServiceBase
 	private async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
 	{
 		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(sessionId);
-		var activities = await sessionGrain
-			.GetSessionActivities()
+		var activities = 
+			((await sessionGrain.GetSessionActivities())!)
 			.ToList(); 
 		return activities;
 

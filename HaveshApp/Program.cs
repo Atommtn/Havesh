@@ -140,7 +140,7 @@ builder.Services.AddOrleansClient(clientBuilder =>
 		.AddStreaming()
 
 		.AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
-#if DEBUG1
+#if DEBUG
 		.UseLocalhostClustering()
 #else
 		.UseAdoNetClustering(options =>

@@ -52,7 +52,7 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
-#if DEBUG1
+#if DEBUG
 		.UseLocalhostClustering()
 #else
 		.Configure<SiloOptions>(options =>

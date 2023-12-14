@@ -268,6 +268,7 @@ public class DataProviderService
 			// .ThenInclude(x => x.Schedule)
 			// .ThenInclude(x => x.Programs)
 			// .ThenInclude(x => x.DaySession)
+			.AsNoTracking()
 
 			.Where(x => x.SessionTime == sessionStartTime &&
 										x.SessionDate == dateTime &&
@@ -1916,6 +1917,7 @@ public class DataProviderService
 
 		var sessionActivitiesQuery = DbContext
 			.SessionActivities
+			.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
 			.Where(x =>
 
@@ -1980,7 +1982,7 @@ public class DataProviderService
 	public SessionActivity? GetDefaultSessionActivity()
 	{
 		var sessionActivity = DbContext.SessionActivities
-			.AsNoTracking()
+			.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
 			.FirstOrDefault(x => x.IsDefault == true);
 		return sessionActivity;
@@ -1988,7 +1990,10 @@ public class DataProviderService
 	public SessionActivity? GetSessionActivity(int sessionActivityId)
 	{
 		var sessionActivity = DbContext.SessionActivities
+			
 			.Include(x => x.ValueOptions)
+			.AsNoTracking()
+
 			.First(x => x.Id == sessionActivityId);
 		return sessionActivity;
 	}

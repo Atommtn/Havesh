@@ -103,20 +103,28 @@ public class TimeTableSessionGrain :
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Level)
 
+				.AsNoTracking()
 				)
 			;
 
 		var activities = DataProviderService.GetStudentSessionActivityPerformed(ttSesion.Id,
 
 			q => q
-				.Include(x => x.ActivityValueOption)
+				
 				.Include(x => x.Activity)
+
+				.Include(x => x.ActivityValueOption)
+
 				.Include(x => x.Student)
+				
 				.Include(x => x.TimeTableSession)
 				.ThenInclude(x => x.Teacher)
+				
 				.Include(x => x.TimeTableSession)
 				.ThenInclude(x => x.TimeTable)
 				.ThenInclude(x => x.Teacher)
+				
+				.AsNoTracking()
 			);
 
 		return new TimeTableSessionGrainState
@@ -134,6 +142,10 @@ public class TimeTableSessionGrain :
 	public async Task<IEnumerable<StudentSessionActivity>?> GetStudentSessionActivities()
 	{
 		EnusureState();
+		if (PersistentState.State.Item?.StudentsActivities.Any(x => x.ActivityValueOption == null) ?? false)
+		{
+			EnusureState(true);
+		}
 		return PersistentState.State.Item?.StudentsActivities;
 	}
 

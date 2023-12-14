@@ -77,30 +77,32 @@ public partial class StudentListRollCallComponenets
 			StudentSessionActivityGuid = Guid.NewGuid(),
 			ActivityDateTime = DateTime.Now,
 			TimeTableFk = TimeTableSession.TimeTableFk,
-			TimeTableSession = TimeTableSession,
+			TimeTableSessionFk = TimeTableSession.Id,
 			StudentFk = obj.Item1.Id,
-			Student = obj.Item1,
+			//Student = obj.Item1,
+			
 			ActivityFk = obj.Item2.Id,
-			Activity = obj.Item2,
+			//Activity = obj.Item2,
+			
 			ActivityValueOptionFk = obj.Item3.Id,
-			ActivityValueOption = obj.Item3,
+			//ActivityValueOption = obj.Item3,
+			
 			ActivityValue = obj.Item3.Value,
 		};
 		
 		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
 		await manager.CreateStudentSessionActivity(studentSessionActivity);
 
-        if (studentSessionActivity.ActivityValueOption.ShowByValue != null)
+        if (obj.Item3.ShowByValue != null)
         {
             var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(studentSessionActivity.ActivityFk);
-            var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(studentSessionActivity
-                .ActivityValueOption.ShowByValue);
+            var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(obj.Item3.ShowByValue);
             if (valueOption != null)
             {
                 var sessionActivity = _activities.FirstOrDefault(x =>
-                    x.TimeTableSessionFk == studentSessionActivity.TimeTableSession.Id &&
-                    x.StudentFk == studentSessionActivity.Student.Id &&
-                    x.ActivityFk == studentSessionActivity.Activity.Id &&
+                    x.TimeTableSessionFk == studentSessionActivity.TimeTableSessionFk &&
+                    x.StudentFk == studentSessionActivity.StudentFk &&
+                    x.ActivityFk == studentSessionActivity.ActivityFk &&
                     x.ActivityValueOptionFk == valueOption.Id);
                 await CancelStudentSessionActivity(sessionActivity , false);
             }
