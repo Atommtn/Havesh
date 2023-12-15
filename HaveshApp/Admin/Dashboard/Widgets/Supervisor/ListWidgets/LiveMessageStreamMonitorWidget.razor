@@ -1,4 +1,5 @@
-﻿@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
+﻿@implements IAsyncDisposable
+@inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 @using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Havesh.Model.Model
@@ -7,7 +8,6 @@
 @using Orleans.Runtime
 @using Orleans.Streams
 @using Havesh.Common
-@implements IAsyncDisposable
 
 <LargWidgetContainer WidgetSetting="WidgetSetting" ToRoles="@WidgetSetting.Widget.BelongToRoles">
 	<MudStack Row="false" Style="max-height: 100%;overflow-y: scroll">

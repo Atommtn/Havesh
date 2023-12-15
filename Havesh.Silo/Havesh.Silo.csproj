@@ -4,6 +4,8 @@
 	  <TargetFramework>net7.0</TargetFramework>
 	  <Nullable>enable</Nullable>
 	  <ImplicitUsings>enable</ImplicitUsings>
+	  <UserSecretsId>90797d0c-bcb6-4b79-8110-5acc973c954f</UserSecretsId>
+	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,7 @@
     <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="7.2.3" />
     <PackageReference Include="Microsoft.Orleans.Server" Version="7.2.3" />
     <PackageReference Include="Microsoft.Orleans.Streaming" Version="7.2.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="MudBlazor" Version="6.11.0" />
     <PackageReference Include="OrleansDashboard" Version="7.2.2" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />

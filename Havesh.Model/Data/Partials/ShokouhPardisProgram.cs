@@ -53,9 +53,11 @@ public partial class ShokouhPardisDaySession
             .HasOne(x => x.Interval);
     }
 
+    [Id(5)]
     [ForeignKey(nameof(Model.ShokouhPardisDaySession.WeekdayId))]
     public ShokouhPardisWeekDay WeekDay { get; set; }
 
+    [Id(6)]
     [ForeignKey(nameof(Model.ShokouhPardisDaySession.IntervalId))]
     public ShokouhPardisInterval Interval { get; set; }
 

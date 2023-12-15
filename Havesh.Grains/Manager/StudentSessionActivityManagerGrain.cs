@@ -36,8 +36,8 @@ public class StudentSessionActivityManagerGrain : HaveshManagerGrain , IStudentS
 	{
 		return CacheManager.GetOrSet("SessionActivities", () =>
 		{
-			var sessionActivities = _dataProviderService.GetSessionActivities().AsEnumerable();
-			return Task.FromResult(sessionActivities);
+			var sessionActivities = _dataProviderService.GetSessionActivities();
+			return Task.FromResult((IEnumerable<SessionActivity>?)sessionActivities);
 		} , CacheExpireTime);
 	}
 

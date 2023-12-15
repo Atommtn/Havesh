@@ -1,0 +1,83 @@
+﻿@using Havesh.Model.Model
+@using Havesh.Grains.Manager
+@using Havesh.Common
+@using DNTPersianUtils.Core
+<MudDialog>
+	<DialogContent>
+		<MudTable Items="Sessions">
+			<HeaderContent>
+				<MudTh>جلسه</MudTh>
+				<MudTh>تاریخ</MudTh>
+				<MudTh>وضعیت</MudTh>
+			</HeaderContent>
+			<RowTemplate>
+				<MudTd>@context.SessionNumber</MudTd>
+				<MudTd>
+					@ActivityList(context)
+					<MudChip OnClick="() => OpenSessionActivity(context)">
+						@context.SessionDate.ToPersianDateTextify()
+					</MudChip>
+				</MudTd>
+				<MudTd>@context.SessionStatus</MudTd>
+			</RowTemplate>
+		</MudTable>
+	</DialogContent>
+	<DialogActions>
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseDialog">
+			Close
+		</MudButton>
+
+	</DialogActions>
+</MudDialog>
+@code {
+
+	[Parameter] public ShokouhPardisTimeTable TimeTable { get; set; }
+
+	public IEnumerable<TimeTableSession>? Sessions { get; set; }
+
+	[CascadingParameter] MudDialogInstance DialogInstance { get; set; }
+
+	[Inject] public IClusterClient ClusterClient { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var timeTableSessionManagerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(HaveshConstants.GeneralKey);
+		Sessions = await timeTableSessionManagerGrain.GetTimeTableSessions(TimeTable.Id);
+
+		await base.OnInitializedAsync();
+	}
+
+	private void CloseDialog()
+	{
+		DialogInstance.Cancel();
+	}
+
+	private async Task OpenSessionActivity(TimeTableSession context)
+	{
+
+		/*
+		var sa = _activitiey;
+		await _dialogService.ShowAsync<ClassSessionActivityMonitorWidgetDialog>(
+			$" {sa.ActivityTitle} کلاس {context.ClassRoom.ClassRoomName} جلسه {context.SessionNumber} ({context.SessionDate?.ToPersianDateTextify()} ساعت {context.SessionTime} ) دوره {context.TimeTable.Level.LevelName} مدرس {context.Teacher.FullName} ",
+			new DialogParameters<ClassSessionActivityMonitorWidgetDialog>
+			{
+				{ dialog => dialog.TimeTableSession, context },
+				{ dialog => dialog.SessionActivity , sa}
+			},
+			new DialogOptions()
+			{
+				CloseButton = true,
+				CloseOnEscapeKey = true,
+				DisableBackdropClick = false,
+				MaxWidth = MaxWidth.Large,
+				FullWidth = true
+			});
+			*/
+		
+	}
+
+	private RenderFragment ActivityList(TimeTableSession context) => __builder =>
+	{
+	};
+
+}

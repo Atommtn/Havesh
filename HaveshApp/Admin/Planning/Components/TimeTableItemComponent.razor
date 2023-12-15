@@ -69,7 +69,10 @@
                     }
                 </MudPaper>
             
-                @ChildContent
+	            @if (ChildContent != null)
+	            {
+		            @ChildContent
+	            }
            
             </MudStack>
         </MudPaper>

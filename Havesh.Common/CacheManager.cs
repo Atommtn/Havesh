@@ -16,7 +16,7 @@ public class CacheManager
 		_cache = memoryCache;
 	}
 
-	public async Task<T?> GetOrSet<TK,T>(TK key, Func<Task<T>> getItemCallback, TimeSpan cacheTime)
+	public async Task<T> GetOrSet<TK,T>(TK key, Func<Task<T>> getItemCallback, TimeSpan cacheTime)
 	{
 		if (key != null && _cache.TryGetValue(key, out T? cacheEntry)) 
 			return cacheEntry;
@@ -38,7 +38,7 @@ public class CacheManager
 		return cacheEntry;
 	}
 
-	public T? GetOrSet<TK,T>(TK key, Func<T> getItemCallback, TimeSpan cacheTime)
+	public T GetOrSet<TK,T>(TK key, Func<T> getItemCallback, TimeSpan cacheTime)
 	{
 		if (key != null && _cache.TryGetValue(key, out T? cacheEntry)) 
 			return cacheEntry;

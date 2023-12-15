@@ -76,20 +76,20 @@ public class DataProviderService
 
 
 	public bool SaveTeacherTimeTable(ShokouhPardisTimeTable teacherTimesheet)
-    {
-        string title;
-        bool isDuplicate = false;
-        if (teacherTimesheet.IsPrivate)
-        {
-            title =
-                $"خصوصی {teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName}";
-        }
-        else
-        {
-            title =
-                $"{teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName} -> {teacherTimesheet.Schedule.Title}";
-        }
-		
+	{
+		string title;
+		bool isDuplicate = false;
+		if (teacherTimesheet.IsPrivate)
+		{
+			title =
+				$"خصوصی {teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName}";
+		}
+		else
+		{
+			title =
+				$"{teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName} -> {teacherTimesheet.Schedule.Title}";
+		}
+
 		teacherTimesheet.Title = title;
         if (!teacherTimesheet.IsPrivate)
         {
@@ -97,18 +97,7 @@ public class DataProviderService
             if (isDuplicate)
                 return isDuplicate;
         }
-        
-        var timeTableSessions = DbContext.TimeTableSessions.Where
-        (x=>x.TimeTable.Id == teacherTimesheet.Id).ToList();
-		foreach (var timeTableSession in timeTableSessions)
-        {
-			
-            timeTableSession.TeacherFk  = teacherTimesheet.TeacherId;
-            timeTableSession.Teacher  = teacherTimesheet.Teacher;
-			
-        }
 
-        DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
         DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
 		SaveAll();
 		return isDuplicate;
@@ -144,7 +133,7 @@ public class DataProviderService
 		var result = DbContext.ShokouhPardisTeacherClasses.Any(x =>
 			x.TeacherName == teacher.TeacherName &&
 			x.TeacherFamily == teacher.TeacherFamily &&
-            x.Id != teacher.Id);
+			x.Id != teacher.Id);
 		return result;
 	}
 
@@ -164,16 +153,19 @@ public class DataProviderService
 		return shokouhPardisWeekDays;
 	}
 
-	public List<ShokouhPardisInterval> GetIntervals(ShokouhPardisTermClass? term)
+	public List<ShokouhPardisInterval>? GetIntervals(int termId)
 	{
-		if (term == null)
-			return
-				new List<ShokouhPardisInterval>();
-
 		var shokouhPardisIntervals = DbContext.ShokouhPardisIntervals
-			.Where(x => x.TermId == term.Id)
+			.Where(x => x.TermId == termId)
 			.ToList();
 		return shokouhPardisIntervals;
+
+	}
+	public List<ShokouhPardisInterval>? GetIntervals(ShokouhPardisTermClass? term)
+	{
+		return term == null
+			? new List<ShokouhPardisInterval>()
+			: GetIntervals(term.Id);
 	}
 
 	public void SaveTeacherTimeSheet(ShokouhPardisTeacherTimeSheet timeSheet, bool isDefer = false)
@@ -233,7 +225,10 @@ public class DataProviderService
 
 	public List<ShokouhPardisClassRoom> GetClassRooms()
 	{
-		var classRooms = DbContext.ShokouhPardisClassRooms.OrderBy(x => x.ClassRoomName).ToList();
+		var classRooms = DbContext
+			.ShokouhPardisClassRooms
+			.OrderBy(x => x.ClassRoomName)
+			.ToList();
 		return classRooms;
 	}
 
@@ -586,29 +581,29 @@ public class DataProviderService
 	}
 	public List<ShokouhPardisStudentClass>? GetTimeTableStudents(ShokouhPardisTimeTable? timeTable)
 	{
-		return timeTable == null 
-			? null 
+		return timeTable == null
+			? null
 			: GetTimeTableStudents(timeTable.Id);
 	}
 
 	public int GetTotalTimeTablesCount(int termTermClassId, string? searchText = null, bool isPrivate = false)
 	{
 		var dbConntextShokouhPardisTimeTables = DbContext.ShokouhPardisTimeTables
-            .Where(x=>x.IsPrivate == isPrivate)
-            .AsQueryable();
+			.Where(x => x.IsPrivate == isPrivate)
+			.AsQueryable();
 		if (!string.IsNullOrEmpty(searchText))
 			dbConntextShokouhPardisTimeTables = dbConntextShokouhPardisTimeTables.Where(x => x.Title.Contains(searchText));
-		
+
 
 		var count = dbConntextShokouhPardisTimeTables.Count(x => x.TermId == termTermClassId);
 		return count;
 	}
 
 	public List<ShokouhPardisTimeTable> GetTimeTables(int fromTermId, string? searchText = null,
-		int? page = null, int? pageSize = null,Func<IQueryable<ShokouhPardisTimeTable>, IQueryable<ShokouhPardisTimeTable>>? include = null)
+		int? page = null, int? pageSize = null, Func<IQueryable<ShokouhPardisTimeTable>, IQueryable<ShokouhPardisTimeTable>>? include = null)
 	{
 		var shokouhPardisTimeTables = ShokouhPardisTimeTablesQuery(fromTermId);
-		
+
 		if (include != null)
 			shokouhPardisTimeTables = include(shokouhPardisTimeTables);
 
@@ -676,7 +671,7 @@ public class DataProviderService
 				.Include(x => x.ClassRoom)
 
 				.Include(x => x.Teacher)
-				.Include(x=>x.Sessions)
+				.Include(x => x.Sessions)
 				.Where(x => x.TermId == term.Id && x.IsPrivate == isPrivate)
 			;
 
@@ -1453,7 +1448,7 @@ public class DataProviderService
 		var result = DbContext.ShokouhPardisLevelBookPrices.Any(x =>
 			x.LevelId == levelBookPrice.LevelId &&
 			x.TermId == selectedTerm.Id &&
-            x.Id != levelBookPrice.Id);
+			x.Id != levelBookPrice.Id);
 
 		return result;
 	}
@@ -1502,7 +1497,7 @@ public class DataProviderService
 			x.PaymentType == dailyJv.PaymentType &&
 			x.TermId == dailyJv.TermId &&
 			x.BillNo == dailyJv.BillNo &&
-            x.Id != dailyJv.Id);
+			x.Id != dailyJv.Id);
 		return result;
 	}
 
@@ -1956,11 +1951,11 @@ public class DataProviderService
 	public List<StudentSessionActivity> GetStudentSessionActivityPerformed(int ttSessionid, Func<IQueryable<StudentSessionActivity>, IQueryable<StudentSessionActivity>>? include = null)
 	{
 		var activities = DbContext.StudentSessionActivities.AsQueryable();
-		if (include != null) 
+		if (include != null)
 			activities = include(activities);
 
-		var list = activities.Where(x => x.ActivityDeletedDateTime == null && 
-														    x.TimeTableSessionFk == ttSessionid)
+		var list = activities.Where(x => x.ActivityDeletedDateTime == null &&
+															x.TimeTableSessionFk == ttSessionid)
 			.ToList();
 		return list;
 	}
@@ -2059,7 +2054,7 @@ public class DataProviderService
 			x.DailyJVFk == preRegistration.DailyJVFk &&
 			x.StudentFk == preRegistration.StudentFk &&
 			x.TermFk == preRegistration.TermFk &&
-            x.Id != preRegistration.Id);
+			x.Id != preRegistration.Id);
 		return result;
 	}
 
@@ -2092,7 +2087,7 @@ public class DataProviderService
 		var result = DbContext.LessonPlans.Any(x =>
 			x.LevelFk == lessonPlan.LevelFk &&
 			x.SessionNumber == lessonPlan.SessionNumber &&
-            x.Id != lessonPlan.Id);
+			x.Id != lessonPlan.Id);
 		return result;
 	}
 
@@ -2420,49 +2415,87 @@ public class DataProviderService
 		return sessionActivityValueOption;
 	}
 
-    public List<LessonPlanSectionType> GetSectionType()
-    {
-        return DbContext.LessonPlanSectionTypes.ToList();
-    }
+	public List<LessonPlanSectionType> GetSectionType()
+	{
+		return DbContext.LessonPlanSectionTypes.ToList();
+	}
 
-    public bool SaveEditlessonPlanSection(LessonPlanSection section)
-    {
-        bool isDuplicate = LessonPlanSectionDuplicate(section);
-        if (isDuplicate)
-        {
-			
-        }
-        else
-        {
-            DbContext.LessonPlanSections.Update(section);
-            SaveAll();
-        }
+	public bool SaveEditlessonPlanSection(LessonPlanSection section)
+	{
+		bool isDuplicate = LessonPlanSectionDuplicate(section);
+		if (isDuplicate)
+		{
 
-        return isDuplicate;
-    }
+		}
+		else
+		{
+			DbContext.LessonPlanSections.Update(section);
+			SaveAll();
+		}
 
-    bool LessonPlanSectionDuplicate(LessonPlanSection section)
-    {
-        var result = DbContext.LessonPlanSections.Any(x =>
-            x.LessonPlanFk == section.LessonPlanFk &&
-            x.SectionTypeFk == section.SectionTypeFk &&
-            x.Id != section.Id);
+		return isDuplicate;
+	}
 
-        return result;
-    }
+	bool LessonPlanSectionDuplicate(LessonPlanSection section)
+	{
+		var result = DbContext.LessonPlanSections.Any(x =>
+			x.LessonPlanFk == section.LessonPlanFk &&
+			x.SectionTypeFk == section.SectionTypeFk &&
+			x.Id != section.Id);
 
-    public void SaveSectionType(LessonPlanSectionType sectionType)
-    {
-        DbContext.LessonPlanSectionTypes.Update(sectionType);
-        SaveAll();
-    }
+		return result;
+	}
 
-	public SessionActivityValueOption? GetSessionActivityValueOptionByValue(int sessionActivityid , string value)
-    {
-        var sessionActivityValueOption =
-            DbContext.SessionActivityValueOptions.FirstOrDefault(x =>
-                x.SessionActivityFk == sessionActivityid && x.Value == value);
+	public void SaveSectionType(LessonPlanSectionType sectionType)
+	{
+		DbContext.LessonPlanSectionTypes.Update(sectionType);
+		SaveAll();
+	}
+
+	public SessionActivityValueOption? GetSessionActivityValueOptionByValue(int sessionActivityid, string value)
+	{
+		var sessionActivityValueOption =
+			DbContext.SessionActivityValueOptions.FirstOrDefault(x =>
+				x.SessionActivityFk == sessionActivityid && x.Value == value);
 		return sessionActivityValueOption;
+	}
+
+	public Dictionary<string, List<ShokouhPardisTimeTable>> GetTermTimeTablesGroupBySchedule(int termId, IEnumerable<int> weekdayIds, string? search)
+	{
+		var query = DbContext
+			.ShokouhPardisTimeTables
+			.Include(x => x.Schedule)
+			.Where(x => x.TermId == termId &&
+						x.Schedule.Programs.Any(p => weekdayIds.Contains(p.DaySession.WeekdayId)));
+		if (!search.IsEmpty())
+		{
+			query = query.Where(x => search != null && x.Schedule.Title.Contains(search));
+		}
+		var groupBy = query.GroupBy(x => x.Schedule.Title)
+		.ToDictionary(x => x.Key, y => y.ToList())
+		;
+		return groupBy;
+	}
+
+	public IEnumerable<ShokouhPardisTimeTable> GetTermTimeTablesInWeekdays(int termId,
+		IEnumerable<int> weekdayIds,
+		string? search,
+		Func<IQueryable<ShokouhPardisTimeTable>, IQueryable<ShokouhPardisTimeTable>>? includeQuery = null)
+	{
+		var query = DbContext
+				.ShokouhPardisTimeTables
+				.Where(x => x.TermId == termId 
+												&& x.Schedule.Programs.All(p => weekdayIds.Contains(p.DaySession.WeekdayId))
+												);
+
+		if (!search.IsEmpty()) 
+			query = query.Where(x => search != null && x.Schedule.Title.Contains(search));
+
+		if (includeQuery is not null)
+			query = includeQuery(query);
+
+
+		return query.ToArray();
 	}
 }
 

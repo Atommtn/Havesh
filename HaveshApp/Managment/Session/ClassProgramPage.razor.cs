@@ -64,7 +64,7 @@ public partial class ClassProgramPage : ICanChangeComponentState
 		_weekdays = DataProvider.GetWeekDays();
 		_classRooms = DataProvider.GetClassRooms();
 
-		OddEvenSwitch = !(DateTime.Now.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Monday or DayOfWeek.Wednesday);
+		OddEvenSwitch = DateTime.Now.DayOfWeek is not (DayOfWeek.Saturday or DayOfWeek.Monday or DayOfWeek.Wednesday);
 		_isPm = DateTime.Now.Hour >= 12;
 		base.OnInitialized();
 	}
@@ -99,7 +99,10 @@ public partial class ClassProgramPage : ICanChangeComponentState
 	}
 
 
-	private ShokouhPardisTimeTable GetTimeTable(ShokouhPardisInterval interval, ShokouhPardisClassRoom? classRoom, IEnumerable<ShokouhPardisWeekDay> wds)
+	private ShokouhPardisTimeTable? GetTimeTable(
+		ShokouhPardisInterval interval, 
+		ShokouhPardisClassRoom? classRoom, 
+		IEnumerable<ShokouhPardisWeekDay> wds)
 	{
 		if (_tt == null || wds == null || !wds.Any()) 
 			return null;
@@ -150,8 +153,7 @@ public partial class ClassProgramPage : ICanChangeComponentState
 		var filter1 = _all.Where(x => x.IsPrivate == _isPrivate);
 		_tt = _isPm
 			? filter1.Where(x => x.Schedule.Programs.Any(p =>
-					p.DaySession.Interval.StartTime != null &&
-					p.DaySession.Interval.StartTime.Value.Hours > 12))
+					p.DaySession.Interval.StartTime is { Hours: > 12 }))
 				.ToList()
 			: filter1.Where(x => x.Schedule.Programs.Any(p =>
 					p.DaySession.Interval.StartTime != null &&
