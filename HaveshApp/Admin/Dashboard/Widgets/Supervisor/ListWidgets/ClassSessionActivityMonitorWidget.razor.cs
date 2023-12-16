@@ -40,6 +40,9 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor.ListWidgets
 		protected override async Task OnInitializedAsync()
 		{
 			await InitSubscribeToStudentActivityPerformAsync();
+			await Init();
+			await Task.Delay(100);
+			await InvokeAsync(StateHasChanged);
 			await base.OnInitializedAsync();
 		}
 
@@ -53,9 +56,6 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor.ListWidgets
 			await base.OnAfterRenderAsync(firstRender);
 			if (firstRender)
 			{
-				await Init();
-				await Task.Delay(100);
-				await InvokeAsync(StateHasChanged);
 			}
 		}
 

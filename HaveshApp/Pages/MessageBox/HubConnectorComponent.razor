@@ -19,6 +19,8 @@
 		{
 			var userId = _userSession.User?.Id ?? 0;
 			Logger.LogInformation("************ USERID : " + userId);
+			if(userId == 0 ) return;
+
 			var absoluteUri = Navigation.ToAbsoluteUri($"/apphub?UserId={userId}");
 			Console.WriteLine(" ===== Hub URL ====== ");
 			Logger.LogInformation(" ===== " + absoluteUri);

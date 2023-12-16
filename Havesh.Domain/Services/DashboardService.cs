@@ -128,11 +128,11 @@ public class DashboardService
         return null;
     }
 
-    public Dictionary<string, List<DashboardTemplate>>? GetUserDashboardMenuItems(User? user)
+    public List<(string, List<DashboardTemplate>)>? GetUserDashboardMenuItems(User? user)
     {
 
         if (user is null) return null;
-        Dictionary<string, List<DashboardTemplate>> dic = new();
+        List<(string, List<DashboardTemplate>)> dic = new();
         foreach (var role in user.Roles)
         {
             var dashboardTemplate = DbContext
@@ -141,8 +141,7 @@ public class DashboardService
                 .ToList();
 
             if (dashboardTemplate.Any())
-                dic.Add(role.Name, dashboardTemplate);
-
+                dic.Add((role.Name, dashboardTemplate));
         }
 
         return dic;

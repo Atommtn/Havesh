@@ -48,7 +48,7 @@ public class UserSessionService
         return _user;
     }
 
-    public User User => _user ?? throw new Exception("User is invalid !");
+    public User User => _user ;//?? throw new Exception("User is invalid !");
 
     public DateTime? LastJvDate { get; set; } = DateTime.Today;
     public Payload? Payload { get; set; }

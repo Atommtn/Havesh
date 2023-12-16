@@ -91,14 +91,14 @@ public class DataProviderService
 		}
 
 		teacherTimesheet.Title = title;
-        if (!teacherTimesheet.IsPrivate)
-        {
-            isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
-            if (isDuplicate)
-                return isDuplicate;
-        }
+		if (!teacherTimesheet.IsPrivate)
+		{
+			isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
+			if (isDuplicate)
+				return isDuplicate;
+		}
 
-        DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
+		DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
 		SaveAll();
 		return isDuplicate;
 	}
@@ -1984,13 +1984,18 @@ public class DataProviderService
 		var sessionActivity = DbContext.SessionActivities
 			.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
-			.FirstOrDefault(x => x.IsDefault == true);
+			.FirstOrDefault(x => x.IsDefault == true) ??
+							  DbContext.SessionActivities
+							 .AsNoTrackingWithIdentityResolution()
+							 .Include(x => x.ValueOptions)
+							 .OrderBy(x=>x.Id)
+							 .FirstOrDefault();
 		return sessionActivity;
 	}
 	public SessionActivity? GetSessionActivity(int sessionActivityId)
 	{
 		var sessionActivity = DbContext.SessionActivities
-			
+
 			.Include(x => x.ValueOptions)
 			.AsNoTracking()
 
@@ -2144,7 +2149,8 @@ public class DataProviderService
 	public void SetActivityDeleteTime(StudentSessionActivity sac)
 	{
 		sac.ActivityDeletedDateTime = DateTime.Now;
-		DbContext.Update(sac);
+		
+		DbContext.StudentSessionActivities.Update(sac);
 		SaveAll();
 	}
 
@@ -2490,11 +2496,11 @@ public class DataProviderService
 	{
 		var query = DbContext
 				.ShokouhPardisTimeTables
-				.Where(x => x.TermId == termId 
+				.Where(x => x.TermId == termId
 												&& x.Schedule.Programs.All(p => weekdayIds.Contains(p.DaySession.WeekdayId))
 												);
 
-		if (!search.IsEmpty()) 
+		if (!search.IsEmpty())
 			query = query.Where(x => search != null && x.Schedule.Title.Contains(search));
 
 		if (includeQuery is not null)

@@ -1,25 +1,8 @@
-﻿@page "/Home2"
+﻿@page "/"
+@using HaveshApp.Pages.main
 @layout PersianPagesLayout
+@attribute [AllowAnonymous]
 
 <PageTitle>Havesh App Home</PageTitle>
 
-<h1>Havesh Application</h1>
-
-You must Login
-
-<SurveyPrompt Title="Havesh WebSite" />
-
-
-@*
-
-<!-- Vendor JS Files -->
-<script src="~/css/OnePage/vendor/purecounter/purecounter_vanilla.js"></script>
-<script src="~/css/OnePage/vendor/aos/aos.js"></script>
-<script src="~/css/OnePage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="~/css/OnePage/vendor/glightbox/js/glightbox.min.js"></script>
-<script src="~/css/OnePage/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-<script src="~/css/OnePage/vendor/swiper/swiper-bundle.min.js"></script>
-<script src="~/css/OnePage/vendor/php-email-form/validate.js"></script>
-
-<!-- Template Main JS File -->
-<script src="~/css/OnePage/vendor/js/main.js"></script>*@
+<UnAuthorizedUserComponent />
