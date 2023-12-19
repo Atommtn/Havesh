@@ -11,6 +11,8 @@ using Havesh.Model.Data;
 using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using Newtonsoft.Json;
 using Olive;
+using HaveshApp.Managment.Session.SessionActions;
+using Log = Serilog.Log;
 
 namespace HaveshApp.Managment;
 
@@ -26,8 +28,12 @@ public partial class StudentListRollCallComponenets
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; }
 
+	[Inject]
+	public ILogger<StudentListRollCallComponenets> Logger { get; set; }
+
 	async Task<TableData<ShokouhPardisStudentClass>> ServerReload(TableState state)
 	{
+
 		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(TimeTableSession.TimeTableFk);
 		var students = await ttGrain.GetStudents();
 		if (students == null)
@@ -75,8 +81,11 @@ public partial class StudentListRollCallComponenets
 		{
 			StudentSessionActivityLastModified = DateTime.Now,
 			StudentSessionActivityGuid = Guid.NewGuid(),
+			
 			ActivityDateTime = DateTime.Now,
+			
 			TimeTableFk = TimeTableSession.TimeTableFk,
+			
 			TimeTableSessionFk = TimeTableSession.Id,
 			StudentFk = obj.Item1.Id,
 			//Student = obj.Item1,
@@ -104,6 +113,7 @@ public partial class StudentListRollCallComponenets
                     x.StudentFk == studentSessionActivity.StudentFk &&
                     x.ActivityFk == studentSessionActivity.ActivityFk &&
                     x.ActivityValueOptionFk == valueOption.Id);
+
                 await CancelStudentSessionActivity(sessionActivity , false);
             }
         }

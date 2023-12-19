@@ -38,7 +38,7 @@ public class SupervisorWidgetsService : WidgetServiceBase
 		if (interval?.StartTime == null) return null;
 
 		var managerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
-		var timeTableSessions = await managerGrain.GetTimeTableSessions(interval.StartTime.Value, _dateTime);
+		var timeTableSessions = await managerGrain.GetTimeTableSessions(interval.StartTime.Value, _date);
 		return timeTableSessions;
 	}
 

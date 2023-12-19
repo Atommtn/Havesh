@@ -20,21 +20,18 @@ public class WidgetServiceBase
 	{
 		ClusterClient = clusterClient;
 		UserSession = userSession;
+		_date = UserSession.Debug is { IsDebug: true } 
+			? UserSession.Debug?.date ?? DateTime.Today 
+			: DateTime.Today;
 	}
-#if DEBUG
-	protected readonly DateTime _dateTime = new(2023, 11, 26);
-#else
-		protected readonly DateTime _dateTime = DateTime.Today;
-#endif
+	protected readonly DateTime _date;
+
 	protected async Task<ShokouhPardisTermClass?> GetTerm()
 	{
 		var termManager = ClusterClient.GetGrain<ITermGrainManager>(Guid.Empty);
-		var term = await termManager.GetTermsInRangeToday(_dateTime);
+		var term = await termManager.GetTermsInRangeToday(_date);
 
-		if (term == null)
-			return null;
-
-		return term;
+		return term ?? null;
 	}
 
 	private async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
@@ -53,7 +50,7 @@ public class WidgetServiceBase
 		if (timeTable == null) return null;
 
 		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
-		var timeTableSession = await timeTableGrain.GetTodaySession(_dateTime);
+		var timeTableSession = await timeTableGrain.GetTodaySession(_date);
 		if (timeTableSession == null) return null;
 
 		var activities = await GetTimeTableSessionActivities(timeTableSession.Id);
@@ -79,21 +76,14 @@ public class WidgetServiceBase
 			return null;
 
 		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
-		var timeTableSession = await timeTableGrain.GetTodaySession(_dateTime);
+		var timeTableSession = await timeTableGrain.GetTodaySession(_date);
 		return timeTableSession;
 	}
 
 	protected async Task<ShokouhPardisWeekDay> GetWeekday()
 	{
 		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(Guid.Empty);
-#if DEBUG
-
-		var weekday = Environment.GetEnvironmentVariable("FRZ_TEST") == "true"
-			? await weekdayManagerGrain.GetTodayWeekDay(0)!
-			: await weekdayManagerGrain.GetTodayWeekDay()!;
-#else
-		var weekday = await weekdayManagerGrain.GetTodayWeekDay()!;
-#endif
+		var weekday = await weekdayManagerGrain.GetTodayWeekDay((int)_date.DayOfWeek);
 		return weekday;
 	}
 
@@ -101,14 +91,7 @@ public class WidgetServiceBase
 	{
 		// _TODO: Should be remark ->
 		//var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
-#if DEBUG
-		var startTime = // DateTime.Now;
-			Environment.GetEnvironmentVariable("FRZ_TEST") == "true"
-				? TimeSpan.Parse("14:00")
-				: DateTime.Now.TimeOfDay;
-#else
-			var startTime = DateTime.Now.TimeOfDay;
-#endif
+		var startTime = UserSession.Debug?.time ?? DateTime.Now.TimeOfDay;
 
 		term ??= await GetTerm();
 		var termGrain = ClusterClient.GetGrain<ITermGrain>(term.Id);

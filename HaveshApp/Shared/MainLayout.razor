@@ -22,7 +22,7 @@
     <MudLayout>
         <MudAppBar Fixed="true" Elevation="1">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-            HAVESH Portal
+				HAVESH Portal
             <MudSpacer />
             <AuthorizeView>
                 <Authorized>
@@ -43,6 +43,9 @@
                                 <MudChip Icon="@Icons.Material.Filled.Message">
                                     پیامها
                                 </MudChip>
+                            </MudMenuItem>
+                            <MudMenuItem Href="/Settings">
+                                تنظیمات
                             </MudMenuItem>
                             <MudMenuItem Href="/LoginPage/Logout">
                                 خروج

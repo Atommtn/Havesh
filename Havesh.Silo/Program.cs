@@ -36,7 +36,8 @@ builder.Host.UseOrleans(siloBuilder =>
 	siloBuilder
 		.AddAdoNetGrainStorage("HaveshGrainStore", (options =>
 		{
-			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
+			options.Invariant = "System.Data.SqlClient";
 			options.GrainStorageSerializer = new JsonGrainStorageSerializer(
 				new OrleansJsonSerializer(
 					new OptionsWrapper<OrleansJsonSerializerOptions>(
@@ -48,7 +49,7 @@ builder.Host.UseOrleans(siloBuilder =>
 		}))
 		.UseAdoNetClustering(options =>
 		{
-			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
 			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
