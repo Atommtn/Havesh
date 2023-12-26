@@ -61,7 +61,7 @@ Log.Logger = new LoggerConfiguration()
 
 
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddScoped<DataProviderService>();
+builder.Services.AddTransient<DataProviderService>();
 
 builder.Services.AddSingleton<SignalrGrainClientService>();
 

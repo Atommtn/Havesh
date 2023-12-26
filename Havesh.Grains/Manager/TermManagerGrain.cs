@@ -40,4 +40,8 @@ public class TermManagerGrain : HaveshManagerGrain, ITermGrainManager
 
 	}
 
+	public Task<ShokouhPardisTermClass?> GetLatestTerm()
+	{
+		return Task.FromResult(DataProviderService.GetLatestTerm());
+	}
 }

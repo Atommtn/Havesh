@@ -92,22 +92,22 @@ public class TimeTableSessionGrain :
 	{
 		var ttSesion = DataProviderService.GetTimeTableSessionById(id, q =>
 			q
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.Teacher)
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Teacher)
-				.AsNoTracking()
+				//.AsNoTrackingWithIdentityResolution()
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.ClassRoom)
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Level)
-				.AsNoTracking()
+				//.AsNoTracking()
 				)
 			;
 
@@ -115,26 +115,26 @@ public class TimeTableSessionGrain :
 			.GetStudentSessionActivityPerformed(ttSesion.Id,
 
 			q => q
-				.AsNoTrackingWithIdentityResolution()
+				//.AsNoTracking()
 				
 				.Include(x => x.Activity)
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.ActivityValueOption)
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.Student)
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.TimeTableSession)
 				.ThenInclude(x => x.Teacher)
-				.AsNoTracking()
+				//.AsNoTracking()
 
 				.Include(x => x.TimeTableSession)
 				.ThenInclude(x => x.TimeTable)
 				.ThenInclude(x => x.Teacher)
 				
-				.AsNoTracking()
+				//.AsNoTracking()
 			);
 
 		return new TimeTableSessionGrainState

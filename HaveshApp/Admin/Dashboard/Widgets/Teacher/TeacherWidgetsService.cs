@@ -20,8 +20,9 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 
 		public TeacherWidgetsService(
 			IClusterClient clusterClient,
-			UserSessionService userSession) 
-				: base(clusterClient, userSession)
+			UserSessionService userSession,
+			DataProviderService dataProviderService)
+			: base(clusterClient, userSession, dataProviderService)
 		{
 		}
 

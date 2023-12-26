@@ -13,4 +13,5 @@ public interface IStudentSessionActivityManagerGrain : IGrainWithGuidKey
 	Task<IEnumerable<SessionActivity>?> GetSesionActivities();
 	Task<SessionActivity?> GetDefaultSesionActivity();
 	Task RemoveStudentSessionActivity(StudentSessionActivity ssa);
+	Task NotifySessionActivity(StudentSessionActivity ssa);
 }

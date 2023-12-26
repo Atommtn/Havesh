@@ -60,7 +60,7 @@ public class UserSessionService
 
     public record DebugSetting(bool? IsDebug, DateTime? date, TimeSpan? time);
 
-    public DebugSetting? Debug { get; set; }
+    //public DebugSetting? Debug { get; set; }
 
     public Task NotifyNewMessageDelivered(MessageDto messageDto)
     {

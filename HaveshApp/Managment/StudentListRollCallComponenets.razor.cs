@@ -12,6 +12,7 @@ using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using Newtonsoft.Json;
 using Olive;
 using HaveshApp.Managment.Session.SessionActions;
+using Microsoft.EntityFrameworkCore;
 using Log = Serilog.Log;
 
 namespace HaveshApp.Managment;
@@ -60,11 +61,44 @@ public partial class StudentListRollCallComponenets
 	private async Task ReloadActivities()
 	{
 		StateHasChanged();
-		var ttsGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(TimeTableSession.Id);
 		await Task.Delay(300);
-        var studentSessionActivities = await ttsGrain.GetStudentSessionActivities();
-        _activities = (studentSessionActivities ?? Array.Empty<StudentSessionActivity>()).ToList();
+		//var ttsGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(TimeTableSession.Id);
+		//var studentSessionActivities = await ttsGrain.GetStudentSessionActivities();
+		_activities =  GetActivities(TimeTableSession.Id);
+		//_activities = (studentSessionActivities ?? Array.Empty<StudentSessionActivity>()).ToList();
+		//_dataProvider.DbContext.AttachRange(_activities);
+		//_activities = GetActivities(TimeTableSession.Id);
 		StateHasChanged();
+	}
+
+	private List<StudentSessionActivity> GetActivities(int sessionId)
+	{
+		List<StudentSessionActivity> activities = _dataProvider
+			.GetStudentSessionActivityPerformed(sessionId,
+
+				q => q
+					//.AsNoTracking()
+
+					.Include(x => x.Activity)
+					//.AsNoTracking()
+
+					.Include(x => x.ActivityValueOption)
+					//.AsNoTracking()
+
+					.Include(x => x.Student)
+					//.AsNoTracking()
+
+					.Include(x => x.TimeTableSession)
+					.ThenInclude(x => x.Teacher)
+					//.AsNoTracking()
+
+					.Include(x => x.TimeTableSession)
+					.ThenInclude(x => x.TimeTable)
+					.ThenInclude(x => x.Teacher)
+
+					//.AsNoTracking()
+			);
+		return activities;
 	}
 
 	private string RowStyleFunc(ShokouhPardisStudentClass student, int index)
@@ -124,10 +158,13 @@ public partial class StudentListRollCallComponenets
 
 	private async Task CancelStudentSessionActivity(StudentSessionActivity sac, bool reload = true)
 	{
-		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.NewGuid());
-		await manager.RemoveStudentSessionActivity(sac);
+		_dataProvider.SetActivityDeleteTime(sac);
+		 var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+		 //await manager.RemoveStudentSessionActivity(sac);
+		 await manager.NotifySessionActivity(sac);
 		_activities?.Add(sac);
 		if(reload)
 		    await ReloadActivities();
+		StateHasChanged();
 	}
 }

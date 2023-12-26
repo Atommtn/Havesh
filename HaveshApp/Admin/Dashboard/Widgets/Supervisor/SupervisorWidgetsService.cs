@@ -1,4 +1,6 @@
-﻿using Havesh.GrainInterfaces.Entity;
+﻿using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
+using Havesh.GrainInterfaces.System;
 using Havesh.Grains.Manager;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Authentication;
@@ -13,9 +15,10 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	//private HaveshStreamConsumer<StudentSessionActivity> _consumer;
 	public SupervisorWidgetsService(
 		IClusterClient clusterClient,
+		ILogger<SupervisorWidgetsService> logger,
 		UserSessionService userSession,
-		ILogger<SupervisorWidgetsService> logger)
-		: base(clusterClient, userSession)
+		DataProviderService dataProviderService)
+		: base(clusterClient, userSession, dataProviderService)
 	{
 		_clusterClient = clusterClient;
 		_logger = logger;
@@ -38,6 +41,8 @@ public class SupervisorWidgetsService : WidgetServiceBase
 		if (interval?.StartTime == null) return null;
 
 		var managerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
+		var _date = await settingsGrain.Date();
 		var timeTableSessions = await managerGrain.GetTimeTableSessions(interval.StartTime.Value, _date);
 		return timeTableSessions;
 	}

@@ -28,6 +28,15 @@ public class DataProviderService
 	public DataProviderService(MyDbContext dbContext)
 	{
 		DbContext = dbContext;
+		dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+	}
+
+	private void ChangeTracker_Tracked(object? sender, Microsoft.EntityFrameworkCore.ChangeTracking.EntityTrackedEventArgs e)
+	{
+		if (e.Entry.State == EntityState.Modified)
+		{
+			Console.WriteLine(e.Entry.GetType().Name);
+		}
 	}
 
 	public List<ShokouhPardisYearClass> GetYears()
@@ -268,7 +277,7 @@ public class DataProviderService
 			// .ThenInclude(x => x.Schedule)
 			// .ThenInclude(x => x.Programs)
 			// .ThenInclude(x => x.DaySession)
-			.AsNoTracking()
+			//.AsNoTracking()
 
 			.Where(x => x.SessionTime == sessionStartTime &&
 										x.SessionDate == dateTime &&
@@ -1917,7 +1926,7 @@ public class DataProviderService
 
 		var sessionActivitiesQuery = DbContext
 			.SessionActivities
-			.AsNoTrackingWithIdentityResolution()
+			//.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
 			.Where(x =>
 
@@ -1982,11 +1991,11 @@ public class DataProviderService
 	public SessionActivity? GetDefaultSessionActivity()
 	{
 		var sessionActivity = DbContext.SessionActivities
-			.AsNoTrackingWithIdentityResolution()
+			//.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
 			.FirstOrDefault(x => x.IsDefault == true) ??
 							  DbContext.SessionActivities
-							 .AsNoTrackingWithIdentityResolution()
+							 //.AsNoTrackingWithIdentityResolution()
 							 .Include(x => x.ValueOptions)
 							 .OrderBy(x=>x.Id)
 							 .FirstOrDefault();
@@ -1997,7 +2006,7 @@ public class DataProviderService
 		var sessionActivity = DbContext.SessionActivities
 
 			.Include(x => x.ValueOptions)
-			.AsNoTracking()
+			//.AsNoTracking()
 
 			.First(x => x.Id == sessionActivityId);
 		return sessionActivity;
@@ -2150,8 +2159,18 @@ public class DataProviderService
 	{
 		sac.ActivityDeletedDateTime = DateTime.Now;
 		
+		
 		DbContext.StudentSessionActivities.Update(sac);
 		SaveAll();
+
+		try
+		{
+
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+		}
 	}
 
 	public List<LessonPlanSection>? GetLessonPlanSection(LessonPlan lessonPlan)
@@ -2181,6 +2200,14 @@ public class DataProviderService
 	{
 		return DbContext.ShokouhPardisTermClasses
 			.FirstOrDefault(x => x.Id == i);
+	}
+	
+	public ShokouhPardisTermClass? GetLatestTerm()
+	{
+		return DbContext
+			.ShokouhPardisTermClasses
+			.OrderBy(x=>x.EndDate)
+			.LastOrDefault();
 	}
 
 	public List<ShokouhPardisLevelClass> GetlevelBookNOPriceList(ShokouhPardisTermClass term)

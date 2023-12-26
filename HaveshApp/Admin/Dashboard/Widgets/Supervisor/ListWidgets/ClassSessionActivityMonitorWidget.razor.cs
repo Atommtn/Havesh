@@ -61,8 +61,10 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor.ListWidgets
 
 		private async Task Init()
 		{
-			var managerGrain = ClusterCLient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
-			_activitiey = await managerGrain.GetDefaultSesionActivity();
+			//var managerGrain = ClusterCLient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+			//_activitiey = await managerGrain.GetDefaultSesionActivity();
+			_activitiey = _dataProvider.GetDefaultSessionActivity();
+			
 
 			await ClearSearchClick();
 		}
@@ -100,18 +102,22 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor.ListWidgets
 
 		private async Task<List<TimeTableSession>> InitUIObjects(List<TimeTableSession> ttsArg)
 		{
-			var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+			//var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
 			foreach (var tts in ttsArg)
 			{
-				var sessionActivityValueOptions =
-					await sessionManagerGrain.GetSessionStudentActivitiesPerformed(tts.Id);
-				var sessionActivities =
-					(sessionActivityValueOptions ?? Array.Empty<StudentSessionActivity>())
-						.ToList();
+				//var sessionActivityValueOptions = await sessionManagerGrain.GetSessionStudentActivitiesPerformed(tts.Id);
+				// var sessionActivities =
+				// 	(sessionActivityValueOptions ?? Array.Empty<StudentSessionActivity>())
+				// 	.ToList();
+				var sessionActivities = SupervisorWidgetsService.GetStudentSessionActivityPerformed(tts.Id);
 				tts.Tag = sessionActivities;
 
+				/*
 				var timeTableGrain = ClusterCLient.GetGrain<ITimeTableGrain>(tts.TimeTableFk);
 				tts.TimeTable.Students = await timeTableGrain.GetStudents();
+				*/
+
+				tts.TimeTable.Students = _dataProvider.GetTimeTableStudents(tts.TimeTableFk);
 			}
 
 			StateHasChanged();
@@ -132,9 +138,9 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor.ListWidgets
 
 				await InvokeAsync(async () =>
 				{
-					var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
-					var sessionStudentActivitiesPerformed = await sessionManagerGrain.GetSessionStudentActivitiesPerformed(timeTableSession.Id);
-					var studentSessionActivities = sessionStudentActivitiesPerformed.ToList();
+					//var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+					//var sessionStudentActivitiesPerformed = await sessionManagerGrain.GetSessionStudentActivitiesPerformed(timeTableSession.Id);
+					var studentSessionActivities = SupervisorWidgetsService.GetStudentSessionActivityPerformed(timeTableSession.Id);
 					timeTableSession.Tag = studentSessionActivities;
 					lock (objLock)
 					{
