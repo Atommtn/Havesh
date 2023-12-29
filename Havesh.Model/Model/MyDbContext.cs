@@ -75,7 +75,7 @@ public partial class MyDbContext : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.HasDefaultSchema("ShoukouhPardis12DBAdmin")
+		modelBuilder.HasDefaultSchema("dbo")
 			.UseCollation("Latin1_General_CI_AS");
 
 
