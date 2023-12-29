@@ -2,6 +2,7 @@
 @using Havesh.Grains.Manager
 @using Havesh.Common
 @using DNTPersianUtils.Core
+@using Microsoft.EntityFrameworkCore
 <MudDialog>
 	<DialogContent>
 		<MudTable Items="Sessions">
@@ -74,6 +75,17 @@
 			});
 			*/
 		
+	}
+
+	void GetSummary(int timeTableFk)
+	{
+		var result = _dataProvider.DbContext.StudentSessionActivities
+			.Include(x=>x.TimeTableSession)
+			.Include(x=>x.Activity)
+			//.ThenInclude(x=>x.)
+			.Where(x => x.TimeTableFk == timeTableFk)
+			.GroupBy(x=>x.Activity)
+			.ToDictionary(x=>x.Key , y=>y.Count());
 	}
 
 	private RenderFragment ActivityList(TimeTableSession context) => __builder =>
