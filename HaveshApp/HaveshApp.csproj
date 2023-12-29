@@ -76,6 +76,7 @@
   <ItemGroup>
     <Folder Include="Admin\Dashboard\Class\" />
     <Folder Include="Admin\MemberShip\Model\" />
+    <Folder Include="Admin\Salary\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Admin\Dashboard\Personal\Widgets\ItemContainerWidget.razor" />
