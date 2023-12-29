@@ -29,12 +29,12 @@ builder.Services.AddTransient<DataProviderService>();
 builder.Host.UseOrleans(siloBuilder =>
 {
 	siloBuilder
+		
 		.AddStreaming()
 
 		.AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
-		.AddMemoryGrainStorage("PubSubStore");
+		.AddMemoryGrainStorage("PubSubStore") // <----- Mandatory in Orleans
 
-	siloBuilder
 		.AddAdoNetGrainStorage("HaveshGrainStore", (options =>
 		{
 			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
