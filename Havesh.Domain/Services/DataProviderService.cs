@@ -2541,5 +2541,18 @@ public class DataProviderService
 
 		return query.ToArray();
 	}
+
+    public void DeleteSessionActivity(SessionActivity context)
+    {
+        var activity = DbContext.SessionActivities.FirstOrDefault(x => x.Id == context.Id);
+        if (activity != null)
+        {
+            DbContext.SessionActivities.Remove(activity);
+
+            SaveAll();
+        }
+
+
+    }
 }
 

@@ -30,6 +30,7 @@
         <MudTd>@context.ValueControl</MudTd>
         <MudTd>
             <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" Variant="Variant.Filled" OnClick="()=>EditSessionActivity(context)"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Filled" OnClick="()=>DeleteSessionActivity(context)"/>
         </MudTd>
     </RowTemplate>
 </MudTable>
@@ -84,6 +85,18 @@
     private async Task EditSessionActivity(SessionActivity sa)
     {
         await OpenDialog(sa);
+    }
+
+    private async Task DeleteSessionActivity(SessionActivity context)
+    {
+        var delete = await DialogService.ShowMessageBox("Delete Activity", "Are you sure to delete activity", "Yes", "No");
+        if (delete is true)
+        {
+            _dataProvider.DeleteSessionActivity(context);
+            Log.Error("User {UserName} Delete SessionActivity '{SesseionActivityId}'.", _userSession.Payload?.UserName, context.Id);
+            _snackBar.Add("حذف با موفقیت به انجام رسید.", Severity.Success);
+            StateHasChanged();
+        }
     }
 
 }
