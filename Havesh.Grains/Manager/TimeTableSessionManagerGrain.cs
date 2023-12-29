@@ -32,6 +32,16 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrain, ITimeTableSessio
 
 	}
 
+	public async Task<IEnumerable<TimeTableSession>?> GetTimeTableSessionsSummary(int timeTableId)
+	{
+		return CacheManager.GetOrSet("Sessions-summary-"+timeTableId, () =>
+		{
+			var timeTableSessions = DataProviderService.GetTimeTableSessionActivitySummary(timeTableId);
+			return timeTableSessions;
+		}, CacheExpireTime);
+
+	}
+
 	public async Task<IDictionary<TimeTableSession, IEnumerable<IEnumerable<StudentSessionActivity>>>?> GetTimeTableSessionsIncludeActivities(int timeTableId)
 	{
 		throw new Exception();

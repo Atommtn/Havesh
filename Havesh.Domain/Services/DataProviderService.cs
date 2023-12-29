@@ -28,15 +28,7 @@ public class DataProviderService
 	public DataProviderService(MyDbContext dbContext)
 	{
 		DbContext = dbContext;
-		dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
-	}
-
-	private void ChangeTracker_Tracked(object? sender, Microsoft.EntityFrameworkCore.ChangeTracking.EntityTrackedEventArgs e)
-	{
-		if (e.Entry.State == EntityState.Modified)
-		{
-			Console.WriteLine(e.Entry.GetType().Name);
-		}
+		//dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
 	}
 
 	public List<ShokouhPardisYearClass> GetYears()
@@ -1668,6 +1660,19 @@ public class DataProviderService
 	public List<TimeTableSession>? GetTimeTableSessions(ShokouhPardisTimeTable timeTable)
 	{
 		return GetTimeTableSessions(timeTable.Id);
+	}
+
+	public List<TimeTableSession>? GetTimeTableSessionActivitySummary(int timeTableId)
+	{
+		var sessions = DbContext.TimeTableSessions
+			.Include(x => x.ClassRoom)
+			.Include(x => x.Teacher)
+			.Include(x => x.TimeTable)
+			.Include(x => x.ReplacementSession)
+			.Where(x => x.TimeTableFk == timeTableId)
+			.OrderBy(x => x.SessionDate)
+			.ToList();
+		return sessions;
 	}
 
 	public int GetTimeTableSessionsCount(ShokouhPardisTimeTable timeTable)

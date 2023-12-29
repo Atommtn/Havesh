@@ -41,7 +41,7 @@ public partial class MyDbContext : DbContext
 	public override int SaveChanges()
     {
 	    // Hook into the change tracker events
-	    ChangeTracker.StateChanged += OnStateChanged;
+	    //ChangeTracker.StateChanged += OnStateChanged;
 
 		var entityChanges = CaptureEntityChanges();
 
@@ -74,13 +74,13 @@ public partial class MyDbContext : DbContext
         // Save the entity changes to a separate table or storage
         if (entityChanges == null)
         {
-	        ChangeTracker.StateChanged -= OnStateChanged;
+	        //ChangeTracker.StateChanged -= OnStateChanged;
 	        return base.SaveChanges();
         }
 
         EntityChanges.AddRange(entityChanges);
         var result = base.SaveChanges();
-        ChangeTracker.StateChanged -= OnStateChanged;
+        //ChangeTracker.StateChanged -= OnStateChanged;
 
 
 		return result;
