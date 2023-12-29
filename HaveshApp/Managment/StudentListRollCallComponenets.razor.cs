@@ -60,8 +60,8 @@ public partial class StudentListRollCallComponenets
 
 	private async Task ReloadActivities()
 	{
-		StateHasChanged();
-		await Task.Delay(300);
+		//StateHasChanged();
+		//await Task.Delay(300);
 		//var ttsGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(TimeTableSession.Id);
 		//var studentSessionActivities = await ttsGrain.GetStudentSessionActivities();
 		_activities =  GetActivities(TimeTableSession.Id);
@@ -73,7 +73,7 @@ public partial class StudentListRollCallComponenets
 
 	private List<StudentSessionActivity> GetActivities(int sessionId)
 	{
-		List<StudentSessionActivity> activities = _dataProvider
+		var activities = _dataProvider
 			.GetStudentSessionActivityPerformed(sessionId,
 
 				q => q

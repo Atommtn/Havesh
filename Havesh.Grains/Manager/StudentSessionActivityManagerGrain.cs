@@ -32,12 +32,12 @@ public class StudentSessionActivityManagerGrain : HaveshManagerGrain , IStudentS
 		await NotifySessionActivity(ssa);
 	}
 
-	public Task<IEnumerable<SessionActivity>?> GetSesionActivities()
+	public async Task<IEnumerable<SessionActivity>?> GetGeneralSesionActivities()
 	{
 		return CacheManager.GetOrSet("SessionActivities", () =>
 		{
-			var sessionActivities = _dataProviderService.GetSessionActivities();
-			return Task.FromResult((IEnumerable<SessionActivity>?)sessionActivities);
+			var sessionActivities = _dataProviderService.GetGeneralSessionActivities();
+			return sessionActivities;
 		} , CacheExpireTime);
 	}
 

@@ -20,7 +20,7 @@ public class DataProviderService
 {
 	public MyDbContext DbContext { get; }
 
-	private void SaveAll()
+	public void SaveAll()
 	{
 		DbContext.SaveChanges();
 	}
@@ -1801,9 +1801,14 @@ public class DataProviderService
 		return termSessionTemplates;
 	}
 
-	public List<SessionActivity> GetSessionActivities()
+	public List<SessionActivity> GetGeneralSessionActivities()
 	{
 		var sessionActivities = DbContext.SessionActivities
+			.Where(x=>
+					x.Levels == null &&
+					x.LevelGroups == null &&
+				    x.SessionNo == null
+				)
 			.Include(x => x.ValueOptions)
 			.ToList();
 		return sessionActivities;
@@ -1925,7 +1930,7 @@ public class DataProviderService
 			);
 	}
 
-	public List<SessionActivity> GetSessionActivities(TimeTableSession? session)
+	public List<SessionActivity> GetGeneralSessionActivities(TimeTableSession? session)
 	{
 		if (session is null) return null;
 
@@ -1975,6 +1980,20 @@ public class DataProviderService
 			.ToList();
 		return list;
 	}
+
+	public  List<StudentSessionActivity> GetTimetableStudentsSessionActivities(int timetableId)
+	{
+		var result =
+			DbContext
+				.StudentSessionActivities
+				.Include(x => x.TimeTableSession)
+				.Include(x => x.Activity)
+				.ThenInclude(x => x.ValueOptions)
+				.Where(x => x.TimeTableFk == timetableId)
+				.ToList();
+		return result;
+	}
+
 	public Dictionary<int, List<StudentSessionActivity>> GetStudentsSessionActivities(TimeTableSession session)
 	{
 		var activities = DbContext
@@ -2553,6 +2572,13 @@ public class DataProviderService
         }
 
 
+    }
+
+    public List<SessionActivityValueOption> GetSessionActivityValueOptions(int sessionActivityId)
+    {
+	    return DbContext.SessionActivityValueOptions
+		    .Where(x => x.SessionActivityFk == sessionActivityId)
+		    .ToList();
     }
 }
 

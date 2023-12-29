@@ -162,6 +162,6 @@ public class TimeTableSessionGrain :
 	public async Task<IEnumerable<SessionActivity>?> GetSessionActivities()
 	{
 		EnusureState();
-		return CacheManager.GetOrSet("SA-" + GrainKey, () => DataProviderService.GetSessionActivities(PersistentState.State.Item?.TimeTableSession), TimeSpan.FromHours(1));
+		return CacheManager.GetOrSet("SA-" + GrainKey, () => DataProviderService.GetGeneralSessionActivities(PersistentState.State.Item?.TimeTableSession), TimeSpan.FromHours(1));
 	}
 }

@@ -1,0 +1,33 @@
+﻿@using HaveshApp.Managment
+@using Havesh.Model.Model
+
+<MudDialog >
+	<DialogContent>
+		
+		<StudentListRollCallComponenets 
+			RowStyle="true" 
+			RowsPerPage="25" 
+			TimeTableSession="TimeTableSessionItem" 
+			SessionActivity="SessionActivityItem" />
+
+	</DialogContent>
+	<DialogActions>
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseButtonClick">
+			Close
+		</MudButton>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	[Parameter] public required TimeTableSession TimeTableSessionItem { get; set; }
+	
+	[Parameter] public required SessionActivity SessionActivityItem { get; set; }
+
+	[CascadingParameter] public required MudDialogInstance DialogInstance { get; set; }
+
+	private void CloseButtonClick()
+	{
+		DialogInstance.Cancel();
+	}
+
+}

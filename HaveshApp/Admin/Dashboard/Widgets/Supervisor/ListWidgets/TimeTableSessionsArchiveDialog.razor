@@ -2,7 +2,11 @@
 @using Havesh.Grains.Manager
 @using Havesh.Common
 @using DNTPersianUtils.Core
+@using Havesh.GrainInterfaces.Entity
+@using Havesh.Model.Data
+@using HaveshApp.Admin.Dashboard.Widgets.Supervisor.Dialog
 @using Microsoft.EntityFrameworkCore
+@using System.Reflection
 <MudDialog>
 	<DialogContent>
 		<MudTable Items="Sessions">
@@ -10,22 +14,31 @@
 				<MudTh>جلسه</MudTh>
 				<MudTh>تاریخ</MudTh>
 				<MudTh>وضعیت</MudTh>
+				<MudTh></MudTh>
 			</HeaderContent>
 			<RowTemplate>
 				<MudTd>@context.SessionNumber</MudTd>
 				<MudTd>
-					@ActivityList(context)
-					<MudChip OnClick="() => OpenSessionActivity(context)">
+					<MudChip>
 						@context.SessionDate.ToPersianDateTextify()
 					</MudChip>
 				</MudTd>
-				<MudTd>@context.SessionStatus</MudTd>
+				<MudTd>
+					@SessionStatusSelector(context)
+					
+				</MudTd>
+				<MudTd>					
+					@ActivityList(context)
+				</MudTd>
 			</RowTemplate>
 		</MudTable>
 	</DialogContent>
 	<DialogActions>
-		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseDialog">
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="CloseDialogClick">
 			Close
+		</MudButton>
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="SaveSessionsChangeClick">
+			Save
 		</MudButton>
 
 	</DialogActions>
@@ -39,58 +52,100 @@
 	[CascadingParameter] MudDialogInstance DialogInstance { get; set; }
 
 	[Inject] public IClusterClient ClusterClient { get; set; }
-
+	
+	IEnumerable<StudentSessionActivity>? _summary;
+	IEnumerable<SessionActivity>? _sesionActivities;
 	protected override async Task OnInitializedAsync()
 	{
 		var timeTableSessionManagerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(HaveshConstants.GeneralKey);
 		Sessions = await timeTableSessionManagerGrain.GetTimeTableSessions(TimeTable.Id);
 
+		_summary = GetStudentSessionActivities(TimeTable.Id);
+		var managerGrain = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+		_sesionActivities = await managerGrain.GetGeneralSesionActivities();
+
 		await base.OnInitializedAsync();
 	}
 
-	private void CloseDialog()
+	private void CloseDialogClick()
 	{
 		DialogInstance.Cancel();
 	}
 
-	private async Task OpenSessionActivity(TimeTableSession context)
-	{
 
-		/*
-		var sa = _activitiey;
-		await _dialogService.ShowAsync<ClassSessionActivityMonitorWidgetDialog>(
-			$" {sa.ActivityTitle} کلاس {context.ClassRoom.ClassRoomName} جلسه {context.SessionNumber} ({context.SessionDate?.ToPersianDateTextify()} ساعت {context.SessionTime} ) دوره {context.TimeTable.Level.LevelName} مدرس {context.Teacher.FullName} ",
-			new DialogParameters<ClassSessionActivityMonitorWidgetDialog>
+	List<StudentSessionActivity> GetStudentSessionActivities(int timeTableFk)
+	{
+		return _dataProvider.GetTimetableStudentsSessionActivities(timeTableFk);
+	}
+
+	private RenderFragment ActivityList(TimeTableSession tts) => __builder =>
+	{
+		var sx = _summary?
+			.Where(x => x.TimeTableSessionFk == tts.Id)
+			.GroupBy(x => x.Activity)
+		;
+
+		foreach (var sum in sx!)
+		{
+			<MudChip Color="@(sum.Key.IconColor ?? Color.Default )" OnClick="()=>OpenRollCallItem(sum.Key , tts)" >
+				@sum.Key.ActivityTitle - @sum.Count()
+			</MudChip>
+		}
+		
+		<MudMenu>
+			<ActivatorContent>
+				یا یک فعالیت دیگر انتخاب کنید
+			</ActivatorContent>
+			<ChildContent>
+				@foreach(var sa in _sesionActivities)
+				{
+					<MudMenuItem OnClick="() => OpenRollCallItem(sa, tts)">
+						@sa.ActivityTitle
+					</MudMenuItem>
+				}
+			</ChildContent>
+		</MudMenu>
+
+	};
+
+
+	private async Task OpenRollCallItem(SessionActivity sessionActivity, TimeTableSession timeTableSession)
+	{
+		var dialogReference = await _dialogService.ShowAsync<TimeTableSessionArchiveStudentActivityDialog>("Session Activity " + sessionActivity.ActivityTitle ,
+			new DialogParameters<TimeTableSessionArchiveStudentActivityDialog>
 			{
-				{ dialog => dialog.TimeTableSession, context },
-				{ dialog => dialog.SessionActivity , sa}
+				{ x=>x.SessionActivityItem, sessionActivity },
+				{ x=>x.TimeTableSessionItem, timeTableSession },
 			},
 			new DialogOptions()
 			{
-				CloseButton = true,
-				CloseOnEscapeKey = true,
-				DisableBackdropClick = false,
-				MaxWidth = MaxWidth.Large,
 				FullWidth = true
 			});
-			*/
-		
+		var result = await dialogReference.Result;
+		_summary = GetStudentSessionActivities(TimeTable.Id);
+		StateHasChanged();
 	}
 
-	void GetSummary(int timeTableFk)
-	{
-		var result = _dataProvider.DbContext.StudentSessionActivities
-			.Include(x=>x.TimeTableSession)
-			.Include(x=>x.Activity)
-			//.ThenInclude(x=>x.)
-			.Where(x => x.TimeTableFk == timeTableFk)
-			.GroupBy(x=>x.Activity)
-			.ToDictionary(x=>x.Key , y=>y.Count());
-	}
+	string? sessionStatus = null;
 
-	private RenderFragment ActivityList(TimeTableSession context) => __builder =>
+	private RenderFragment SessionStatusSelector(TimeTableSession context) => __builder =>
 	{
-		var studentsSessionActivities = _dataProvider.GetStudentsSessionActivities(context);
+		<MudSelect @bind-Value="context.SessionStatus">
+			@foreach (var status in typeof(SessionStatuses).GetFields(BindingFlags.Public | BindingFlags.Static))
+			{
+				<MudSelectItem Value="@(status.GetValue(status)?.ToString())">
+					@status.GetValue(status)?.ToString()
+				</MudSelectItem>
+			}
+		</MudSelect>
 	};
 
+	private void SaveSessionsChangeClick()
+	{
+		_dataProvider.SaveAll();
+		CloseDialogClick();
+	}
 }
+
+
+

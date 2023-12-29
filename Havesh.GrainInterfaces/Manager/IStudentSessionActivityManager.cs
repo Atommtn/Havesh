@@ -10,7 +10,7 @@ namespace Havesh.Grains.Manager;
 public interface IStudentSessionActivityManagerGrain : IGrainWithGuidKey
 {
 	Task CreateStudentSessionActivity(StudentSessionActivity ssa);
-	Task<IEnumerable<SessionActivity>?> GetSesionActivities();
+	Task<IEnumerable<SessionActivity>?> GetGeneralSesionActivities();
 	Task<SessionActivity?> GetDefaultSesionActivity();
 	Task RemoveStudentSessionActivity(StudentSessionActivity ssa);
 	Task NotifySessionActivity(StudentSessionActivity ssa);

@@ -52,7 +52,7 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrain, ITimeTableSessio
 			var timeTableSessions = GetTimeTableSessions(timeTableId);
 			var ids = timeTableSessions.Select(x => x.Id);
 			var managerGrain = GrainFactory.GetGrain<IStudentSessionActivityManagerGrain>(HaveshConstants.GeneralKey);
-			var sessionActivities = await managerGrain.GetSesionActivities();
+			var sessionActivities = await managerGrain.GetGeneralSesionActivities();
 			var managerGrain2 = GrainFactory.GetGrain<ISessionActivityOptionManagerGrain>(HaveshConstants.GeneralKey);
 
 
