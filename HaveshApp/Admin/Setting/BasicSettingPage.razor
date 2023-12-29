@@ -1,19 +1,50 @@
-﻿@page "/BasicSetting"
+﻿@page "/Settings"
+@using Havesh.GrainInterfaces.System
 @layout PersianPagesLayout
 
 <h3>Basic Setting Page</h3>
-<MudGrid>
-    <MudPaper Class="col-12" Outlined="true">
-        <MudItem>
-            <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
-                Basic Setting
-            </MudText>
+<MudCard>
+	<MudCardHeader>
+		<MudText Typo="Typo.body1">Settings</MudText>
+	</MudCardHeader>
+	<MudCardContent>
+		<MudGrid Spacing="1">
+			<MudItem md="6">
+				<MudCheckBox @bind-Checked="IsDebug" Label="Is Debug Enable"></MudCheckBox>
+			</MudItem>
+			<MudItem md="6">
+				<MudDatePicker @bind-Date="DebugDate" Label="Select Date"></MudDatePicker>
+			</MudItem>
+			<MudItem md="6">
+				<MudTimePicker  @bind-Time="DebugTime" Label="Select Time" ></MudTimePicker>
+			</MudItem>
 
-        </MudItem>
+		</MudGrid>
 
-    </MudPaper>
+	</MudCardContent>
+	<MudCardActions>
+		<MudButton Variant="Variant.Text" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" OnClick="UpdateUserSession">
+			Update User Session
+		</MudButton>
 
-</MudGrid>
+	</MudCardActions>
+</MudCard>
+
 @code {
+
+	public bool? IsDebug { get; set; } = true;
+
+	public DateTime? DebugDate { get; set; } = DateTime.Parse("2023-12-16");
+	public TimeSpan? DebugTime { get; set; } = TimeSpan.Parse("14:00");
+
+	[Inject] public IClusterClient ClusterClient { get; set; }
+
+	private async Task UpdateUserSession()
+	{
+		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(_userSession.UserName);
+		await settingsGrain.SetIsDebug(IsDebug ?? false);
+		await settingsGrain.SetDate(DebugDate ?? DateTime.Today);
+		await settingsGrain.SetTime(DebugTime ?? TimeSpan.Zero );
+	}
 
 }

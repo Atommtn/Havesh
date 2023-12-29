@@ -117,7 +117,8 @@
 										</MudList>
 									</TooltipContent>
 									<ChildContent>
-										<MudChip Size="Size.Medium" Icon="@(itm.Key.ActivityValueOption.Icon ?? Icons.Material.Filled.Circle)" Color="@GetButtonColor(itm.Key)" Class="pulsing">
+										<MudChip Size="Size.Medium" 
+										         Icon="@(itm.Key.ActivityValueOption.Icon ?? Icons.Material.Filled.Circle)" Color="@GetButtonColor(itm.Key)" Class="pulsing">
 											<MudText Typo="Typo.body2">@itm.Count()</MudText>
 											<MudChip Label="true" Size="Size.Small">
 												@itm.Key.ActivityValueOption.Title

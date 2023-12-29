@@ -78,6 +78,7 @@
 
 	private RenderFragment ActivityList(TimeTableSession context) => __builder =>
 	{
+		var studentsSessionActivities = _dataProvider.GetStudentsSessionActivities(context);
 	};
 
 }

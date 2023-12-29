@@ -1,6 +1,9 @@
 using System.Net;
 using Havesh.Common;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
+using Havesh.Grains.Entity;
+using Havesh.Grains.Manager;
 using Havesh.Model.Model;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.Extensions.Options;
@@ -21,9 +24,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddScoped<DataProviderService>();
-
-
+builder.Services.AddTransient<DataProviderService>();
 
 builder.Host.UseOrleans(siloBuilder =>
 {
@@ -36,10 +37,10 @@ builder.Host.UseOrleans(siloBuilder =>
 	siloBuilder
 		.AddAdoNetGrainStorage("HaveshGrainStore", (options =>
 		{
-			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
+			options.Invariant = "System.Data.SqlClient";
 			options.GrainStorageSerializer = new JsonGrainStorageSerializer(
-				new OrleansJsonSerializer(
-					new OptionsWrapper<OrleansJsonSerializerOptions>(
+				new OrleansJsonSerializer(new OptionsWrapper<OrleansJsonSerializerOptions>(
 						new OrleansJsonSerializerOptions()
 						{
 
@@ -48,7 +49,7 @@ builder.Host.UseOrleans(siloBuilder =>
 		}))
 		.UseAdoNetClustering(options =>
 		{
-			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
 			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
@@ -84,6 +85,10 @@ builder.Host.UseOrleans(siloBuilder =>
 		 	{
 		 		options.HostSelf = true;
 		 	})
+		.ConfigureServices(services =>
+		{
+
+		})
 		;
 
 });

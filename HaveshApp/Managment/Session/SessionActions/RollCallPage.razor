@@ -3,7 +3,9 @@
 @using Havesh.Model.Model
 @using HaveshApp.Admin.Dashboard.Widgets.Teacher
 @using Microsoft.EntityFrameworkCore
+@using Olive
 @using PersianDate.Standard
+@using Serilog.Core
 @layout PersianPagesLayout
 @if (SessionItem is null || SessionActivityItem is null)
 {
@@ -51,10 +53,16 @@ else
 	[Parameter] public int SessionId { get; set; }
 	[Parameter] public int SessionActivityId { get; set; }
 
+	[Inject]
+	public ILogger<RollCallPage> Logger { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
-		SessionItem = await TeacherWidgetsService.GetTimeTableSessionById(SessionId , true);
-		SessionActivityItem = await TeacherWidgetsService.GetTimeTableSessionActivityById(SessionActivityId);
+		
+		SessionItem = TeacherWidgetsService.GetTimeTableSessionById(SessionId , true);
+		SessionActivityItem = TeacherWidgetsService.GetTimeTableSessionActivityById(SessionActivityId);
+
+		Logger.Warning(_dataProvider.DbContext.ChangeTracker.DebugView.ShortView);
 
 		await base.OnInitializedAsync();
 	}

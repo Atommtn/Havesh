@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
+﻿using System.Reflection;
 using Havesh.Model.Data;
 using Havesh.Model.Data.Dashboard;
 using Havesh.Model.Filter;
@@ -18,21 +17,6 @@ public partial class MyDbContext : DbContext
 {
     public User? Actor { get; set; }
 
-    public class EntityChange
-    {
-        public int Id { get; set; }
-        public string EntityName { get; set; }
-        public string? EntityKey { get; set; }
-        public string Action { get; set; } // Added, Modified, Deleted
-        public string? Field { get; set; }
-        public string? OldValue { get; set; }
-        public string? NewValue { get; set; }
-        public int? ActionByFk { get; set; }
-        
-        [ForeignKey(nameof(ActionByFk))]
-        public User? ActionBy { get; set; } 
-        public DateTime ActionWhen { get; set; } = DateTime.Now;
-    }
     public DbSet<EntityChange> EntityChanges { get; set; }
 
     public event Action<EntityEntry>? EntityAdded;
@@ -57,7 +41,7 @@ public partial class MyDbContext : DbContext
 	public override int SaveChanges()
     {
 	    // Hook into the change tracker events
-	    ChangeTracker.StateChanged += OnStateChanged;
+	    //ChangeTracker.StateChanged += OnStateChanged;
 
 		var entityChanges = CaptureEntityChanges();
 
@@ -90,13 +74,13 @@ public partial class MyDbContext : DbContext
         // Save the entity changes to a separate table or storage
         if (entityChanges == null)
         {
-	        ChangeTracker.StateChanged -= OnStateChanged;
+	        //ChangeTracker.StateChanged -= OnStateChanged;
 	        return base.SaveChanges();
         }
 
         EntityChanges.AddRange(entityChanges);
         var result = base.SaveChanges();
-        ChangeTracker.StateChanged -= OnStateChanged;
+        //ChangeTracker.StateChanged -= OnStateChanged;
 
 
 		return result;

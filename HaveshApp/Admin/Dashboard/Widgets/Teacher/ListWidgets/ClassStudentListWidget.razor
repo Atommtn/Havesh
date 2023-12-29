@@ -31,8 +31,11 @@
 	IEnumerable<ShokouhPardisStudentClass>? _students;
 
 	[Inject] public required TeacherWidgetsService TeacherWidgetsService { get; set; }
+	int X = 0;
 	protected override async Task OnInitializedAsync()
 	{
+		Console.WriteLine(X++);
+
 		_students = await TeacherWidgetsService.GetTimeTableStudents();
 		await base.OnInitializedAsync();
 	}

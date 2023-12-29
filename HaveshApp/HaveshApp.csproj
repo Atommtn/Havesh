@@ -35,8 +35,12 @@
     <PackageReference Include="Blazor.QRCode" Version="0.2.1" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="DNTPersianUtils.Core" Version="5.8.1" />
+    <PackageReference Include="EventFlow" Version="0.83.4713" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.83.4713" />
+    <PackageReference Include="EventFlow.MsSql" Version="0.83.4713" />
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.12" />
+    <PackageReference Include="Microsoft.Diagnostics.EventFlow.Outputs.StdOutput" Version="1.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
       <PrivateAssets>all</PrivateAssets>

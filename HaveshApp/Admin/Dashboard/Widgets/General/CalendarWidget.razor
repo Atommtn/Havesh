@@ -1,8 +1,27 @@
 ﻿@using HaveshApp.Admin.Dashboard.Personal.Widgets
 @using Havesh.Model.Data.Dashboard
 @using DNTPersianUtils.Core
+@using Havesh.GrainInterfaces.System
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 
 <SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="false">
-    @DateTime.Today.AddDays(1).ToPersianDateTextify(true)
+    @Calendar
 </SmallWidgetContainer>
+
+@code
+{
+	public string Calendar { get; set; }
+
+	[Inject] public IClusterClient ClusterClient { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(_userSession.UserName);
+		Calendar = DateTime.Today.AddDays(1).ToPersianDateTextify();
+		if (await settingsGrain.IsDebug())
+			 Calendar = (await settingsGrain.Date()).ToPersianDateTextify();
+
+		await base.OnInitializedAsync();
+	}
+
+}

@@ -24,6 +24,7 @@ using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using Havesh.OrleansClient;
 using Orleans.Configuration;
 using Orleans.Streams;
+using Microsoft.AspNetCore.Diagnostics;
 
 // Configure logging to log to MSSqlServer database
 
@@ -43,15 +44,11 @@ builder.Services.AddMudServices();
 //builder.Services.AddMudExtensions();
 //builder.Services.AddMudServicesWithExtensions();
 
-var conStr = builder.Configuration["ConnectionStrings:ArvanConnection"];
+var conStr = builder.Configuration.GetConnectionString("ArvanConnection");
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Information()
 	.Enrich.With(new MtnUserEnricher(builder.Services))
-	//.Enrich.WithProperty("Type","UserActivity")
-	//.Enrich.WithProperty("User","UserName")
 	.WriteTo.MSSqlServer(
-		//connectionString: "Data Source=94.232.174.176;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;",
-		//connectionString: "Data Source=94.101.189.165;Initial Catalog=ShoukouhPardis12DB;Integrated Security=False;Persist Security Info=False;User ID=ShoukouhPardis12DBAdmin;Password=ShoukouhPardis12DB@pass;Connect Timeout=60;Encrypt=False;Current Language=English;",
 		connectionString: conStr,
 		sinkOptions: new MSSqlServerSinkOptions
 		{
@@ -61,8 +58,10 @@ Log.Logger = new LoggerConfiguration()
 		restrictedToMinimumLevel: LogEventLevel.Information)
 	.CreateLogger();
 
+
+
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddScoped<DataProviderService>();
+builder.Services.AddTransient<DataProviderService>();
 
 builder.Services.AddSingleton<SignalrGrainClientService>();
 
@@ -186,6 +185,7 @@ if (!app.Environment.IsDevelopment())
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 
