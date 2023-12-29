@@ -76,35 +76,35 @@ public class DataProviderService
 	}
 
 
-	public bool SaveTeacherTimeTable(ShokouhPardisTimeTable teacherTimesheet)
+	public bool SaveTeacherTimeTable(ShokouhPardisTimeTable timeTable)
 	{
-		string title;
-		bool isDuplicate = false;
-		if (teacherTimesheet.IsPrivate)
-		{
-			title =
-				$"خصوصی {teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName}";
-		}
-		else
-		{
-			title =
-				$"{teacherTimesheet.Teacher} -> {teacherTimesheet.Term.Year.YearName} -> {teacherTimesheet.Term.TermName} -> {teacherTimesheet.Schedule.Title}";
-		}
+		
+        var title = $"{timeTable.Teacher} -> {timeTable.Term.Year.YearName} -> {timeTable.Term.TermName} -> {timeTable.Schedule.Title}";
+        if (timeTable.IsPrivate)
+            title += "خصوصی ";
 
-		teacherTimesheet.Title = title;
-		if (!teacherTimesheet.IsPrivate)
-		{
-			isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
-			if (isDuplicate)
-				return isDuplicate;
-		}
+        else if (timeTable.Id == 0 && TimeTableDuplicate(timeTable))
+            return true;
+        timeTable.Title = title;
+		
 
-		DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
+        CheckAndChangeSession(timeTable);
+		DbContext.ShokouhPardisTimeTables.Update(timeTable);
 		SaveAll();
-		return isDuplicate;
+		return false;
 	}
 
-	bool TimeTableDuplicate(ShokouhPardisTimeTable teacherTimesheet)
+    private void CheckAndChangeSession(ShokouhPardisTimeTable timeTable)
+    {
+        var timeTableSessions = DbContext.TimeTableSessions.Where(x => x.TimeTableFk == timeTable.Id).ToList();
+        if (timeTableSessions.Any())
+            foreach (var timeTableSession in timeTableSessions)
+                timeTableSession.TeacherFk = timeTable.Id;
+        //DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
+
+    }
+
+    bool TimeTableDuplicate(ShokouhPardisTimeTable teacherTimesheet)
 	{
 		var result = DbContext.ShokouhPardisTimeTables.Any(x =>
 			x.TermId == teacherTimesheet.Term.Id &&
