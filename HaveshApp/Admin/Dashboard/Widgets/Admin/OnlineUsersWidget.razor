@@ -24,7 +24,7 @@
 	private async Task SignalrGrainClientServiceOnOnlineUserChanged(User[] users)
 	{
 		_onlineUsers = users;
-		Console.Beep();
+		//Console.Beep();
 		await InvokeAsync(StateHasChanged);
 	}
 

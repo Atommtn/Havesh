@@ -51,7 +51,7 @@ public class TimeTableSessionGrain :
 		if (item.TimeTableSessionFk == GrainKey)
 		{
 			Logger.LogInformation($"Received Student Activity to {nameof(TimeTableSessionGrain)} {GrainKey}: {item.ActivityValue}");
-			Console.Beep(1000,100);
+			//Console.Beep(1000,100);
 			await ActivityPerformed(item);
 		}
 	}
@@ -92,31 +92,49 @@ public class TimeTableSessionGrain :
 	{
 		var ttSesion = DataProviderService.GetTimeTableSessionById(id, q =>
 			q
+				//.AsNoTracking()
+
 				.Include(x => x.Teacher)
+				//.AsNoTracking()
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Teacher)
+				//.AsNoTrackingWithIdentityResolution()
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.ClassRoom)
+				//.AsNoTracking()
 
 				.Include(x => x.TimeTable)
 				.ThenInclude(x => x.Level)
-
+				//.AsNoTracking()
 				)
 			;
 
-		var activities = DataProviderService.GetStudentSessionActivityPerformed(ttSesion.Id,
+		var activities = DataProviderService
+			.GetStudentSessionActivityPerformed(ttSesion.Id,
 
 			q => q
-				.Include(x => x.ActivityValueOption)
+				//.AsNoTracking()
+				
 				.Include(x => x.Activity)
+				//.AsNoTracking()
+
+				.Include(x => x.ActivityValueOption)
+				//.AsNoTracking()
+
 				.Include(x => x.Student)
+				//.AsNoTracking()
+
 				.Include(x => x.TimeTableSession)
 				.ThenInclude(x => x.Teacher)
+				//.AsNoTracking()
+
 				.Include(x => x.TimeTableSession)
 				.ThenInclude(x => x.TimeTable)
 				.ThenInclude(x => x.Teacher)
+				
+				//.AsNoTracking()
 			);
 
 		return new TimeTableSessionGrainState
@@ -134,6 +152,10 @@ public class TimeTableSessionGrain :
 	public async Task<IEnumerable<StudentSessionActivity>?> GetStudentSessionActivities()
 	{
 		EnusureState();
+		if (PersistentState.State.Item?.StudentsActivities.Any(x => x.ActivityValueOption == null) ?? false)
+		{
+			EnusureState(true);
+		}
 		return PersistentState.State.Item?.StudentsActivities;
 	}
 

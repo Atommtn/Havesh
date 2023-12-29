@@ -1,0 +1,20 @@
+name: Publish Docker Havesh Silo
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+  
+    - name: Publish Silo to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name: pharzath/haveshapp
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Havesh.Silo/Dockerfile
+        tags: "SiloV1"

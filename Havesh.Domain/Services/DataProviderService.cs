@@ -28,6 +28,7 @@ public class DataProviderService
 	public DataProviderService(MyDbContext dbContext)
 	{
 		DbContext = dbContext;
+		//dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
 	}
 
 	public List<ShokouhPardisYearClass> GetYears()
@@ -91,14 +92,14 @@ public class DataProviderService
 		}
 
 		teacherTimesheet.Title = title;
-        if (!teacherTimesheet.IsPrivate)
-        {
-            isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
-            if (isDuplicate)
-                return isDuplicate;
-        }
+		if (!teacherTimesheet.IsPrivate)
+		{
+			isDuplicate = teacherTimesheet.Id == 0 && TimeTableDuplicate(teacherTimesheet);
+			if (isDuplicate)
+				return isDuplicate;
+		}
 
-        DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
+		DbContext.ShokouhPardisTimeTables.Update(teacherTimesheet);
 		SaveAll();
 		return isDuplicate;
 	}
@@ -268,6 +269,7 @@ public class DataProviderService
 			// .ThenInclude(x => x.Schedule)
 			// .ThenInclude(x => x.Programs)
 			// .ThenInclude(x => x.DaySession)
+			//.AsNoTracking()
 
 			.Where(x => x.SessionTime == sessionStartTime &&
 										x.SessionDate == dateTime &&
@@ -1660,6 +1662,19 @@ public class DataProviderService
 		return GetTimeTableSessions(timeTable.Id);
 	}
 
+	public List<TimeTableSession>? GetTimeTableSessionActivitySummary(int timeTableId)
+	{
+		var sessions = DbContext.TimeTableSessions
+			.Include(x => x.ClassRoom)
+			.Include(x => x.Teacher)
+			.Include(x => x.TimeTable)
+			.Include(x => x.ReplacementSession)
+			.Where(x => x.TimeTableFk == timeTableId)
+			.OrderBy(x => x.SessionDate)
+			.ToList();
+		return sessions;
+	}
+
 	public int GetTimeTableSessionsCount(ShokouhPardisTimeTable timeTable)
 	{
 		var sessions = DbContext.TimeTableSessions
@@ -1916,6 +1931,7 @@ public class DataProviderService
 
 		var sessionActivitiesQuery = DbContext
 			.SessionActivities
+			//.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
 			.Where(x =>
 
@@ -1942,7 +1958,7 @@ public class DataProviderService
 	}
 	public void SaveStudentSessionActivity(StudentSessionActivity activity)
 	{
-		DbContext.Update(activity);
+		DbContext.StudentSessionActivities.Update(activity);
 		SaveAll();
 
 		//DbContext.Entry(activity).Reload();
@@ -1980,14 +1996,23 @@ public class DataProviderService
 	public SessionActivity? GetDefaultSessionActivity()
 	{
 		var sessionActivity = DbContext.SessionActivities
+			//.AsNoTrackingWithIdentityResolution()
 			.Include(x => x.ValueOptions)
-			.FirstOrDefault(x => x.IsDefault == true);
+			.FirstOrDefault(x => x.IsDefault == true) ??
+							  DbContext.SessionActivities
+							 //.AsNoTrackingWithIdentityResolution()
+							 .Include(x => x.ValueOptions)
+							 .OrderBy(x=>x.Id)
+							 .FirstOrDefault();
 		return sessionActivity;
 	}
 	public SessionActivity? GetSessionActivity(int sessionActivityId)
 	{
 		var sessionActivity = DbContext.SessionActivities
+
 			.Include(x => x.ValueOptions)
+			//.AsNoTracking()
+
 			.First(x => x.Id == sessionActivityId);
 		return sessionActivity;
 	}
@@ -2138,8 +2163,19 @@ public class DataProviderService
 	public void SetActivityDeleteTime(StudentSessionActivity sac)
 	{
 		sac.ActivityDeletedDateTime = DateTime.Now;
-		DbContext.Update(sac);
+		
+		
+		DbContext.StudentSessionActivities.Update(sac);
 		SaveAll();
+
+		try
+		{
+
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+		}
 	}
 
 	public List<LessonPlanSection>? GetLessonPlanSection(LessonPlan lessonPlan)
@@ -2169,6 +2205,14 @@ public class DataProviderService
 	{
 		return DbContext.ShokouhPardisTermClasses
 			.FirstOrDefault(x => x.Id == i);
+	}
+	
+	public ShokouhPardisTermClass? GetLatestTerm()
+	{
+		return DbContext
+			.ShokouhPardisTermClasses
+			.OrderBy(x=>x.EndDate)
+			.LastOrDefault();
 	}
 
 	public List<ShokouhPardisLevelClass> GetlevelBookNOPriceList(ShokouhPardisTermClass term)
@@ -2484,11 +2528,11 @@ public class DataProviderService
 	{
 		var query = DbContext
 				.ShokouhPardisTimeTables
-				.Where(x => x.TermId == termId 
+				.Where(x => x.TermId == termId
 												&& x.Schedule.Programs.All(p => weekdayIds.Contains(p.DaySession.WeekdayId))
 												);
 
-		if (!search.IsEmpty()) 
+		if (!search.IsEmpty())
 			query = query.Where(x => search != null && x.Schedule.Title.Contains(search));
 
 		if (includeQuery is not null)

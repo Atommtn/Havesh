@@ -12,10 +12,6 @@ public partial class MyDbContext : DbContext
 {
 	private readonly IConfiguration _configuration;
 
-	public MyDbContext()
-	{
-	}
-
 	public MyDbContext(DbContextOptions<MyDbContext> options, 
 		IConfiguration configuration
 	)
@@ -61,11 +57,14 @@ public partial class MyDbContext : DbContext
 		if (optionsBuilder.IsConfigured) 
 			return;
 
-		var conStr = _configuration["ConnectionStrings:ArvanConnection"];
+		var conStr = _configuration.GetConnectionString("ArvanConnection");
 		optionsBuilder
 			.UseSqlServer(conStr)
+			//.UseChangeTrackingProxies(false,false)
+			//.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
 			//.AddInterceptors(new CustomQueryInterceptor())
-			;
+			.EnableSensitiveDataLogging();
+
 		optionsBuilder.UseLoggerFactory(
 			LoggerFactory.Create(builder => builder.AddConsole()));
 		optionsBuilder.ConfigureWarnings(warnings =>

@@ -40,6 +40,10 @@ namespace Havesh.Model.Data.Dashboard
     public class Dashboard
     {
         public int Id { get; set; }
+
+        public int UserFk { get; set; }
+        
+        [ForeignKey(nameof(UserFk))]
         public User User { get; set; }
 
         public DashboardTemplate DashboardTemplate { get; set; }

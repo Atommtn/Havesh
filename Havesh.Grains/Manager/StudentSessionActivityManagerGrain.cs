@@ -57,7 +57,7 @@ public class StudentSessionActivityManagerGrain : HaveshManagerGrain , IStudentS
 		await NotifySessionActivity(ssa);
 	}
 
-	private async Task NotifySessionActivity(StudentSessionActivity ssa)
+	public async Task NotifySessionActivity(StudentSessionActivity ssa)
 	{
 		// Notify connected clients about StudentSessionActivity
 		var streamProvider = this.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);

@@ -31,8 +31,11 @@ public class UserSessionService
         _user = await userGrain.Get();
 
         _dataProviderService ??= _serviceProvider.GetService<DataProviderService>();
-        if (_dataProviderService != null) 
-            _dataProviderService.DbContext.Actor ??= _user;
+        if (_dataProviderService != null)
+        {
+            _dataProviderService.DbContext.Entry(_user).Reload();
+	        _dataProviderService.DbContext.Actor ??= _user;
+        }
 
         return _user!;
     }
@@ -45,7 +48,7 @@ public class UserSessionService
         return _user;
     }
 
-    public User User => _user ?? throw new Exception("User is invalid !");
+    public User User => _user ;//?? throw new Exception("User is invalid !");
 
     public DateTime? LastJvDate { get; set; } = DateTime.Today;
     public Payload? Payload { get; set; }
@@ -54,6 +57,10 @@ public class UserSessionService
 
     public string? UserName => Payload?.UserName;
     public string? FullName => Payload?.FirstName + " " + Payload?.LastName;
+
+    public record DebugSetting(bool? IsDebug, DateTime? date, TimeSpan? time);
+
+    //public DebugSetting? Debug { get; set; }
 
     public Task NotifyNewMessageDelivered(MessageDto messageDto)
     {

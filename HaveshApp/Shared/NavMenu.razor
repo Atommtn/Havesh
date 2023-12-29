@@ -4,8 +4,8 @@
     {
         @foreach (var dic in _userDashboardMenuItems)
         {
-            <MudNavGroup Title="@dic.Key" Expanded="false" Icon="@Icons.Material.Filled.Dashboard">
-                @foreach (var dashboardT in dic.Value)
+            <MudNavGroup Title="@dic.Item1" Expanded="false" Icon="@Icons.Material.Filled.Dashboard">
+                @foreach (var dashboardT in dic.Item2)
                 {
                     <MudNavLink Href="@($"/Dashboard/{dashboardT.Id}")" Match="NavLinkMatch.All">@dashboardT.Name</MudNavLink>
                 }
@@ -16,7 +16,7 @@
         <Authorized>
             @*<MudNavLink Href="/" Match="NavLinkMatch.All">Students Menu</MudNavLink>
             <MudNavLink Href="/Home" Match="NavLinkMatch.All">Home</MudNavLink>*@
-            <MudNavLink Href="/" Match="NavLinkMatch.All">Home Dahsboard CRM</MudNavLink>
+            <MudNavLink Href="/" Match="NavLinkMatch.All">Havesh Home Page</MudNavLink>
             <MudNavGroup Title="Admin" Expanded="true" Icon="@Icons.Material.Filled.Dashboard">
                 <MudNavLink Href="/DailyJV" Match="NavLinkMatch.Prefix">Daily JV</MudNavLink>
                 <MudNavLink Href="/DailyJVChart" Match="NavLinkMatch.Prefix">Daily JV Chart</MudNavLink>
@@ -111,7 +111,7 @@
 
 @code
 {
-    Dictionary<string, List<DashboardTemplate>>? _userDashboardMenuItems = new ();
+	List<(string, List<DashboardTemplate>)>? _userDashboardMenuItems = new ();
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)

@@ -107,14 +107,14 @@ namespace HaveshApp.Migrations
                     b.Property<int>("DashboardTemplateId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserFk")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DashboardTemplateId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserFk");
 
                     b.ToTable("Dashboards", "ShoukouhPardis12DBAdmin");
                 });
@@ -849,7 +849,7 @@ namespace HaveshApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ActionById")
+                    b.Property<int?>("ActionByFk")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ActionWhen")
@@ -873,7 +873,7 @@ namespace HaveshApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionById");
+                    b.HasIndex("ActionByFk");
 
                     b.ToTable("EntityChanges", "ShoukouhPardis12DBAdmin");
                 });
@@ -3817,7 +3817,7 @@ namespace HaveshApp.Migrations
 
                     b.HasOne("Havesh.Model.Model.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -4098,7 +4098,7 @@ namespace HaveshApp.Migrations
                 {
                     b.HasOne("Havesh.Model.Model.User", "ActionBy")
                         .WithMany()
-                        .HasForeignKey("ActionById");
+                        .HasForeignKey("ActionByFk");
 
                     b.Navigation("ActionBy");
                 });

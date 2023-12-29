@@ -43,10 +43,10 @@ public class DashboardService
 
             .Include(x => x.BelongsToRole)
 
-            .Include(x => x.DashboardTemplateWidgets)
+            .Include(x => x.DashboardTemplateWidgets!)
             .ThenInclude(x => x.Widget)
 
-            .Include(x => x.DashboardTemplateWidgets)
+            .Include(x => x.DashboardTemplateWidgets!)
             .ThenInclude(x => x.DashboardTemplate)
             .ToList();
         return dashboardTemplates;
@@ -89,7 +89,7 @@ public class DashboardService
         var _dts = GetDashboardTemplatesByRole(user.Roles);
         foreach (var dashboardTemplate in _dts)
         {
-            var dashboard = GenerateUserDashboardByDashboardTemplateId(dashboardTemplate.Id , user);
+            var dashboard = GenerateUserDashboardByDashboardTemplateId(dashboardTemplate.Id , user.Id);
             dashboards.Add(dashboard);
         }
         return dashboards;
@@ -128,11 +128,11 @@ public class DashboardService
         return null;
     }
 
-    public Dictionary<string, List<DashboardTemplate>>? GetUserDashboardMenuItems(User? user)
+    public List<(string, List<DashboardTemplate>)>? GetUserDashboardMenuItems(User? user)
     {
 
         if (user is null) return null;
-        Dictionary<string, List<DashboardTemplate>> dic = new();
+        List<(string, List<DashboardTemplate>)> dic = new();
         foreach (var role in user.Roles)
         {
             var dashboardTemplate = DbContext
@@ -141,43 +141,36 @@ public class DashboardService
                 .ToList();
 
             if (dashboardTemplate.Any())
-                dic.Add(role.Name, dashboardTemplate);
-
+                dic.Add((role.Name, dashboardTemplate));
         }
 
         return dic;
     }
 
-    public Dashboard? GetDashboardByUserTemplateId(int dashboardTemplateId, User? user)
+    public Dashboard? GetDashboardByUserTemplateId(int dashboardTemplateId, int userId)
     {
-        if(user is null) 
-            throw new  Exception("User Is NULLLLLLLLLLLLLLL");
-
-        var dashboard = DbContext
-            .Dashboards
+        var dashboard = DbContext.Dashboards
             .Include(x => x.DashboardTemplate)
-            .Include(x=>x.DashboardWidgets)
+            .Include(x=>x.DashboardWidgets!)
             .ThenInclude(x=>x.Widget)
 
-            .FirstOrDefault(x => x.DashboardTemplate.Id == dashboardTemplateId && x.User == user);
+            .FirstOrDefault(x => x.DashboardTemplate.Id == dashboardTemplateId && x.User.Id == userId);
 
 
         return dashboard;
     }
 
-    public Dashboard GenerateUserDashboardByDashboardTemplateId(int dashboardTemplateId, User? user)
+    public Dashboard GenerateUserDashboardByDashboardTemplateId(int dashboardTemplateId, int userId)
     {
-        if (user is null) return null;
-        var dashboardTemplate = DbContext
-            .DashboardTemplates
-            .Include(x => x.DashboardTemplateWidgets)
+        var dashboardTemplate = DbContext.DashboardTemplates
+            .Include(x => x.DashboardTemplateWidgets!)
             .ThenInclude(x => x.Widget)
             .First(x => x.Id == dashboardTemplateId);
 
         var dashboard = new Dashboard
         {
             DashboardTemplate = dashboardTemplate,
-            User = user,
+            UserFk = userId,
         };
 
         var widgets = dashboardTemplate

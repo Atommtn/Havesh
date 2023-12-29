@@ -258,7 +258,7 @@ public class CloneProviderService
                     TeacherId = x.TeacherId,
 
                     ScheduleId = schedule.Id,
-
+                    IsPrivate = false,
                     Title = title,
                     //Description = "",
                     LevelId = levelClass.NextLevelFk ?? 1,

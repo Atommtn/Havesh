@@ -1,5 +1,9 @@
+using System.Net;
 using Havesh.Common;
 using Havesh.Domain.Services;
+using Havesh.GrainInterfaces.Entity;
+using Havesh.Grains.Entity;
+using Havesh.Grains.Manager;
 using Havesh.Model.Model;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.Extensions.Options;
@@ -20,9 +24,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddScoped<DataProviderService>();
-
-
+builder.Services.AddTransient<DataProviderService>();
 
 builder.Host.UseOrleans(siloBuilder =>
 {
@@ -31,31 +33,68 @@ builder.Host.UseOrleans(siloBuilder =>
 
 		.AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
 		.AddMemoryGrainStorage("PubSubStore");
-	
+
 	siloBuilder
 		.AddAdoNetGrainStorage("HaveshGrainStore", (options =>
 		{
-			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
+			options.Invariant = "System.Data.SqlClient";
 			options.GrainStorageSerializer = new JsonGrainStorageSerializer(
-				new OrleansJsonSerializer(
-					new OptionsWrapper<OrleansJsonSerializerOptions>(
+				new OrleansJsonSerializer(new OptionsWrapper<OrleansJsonSerializerOptions>(
 						new OrleansJsonSerializerOptions()
 						{
 
 						})));
 			//options.GrainStorageSerializer = new OrleansGrainStorageSerializer(new OrleansJsonSerializer())
 		}))
-
+		.UseAdoNetClustering(options =>
+		{
+			options.ConnectionString = builder.Configuration.GetConnectionString("GrainsConnection");
+			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+		})
+		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
+#if DEBUG
 		.UseLocalhostClustering()
+#else
+		.Configure<SiloOptions>(options =>
+		{
+			options.SiloName = "haveshapp-silo"; // POD name
+		})
 
-		.UseDashboard(options =>
-			{
-				options.HostSelf = true;
-			});
+		.Configure<EndpointOptions>(options =>
+		{
+
+			options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("POD_IP") ?? "127.0.0.1");  // POD IP
+			options.SiloPort = 11111;
+			options.GatewayPort = 30000;
+
+		})
+
+		.Configure<ClusterOptions>(options =>
+		{
+			options.ClusterId = "havesh-main-cluster";
+			options.ServiceId = "haveshapp-silo";
+		})
+
+		 /*.UseKubernetesHosting(optionsBuilder =>
+		 {
+
+		 })*/
+#endif
+		 .UseDashboard(options =>
+		 	{
+		 		options.HostSelf = true;
+		 	})
+		.ConfigureServices(services =>
+		{
+
+		})
+		;
 
 });
 
 var app = builder.Build();
+
 app.Map("/dashboard", x => x.UseOrleansDashboard());
 //var grainFactory = app.Services.GetRequiredService<IGrainFactory>();
 

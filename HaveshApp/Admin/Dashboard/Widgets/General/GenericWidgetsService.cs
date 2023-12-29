@@ -1,4 +1,5 @@
-﻿using HaveshApp.Admin.Authentication;
+﻿using Havesh.Domain.Services;
+using HaveshApp.Admin.Authentication;
 
 namespace HaveshApp.Admin.Dashboard.Widgets.General
 {
@@ -6,8 +7,9 @@ namespace HaveshApp.Admin.Dashboard.Widgets.General
 	{
 		protected GenericWidgetsService(
 			IClusterClient clusterClient,
-			UserSessionService userSession) 
-				: base(clusterClient,userSession)
+			UserSessionService userSession,
+			DataProviderService dataProviderService)
+			: base(clusterClient, userSession, dataProviderService)
 		{
 		}
 	}

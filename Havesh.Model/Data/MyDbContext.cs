@@ -17,18 +17,6 @@ public partial class MyDbContext : DbContext
 {
     public User? Actor { get; set; }
 
-    public class EntityChange
-    {
-        public int Id { get; set; }
-        public string EntityName { get; set; }
-        public string? EntityKey { get; set; }
-        public string Action { get; set; } // Added, Modified, Deleted
-        public string? Field { get; set; }
-        public string? OldValue { get; set; }
-        public string? NewValue { get; set; }
-        public User? ActionBy { get; set; } 
-        public DateTime ActionWhen { get; set; } = DateTime.Now;
-    }
     public DbSet<EntityChange> EntityChanges { get; set; }
 
     public event Action<EntityEntry>? EntityAdded;
@@ -52,7 +40,10 @@ public partial class MyDbContext : DbContext
 
 	public override int SaveChanges()
     {
-        var entityChanges = CaptureEntityChanges();
+	    // Hook into the change tracker events
+	    //ChangeTracker.StateChanged += OnStateChanged;
+
+		var entityChanges = CaptureEntityChanges();
 
         foreach (var entry in ChangeTracker.Entries())
         {
@@ -78,20 +69,35 @@ public partial class MyDbContext : DbContext
 
 
 		// Save changes to the database
-		var result = base.SaveChanges();
+		//var result = base.SaveChanges();
 
         // Save the entity changes to a separate table or storage
-        if (entityChanges == null) 
-            return result;
+        if (entityChanges == null)
+        {
+	        //ChangeTracker.StateChanged -= OnStateChanged;
+	        return base.SaveChanges();
+        }
 
         EntityChanges.AddRange(entityChanges);
-        SaveChanges(); // Save entity changes
+        var result = base.SaveChanges();
+        //ChangeTracker.StateChanged -= OnStateChanged;
 
 
-        return result;
+		return result;
     }
 
-    private List<EntityChange>? CaptureEntityChanges()
+	private void OnStateChanged(object sender, EntityStateChangedEventArgs e)
+	{
+		// Check if the entity is added or modified
+		if (e.NewState is not (EntityState.Added or EntityState.Modified)) return;
+		
+		var entity = e.Entry.Entity;
+
+		// Handle the entity change or addition here
+		Console.WriteLine($"Entity {entity.GetType().Name} with key {e.Entry.OriginalValues.Properties[0]} is {e.NewState}.");
+	}
+
+	private List<EntityChange>? CaptureEntityChanges()
     {
 
         List<EntityChange>? entityChanges = null;
@@ -117,7 +123,7 @@ public partial class MyDbContext : DbContext
 						EntityKey = idValue?.ToString(),
 						Action = "Added",
 						NewValue = JsonConvert.SerializeObject(entry.CurrentValues.ToObject()),
-						ActionBy = Actor,
+						ActionByFk = Actor?.Id,
 						ActionWhen = DateTime.Now
 					});
 					break;
@@ -140,7 +146,7 @@ public partial class MyDbContext : DbContext
 							Field = property.Name,
 							OldValue = JsonConvert.SerializeObject(oldValues[property]),
 							NewValue = JsonConvert.SerializeObject(newValues[property]),
-							ActionBy = Actor,
+							ActionByFk = Actor?.Id,
 							ActionWhen = DateTime.Now
 						});
 					}
@@ -154,7 +160,7 @@ public partial class MyDbContext : DbContext
 						EntityKey = idValue?.ToString(),
 						Action = "Deleted",
 						OldValue = JsonConvert.SerializeObject(entry.OriginalValues.ToObject()),
-						ActionBy = Actor,
+						ActionByFk = Actor?.Id,
 						ActionWhen = DateTime.Now
 					});
 					break;

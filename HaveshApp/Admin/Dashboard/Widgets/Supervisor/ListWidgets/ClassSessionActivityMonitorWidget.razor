@@ -11,6 +11,7 @@
 @using DNTPersianUtils.Core
 @using Havesh.Common
 @using Havesh.GrainInterfaces.Entity
+@using Havesh.GrainInterfaces.Manager
 @using Havesh.OrleansClient
 @using Microsoft.EntityFrameworkCore.ChangeTracking
 @using Olive
@@ -19,7 +20,7 @@
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 @implements IAsyncDisposable
 
-<LargWidgetContainer Title="@($"فعالیت  - {_activitiey?.ActivityTitle}")" WidgetSetting="WidgetSetting" ToRoles="...Supervisor" ViewRequired="_activitiey">
+<LargWidgetContainer Title="@($"فعالیت - {_activitiey?.ActivityTitle}")" WidgetSetting="WidgetSetting" ToRoles="...Supervisor" ViewRequired="_activitiey">
 	<MudTable T="TimeTableSession" Items="_timeTableSessions">
 		<ToolBarContent>
 			<MudSpacer />
@@ -71,12 +72,18 @@
 						<MudChip Size="Size.Large" OnClick="() => ActivityChipClick(context)">
 							<MudTooltip Color="Color.Dark" Arrow="true">
 								<TooltipContent>
-									@{
-										var excludedStudents = context.TimeTable.Students?
-										.Where(z =>
-										items.SelectMany(x => x)
-										.Count(a => a.Student.Id == z.Id) == 0)
-										.ToArray();
+									@*@{
+										var timeTableGrain = ClusterCLient.GetGrain<ITimeTableGrain>(context.TimeTableFk);
+										InvokeAsync(async () =>
+										{
+											var students = await timeTableGrain.GetStudents();
+											var excludedStudents = context.TimeTable.Students?
+												.Where(z =>
+													items.SelectMany(x => x)
+														.Count(a => a.Student.Id == z.Id) == 0)
+												.ToArray();
+
+										});
 									}
 									@if (excludedStudents is { Length: > 0 })
 									{
@@ -87,7 +94,7 @@
 												<MudListItem Dense="true" Value="@stu.FullName">@stu.FullName</MudListItem>
 											}
 										</MudList>
-									}
+									}*@
 								</TooltipContent>
 								<ChildContent>
 									<MudChip Label="true" Color="Color.Dark" Size="Size.Small" Class="mx-2">
@@ -96,7 +103,8 @@
 								</ChildContent>
 							</MudTooltip>
 
-							@foreach (var itm in items.OrderBy(x => x.Key.ActivityValueOption.Value))
+							@foreach (var itm in items
+								.OrderBy(x => x.Key.ActivityValue))
 							{
 								<MudTooltip Color="@GetButtonColor(itm.Key)" Arrow="true">
 									<TooltipContent>
@@ -109,7 +117,8 @@
 										</MudList>
 									</TooltipContent>
 									<ChildContent>
-										<MudChip Size="Size.Medium" Icon="@(itm.Key.ActivityValueOption.Icon ?? Icons.Material.Filled.Circle)" Color="@GetButtonColor(itm.Key)" Class="pulsing">
+										<MudChip Size="Size.Medium" 
+										         Icon="@(itm.Key.ActivityValueOption.Icon ?? Icons.Material.Filled.Circle)" Color="@GetButtonColor(itm.Key)" Class="pulsing">
 											<MudText Typo="Typo.body2">@itm.Count()</MudText>
 											<MudChip Label="true" Size="Size.Small">
 												@itm.Key.ActivityValueOption.Title
@@ -131,225 +140,6 @@
 </LargWidgetContainer>
 
 @code {
-
-	string? SearchText = null;
-	//RenderFragment<TimeTableSession> teacherFragment = bulder => ;
-
-	[Inject] SupervisorWidgetsService SupervisorWidgetsService { get; set; } = null!;
-	[Inject] IClusterClient ClusterCLient { get; set; }
-	List<TimeTableSession>? _timeTableSessions;
-	SessionActivity? _activitiey;
-	private StreamSubscriptionHandle<StudentSessionActivity>? _streamSubscriptionHandle;
-
-	private async Task InitSubscribeToStudentActivityPerformAsync()
-	{
-		if (_streamSubscriptionHandle != null)
-			await _streamSubscriptionHandle.UnsubscribeAsync();
-
-		var streamProvider = ClusterCLient.GetStreamProvider(HaveshConstants.OrleansSimpleMessageProviderName);
-		var stream1 = streamProvider.GetStream<StudentSessionActivity>(
-			StreamId.Create(HaveshConstants.StudentSessionActivityStreamNamespace, HaveshConstants.GeneralKey));
-		var consumer = new HaveshStreamConsumer<StudentSessionActivity>(OnStudentActivityPerformedEvent);
-		_streamSubscriptionHandle = await stream1.SubscribeAsync(consumer);
-	}
-
-	protected override async Task OnInitializedAsync()
-	{
-		await InitSubscribeToStudentActivityPerformAsync();
-		await base.OnInitializedAsync();
-	}
-
-	protected override async Task OnParametersSetAsync()
-	{
-		await base.OnParametersSetAsync();
-	}
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		await base.OnAfterRenderAsync(firstRender);
-		if (firstRender)
-		{
-			await Init();
-			await Task.Delay(100);
-			await InvokeAsync(StateHasChanged);
-		}
-	}
-
-	private async Task Init()
-	{
-		var managerGrain = ClusterCLient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
-		_activitiey = await managerGrain.GetDefaultSesionActivity();
-
-		await ClearSearchClick();
-	}
-
-	private async Task ClearSearchClick()
-	{
-		_timeTableSessions = await Search(null);
-	}
-
-	private async Task SearchList(string? text)
-	{
-		_timeTableSessions = await Search(text);
-	}
-
-	private async Task<List<TimeTableSession>?> Search(string? search = null)
-	{
-		var timeTableSessions = ((await SupervisorWidgetsService.GetTimeTableSessions())!).ToList();
-		timeTableSessions = await InitUIObjects(timeTableSessions);
-		if (!string.IsNullOrEmpty(search))
-		{
-			timeTableSessions = timeTableSessions
-				.Where(x =>
-					x.SessionStatus.Contains(search) ||
-					x.Teacher.FullName.Contains(search) ||
-					(x.TimeTable.Title?.Contains(search) ?? false) ||
-					x.TimeTable.Level.LevelName.Contains(search) ||
-					x.ClassRoom.ClassRoomName.Equals(search) ||
-					(x.TimeTable.Students?.Any(s => s.FullName.Contains(search)) ?? false))
-				.ToList();
-		}
-
-		await Task.Delay(100);
-		return timeTableSessions;
-	}
-
-	private async Task<List<TimeTableSession>> InitUIObjects(List<TimeTableSession> ttsArg)
-	{
-		var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
-		foreach (var tts in ttsArg)
-		{
-			var sessionActivityValueOptions =
-				await sessionManagerGrain.GetSessionStudentActivitiesPerformed(tts.Id);
-			var sessionActivities =
-				(sessionActivityValueOptions ?? Array.Empty<StudentSessionActivity>())
-					.ToList();
-			tts.Tag = sessionActivities;
-
-			var timeTableGrain = ClusterCLient.GetGrain<ITimeTableGrain>(tts.TimeTableFk);
-			tts.TimeTable.Students = await timeTableGrain.GetStudents();
-		}
-
-		StateHasChanged();
-		return ttsArg;
-	}
-
-	readonly object objLock = new();
-
-	private async Task OnStudentActivityPerformedEvent(StudentSessionActivity arg)
-	{
-		if (_activitiey != null &&
-			//_activitiey.Id == arg.ActivityFk &&
-			_timeTableSessions != null)
-		{
-			var timeTableSession = _timeTableSessions.FirstOrDefault(x => x.Id == arg.TimeTableSessionFk);
-			if (timeTableSession == null)
-				return;
-
-			var sessionManagerGrain = ClusterCLient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
-			var studentSessionActivities =
-				await sessionManagerGrain
-					.GetSessionStudentActivitiesPerformed(timeTableSession.Id)
-					.ToList();
-
-			if (studentSessionActivities.Count > 0)
-				if (timeTableSession.SessionStatus != SessionStatuses.Running)
-				{
-					timeTableSession.SessionStatus = SessionStatuses.Running;
-					_dataProvider.UpdateTimeTableSession(timeTableSession);
-				}
-
-			await InvokeAsync(() =>
-			{
-				lock (objLock)
-				{
-					timeTableSession.Tag = studentSessionActivities;
-					StateHasChanged();
-				}
-			});
-		}
-
-	}
-
-
-	private IEnumerable<IGrouping<StudentSessionActivity, StudentSessionActivity>>? GetOptions(object? tag)
-	{
-		IEnumerable<IGrouping<StudentSessionActivity, StudentSessionActivity>>? ls = null;
-		if (tag is List<StudentSessionActivity> { Count: > 0 } lst &&
-			_activitiey != null)
-		{
-			ls = lst
-				.Where(x => x.ActivityFk == _activitiey.Id)
-				.GroupBy(x => x,
-					new ValueComparer<StudentSessionActivity>(
-						(x, y) =>
-							(x != null && y != null) &&
-							x.ActivityValueOption.Id == y.ActivityValueOption.Id,
-						option => option.ActivityValueOption.Id.GetHashCode()))
-				;
-		}
-		return ls;
-	}
-
-	private Color GetButtonColor(StudentSessionActivity ssa)
-	{
-		if (ssa.ActivityValueOption.Color == null)
-			return Color.Default;
-
-		return ssa.ActivityValueOption.Color.ToLower() switch
-		{
-			"green" => Color.Success,
-			"yellow" => Color.Warning,
-			"red" => Color.Error,
-			"blue" => Color.Primary,
-			_ => Color.Default
-		};
-	}
-
-	private RenderFragment Teacher(TimeTableSession context) =>
-		__builder =>
-		{
-			if (context.TimeTable.TeacherId == context.TeacherFk)
-			{
-				<MudChip Size="Size.Large" Color="Color.Tertiary">@context.Teacher.FullName</MudChip>
-				return;
-			}
-			<MudChip Size="Size.Small">
-				<MudChip Size="Size.Large" Color="Color.Tertiary">@context.Teacher.FullName</MudChip>
-				<MudChip Color="Color.Dark" Label="true">جایگزین</MudChip>
-				<MudChip Size="Size.Small" Color="Color.Surface" Variant="Variant.Outlined">@context.TimeTable.Teacher.FullName</MudChip>
-			</MudChip>
-		};
-
-	public async ValueTask DisposeAsync()
-	{
-		if (_streamSubscriptionHandle != null) await
-			_streamSubscriptionHandle.UnsubscribeAsync();
-	}
-
-	private async Task ActivityChipClick(TimeTableSession context, SessionActivity? sa = null)
-	{
-		sa ??= _activitiey;
-		await _dialogService.ShowAsync<ClassSessionActivityMonitorWidgetDialog>(
-			$" {sa.ActivityTitle} کلاس {context.ClassRoom.ClassRoomName} جلسه {context.SessionNumber} ({context.SessionDate?.ToPersianDateTextify()} ساعت {context.SessionTime} ) دوره {context.TimeTable.Level.LevelName} مدرس {context.Teacher.FullName} ",
-			new DialogParameters<ClassSessionActivityMonitorWidgetDialog>
-					{
-				{ dialog => dialog.TimeTableSession, context },
-				{ dialog => dialog.SessionActivity , sa}
-					},
-			new DialogOptions()
-				{
-					CloseButton = true,
-					CloseOnEscapeKey = true,
-					DisableBackdropClick = false,
-					MaxWidth = MaxWidth.Large,
-					FullWidth = true
-				});
-	}
-
-
-
-
 	private RenderFragment Level(TimeTableSession context) => __builder =>
 	{
 		<MudChip Size="Size.Small" Label="true" Variant="Variant.Outlined">
@@ -361,7 +151,7 @@
 	private RenderFragment OtherActivities(TimeTableSession context) => __builder =>
 	{
 		if (context.Tag is List<StudentSessionActivity> { Count: > 0 } lst &&
-			_activitiey != null)
+		    _activitiey != null)
 		{
 			var ls = lst
 				.Where(x => x.ActivityFk != _activitiey.Id)
@@ -382,6 +172,21 @@
 			}
 		}
 	};
+
+	private RenderFragment Teacher(TimeTableSession context) =>
+		__builder =>
+		{
+			if (context.TimeTable.TeacherId == context.TeacherFk)
+			{
+				<MudChip Size="Size.Large" Color="Color.Tertiary">@context.Teacher.FullName</MudChip>
+				return;
+			}
+			<MudChip Size="Size.Small">
+				<MudChip Size="Size.Large" Color="Color.Tertiary">@context.Teacher.FullName</MudChip>
+				<MudChip Color="Color.Dark" Label="true">جایگزین</MudChip>
+				<MudChip Size="Size.Small" Color="Color.Surface" Variant="Variant.Outlined">@context.TimeTable.Teacher.FullName</MudChip>
+			</MudChip>
+		};
 
 }
 

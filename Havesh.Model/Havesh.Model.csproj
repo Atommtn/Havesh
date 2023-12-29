@@ -14,10 +14,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
-    <PackageReference Include="Microsoft.Orleans.Sdk" Version="7.2.3" />
-    <PackageReference Include="Microsoft.Orleans.Serialization" Version="7.2.3" />
-    <PackageReference Include="MudBlazor" Version="6.11.0" />
-    <PackageReference Include="Olive" Version="2.1.353" />
+    <PackageReference Include="Microsoft.Orleans.Sdk" Version="7.2.4" />
+    <PackageReference Include="Microsoft.Orleans.Serialization" Version="7.2.4" />
+    <PackageReference Include="MudBlazor" Version="6.11.1" />
+    <PackageReference Include="Olive" Version="2.1.355" />
   </ItemGroup>
 
 </Project>
