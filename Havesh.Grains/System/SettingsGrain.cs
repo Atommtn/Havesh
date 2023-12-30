@@ -72,9 +72,12 @@ public class SettingsGrain : Grain, ISettingsGrain
 
 	public Task<TimeSpan> Time()
 	{
-		var stateTime = _persistentState.State.Time ?? DateTime.Now.TimeOfDay;
-		if (!_persistentState.State.IsDebug)
-			stateTime = DateTime.Now.TimeOfDay;
+		var stateTime = _persistentState.State.IsDebug switch
+		{
+			true when _persistentState.State.Time != null => (TimeSpan)_persistentState.State.Time,
+			false => DateTime.UtcNow.AddHours(3.5).TimeOfDay,
+			_ => DateTime.UtcNow.AddHours(3.5).TimeOfDay
+		};
 		return Task.FromResult(stateTime);
 	}
 }
