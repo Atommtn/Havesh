@@ -160,8 +160,9 @@ public class WidgetServiceBase
 	{
 		// _TODO: Should be remark ->
 		//var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
-		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
-		var startTime = await settingsGrain.Time();
+		//var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
+		//var startTime = await settingsGrain.Time();
+		var startTime = DateTime.UtcNow.AddHours(3.5).TimeOfDay;
 		// var startTime = UserSession.Debug?.time ?? DateTime.Now.TimeOfDay;
 
 		term ??= await GetTerm();
