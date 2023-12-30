@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Xml;
 using Amazon.Util;
 using Havesh.Domain;
+using Havesh.Model.Data;
 using Havesh.Model.Model;
 using Serilog;
 using HaveshApp.Admin.Authentication;
@@ -207,10 +208,10 @@ public partial class DailyJVPage
 			Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
 			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
 			await _dailyJVListComponent.FilterData();
-			await Reset();
-            await PrintDailyJvFishClick();
+            await PrintDailyJvFishClick(_dailyJV);
+            await Reset();
 
-        }
+		}
 		catch (Exception e)
 		{
 			Snackbar.Add(e.Message, Severity.Error);
@@ -218,9 +219,9 @@ public partial class DailyJVPage
 		//NavigationManager.NavigateTo(NavigationManager.Uri);
 
 	}
-    async Task PrintDailyJvFishClick()
+    async Task PrintDailyJvFishClick(BaseModel dailyJv)
     {
-        await BrowserService.OpenInNewTabAsync($"/BillPrint/{_dailyJV.Id}");
+        await BrowserService.OpenInNewTabAsync($"/BillPrint/{dailyJv.Id}");
     }
 
     async Task<ShokouhPardisLevelClass?> GetStudentLevel(ShokouhPardisStudentClass? student, ShokouhPardisTermClass term)
