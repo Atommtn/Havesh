@@ -15,7 +15,7 @@
             <MudItem xs="12" md="6">
                 @if (timeTable != null)
                 {
-                    <TimeTableItemComponent TimeTable="timeTable">
+                    <TimeTableItemComponent ShowRecordId="true" TimeTable="timeTable">
                         <ChildContent>
                             @if (bookPrice != null)
                             {
@@ -50,7 +50,7 @@
 
     <MudTabPanel Text="واریز شهریه">
         <TermSelectorComponent @bind-Term="Term" />
-        <DailyJvRecordListComponent selectedTerm="Term" Student="Student">
+        <DailyJvRecordListComponent ShowRecordId="true" selectedTerm="Term" Student="Student">
 
         </DailyJvRecordListComponent>
     </MudTabPanel>

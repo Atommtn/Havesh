@@ -207,8 +207,9 @@ public partial class DailyJVPage
 			Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
 			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
 			await _dailyJVListComponent.FilterData();
-			await Reset();
             await PrintDailyJvFishClick();
+            await Reset();
+            
 
         }
 		catch (Exception e)

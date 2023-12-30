@@ -83,13 +83,13 @@
         {
 
             _currentTimetable = timeTable;
-            await Task.Delay(50);
+            await Task.Delay(10);
             StateHasChanged();
             _progressbarTimeTable.Value++;
             try
             {
                 await TTSessionService.GenerateTimeTableSessions(timeTable);
-                await Task.Delay(50);
+                await Task.Delay(10);
             }
             catch (Exception e)
             {
