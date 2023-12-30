@@ -21,8 +21,10 @@ public partial class DailyJvRecordListComponent
 	public ShokouhPardisStudentClass? Student { get; set; }
 	[Parameter]
 	public bool SearchTextDiasabled { get; set; }
-        
-	private ShokouhPardisTermClass _term;
+    [Parameter]
+    public bool ShowRecordId { get; set; }
+
+    private ShokouhPardisTermClass _term;
 	[Parameter]
 	public ShokouhPardisTermClass? selectedTerm
 	{

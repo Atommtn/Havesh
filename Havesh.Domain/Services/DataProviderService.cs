@@ -2360,15 +2360,26 @@ public class DataProviderService
 			.Select(x => x.TimeTable).ToList();
 	}
 
-	public void StudentMove(ShokouhPardisTimeTable timeTableOrig, ShokouhPardisTimeTable TimeTabelNew, ShokouhPardisStudentClass student)
+	public void StudentMove(ShokouhPardisTimeTable sourceTT,
+                            ShokouhPardisTimeTable destinationTT,
+                            ShokouhPardisStudentClass student)
 	{
 		//add New
-		var FindTimeTableStudent = DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault(x => x.TimeTableId == timeTableOrig.Id &&
+		var currentRecord = DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault
+        (x => x.TimeTableId == sourceTT.Id &&
 			x.StudentId == student.Id);
-		if (FindTimeTableStudent != null)
+        var dailyJvs = DbContext.ShokouhPardisDailyJvs.Where(x=>x.StudentId == student.Id &&
+                                                                             x.TimeTableFk == sourceTT.Id).ToList();
+
+        if (currentRecord != null)
 		{
-			FindTimeTableStudent.TimeTableId = TimeTabelNew.Id;
-			DbContext.Update(FindTimeTableStudent);
+            if (dailyJvs.Any())
+            {
+				dailyJvs.ForEach(x=>x.TimeTableFk = destinationTT.Id);
+            }
+			currentRecord.TimeTableId = destinationTT.Id;
+
+			//DbContext.Update(currentRecord);
 			SaveAll();
 		}
 

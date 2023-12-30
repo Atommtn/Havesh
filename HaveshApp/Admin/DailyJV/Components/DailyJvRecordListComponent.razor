@@ -32,7 +32,8 @@
         <col />
     </ColGroup>
     <HeaderContent>
-        <MudTh></MudTh>
+        <MudTh>
+            </MudTh>
         <MudTh>نام و نام خانوادگی</MudTh>
         <MudTh>تاریخ</MudTh>
         <MudTh>نوع پرداخت</MudTh>
@@ -49,10 +50,11 @@
         <MudTh Class="mud-table-cell-custom-group" colspan="2">جمع مبلغ به حروف: @(context.Items.Sum((e) => e.Fee).NumberToText(Language.Persian) + " تومان ")</MudTh>
             <br />
             <MudTh Class="mud-table-cell-custom-group" colspan="2">جمع مبلغ به عدد: @(context.Items.Sum((e) => e.Fee).ToString("##,###") + " تومان ")</MudTh>
-
+            
         </GroupHeaderTemplate>
         <RowTemplate Context="dJV">
-            <MudTd></MudTd>
+            <MudTd>@if(ShowRecordId)@dJV.Id
+            </MudTd>
             <MudTd DataLabel="نام زبان آموز">@dJV.Student</MudTd>
             <MudTh>@dJV.CurrentDate?.Date.ToPersianDateTextify()</MudTh>
             <MudTd DataLabel="شیوه پرداخت">@dJV.PaymentType</MudTd>
