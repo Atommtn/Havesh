@@ -25,4 +25,13 @@ public class SessionActivityOptionManagerGrain : HaveshManagerGrain , ISessionAc
     }
 
 
+    public async Task<List<SessionActivityValueOption>> GetSessionActivityOptions(int sessionActivityId)
+    {
+	    return CacheManager.GetOrSet("options" , () =>
+	    {
+		    var sessionActivityValueOptions = _dataProviderService.GetSessionActivityValueOptions(sessionActivityId);
+		    return sessionActivityValueOptions;
+
+	    }, CacheExpireTime);
+    }
 }

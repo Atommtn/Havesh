@@ -1,12 +1,10 @@
 ﻿@page "/RollCall/{SessionId:int}/{SessionActivityId:int}"
-@using DNTPersianUtils.Core
 @using Havesh.Model.Model
 @using HaveshApp.Admin.Dashboard.Widgets.Teacher
-@using Microsoft.EntityFrameworkCore
 @using Olive
 @using PersianDate.Standard
-@using Serilog.Core
 @layout PersianPagesLayout
+
 @if (SessionItem is null || SessionActivityItem is null)
 {
 	<MudProgressCircular Indeterminate="true" Color="Color.Warning" />

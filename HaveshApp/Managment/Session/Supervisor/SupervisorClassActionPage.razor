@@ -31,7 +31,7 @@
             //TimeTableItem = _dataProvider.GetTimeTable(_timeTableId);
             _session = _dataProvider.GetSession(_sessionId);
             if (_session != null)
-                _activities = _dataProvider.GetSessionActivities(_session);
+                _activities = _dataProvider.GetGeneralSessionActivities(_session);
         }
     }
 
