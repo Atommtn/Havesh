@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 using HaveshApp.Admin.Student;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using System.Globalization;
 using System.Linq;
 using HaveshApp.Admin.Components;

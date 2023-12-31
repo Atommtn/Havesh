@@ -2,7 +2,7 @@
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havesh.Domain.Services;
+namespace Havesh.Application.Services;
 
 public class DashboardService
 {

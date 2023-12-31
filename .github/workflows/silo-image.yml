@@ -17,4 +17,4 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: Havesh.Silo/Dockerfile
-        tags: "SiloV1,SiloLatest"
+        tags: "SiloV4"

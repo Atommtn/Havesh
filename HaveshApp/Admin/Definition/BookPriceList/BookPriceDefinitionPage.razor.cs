@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Serilog;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 
 namespace HaveshApp.Admin.Definition.BookPriceList;
 

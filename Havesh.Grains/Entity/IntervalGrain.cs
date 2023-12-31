@@ -1,5 +1,5 @@
 ﻿using Havesh.Common;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
@@ -9,7 +9,7 @@ using Orleans.Runtime;
 
 namespace Havesh.Grains.Entity;
 
-public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervlalGrain
+public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervallGrain
 {
 	public IntervalGrain(
 		[PersistentState(nameof(IntervalGrain) , HaveshConstants.GrainStorageProviderName)]
@@ -28,7 +28,7 @@ public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervlalGrai
 
 	protected override void UpdateEntity(ShokouhPardisInterval entity)
 	{
-		throw new NotImplementedException();
+
 	}
 
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables(int weekdayId)

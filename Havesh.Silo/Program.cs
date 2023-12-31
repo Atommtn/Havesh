@@ -1,6 +1,6 @@
 using System.Net;
 using Havesh.Common;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Entity;
 using Havesh.Grains.Manager;
@@ -92,6 +92,8 @@ builder.Host.UseOrleans(siloBuilder =>
 		;
 
 });
+
+builder.Services.AddSingleton(RegisterGrainCachependecies.RegisterDependencies());
 
 var app = builder.Build();
 

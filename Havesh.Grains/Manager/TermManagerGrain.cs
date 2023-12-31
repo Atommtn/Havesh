@@ -1,4 +1,4 @@
-﻿using Havesh.Domain.Services;
+﻿using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Manager;
 using Havesh.Grains.Entity;
@@ -10,7 +10,7 @@ using Orleans.Concurrency;
 namespace Havesh.Grains.Manager;
 
 //[StatelessWorker]
-public class TermManagerGrain : HaveshManagerGrain, ITermGrainManager
+public class TermManagerGrain : HaveshManagerGrainBase, ITermGrainManager
 {
 	DataProviderService DataProviderService { get; }
 

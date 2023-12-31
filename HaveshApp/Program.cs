@@ -11,12 +11,13 @@ using HaveshApp.Classes;
 using HaveshApp.Classes.Serilog;
 using HaveshApp.Classes.SignalR;
 using HaveshApp.Managment.Session;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.ResponseCompression;
 using Append.Blazor.Notifications;
 using System.Globalization;
 using Havesh.Common;
+using Havesh.Domain.Services;
 using Microsoft.AspNetCore.Localization;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Dashboard.Widgets.Supervisor;
@@ -25,6 +26,9 @@ using Havesh.OrleansClient;
 using Orleans.Configuration;
 using Orleans.Streams;
 using Microsoft.AspNetCore.Diagnostics;
+using Havesh.Domain.Infrastructure;
+using Havesh.Grains.Entity;
+using Havesh.Grains.System;
 
 // Configure logging to log to MSSqlServer database
 
@@ -60,7 +64,7 @@ Log.Logger = new LoggerConfiguration()
 
 
 
-builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddDbContext<MyDbContext>(ServiceLifetime.Transient);
 builder.Services.AddTransient<DataProviderService>();
 
 builder.Services.AddSingleton<SignalrGrainClientService>();
@@ -159,6 +163,9 @@ builder.Services.AddOrleansClient(clientBuilder =>
 		})
 		;
 });
+
+
+builder.Services.AddSingleton(RegisterGrainCachependecies.RegisterDependencies());
 
 builder.Services.AddHostedService<SignalrGrainClientInitializationService>();
 

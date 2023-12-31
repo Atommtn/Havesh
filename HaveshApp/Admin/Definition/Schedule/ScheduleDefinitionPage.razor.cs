@@ -4,7 +4,7 @@ using MudBlazor;
 using Serilog;
 using HaveshApp.Admin.Components;
 using HaveshApp.Admin.Definition.DaySession;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 
 namespace HaveshApp.Admin.Definition.Schedule;
 

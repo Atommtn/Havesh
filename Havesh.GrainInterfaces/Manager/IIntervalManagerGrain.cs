@@ -9,7 +9,5 @@ namespace Havesh.GrainInterfaces.Manager;
 
 public interface IIntervalManagerGrain : IGrainWithGuidKey
 {
-	Task<IEnumerable<ShokouhPardisInterval>?> GetIntervals(int TermId);
-	Task<IEnumerable<ShokouhPardisClassRoom>?> GetClassRooms();
 
 }

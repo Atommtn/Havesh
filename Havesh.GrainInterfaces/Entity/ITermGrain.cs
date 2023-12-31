@@ -4,6 +4,10 @@ namespace Havesh.GrainInterfaces.Entity;
 
 public interface ITermGrain : IGrainWithIntegerKey
 {
-	public Task<ShokouhPardisInterval?> GetIntervalByStartTime(TimeSpan startTime, TimeSpan fromMinutes);
+	Task<IEnumerable<ShokouhPardisClassRoom>> GetClassRooms();
+
+	Task<IEnumerable<ShokouhPardisInterval>> GetIntervals(int TermId);
+
+	Task<ShokouhPardisInterval?> GetIntervalByStartTime(TimeSpan startTime, TimeSpan fromMinutes);
 
 }

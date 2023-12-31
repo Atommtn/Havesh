@@ -1,6 +1,7 @@
 ﻿using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Havesh.Application.Services;
 using Havesh.Domain.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
@@ -133,7 +134,10 @@ public partial class StudentListRollCallComponenets
 			ActivityValue = obj.Item3.Value,
 		};
 		
+
 		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+
+		_dataProvider.SaveStudentSessionActivity(studentSessionActivity);
 		await manager.CreateStudentSessionActivity(studentSessionActivity);
 
         if (obj.Item3.ShowByValue != null)
@@ -158,8 +162,9 @@ public partial class StudentListRollCallComponenets
 
 	private async Task CancelStudentSessionActivity(StudentSessionActivity sac, bool reload = true)
 	{
+
+		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
 		_dataProvider.SetActivityDeleteTime(sac);
-		 var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
 		 //await manager.RemoveStudentSessionActivity(sac);
 		 await manager.NotifySessionActivity(sac);
 		_activities?.Add(sac);

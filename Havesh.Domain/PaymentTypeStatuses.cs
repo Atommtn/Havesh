@@ -1,4 +1,12 @@
 ﻿namespace Havesh.Domain;
+public static class SessionStatuses
+{
+	public const string Pending = "برگزار نشده";
+	public const string Completed = "برگزار شده";
+	public const string Canceled = "کنسل شده";
+	public const string Replaced = "جایگزین شده";
+	public const string Running = "درحال برگزاری";
+}
 
 public class PaymentTypeStatuses
 {

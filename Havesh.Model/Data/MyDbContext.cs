@@ -22,20 +22,29 @@ public partial class MyDbContext : DbContext
     public event Action<EntityEntry>? EntityAdded;
     public event Action<EntityEntry>? EntityChanged;
     public event Action<EntityEntry>? EntityDeleted;
-    
+    public event Func<EntityEntry, Task?>? EntityTouched;
+
     protected virtual void OnEntityAdded(EntityEntry entry)
     {
 	    EntityAdded?.Invoke(entry);
+	    OnEntityTouched(entry);
     }
 
-    protected virtual void OnEntityChanged(EntityEntry entry)
+	protected virtual void OnEntityChanged(EntityEntry entry)
     {
 	    EntityChanged?.Invoke(entry);
+	    OnEntityTouched(entry);
     }
 
-    protected virtual void OnEntityDeleted(EntityEntry entry)
+	protected virtual void OnEntityDeleted(EntityEntry entry)
     {
 	    EntityDeleted?.Invoke(entry);
+	    OnEntityTouched(entry);
+    }
+
+	protected virtual async Task? OnEntityTouched(EntityEntry entry)
+    {
+	    await EntityTouched?.Invoke(entry)!;
     }
 
 	public override int SaveChanges()
@@ -48,13 +57,12 @@ public partial class MyDbContext : DbContext
         foreach (var entry in ChangeTracker.Entries())
         {
 	        var entityType = entry.Entity.GetType(); //== typeof(EntityChange);
-	        var isValid = entityType.IsAssignableFrom(typeof(BaseModel)) && entry.CurrentValues.Properties.Any(x => x.Name == "Id");
+	        var isValid = entry.CurrentValues.Properties.Any(x => x.Name == "Id");
 	        if (!isValid) continue;
             
 	        switch (entry.State)
 	        {
 		        case EntityState.Added:
-                    
 			        OnEntityAdded(entry);
 			        break;
 		        case EntityState.Modified:
@@ -79,11 +87,9 @@ public partial class MyDbContext : DbContext
         }
 
         EntityChanges.AddRange(entityChanges);
-        var result = base.SaveChanges();
+        return base.SaveChanges();
         //ChangeTracker.StateChanged -= OnStateChanged;
 
-
-		return result;
     }
 
 	private void OnStateChanged(object sender, EntityStateChangedEventArgs e)
@@ -210,10 +216,10 @@ public partial class MyDbContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
-        // Apply the filter condition to all queries for the entity
-        /*modelBuilder.Entity<BranchBaseModel>().HasQueryFilter(
+		// Apply the filter condition to all queries for the entity
+		/*modelBuilder.Entity<BranchBaseModel>().HasQueryFilter(
 		    (e => e.BCode != null && (!EnableGlobalFilter || e.BCode.Contains("01"))));*/
-        modelBuilder.Entity<DashboardTemplateWidget>()
+		modelBuilder.Entity<DashboardTemplateWidget>()
             .HasKey(dt => new { dt.DashboardTemplateId, dt.WidgetId });
 
         modelBuilder.Entity<DashboardTemplateWidget>()

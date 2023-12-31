@@ -1,4 +1,4 @@
-﻿using Havesh.Domain.Services;
+﻿using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.GrainInterfaces.System;
 using Havesh.Grains.Manager;
@@ -28,7 +28,7 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables()
 	{
 		var interval = await GetInterval();
-		var intervalGrain = ClusterClient.GetGrain<IIntervlalGrain>(interval.Id);
+		var intervalGrain = ClusterClient.GetGrain<IIntervallGrain>(interval.Id);
 		var weekday = await GetWeekday();
 		var timeTables = await intervalGrain.GetIntervalTimeTables(weekday.Id);
 		return timeTables;

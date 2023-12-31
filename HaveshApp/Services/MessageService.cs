@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -71,50 +70,4 @@ public class MessageService
             }
     }
 
-}
-
-public class MessageDataProviderService : DataProviderService
-{
-	public MessageDataProviderService(MyDbContext dbContext) 
-		: base(dbContext)
-	{
-
-	}
-	public async Task<List<Message>> GetMessagesAsync()
-	{
-		return await DbContext.Messages
-			.Include(m => m.From)
-			.Include(m => m.To)
-			.Include(m => m.Attachments)
-			.Include(m => m.Actions)
-			.ToListAsync();
-	}
-
-	public async Task<Message?> GetMessageByIdAsync(int messageId)
-	{
-		return await DbContext.Messages
-			.Include(m => m.From)
-			.Include(m => m.To)
-			.Include(m => m.Attachments)
-			.Include(m => m.Actions)
-			.FirstOrDefaultAsync(m => m.Id == messageId);
-	}
-
-	public async Task<List<Message>?> GetMessagesForUserAsync(int? userId)
-	{
-		if (userId == null) return null;
-		return await DbContext.Messages
-			.Where(m => m.To.Id == userId)
-			.Include(m => m.From)
-			.Include(m => m.To)
-			.Include(m => m.Attachments)
-			.Include(m => m.Actions)
-			.ToListAsync();
-	}
-
-	public async Task SendMessageAsync(Message message)
-	{
-		DbContext.Messages.Add(message);
-		await DbContext.SaveChangesAsync();
-	}
 }

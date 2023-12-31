@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using HaveshApp.Admin.MemberShip;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Olive;
 using Log = Serilog.Log;
 

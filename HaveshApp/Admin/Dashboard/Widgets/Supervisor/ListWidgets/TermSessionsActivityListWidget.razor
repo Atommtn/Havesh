@@ -214,11 +214,11 @@
 			_weekdays = await weekdayManagerGrain.GetWeekDays();
 		}
 
-		var intervalManagerGrain = ClusterClient.GetGrain<IIntervalManagerGrain>(HaveshConstants.GeneralKey);
+		var termGrain = ClusterClient.GetGrain<ITermGrain>(Term.Id);
 		if (Term != null)
-			_intervals = await intervalManagerGrain.GetIntervals(Term.Id);
+			_intervals = await termGrain.GetIntervals(Term.Id);
 
-		_classRooms = await intervalManagerGrain.GetClassRooms();
+		_classRooms = await termGrain.GetClassRooms();
 
 	}
 

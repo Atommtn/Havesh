@@ -2,7 +2,7 @@
 
 namespace Havesh.GrainInterfaces.Common;
 
-public interface IHaveshGrain<T> : IGrainWithIntegerKey
+public interface IHaveshGrain<T> : IResetSupportGrain
 {
 	public Task<T?> Get(bool? forceFromDb = false);
 	public Task Set(T? entity);

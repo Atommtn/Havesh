@@ -1,10 +1,12 @@
 ﻿using Havesh.Common;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Entity;
+using Havesh.GrainInterfaces.Manager;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
 using Havesh.Model.Model;
 using Microsoft.Extensions.Logging;
+using Olive;
 using Orleans.Runtime;
 
 namespace Havesh.Grains.Entity;
@@ -31,14 +33,27 @@ public class TermGrain : HaveshGrain<ShokouhPardisTermClass> , ITermGrain
 	protected override ShokouhPardisTermClass? GetEntity(int id) => DataProviderService.GetTerm(id);
 	protected override void UpdateEntity(ShokouhPardisTermClass user) => DataProviderService.UpdateTerm(user);
 
+	public Task<IEnumerable<ShokouhPardisClassRoom>> GetClassRooms()
+	{
+		return CacheManager.GetOrSet($"Term-ClassRooms",
+			() => Task.FromResult(DataProviderService.GetClassRooms().OrEmpty().AsEnumerable()),
+			TimeSpan.FromHours(1));
+	}
+
+
+	public Task<IEnumerable<ShokouhPardisInterval>> GetIntervals(int termId)
+	{
+		return CacheManager.GetOrSet($"Term-Intervals-{this.GrainKey}",
+			() => Task.FromResult(DataProviderService.GetIntervals(this.GrainKey).OrEmpty().AsEnumerable())
+			, TimeSpan.FromHours(1));
+	}
+
 	public async Task<ShokouhPardisInterval?> GetIntervalByStartTime(TimeSpan startTime, TimeSpan fromMinutes)
 	{
-		PersistentState.State.Item ??= GetEntity(GrainKey);
-
-		if (PersistentState.State.Item == null) 
-			return null;
-
-		var interval = DataProviderService.GetInterval(PersistentState.State.Item, startTime, fromMinutes);
-		return interval;
+		return CacheManager.GetOrSet($"Term-Timed-Intervals-{GrainKey}-{startTime:g}" , () =>
+		{
+			var interval = DataProviderService.GetInterval(GrainKey, startTime, fromMinutes);
+			return interval;
+		}, TimeSpan.FromHours(1));
 	}
 }

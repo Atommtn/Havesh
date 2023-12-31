@@ -4,6 +4,6 @@ namespace Havesh.GrainInterfaces.Entity;
 
 public interface ISessionActivityGrain : IGrainWithIntegerKey
 {
-    Task<SessionActivityValueOption?> GetSessionActivityValueOptionByValueAsync(string value);
+	Task<SessionActivityValueOption?> GetSessionActivityValueOptionByValueAsync(string value);
 
 }

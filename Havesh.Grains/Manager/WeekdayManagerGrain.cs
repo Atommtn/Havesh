@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.Model.Model;
 
 namespace Havesh.Grains.Manager;
 
-public class WeekdayManagerGrain : HaveshManagerGrain, IWeekdayManagerGrain
+public class WeekdayManagerGrain : HaveshManagerGrainBase, IWeekdayManagerGrain
 {
 	DataProviderService DataProviderService { get; }
 

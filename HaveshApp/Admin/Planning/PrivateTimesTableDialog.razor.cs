@@ -2,7 +2,8 @@
 using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
+using Havesh.Domain;
 using HaveshApp.Classes;
 using HaveshApp.Managment.Session;
 

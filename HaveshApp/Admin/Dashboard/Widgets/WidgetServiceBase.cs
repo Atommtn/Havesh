@@ -1,4 +1,4 @@
-﻿using Havesh.Domain.Services;
+﻿using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.GrainInterfaces.Manager;
@@ -156,7 +156,7 @@ public class WidgetServiceBase
 		return weekday;
 	}
 
-	public async Task<ShokouhPardisInterval?> GetInterval(ShokouhPardisTermClass? term = null)
+	public async Task<ShokouhPardisInterval> GetInterval(ShokouhPardisTermClass? term = null)
 	{
 		// _TODO: Should be remark ->
 		//var startTime = TimeSpan.Parse("14:00");// DateTime.Now;
@@ -168,7 +168,11 @@ public class WidgetServiceBase
 		term ??= await GetTerm();
 		var termGrain = ClusterClient.GetGrain<ITermGrain>(term.Id);
 		var fromMinutes = TimeSpan.FromMinutes(3);
-		return await termGrain.GetIntervalByStartTime(startTime, fromMinutes);
+		var interval = 
+			await termGrain.GetIntervalByStartTime(startTime, fromMinutes) 
+			?? (await termGrain.GetIntervalByStartTime(startTime.Subtract(TimeSpan.FromMinutes(15)), fromMinutes) 
+			?? await termGrain.GetIntervalByStartTime(startTime.Add(TimeSpan.FromMinutes(15)), fromMinutes));
+		return interval;
 	}
 
 }

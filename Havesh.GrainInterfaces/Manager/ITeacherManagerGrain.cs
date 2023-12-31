@@ -6,5 +6,5 @@ namespace Havesh.Grains.Manager;
 public interface ITeacherManagerGrain : IGrainWithGuidKey
 {
 	public Task<ShokouhPardisTeacherClass?> GetTeacherByUserId(int? userId);
-	public Task<ShokouhPardisTeacherClass?> GetTeacherByUser(IHaveshGrain<User> user);
+	public Task<ShokouhPardisTeacherClass?> GetTeacherByUser(User user);
 }

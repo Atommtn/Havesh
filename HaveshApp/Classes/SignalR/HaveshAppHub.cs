@@ -1,5 +1,5 @@
 ﻿
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.OrleansClient;
 using Microsoft.AspNetCore.SignalR;
 

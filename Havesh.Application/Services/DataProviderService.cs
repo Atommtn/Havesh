@@ -1,23 +1,28 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 using System.Xml.Linq;
+using Havesh.Domain;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Olive;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore.Query;
 using MudBlazor;
-using static System.Collections.Specialized.BitVector32;
+using Havesh.Domain.Infrastructure;
+using Havesh.Model.Data;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 
 /*
 using Havesh.Model.Model.MyDbContext;
 */
 
-namespace Havesh.Domain.Services;
+namespace Havesh.Application.Services;
 
-public class DataProviderService
+public class DataProviderService : IAsyncDisposable , IDisposable
 {
+	private readonly GrainEntityDependency _grainEntityDependency;
+	private readonly IClusterClient _clusterClient;
 	public MyDbContext DbContext { get; }
 
 	public void SaveAll()
@@ -25,10 +30,36 @@ public class DataProviderService
 		DbContext.SaveChanges();
 	}
 
-	public DataProviderService(MyDbContext dbContext)
+	public DataProviderService(
+		MyDbContext dbContext,
+		GrainEntityDependency grainEntityDependency,
+		IClusterClient clusterClient
+		)
 	{
+		_grainEntityDependency = grainEntityDependency;
+		_clusterClient = clusterClient;
 		DbContext = dbContext;
+
+		dbContext.EntityTouched += DbContextOnEntityTouched;
 		//dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+	}
+	public async ValueTask DisposeAsync()
+	{
+		DbContext.EntityTouched -= DbContextOnEntityTouched;
+		await DbContext.DisposeAsync();
+	}
+	public void Dispose()
+	{
+		DbContext.EntityTouched -= DbContextOnEntityTouched;
+		DbContext.Dispose();
+	}
+
+	private async Task DbContextOnEntityTouched(EntityEntry entry)
+	{
+		Console.WriteLine(entry.Entity.ToString() + " - " + entry.State);
+		if (entry.Entity is BaseModel entity)
+			await _grainEntityDependency.ResetGrainsDependsOn(entity,_clusterClient);
+
 	}
 
 	public List<ShokouhPardisYearClass> GetYears()
@@ -78,33 +109,33 @@ public class DataProviderService
 
 	public bool SaveTeacherTimeTable(ShokouhPardisTimeTable timeTable)
 	{
-		
-        var title = $"{timeTable.Teacher} -> {timeTable.Term.Year.YearName} -> {timeTable.Term.TermName} -> {timeTable.Schedule.Title}";
-        if (timeTable.IsPrivate)
-            title += "خصوصی ";
 
-        else if (timeTable.Id == 0 && TimeTableDuplicate(timeTable))
-            return true;
-        timeTable.Title = title;
-		
+		var title = $"{timeTable.Teacher} -> {timeTable.Term.Year.YearName} -> {timeTable.Term.TermName} -> {timeTable.Schedule.Title}";
+		if (timeTable.IsPrivate)
+			title += "خصوصی ";
 
-        CheckAndChangeSession(timeTable);
+		else if (timeTable.Id == 0 && TimeTableDuplicate(timeTable))
+			return true;
+		timeTable.Title = title;
+
+
+		CheckAndChangeSession(timeTable);
 		DbContext.ShokouhPardisTimeTables.Update(timeTable);
 		SaveAll();
 		return false;
 	}
 
-    private void CheckAndChangeSession(ShokouhPardisTimeTable timeTable)
-    {
-        var timeTableSessions = DbContext.TimeTableSessions.Where(x => x.TimeTableFk == timeTable.Id).ToList();
-        if (timeTableSessions.Any())
-            foreach (var timeTableSession in timeTableSessions)
-                timeTableSession.TeacherFk = timeTable.Id;
-        //DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
+	private void CheckAndChangeSession(ShokouhPardisTimeTable timeTable)
+	{
+		var timeTableSessions = DbContext.TimeTableSessions.Where(x => x.TimeTableFk == timeTable.Id).ToList();
+		if (timeTableSessions.Any())
+			foreach (var timeTableSession in timeTableSessions)
+				timeTableSession.TeacherFk = timeTable.Id;
+		//DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
 
-    }
+	}
 
-    bool TimeTableDuplicate(ShokouhPardisTimeTable teacherTimesheet)
+	bool TimeTableDuplicate(ShokouhPardisTimeTable teacherTimesheet)
 	{
 		var result = DbContext.ShokouhPardisTimeTables.Any(x =>
 			x.TermId == teacherTimesheet.Term.Id &&
@@ -730,14 +761,16 @@ public class DataProviderService
 
 	public List<ShokouhPardisDailyJv> GetPagedJvs(int page, int size, DateTime? selDate, string? searchText)
 	{
-		var queryable = DbContext.ShokouhPardisDailyJvs
-			.Include(x => x.Student)
+		var queryBase = DbContext.ShokouhPardisDailyJvs
+			.Include(x => x.Student);
+		var queryable = queryBase
 			.Where(x => selDate != null
 						&& x.CurrentDate >= selDate.Value.Date
 						&& x.CurrentDate < selDate.Value.Date.AddDays(1))
 			.AsQueryable();
 		if (searchText is not null)
 		{
+			bool checkPosCodeDone = false;
 			var parts = searchText.Split(new[] { ' ', '-', ',' }, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var part in parts)
 			{
@@ -749,10 +782,13 @@ public class DataProviderService
 																	   (x.FeeFor != null && x.FeeFor.Contains(part)) ||
 																	   x.Id.ToString().Contains(part) ||
 																	   (x.Description != null && x.Description.Contains(part))));
-				if (int.TryParse(part, out var code))
+				if (int.TryParse(part, out var code) && !checkPosCodeDone)
 				{
-					queryable = queryable.Where(x =>
-						!string.IsNullOrEmpty(part) && x.PosCode != null && x.PosCode == code);
+					var Xqueryable = queryBase
+						.Where(x =>
+							(x.PosCode != null && x.PosCode == code));
+					queryable = queryable.Union(Xqueryable);
+					checkPosCodeDone = true;
 				}
 			}
 
@@ -1804,10 +1840,10 @@ public class DataProviderService
 	public List<SessionActivity> GetGeneralSessionActivities()
 	{
 		var sessionActivities = DbContext.SessionActivities
-			.Where(x=>
+			.Where(x =>
 					x.Levels == null &&
 					x.LevelGroups == null &&
-				    x.SessionNo == null
+					x.SessionNo == null
 				)
 			.Include(x => x.ValueOptions)
 			.ToList();
@@ -1826,12 +1862,18 @@ public class DataProviderService
 		return shokouhPardisInterval;
 
 	}
-	public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time, TimeSpan offset)
+
+	public ShokouhPardisInterval? GetInterval(int termId, TimeSpan time, TimeSpan offset)
 	{
 		//throw new NotImplementedException();
 		var interval = DbContext.ShokouhPardisIntervals.FirstOrDefault(x =>
-			x.TermId == term.Id && time >= x.StartTime && time <= x.EndTime);
+			x.TermId == termId && time.Subtract(offset) >= x.StartTime && time.Add(offset) <= x.EndTime);
 		return interval;
+	}
+
+	public ShokouhPardisInterval? GetInterval(ShokouhPardisTermClass term, TimeSpan time, TimeSpan offset)
+	{
+		return GetInterval(term.Id, time, offset);
 	}
 
 	public ShokouhPardisTeacherClass? GetTeacherByUserId(int? userId)
@@ -1981,7 +2023,7 @@ public class DataProviderService
 		return list;
 	}
 
-	public  List<StudentSessionActivity> GetTimetableStudentsSessionActivities(int timetableId)
+	public List<StudentSessionActivity> GetTimetableStudentsSessionActivities(int timetableId)
 	{
 		var result =
 			DbContext
@@ -2021,7 +2063,7 @@ public class DataProviderService
 							  DbContext.SessionActivities
 							 //.AsNoTrackingWithIdentityResolution()
 							 .Include(x => x.ValueOptions)
-							 .OrderBy(x=>x.Id)
+							 .OrderBy(x => x.Id)
 							 .FirstOrDefault();
 		return sessionActivity;
 	}
@@ -2182,8 +2224,8 @@ public class DataProviderService
 	public void SetActivityDeleteTime(StudentSessionActivity sac)
 	{
 		sac.ActivityDeletedDateTime = DateTime.Now;
-		
-		
+
+
 		DbContext.StudentSessionActivities.Update(sac);
 		SaveAll();
 
@@ -2225,12 +2267,12 @@ public class DataProviderService
 		return DbContext.ShokouhPardisTermClasses
 			.FirstOrDefault(x => x.Id == i);
 	}
-	
+
 	public ShokouhPardisTermClass? GetLatestTerm()
 	{
 		return DbContext
 			.ShokouhPardisTermClasses
-			.OrderBy(x=>x.EndDate)
+			.OrderBy(x => x.EndDate)
 			.LastOrDefault();
 	}
 
@@ -2361,22 +2403,22 @@ public class DataProviderService
 	}
 
 	public void StudentMove(ShokouhPardisTimeTable sourceTT,
-                            ShokouhPardisTimeTable destinationTT,
-                            ShokouhPardisStudentClass student)
+							ShokouhPardisTimeTable destinationTT,
+							ShokouhPardisStudentClass student)
 	{
 		//add New
 		var currentRecord = DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault
-        (x => x.TimeTableId == sourceTT.Id &&
+		(x => x.TimeTableId == sourceTT.Id &&
 			x.StudentId == student.Id);
-        var dailyJvs = DbContext.ShokouhPardisDailyJvs.Where(x=>x.StudentId == student.Id &&
-                                                                             x.TimeTableFk == sourceTT.Id).ToList();
+		var dailyJvs = DbContext.ShokouhPardisDailyJvs.Where(x => x.StudentId == student.Id &&
+																			 x.TimeTableFk == sourceTT.Id).ToList();
 
-        if (currentRecord != null)
+		if (currentRecord != null)
 		{
-            if (dailyJvs.Any())
-            {
-				dailyJvs.ForEach(x=>x.TimeTableFk = destinationTT.Id);
-            }
+			if (dailyJvs.Any())
+			{
+				dailyJvs.ForEach(x => x.TimeTableFk = destinationTT.Id);
+			}
 			currentRecord.TimeTableId = destinationTT.Id;
 
 			//DbContext.Update(currentRecord);
@@ -2572,24 +2614,25 @@ public class DataProviderService
 		return query.ToArray();
 	}
 
-    public void DeleteSessionActivity(SessionActivity context)
-    {
-        var activity = DbContext.SessionActivities.FirstOrDefault(x => x.Id == context.Id);
-        if (activity != null)
-        {
-            DbContext.SessionActivities.Remove(activity);
+	public void DeleteSessionActivity(SessionActivity context)
+	{
+		var activity = DbContext.SessionActivities.FirstOrDefault(x => x.Id == context.Id);
+		if (activity != null)
+		{
+			DbContext.SessionActivities.Remove(activity);
 
-            SaveAll();
-        }
+			SaveAll();
+		}
 
 
-    }
+	}
 
-    public List<SessionActivityValueOption> GetSessionActivityValueOptions(int sessionActivityId)
-    {
-	    return DbContext.SessionActivityValueOptions
-		    .Where(x => x.SessionActivityFk == sessionActivityId)
-		    .ToList();
-    }
+	public List<SessionActivityValueOption> GetSessionActivityValueOptions(int sessionActivityId)
+	{
+		return DbContext.SessionActivityValueOptions
+			.Where(x => x.SessionActivityFk == sessionActivityId)
+			.ToList();
+	}
+
 }
 

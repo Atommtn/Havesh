@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Manager;
 using Havesh.Model.Model;
@@ -8,7 +8,7 @@ using Olive;
 
 namespace Havesh.Grains.Manager;
 
-public class TimeTableManagerGrain : HaveshManagerGrain, ITimeTableManagerGrain
+public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGrain
 {
 	DataProviderService DataProviderService { get; }
 
@@ -63,7 +63,7 @@ public class TimeTableManagerGrain : HaveshManagerGrain, ITimeTableManagerGrain
 			//Console.Beep();
 			return Task.FromResult(timeTables);
 
-		}, search.IsEmpty() ? CacheExpireTime : TimeSpan.FromMinutes(2));
+		}, search.IsEmpty() ? CacheExpireTime : TimeSpan.FromMinutes(1));
 	}
 
 	public async Task<IDictionary<string, List<ShokouhPardisTimeTable>>?> GetTermTimeTablesGroupBySchedule(int termId, int[] weekdayIds, string? search = null)
@@ -73,7 +73,7 @@ public class TimeTableManagerGrain : HaveshManagerGrain, ITimeTableManagerGrain
 			var timeTables = DataProviderService.GetTermTimeTablesGroupBySchedule(termId, weekdayIds, search);
 			return timeTables;
 
-		}, search.IsEmpty() ? CacheExpireTime : TimeSpan.FromMinutes(2));
+		}, search.IsEmpty() ? CacheExpireTime : TimeSpan.FromMinutes(1));
 	}
 
 }

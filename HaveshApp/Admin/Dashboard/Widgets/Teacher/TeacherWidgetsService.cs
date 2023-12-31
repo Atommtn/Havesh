@@ -1,4 +1,4 @@
-﻿using Havesh.Domain.Services;
+﻿using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.GrainInterfaces.Manager;

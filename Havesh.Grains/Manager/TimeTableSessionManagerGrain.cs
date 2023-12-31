@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Havesh.Common;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Entity;
@@ -13,7 +13,7 @@ using Orleans.Streams;
 
 namespace Havesh.Grains.Manager;
 
-public class TimeTableSessionManagerGrain : HaveshManagerGrain, ITimeTableSessionManagerGrain
+public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSessionManagerGrain
 {
 	private DataProviderService DataProviderService { get; }
 

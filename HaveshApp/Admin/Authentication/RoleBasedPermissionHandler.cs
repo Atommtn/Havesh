@@ -1,6 +1,6 @@
 ﻿using Havesh.Model.Model;
 using Microsoft.AspNetCore.Authorization;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 
 namespace HaveshApp.Admin.Authentication;
 
@@ -16,13 +16,15 @@ public class RoleBasedPermissionHandler : AuthorizationHandler<PermissionRequire
         InitRoles();
 
     }
-    public void InitRoles()
+
+    private async void InitRoles()
     {
-        using var scope = _serviceProvider.CreateScope();
+	    await using var scope = _serviceProvider.CreateAsyncScope();
         _providerService = scope.ServiceProvider.GetRequiredService<DataProviderService>();
         _roles = _providerService.GetRoles();
-
+        
     }
+
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
         if (context.User.Identity is { IsAuthenticated: false })

@@ -1,4 +1,6 @@
-﻿namespace Havesh.GrainInterfaces.Entity;
+﻿using Havesh.Model.Model;
+
+namespace Havesh.GrainInterfaces.Entity;
 
 public interface ISessionActivityValueOptionGrain : IGrainWithIntegerKey
 {

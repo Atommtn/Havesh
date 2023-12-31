@@ -3,6 +3,7 @@ using HaveshApp.Classes;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Configuration;
+using Havesh.Application.Services;
 using Havesh.Model.Model;
 
 namespace Havesh.Domain.Services;

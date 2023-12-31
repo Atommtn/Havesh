@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Havesh.GrainInterfaces\Havesh.GrainInterfaces.csproj" />
     <ProjectReference Include="..\Havesh.Model\Havesh.Model.csproj" />
   </ItemGroup>
 

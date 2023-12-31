@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havesh.Common;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.Grains.Common;
 using Havesh.Grains.GrainState;
@@ -36,13 +36,14 @@ public class SessionActivityGrain : HaveshGrain<SessionActivity> , ISessionActiv
 		DataProviderService.SaveSessionActivity(entity);
 	}
 
-    public async Task<SessionActivityValueOption?> GetSessionActivityValueOptionByValueAsync(string value)
-    {
-        return CacheManager.GetOrSet("SAP-" + value, () =>
-        {
-            var optionByValue = DataProviderService.GetSessionActivityValueOptionByValue(GrainKey, value);
-            return optionByValue;
+	public async Task<SessionActivityValueOption?> GetSessionActivityValueOptionByValueAsync(string value)
+	{
+		return CacheManager.GetOrSet("SAP-" + value, () =>
+		{
+			var optionByValue = DataProviderService.GetSessionActivityValueOptionByValue(GrainKey, value);
+			return optionByValue;
 
-        }, TimeSpan.FromHours(1));
-    }
+		}, TimeSpan.FromHours(1));
+	}
+
 }

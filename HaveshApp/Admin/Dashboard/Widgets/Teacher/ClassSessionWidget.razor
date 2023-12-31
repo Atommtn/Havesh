@@ -2,6 +2,7 @@
 @using Havesh.Model.Data.Dashboard
 @using Havesh.Model.Model
 @using HaveshApp.Classes
+@using Havesh.Domain
 @inherits HaveshApp.Admin.DashboardManagement.WidgetResolvers.WidgetResolverBase
 <SmallWidgetContainer WidgetSetting="WidgetSetting" ViewRequired="_timetableSession" ToRoles="...Teacher">
 	@_timetableSession?.SessionNumber از @_timetable?.Sessions.Count(x=>x.SessionStatus != SessionStatuses.Canceled)

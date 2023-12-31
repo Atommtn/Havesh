@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,15 @@ public class CacheManager
 	{
 		_cache = memoryCache;
 	}
+
+	private readonly ImmutableList<object> _keys = ImmutableList<object>.Empty;
+	
+	public void ClearCache()
+	{
+		foreach (var key in _keys.ToImmutableArray()) 
+			Remove(key);
+	}
+
 
 	public async Task<T> GetOrSet<TK,T>(TK key, Func<Task<T>> getItemCallback, TimeSpan cacheTime)
 	{
@@ -32,8 +42,11 @@ public class CacheManager
 		};
 
 		// Save data in cache
-		if (key != null) 
-			_cache.Set(key, cacheEntry, cacheEntryOptions);
+		if (key == null) 
+			return cacheEntry;
+
+		_keys.Add(key);
+		_cache.Set(key, cacheEntry, cacheEntryOptions);
 
 		return cacheEntry;
 	}
@@ -64,4 +77,11 @@ public class CacheManager
 	{
 		return _cache.Set(key, value);
 	}
+
+	public void Remove<TK>(TK key )
+	{
+		_keys.Remove(key);
+		_cache.Remove(key);
+	}
+
 }

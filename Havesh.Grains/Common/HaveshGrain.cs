@@ -1,5 +1,5 @@
 ﻿using Havesh.Common;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 using Havesh.GrainInterfaces;
 using Havesh.GrainInterfaces.Common;
 using Havesh.Grains.GrainState;
@@ -105,5 +105,23 @@ public abstract class HaveshGrain<T>
 
         delEntity.IsDeleted = true;
         UpdateEntity(entity);
+    }
+
+    public Task DeactivateGrainAsync()
+    {
+        DeactivateOnIdle();
+        return Task.CompletedTask;
+    }
+
+    public override Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
+    {
+	    Logger.LogWarning(" -------------------------------------------Grain has been Deactivated : " + this.IdentityString);
+	    return base.OnDeactivateAsync(reason, cancellationToken);
+    }
+
+    public Task ResetGrainCacheAsync()
+    {
+        CacheManager.ClearCache();
+	    return PersistentState.ClearStateAsync();
     }
 }

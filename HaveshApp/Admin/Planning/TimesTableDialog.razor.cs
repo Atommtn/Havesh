@@ -1,7 +1,7 @@
 ﻿using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Havesh.Domain.Services;
+using Havesh.Application.Services;
 
 namespace HaveshApp.Admin.Planning;
 
