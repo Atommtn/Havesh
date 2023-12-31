@@ -125,13 +125,13 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		return false;
 	}
 
-	private void CheckAndChangeSession(ShokouhPardisTimeTable timeTable)
-	{
-		var timeTableSessions = DbContext.TimeTableSessions.Where(x => x.TimeTableFk == timeTable.Id).ToList();
-		if (timeTableSessions.Any())
-			foreach (var timeTableSession in timeTableSessions)
-				timeTableSession.TeacherFk = timeTable.Id;
-		//DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
+    private void CheckAndChangeSession(ShokouhPardisTimeTable timeTable)
+    {
+        var timeTableSessions = DbContext.TimeTableSessions.Where(x => x.TimeTableFk == timeTable.Id).ToList();
+        if (timeTableSessions.Any())
+            foreach (var timeTableSession in timeTableSessions)
+                timeTableSession.TeacherFk = timeTable.TeacherId;
+        //DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
 
 	}
 
