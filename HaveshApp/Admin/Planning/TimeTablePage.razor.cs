@@ -137,6 +137,7 @@ public partial class TimeTablePage
 		if (dialogResult.Cancelled == false)
 		{
 			var retData = (ShokouhPardisTimeTable)dialogResult.Data;
+            retData.TeacherId = retData.Teacher.Id;
 			var result = DataProvider.SaveTeacherTimeTable(retData);
 			if (result)
 			{

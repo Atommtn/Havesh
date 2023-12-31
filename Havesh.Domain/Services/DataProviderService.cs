@@ -99,7 +99,7 @@ public class DataProviderService
         var timeTableSessions = DbContext.TimeTableSessions.Where(x => x.TimeTableFk == timeTable.Id).ToList();
         if (timeTableSessions.Any())
             foreach (var timeTableSession in timeTableSessions)
-                timeTableSession.TeacherFk = timeTable.Id;
+                timeTableSession.TeacherFk = timeTable.TeacherId;
         //DbContext.TimeTableSessions.UpdateRange(timeTableSessions);
 
     }
