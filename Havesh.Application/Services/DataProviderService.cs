@@ -11,6 +11,7 @@ using MudBlazor;
 using Havesh.Domain.Infrastructure;
 using Havesh.Model.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 
 
 /*
@@ -762,7 +763,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public List<ShokouhPardisDailyJv> GetPagedJvs(int page, int size, DateTime? selDate, string? searchText)
 	{
 		var queryBase = DbContext.ShokouhPardisDailyJvs
-			.Include(x => x.Student);
+			.Include(x => x.Student)
+			.OrderBy(x => x.Id);
+
 		var queryable = queryBase
 			.Where(x => selDate != null
 						&& x.CurrentDate >= selDate.Value.Date
@@ -801,13 +804,17 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public List<ShokouhPardisDailyJv> GetPagedJvs(int page, int size, int studentId, int selectedTermId,
 		string? searchText)
 	{
-		var queryable = DbContext.ShokouhPardisDailyJvs
+		var baseQuery = DbContext.ShokouhPardisDailyJvs
 			.Include(x => x.Student)
+			.OrderBy(x => x.PosCode);
+
+		var queryable = baseQuery
 			.Where(x => x.StudentId == studentId &&
 						x.TermId == selectedTermId)
 			.AsQueryable();
 		if (searchText is not null)
 		{
+			bool checkPosCodeDone = false;
 			var parts = searchText.Split(new[] { ' ', '-', ',' }, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var part in parts)
 			{
@@ -819,12 +826,13 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 																	   (x.FeeFor != null && x.FeeFor.Contains(part)) ||
 																	   x.Id.ToString().Contains(part) ||
 																	   (x.Description != null && x.Description.Contains(part))));
-				if (int.TryParse(part, out var code))
+				if (int.TryParse(part, out var code) && !checkPosCodeDone)
 				{
-					queryable = queryable.Where(x =>
-						!string.IsNullOrEmpty(part) &&
-						x.PosCode != null &&
-						x.PosCode == code);
+					var Xqueryable = baseQuery
+						.Where(x =>
+							(x.PosCode != null && x.PosCode == code));
+					queryable = queryable.Union(Xqueryable);
+					checkPosCodeDone = true;
 				}
 
 			}
