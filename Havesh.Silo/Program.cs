@@ -28,6 +28,7 @@ builder.Services.AddTransient<DataProviderService>();
 
 builder.Host.UseOrleans(siloBuilder =>
 {
+
 	siloBuilder
 		
 		.AddStreaming()
