@@ -104,7 +104,8 @@ serviceProvider.GetRequiredService<CustomAuthenticationStateProvider>());
 
 builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
 {
-    optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
+    // INTERCEPTOR 
+    //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
 }, ServiceLifetime.Scoped);
 
 builder.Services.AddScoped<DataProviderService>();

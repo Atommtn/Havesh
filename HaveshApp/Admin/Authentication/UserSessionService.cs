@@ -25,7 +25,7 @@ public class UserSessionService : IUserSessionService
         _serviceProvider = serviceProvider;
         _client = client;
         _dbContext = dbContext;
-        Console.Beep();
+        //Console.Beep();
     }
 
     private User? _user;
