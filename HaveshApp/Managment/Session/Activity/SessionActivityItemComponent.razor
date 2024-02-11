@@ -5,53 +5,79 @@
 @using Olive
 
 <MudPaper Elevation="1" Outlined="true">
-    @switch (SessionActivity.ValueControl)
-    {
-        case "Buttons":
-            foreach (var btn in SessionActivity.ValueOptions.Where(x=>x.ShowByValue.IsEmpty()))
-            {
-                <MudButton Class="mr-2" Color="@GetButtonColor(btn)" Variant="Variant.Filled" OnClick="()=>BtnClick(btn)">
-                    @btn.Title
-                </MudButton>
-            }
-            break;
-    }
+	@switch (SessionActivity.ValueControl)
+	{
+		case "Buttons":
+			if (Student.SessionActionPending)
+			{
+				<MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Info"></MudProgressCircular>
+				<MudText Typo="Typo.body1">درحال ارسال فعالیت ... لطفا صبر کنید</MudText>
+			}
+			else
+			{
+				foreach (var btn in _sessionActivityValueOptions)
+				{
+					<MudButton Class="mr-2" Color="@GetButtonColor(btn)" 
+					           Variant="Variant.Filled" OnClick="()=>BtnClick(btn)"
+					           Disabled="@Student.SessionActionPending">
+						@btn.Title
+					</MudButton>
+				}
+			}
+			break;
+	}
 </MudPaper>
 
 @code {
-    [Parameter]
-    public EventCallback<(ShokouhPardisStudentClass, SessionActivity, SessionActivityValueOption)> ActivityExec { get; set; }
 
-    [Parameter]
-    public string? ShowedBy { get; set; }
+	bool pending = false;
+	private List<SessionActivityValueOption> _sessionActivityValueOptions;
 
-    [Parameter]
-    public TimeTableSession Session { get; set; }
+	[Parameter]
+	public EventCallback<(ShokouhPardisStudentClass, SessionActivity, SessionActivityValueOption)> ActivityExec { get; set; }
 
-    [Parameter]
-    public SessionActivity SessionActivity { get; set; }
+	[Parameter]
+	public string? ShowedBy { get; set; }
 
-    [Parameter]
-    public ShokouhPardisStudentClass Student { get; set; }
+	[Parameter]
+	public TimeTableSession Session { get; set; }
 
-    private async Task BtnClick(SessionActivityValueOption sao)
-    {
-        await ActivityExec.InvokeAsync((Student, SessionActivity, sao));
-    }
+	[Parameter]
+	public SessionActivity SessionActivity { get; set; }
 
-    private Color GetButtonColor(SessionActivityValueOption sao)
-    {
-        if (sao.Color == null)
-            return Color.Default;
+	[Parameter]
+	public ShokouhPardisStudentClass Student { get; set; }
 
-        return sao.Color.ToLower() switch
-        {
-            "green" => Color.Success,
-            "yellow" => Color.Warning,
-            "red" => Color.Error,
-            "blue" => Color.Primary,
-            _ => Color.Default
-        };
-    }
+	protected override void OnInitialized()
+	{
+		_sessionActivityValueOptions = SessionActivity.ValueOptions.Where(x => x.ShowByValue.IsEmpty()).ToList();
+		base.OnInitialized();
+	}
+
+	private async Task BtnClick(SessionActivityValueOption sao)
+	{
+		Student.SessionActionPending = true;
+		StateHasChanged();
+		await Task.Delay(3000);
+		await ActivityExec.InvokeAsync((Student, SessionActivity, sao));
+		
+		Student.SessionActionPending = false;
+		StateHasChanged();
+	}
+
+	private Color GetButtonColor(SessionActivityValueOption sao)
+	{
+		if (sao.Color == null)
+			return Color.Default;
+
+		return sao.Color.ToLower() switch
+		{
+			"green" => Color.Success,
+			"yellow" => Color.Warning,
+			"red" => Color.Error,
+			"blue" => Color.Primary,
+			_ => Color.Default
+		};
+	}
 
 }

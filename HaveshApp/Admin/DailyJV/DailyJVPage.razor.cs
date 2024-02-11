@@ -110,7 +110,7 @@ public partial class DailyJVPage
 				FullWidth = true
 			});
 		var dialogReferenceResult = await dialogReference.Result;
-		if (dialogReferenceResult.Cancelled == false)
+		if (dialogReferenceResult.Canceled == false)
 		{
 			if (dialogReferenceResult.Data is List<ShokouhPardisStudentClass> { Count: > 0 } selectedStudents)
 			{
@@ -119,7 +119,10 @@ public partial class DailyJVPage
 				_dailyJV.StudentId = _selectedStudent.Id;
 				SelectedLevel = await GetStudentLevel(_selectedStudent, SelectedTerm);
 				if (SelectedLevel == null)
+				{
 					NavigationManager.NavigateTo("/dailyJv/", true);
+					return;
+				}
 				StateHasChanged();
 				_dailyJV.FeeFor = FeeForStatuses.TuitionAmount;
 				_dailyJV.PaymentType = PaymentTypeStatuses.Pos;
@@ -243,7 +246,7 @@ public partial class DailyJVPage
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
         var dialog = await DialogService.ShowAsync<AlertDialog>("خطا", parameters, options);
-        //var result = await dialog.Result;
+        var result = await dialog.Result;
         return null;
 
 

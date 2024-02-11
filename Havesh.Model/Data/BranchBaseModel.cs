@@ -6,6 +6,7 @@ using Orleans;
 
 namespace Havesh.Model.Data;
 
+[Serializable]
 [Table("AppBranch")]
 public class Branch
 {
@@ -13,10 +14,14 @@ public class Branch
 	[DatabaseGenerated(DatabaseGeneratedOption.None)] 
 	public int Id { get; set; }
 
+	[Id(0)]
 	public string Code { get; set; }
+    [Id(1)]
 	public string Name { get; set; }
+    [Id(2)]
 	public bool IsArchived { get; set; }
-	
+
+    [Id(3)]
 	public int? ParentBranchFk { get; set; }
 	
 	[ForeignKey(nameof(ParentBranchFk))]
@@ -28,9 +33,10 @@ public class Branch
 [GenerateSerializer]
 public class BranchBaseModel : BaseModel
 {
-
+	[Id(0)]
 	public string? BCode { get; set; }
 
+    [Id(1)]
 	public int BranchFk { get; set; }
 
 	[ForeignKey(nameof(BranchFk))]

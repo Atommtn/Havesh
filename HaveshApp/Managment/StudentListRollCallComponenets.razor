@@ -37,7 +37,10 @@
 						foreach (var sac in studentSessionActivities)
 			            {
 				            <MudChip Size="@Size.Small" CloseIcon="@Icons.TwoTone.Close" Variant="@Variant.Outlined" OnClose="() => CancelStudentSessionActivity(sac)">
-					            @SessionActivity.ActivityTitle : @sac.ActivityValue - @sac.ActivityDateTime?.ToString("hh:MM:ss")
+					            ثبت @SessionActivity.ActivityTitle  
+					            <MudChip Label="true" Size="Size.Medium">
+						            @sac.ActivityValue 
+					            </MudChip>
 				            </MudChip>
 
 				            <DependentSessionActivityItemComponent 

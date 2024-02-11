@@ -1,4 +1,5 @@
-﻿using Havesh.Model.Model;
+﻿using Amazon.Runtime.Internal.Transform;
+using Havesh.Model.Model;
 using Microsoft.AspNetCore.Components.Authorization;
 using Havesh.Application.Services;
 using Havesh.Grains;
@@ -6,37 +7,48 @@ using Havesh.Model.Data.Dashboard;
 using HaveshApp.Classes.ExtensionMethods;
 using Havesh.GrainInterfaces;
 using Havesh.GrainInterfaces.Common;
+using Havesh.Model.Contract;
 using Olive;
 
 namespace HaveshApp.Admin.Authentication;
 
-public class UserSessionService
+public class UserSessionService : IUserSessionService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IClusterClient _client;
+    private readonly MyDbContext _dbContext;
     private DataProviderService? _dataProviderService;
     public event Func<MessageDto, Task> MessageReceived;
 
-    public UserSessionService(IServiceProvider serviceProvider, IClusterClient client)
+    public UserSessionService(IServiceProvider serviceProvider, IClusterClient client,MyDbContext dbContext)
     {
         _serviceProvider = serviceProvider;
         _client = client;
+        _dbContext = dbContext;
+        Console.Beep();
     }
 
     private User? _user;
 
     private async Task<User> GetUserAsync()
     {
-        var userGrain = _client.GetGrain<IHaveshGrain<User>>((int)Payload?.UserId!);
-        _user = await userGrain.Get();
+        if (Payload == null)
+            return null;
 
-        _dataProviderService ??= _serviceProvider.GetService<DataProviderService>();
-        if (_dataProviderService != null)
+        if (Payload?.UserId != null)
         {
-            _dataProviderService.DbContext.Entry(_user).Reload();
-	        _dataProviderService.DbContext.Actor ??= _user;
+            var userGrain = _client.GetGrain<IHaveshGrain<User>>((int)Payload?.UserId);
+            _user = await userGrain.Get();
         }
 
+        //_dataProviderService ??= _serviceProvider.GetService<DataProviderService>();
+        // if (_dataProviderService != null)
+        // {
+        //     await _dataProviderService.DbContext.Entry(_user).ReloadAsync();
+	       //  _dataProviderService.DbContext.Actor ??= _user;
+        // }
+
+        _dbContext.Actor ??= _user;
         return _user!;
     }
 

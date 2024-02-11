@@ -84,7 +84,7 @@
 
     void LoadTemplates(ShokouhPardisTermClass term)
     {
-        _templates = DataProviderService.GetTermTemplates(term);
+        _templates = DataProviderService.GetTermTemplates(term.Id);
     }
 
     void Callback(TermSessionTemplate template)
@@ -99,7 +99,7 @@
         TermSessionTemplate.WeekdayIds = x;
         _dataProvider.SaveTermSessionTemplate(TermSessionTemplate);
         Log.Warning("User {UserName} Save TermSessionTemplate {TermSessionTemplateId}", _userSession.Payload.UserName, TermSessionTemplate.Id);
-        _templates = DataProviderService.GetTermTemplates(Term);
+        _templates = DataProviderService.GetTermTemplates(Term.Id);
         TermSessionTemplate = new TermSessionTemplate();
         StateHasChanged();
 

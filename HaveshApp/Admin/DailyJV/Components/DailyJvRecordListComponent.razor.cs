@@ -7,16 +7,22 @@ using HaveshApp.Admin.Definition.Teachers;
 using HaveshApp.Admin.Student;
 using Havesh.Application.Services;
 using System.ComponentModel;
+using Havesh.GrainInterfaces.Common;
 using Havesh.Model.Model;
 using Serilog;
 using static MudBlazor.CategoryTypes;
 using HaveshApp.Admin.Authentication;
 using HaveshApp.Classes;
+//using Ins.Havesh.ReactiveUI.Blazor.Financial;
+using Microsoft.Extensions.Caching.Memory;
+using ReactiveUI;
 
 namespace HaveshApp.Admin.DailyJV.Components;
 
 public partial class DailyJvRecordListComponent
 {
+	//[Inject] public DailyJsRecordListViewModel ViewModel { get; set; }
+
 	[Parameter]
 	public ShokouhPardisStudentClass? Student { get; set; }
 	[Parameter]
@@ -60,30 +66,47 @@ public partial class DailyJvRecordListComponent
 
 	string? SearchText { get; set; } = null;
 	public ShokouhPardisDailyJv dJvTemp { get; private set; }
-        
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		return base.OnInitializedAsync();
+	}
+
+	private CacheManager _cacheManager = new(new MemoryCache(new MemoryCacheOptions()));
 	async Task<TableData<ShokouhPardisDailyJv>> ServerReload(TableState state)
 	{
 		int total;
 		List<ShokouhPardisDailyJv> pagedJvs;
-        if (Student is null)
-        {
-            total = DataProvider.GetTotalDailyJv(SelectedDate);
-            pagedJvs = DataProvider
-                .GetPagedJvs(state.Page, state.PageSize, SelectedDate, SearchText);
-        }
-        else
-        {
-            total = DataProvider.GetTotalDailyJv(Student.Id, selectedTerm.Id);
-            pagedJvs = DataProvider
-                .GetPagedJvs(state.Page, state.PageSize, Student.Id, selectedTerm.Id, SearchText);
-        }
+
+		return _cacheManager.GetOrSet($"jv-{Student?.Id}-{SelectedDate?.ToString("M/d/yy")}-{SearchText}" , () =>
+			{
+				if (Student is null)
+				{
+					total = DataProvider.GetTotalDailyJv(SelectedDate);
+					pagedJvs = DataProvider
+						.GetPagedJvs(state.Page, state.PageSize, SelectedDate, SearchText);
+				}
+				else
+				{
+					total = DataProvider.GetTotalDailyJv(Student.Id, selectedTerm.Id);
+					pagedJvs = DataProvider
+						.GetPagedJvs(state.Page, state.PageSize, Student.Id, selectedTerm.Id, SearchText);
+				}
 
 
-        return new TableData<ShokouhPardisDailyJv>()
-		{
-			TotalItems = total,
-			Items = pagedJvs
-		};
+				return new TableData<ShokouhPardisDailyJv>()
+				{
+					TotalItems = total,
+					Items = pagedJvs
+				};
+
+			}
+			, TimeSpan.FromMinutes(2));
+
 
 	}
 	private TableGroupDefinition<ShokouhPardisDailyJv> _groupDefinition = new()
@@ -106,11 +129,6 @@ public partial class DailyJvRecordListComponent
 		await EditDailyJvDialog(dailyJv);
 	}
 
-	private void ChildContent(RenderTreeBuilder builder)
-	{
-
-
-	}
 
 	private void BackupItem(object dJv)
 	{

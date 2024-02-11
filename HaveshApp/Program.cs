@@ -29,6 +29,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using Havesh.Domain.Infrastructure;
 using Havesh.Grains.Entity;
 using Havesh.Grains.System;
+using Havesh.Model.Contract;
+using Havesh.Model.Interceptors;
 
 // Configure logging to log to MSSqlServer database
 
@@ -50,22 +52,18 @@ builder.Services.AddMudServices();
 
 var conStr = builder.Configuration.GetConnectionString("ArvanConnection");
 Log.Logger = new LoggerConfiguration()
-	.MinimumLevel.Information()
-	.Enrich.With(new MtnUserEnricher(builder.Services))
-	.WriteTo.MSSqlServer(
-		connectionString: conStr,
-		sinkOptions: new MSSqlServerSinkOptions
-		{
-			TableName = "HaveshAppLogs", // Table name in the database for logging
-			AutoCreateSqlTable = true // Create the table if it doesn't exist
-		},
-		restrictedToMinimumLevel: LogEventLevel.Information)
-	.CreateLogger();
+    .MinimumLevel.Information()
+    .Enrich.With(new MtnUserEnricher(builder.Services))
+    .WriteTo.MSSqlServer(
+        connectionString: conStr,
+        sinkOptions: new MSSqlServerSinkOptions
+        {
+            TableName = "HaveshAppLogs", // Table name in the database for logging
+            AutoCreateSqlTable = true // Create the table if it doesn't exist
+        },
+        restrictedToMinimumLevel: LogEventLevel.Information)
+    .CreateLogger();
 
-
-
-builder.Services.AddDbContext<MyDbContext>(ServiceLifetime.Transient);
-builder.Services.AddTransient<DataProviderService>();
 
 builder.Services.AddSingleton<SignalrGrainClientService>();
 
@@ -74,7 +72,10 @@ builder.Services.AddScoped<SupervisorWidgetsService>();
 
 builder.Services.AddScoped<Navigation>();
 builder.Services.AddScoped<AuthenticationService>();
+builder.Services.AddScoped<IUserSessionService, UserSessionService>();
+
 builder.Services.AddScoped<UserSessionService>();
+
 builder.Services.AddScoped<MessageHandlingService>();
 
 builder.Services.AddScoped<DashboardService>();
@@ -98,6 +99,16 @@ builder.Services.AddScoped<TokenProviderService>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(serviceProvider =>
 serviceProvider.GetRequiredService<CustomAuthenticationStateProvider>());
+
+
+
+builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
+{
+    optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
+}, ServiceLifetime.Scoped);
+
+builder.Services.AddScoped<DataProviderService>();
+
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();
@@ -110,41 +121,41 @@ builder.Services.AddScoped<HttpClient>();
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
 {
-	Credentials = new BasicAWSCredentials("8a8ca63e-8326-440f-b51b-448b89511442",
-		"93ac2a95f48cd48ec2d595b107fb6a8f16dcdf23af6cc1fa4235821b285e6ef4"),
-	DefaultClientConfig = { ServiceURL = "https://s3.ir-thr-at1.arvanstorage.com" }
+    Credentials = new BasicAWSCredentials("8a8ca63e-8326-440f-b51b-448b89511442",
+        "93ac2a95f48cd48ec2d595b107fb6a8f16dcdf23af6cc1fa4235821b285e6ef4"),
+    DefaultClientConfig = { ServiceURL = "https://s3.ir-thr-at1.arvanstorage.com" }
 
 });
 
 builder.Services.AddResponseCompression(opts =>
 {
-	opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-		new[] { "application/octet-stream" });
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
 });
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-	var supportedCultures = new[]
-	{
-		new CultureInfo("fa-IR"), // Example: Persian
+    var supportedCultures = new[]
+    {
+        new CultureInfo("fa-IR"), // Example: Persian
 		new CultureInfo("en-US"), // Example: English (United States)
 		// Add more supported cultures as needed
 	};
 
-	options.DefaultRequestCulture = new RequestCulture("fa-IR"); // Set your default culture here
-	options.SupportedCultures = supportedCultures;
-	options.SupportedUICultures = supportedCultures;
+    options.DefaultRequestCulture = new RequestCulture("fa-IR"); // Set your default culture here
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
 });
 
 AuthorizationPolicies.AddAuthorizarionPolicies(builder.Services);
 
 builder.Services.AddOrleansClient(clientBuilder =>
 {
-	clientBuilder
-		.AddStreaming()
+    clientBuilder
+        .AddStreaming()
 
-		.AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
+        .AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
 #if DEBUG
-		.UseLocalhostClustering()
+        .UseLocalhostClustering()
 #else
 		.UseAdoNetClustering(options =>
 		{
@@ -158,10 +169,10 @@ builder.Services.AddOrleansClient(clientBuilder =>
 			options.ServiceId = "haveshapp-silo";
 		})
 #endif
-		.ConfigureServices(services =>
-		{
-		})
-		;
+        .ConfigureServices(services =>
+        {
+        })
+        ;
 });
 
 
@@ -187,10 +198,10 @@ app.Use(async (context, next) =>
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-	app.UseResponseCompression();
-	app.UseExceptionHandler("/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-	app.UseHsts();
+    app.UseResponseCompression();
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
 

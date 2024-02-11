@@ -1,23 +1,85 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Common;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Text.RegularExpressions;
+using Havesh.Model.Contract;
 using Havesh.Model.Data;
+using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using TSQL;
+using TSQL.Tokens;
 
 namespace Havesh.Model.Interceptors;
 public class CustomQueryInterceptor : DbCommandInterceptor
 {
+    private readonly IConfiguration _configuration;
+    private readonly IServiceProvider _provider;
+    private readonly User? _actor;
+
+    public CustomQueryInterceptor(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public override InterceptionResult<int> NonQueryExecuting(DbCommand command, CommandEventData eventData, InterceptionResult<int> result)
     {
         return base.NonQueryExecuting(command, eventData, result);
+    }
+    string InjectConditionToSqlCommand(string sql, string condition, string whereOp = "AND")
+    {
+        Console.WriteLine("***************************************************************************");
+        Console.WriteLine(sql);
+        Console.WriteLine("***************************************************************************");
+
+        var tsqlTokens = TSQLTokenizer.ParseTokens(sql);
+        var whereTokens = tsqlTokens.Where(t => t.IsKeyword(TSQLKeywords.WHERE)).ToArray();
+
+        var sb = new List<string>();
+        var st = 0;
+        var i = 0;
+        foreach (var token in whereTokens)
+        {
+            var nextKeywordToken = (
+                from x in tsqlTokens
+                where x.BeginPosition > token.EndPosition
+                let xAsKeyword = x.AsKeyword
+                where xAsKeyword != null &&
+                      !xAsKeyword.IsKeyword(TSQLKeywords.AND) &&
+                      !xAsKeyword.IsKeyword(TSQLKeywords.OR) &&
+                      !xAsKeyword.IsKeyword(TSQLKeywords.BETWEEN)
+                select x).FirstOrDefault();
+
+            var value = "";
+            string part1 = null;
+            string part2 = null;
+            if (nextKeywordToken == null)
+            {
+                part1 = sql[st..(token.EndPosition + 1)];
+                value = sql[(token.EndPosition + 1)..];
+                st = sql.Length;
+            }
+            else
+            {
+                part1 = sql[st..(token.EndPosition + 1)];
+                value = sql.Substring(token.EndPosition + 1, nextKeywordToken.BeginPosition - token.EndPosition - 1);
+                st = nextKeywordToken.BeginPosition;
+                if (whereTokens.Last() == token)
+                {
+                    part2 = sql.Substring(nextKeywordToken.BeginPosition);
+                }
+            }
+
+            sb.Add(part1);
+            sb.Add(value + $" {whereOp.ToUpper()} {condition} ");
+            sb.Add(part2);
+
+            i++;
+        }
+
+        return string.Join(' ', sb);
+
     }
 
     public override InterceptionResult<DbDataReader> ReaderExecuting(
@@ -25,35 +87,30 @@ public class CustomQueryInterceptor : DbCommandInterceptor
         CommandEventData eventData,
         InterceptionResult<DbDataReader> result)
     {
-        // Check if the SQL command contains a WHERE clause.
-        var regex = new Regex(@"\bWHERE\b", RegexOptions.IgnoreCase);
-        var hasWhere = regex.IsMatch(command.CommandText);
+        var dbContext = (MyDbContext)eventData.Context;
+        //var user1 = dbContext.UserSessionService.GetUserOrLoadAsync().GetAwaiter().GetResult();
+        var user = dbContext.Actor;
 
-        // Define your custom WHERE condition.
-        var customCondition = "IsDeleted = 0";
+        if (user is null || bool.TryParse(_configuration["ActiveBCode"], out var demo) is false || demo == false)
+            return base.ReaderExecuting(command, eventData, result);
+
+        if (eventData.Context?.Model == null)
+            return base.ReaderExecuting(command, eventData, result);
+
+
         var tuple = ParseSchemaAndTableName(command.CommandText);
 
-        if (eventData.Context?.Model != null)
+        var clrTypeForTable = GetClrTypeForTable(tuple.Schema, tuple.TableName, eventData.Context.Model);
+        var excludeTypes = new[] { typeof(ShokouhPardisYearClass) };
+        if (!excludeTypes.Contains(clrTypeForTable)
+            && clrTypeForTable.BaseType == typeof(BranchBaseModel))
         {
-            var clrTypeForTable = GetClrTypeForTable(tuple.Schema, tuple.TableName, eventData.Context.Model);
-            if (clrTypeForTable.IsAssignableFrom(typeof(BranchBaseModel)))
+            if (!string.IsNullOrEmpty(user.BCode))
             {
-
+                var BcodeValue = user.BCode;
+                command.CommandText = InjectConditionToSqlCommand(command.CommandText, $"BCode LIKE N'{BcodeValue}%' ");
             }
         }
-
-        /*// Append your custom WHERE condition appropriately based on the existing SQL.
-        if (hasWhere)
-        {
-            command.CommandText = regex.Replace(command.CommandText, $"WHERE {customCondition} AND");
-        }
-        else
-        {
-            // You can choose the appropriate location for the WHERE condition based on your query.
-            // For example, you can place it after the last JOIN clause.
-            command.CommandText = command.CommandText.Replace("JOIN", $"JOIN {customCondition} WHERE");
-            // Or, place it after the GROUP BY or ORDER BY clauses if necessary.
-        }*/
 
         return base.ReaderExecuting(command, eventData, result);
     }

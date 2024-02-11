@@ -82,7 +82,7 @@
 	private RenderFragment ActivityList(TimeTableSession tts) => __builder =>
 	{
 		var sx = _summary?
-			.Where(x => x.TimeTableSessionFk == tts.Id)
+			.Where(x => x.TimeTableSessionFk == tts.Id && x.ActivityDeletedDateTime is null)
 			.GroupBy(x => x.Activity)
 		;
 

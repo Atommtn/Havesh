@@ -111,53 +111,61 @@ public partial class StudentListRollCallComponenets
 
 	private async Task Exec((ShokouhPardisStudentClass, SessionActivity, SessionActivityValueOption) obj)
 	{
-
-		var studentSessionActivity = new StudentSessionActivity
-		{
-			StudentSessionActivityLastModified = DateTime.Now,
-			StudentSessionActivityGuid = Guid.NewGuid(),
-			
-			ActivityDateTime = DateTime.Now,
-			
-			TimeTableFk = TimeTableSession.TimeTableFk,
-			
-			TimeTableSessionFk = TimeTableSession.Id,
-			StudentFk = obj.Item1.Id,
-			//Student = obj.Item1,
-			
-			ActivityFk = obj.Item2.Id,
-			//Activity = obj.Item2,
-			
-			ActivityValueOptionFk = obj.Item3.Id,
-			//ActivityValueOption = obj.Item3,
-			
-			ActivityValue = obj.Item3.Value,
-		};
-		
-
-		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
-
-		_dataProvider.SaveStudentSessionActivity(studentSessionActivity);
-		await manager.CreateStudentSessionActivity(studentSessionActivity);
-
-        if (obj.Item3.ShowByValue != null)
+        try
         {
-            var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(studentSessionActivity.ActivityFk);
-            var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(obj.Item3.ShowByValue);
-            if (valueOption != null)
+            var studentSessionActivity = new StudentSessionActivity
             {
-                var sessionActivity = _activities.FirstOrDefault(x =>
-                    x.TimeTableSessionFk == studentSessionActivity.TimeTableSessionFk &&
-                    x.StudentFk == studentSessionActivity.StudentFk &&
-                    x.ActivityFk == studentSessionActivity.ActivityFk &&
-                    x.ActivityValueOptionFk == valueOption.Id);
+                StudentSessionActivityLastModified = DateTime.Now,
+                StudentSessionActivityGuid = Guid.NewGuid(),
 
-                await CancelStudentSessionActivity(sessionActivity , false);
+                ActivityDateTime = DateTime.Now,
+
+                TimeTableFk = TimeTableSession.TimeTableFk,
+
+                TimeTableSessionFk = TimeTableSession.Id,
+                StudentFk = obj.Item1.Id,
+                //Student = obj.Item1,
+
+                ActivityFk = obj.Item2.Id,
+                //Activity = obj.Item2,
+
+                ActivityValueOptionFk = obj.Item3.Id,
+                //ActivityValueOption = obj.Item3,
+
+                ActivityValue = obj.Item3.Value,
+            };
+
+
+            var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+
+            _dataProvider.SaveStudentSessionActivity(studentSessionActivity);
+            await manager.CreateStudentSessionActivity(studentSessionActivity);
+
+            if (obj.Item3.ShowByValue != null)
+            {
+                var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(studentSessionActivity.ActivityFk);
+                var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(obj.Item3.ShowByValue);
+                if (valueOption != null)
+                {
+                    var sessionActivity = _activities.FirstOrDefault(x =>
+                        x.TimeTableSessionFk == studentSessionActivity.TimeTableSessionFk &&
+                        x.StudentFk == studentSessionActivity.StudentFk &&
+                        x.ActivityFk == studentSessionActivity.ActivityFk &&
+                        x.ActivityValueOptionFk == valueOption.Id);
+
+                    await CancelStudentSessionActivity(sessionActivity, false);
+                }
             }
+
+            _activities?.Add(studentSessionActivity);
+            await ReloadActivities();
+
+        }
+        catch (Exception e)
+        {
+            _snackBar.Add("Error : " + e.Message);
         }
 
-		_activities?.Add(studentSessionActivity);
-		await ReloadActivities();
 	}
 
 	private async Task CancelStudentSessionActivity(StudentSessionActivity sac, bool reload = true)

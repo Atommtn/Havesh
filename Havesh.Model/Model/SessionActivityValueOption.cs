@@ -31,7 +31,7 @@ public partial class SessionActivityValueOption : BranchBaseModel , IEqualityCom
 	[Id(7)]
 	public string? Icon { get; set; }
 
-	public bool Equals(SessionActivityValueOption? x, SessionActivityValueOption? y)
+    public bool Equals(SessionActivityValueOption? x, SessionActivityValueOption? y)
 	{
 		return x?.Id == y?.Id;
 	}

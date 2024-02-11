@@ -1,4 +1,5 @@
-﻿using Havesh.Model.Data;
+﻿using Havesh.Model.Contract;
+using Havesh.Model.Data;
 using Havesh.Model.Filter;
 using Havesh.Model.Interceptors;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +12,15 @@ namespace Havesh.Model.Model;
 public partial class MyDbContext : DbContext
 {
 	private readonly IConfiguration _configuration;
+    public IUserSessionService UserSessionService { get; }
 
-	public MyDbContext(DbContextOptions<MyDbContext> options, 
+    public MyDbContext(DbContextOptions<MyDbContext> options, 
 		IConfiguration configuration
 	)
 		: base(options)
-	{
-		_configuration = configuration;
-	}
+    {
+        _configuration = configuration;
+    }
 
 
 	public virtual DbSet<ShokouhPardisAccountingCode> ShokouhPardisAccountingCodes { get; set; } = null!;
@@ -62,7 +64,6 @@ public partial class MyDbContext : DbContext
 			.UseSqlServer(conStr)
 			//.UseChangeTrackingProxies(false,false)
 			//.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-			//.AddInterceptors(new CustomQueryInterceptor())
 			.EnableSensitiveDataLogging();
 
 		optionsBuilder.UseLoggerFactory(

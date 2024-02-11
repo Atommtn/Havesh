@@ -762,11 +762,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 	public List<ShokouhPardisDailyJv> GetPagedJvs(int page, int size, DateTime? selDate, string? searchText)
 	{
-		var queryBase = DbContext.ShokouhPardisDailyJvs
+		var queryable = DbContext.ShokouhPardisDailyJvs
 			.Include(x => x.Student)
-			.OrderBy(x => x.Id);
-
-		var queryable = queryBase
+			.OrderBy(x => x.Id)
 			.Where(x => selDate != null
 						&& x.CurrentDate >= selDate.Value.Date
 						&& x.CurrentDate < selDate.Value.Date.AddDays(1))
@@ -787,10 +785,8 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 																	   (x.Description != null && x.Description.Contains(part))));
 				if (int.TryParse(part, out var code) && !checkPosCodeDone)
 				{
-					var Xqueryable = queryBase
-						.Where(x =>
-							(x.PosCode != null && x.PosCode == code));
-					queryable = queryable.Union(Xqueryable);
+					queryable = queryable.Union(queryable.Where(x =>
+						(x.PosCode != null && x.PosCode == code)));
 					checkPosCodeDone = true;
 				}
 			}
@@ -1741,11 +1737,11 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		return sessions;
 	}
 
-	public List<TermSessionTemplate> GetTermTemplates(ShokouhPardisTermClass term)
+	public List<TermSessionTemplate> GetTermTemplates(int termId)
 	{
 		return DbContext.TermSessionTemplates
 			.Include(x => x.Term)
-			.Where(x => x.TermFk == term.Id)
+			.Where(x => x.TermFk == termId)
 			.ToList();
 	}
 
@@ -2039,7 +2035,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 				.Include(x => x.TimeTableSession)
 				.Include(x => x.Activity)
 				.ThenInclude(x => x.ValueOptions)
-				.Where(x => x.TimeTableFk == timetableId)
+				.Where(x => x.ActivityDeletedDateTime == null && x.TimeTableFk == timetableId)
 				.ToList();
 		return result;
 	}
