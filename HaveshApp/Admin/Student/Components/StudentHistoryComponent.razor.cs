@@ -13,6 +13,9 @@ public partial class StudentHistoryComponent
 	[Parameter]
 	public ShokouhPardisStudentClass Student { get; set; }
 
+	[Parameter]
+	public ShokouhPardisTermClass CurrentTerm { get; set; }
+
 	public List<ShokouhPardisTimeTable> studentHisory { get; set; }
 
 
