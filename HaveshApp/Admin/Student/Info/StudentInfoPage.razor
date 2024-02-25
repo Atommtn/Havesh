@@ -46,7 +46,7 @@
 			</MudItem>
 		</MudGrid>
 
-		<StudentHistoryComponent CurrentTerm="Term" Student="Student" OnTermChanged="Callback"></StudentHistoryComponent>
+		<StudentHistoryComponent Detailed="false" CurrentTerm="Term" Student="Student" OnTermChanged="Callback"></StudentHistoryComponent>
 
 	</MudTabPanel>
 
@@ -60,7 +60,7 @@
 
 	</MudTabPanel>
 	<MudTabPanel Text="سابقه آموزشی">
-		<StudentHistoryComponent Student="Student" OnTermChanged="Callback" ></StudentHistoryComponent>
+		<StudentHistoryComponent Detailed="false" CurrentTerm="Term" Student="Student" OnTermChanged="Callback" ></StudentHistoryComponent>
 	</MudTabPanel>
 	<MudTabPanel Text="تخفیفات - توضیحات">
 		<StudentSettingComponent TimeTableStudent="TimeTableStudent"></StudentSettingComponent>

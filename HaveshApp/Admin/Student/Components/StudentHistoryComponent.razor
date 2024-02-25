@@ -19,6 +19,7 @@
 		timeTable.Selected = !timeTable.Selected;
 	}
 
+	[Parameter] public bool Detailed { get; set; } = true;
 
 	enum AccountBalanceTypeEnum
 	{
@@ -39,6 +40,10 @@
 	private (int ShehriehTerm, Dictionary<string, int> payments, AccountBalanceTypeEnum status, int Diff) AccountStatis(ShokouhPardisTimeTable timeTable)
 	{
 		var levelBookPrice = _dataProvider.GetLevelBookPrice(timeTable);
+		if (levelBookPrice == null)
+		{
+			return default;
+		}
 		var shahriehTerm = levelBookPrice.TuitionAmount;
 		var djvs = _dataProvider.GetDailyJvBy(timeTable.TermId, Student.Id);
 		var payments = djvs
@@ -118,41 +123,50 @@
 
 	</HeaderContent>
 	<RowTemplate>
-		<MudTd >@Student.FullName</MudTd>
-		<MudTd DataLabel="ترم">
-			<MudChip Label="true" OnClick="() => RaiseOnTermChangedClick(context.Term)">@context.Term.TermName</MudChip>
+		<MudTd>@Student.FullName</MudTd>
+			<MudTd DataLabel="ترم">
+				<MudChip Label="true" OnClick="() => RaiseOnTermChangedClick(context.Term)">@context.Term.TermName</MudChip>
 			</MudTd>
 			<MudTd DataLabel="نام استاد">@context.Teacher.FullName</MudTd>
 			<MudTd DataLabel="سطح">@context.Level.LevelName</MudTd>
 			<MudTd>
 				@{
-				var accStatus = AccountStatis(context);
-
-				<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-					شهریه ترم
-					<MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
-				</MudChip>
-				<MudText Typo="Typo.body1">پرداختی ها :</MudText>
-				@foreach (var x in accStatus.payments)
-				{
-					<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-						پرداختی بابت @x.Key
-						<MudChip Style="@GetFeeForStyle(x.Key)">@x.Value تومان</MudChip>
-					</MudChip>
-				}
-
-				<MudText Typo="Typo.body1">وضعیت حساب :</MudText>
-				<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-					در ترم @context.Term.TermName شهریه
-					@if (accStatus.Diff != 0)
+					if (Detailed)
 					{
-						<text>به مبلغ</text>
-						<MudChip Color="Color.Info">@accStatus.Diff.ToString("N0") تومان</MudChip>
+						var accStatus = AccountStatis(context);
+						if (accStatus == default)
+						{
+							<MudText Typo="Typo.body1">No Level Price</MudText>
+						}
+						else
+						{
+							<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+								شهریه ترم
+								<MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
+							</MudChip>
+							<MudText Typo="Typo.body1">پرداختی ها :</MudText>
+							@foreach (var x in accStatus.payments)
+							{
+								<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+									پرداختی بابت @x.Key
+									<MudChip Style="@GetFeeForStyle(x.Key)">@x.Value تومان</MudChip>
+								</MudChip>
+							}
+
+							<MudText Typo="Typo.body1">وضعیت حساب :</MudText>
+							<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+								در ترم @context.Term.TermName شهریه
+								@if (accStatus.Diff != 0)
+								{
+									<text>به مبلغ</text>
+									<MudChip Color="Color.Info">@accStatus.Diff.ToString("N0") تومان</MudChip>
+								}
+								<MudChip Color="GetColor(accStatus.status)">@GetDescription(accStatus.status)</MudChip>
+								است
+							</MudChip>
+						}
 					}
-					<MudChip Color="GetColor(accStatus.status)">@GetDescription(accStatus.status)</MudChip>
-					است
-				</MudChip>
-				}
+			}
 		</MudTd>
 		<MudTd DataLabel="برنامه کلاسی">@context.Schedule.Title</MudTd>
 			<MudTd>
