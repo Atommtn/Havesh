@@ -63,18 +63,18 @@
         set
         {
             if (_year == value) return;
+
             _year = value;
             YearChanged?.InvokeAsync(_year);
+
             if (_year == null)
             {
                 Term = null;
                 return;
             }
+
             Terms = DataProvider.GetTerms(_year);
-            if (Term == null)
-            {
-                Term = DataProvider.GetTermsInRangeToday();
-            }
+            Term ??= DataProvider.GetTermsInRangeToday() ?? Terms.FirstOrDefault();
             StateHasChanged();
         }
     }
@@ -93,7 +93,19 @@
         {
             if (_term == value) return;
             _term = value;
+            
+            if (!initComplete && initializing == false) Init();
+
+            if (_term is not null && 
+                _year is not null && 
+                _year.Id != _term.YearId )
+            {
+	            var y = Years.FirstOrDefault(x=>x.Id == _term.YearId);
+	            if (y is not null) Year = y;
+            }            
             TermChanged?.InvokeAsync(_term);
+
+            StateHasChanged();
         }
     }
 
@@ -110,10 +122,11 @@
     ShokouhPardisTermClass? _term;
     ShokouhPardisYearClass? _year;
 
+    bool initializing = false;
     private void Init()
     {
-        if (initComplete)
-            return;
+        if (initComplete) return;
+        initializing = true;
         DataLoading = true;
         StateHasChanged();
         Years = DataProvider.GetYears();
@@ -122,6 +135,7 @@
         Terms = DataProvider.GetTerms(Year);
         initComplete = true;
         StateHasChanged();
+        initializing = false;
     }
 
     public bool DataLoading { get; set; }
