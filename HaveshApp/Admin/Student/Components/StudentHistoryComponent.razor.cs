@@ -6,6 +6,8 @@ namespace HaveshApp.Admin.Student.Components;
 
 public partial class StudentHistoryComponent
 {
+	[Parameter]
+	public bool ShowTutionPriceInDetailes { get; set; }
 
 	[Parameter]
 	public EventCallback<ShokouhPardisTermClass> OnTermChanged { get; set; }
@@ -25,4 +27,22 @@ public partial class StudentHistoryComponent
 		studentHisory = _dataProvider.GetStudentHistory(Student);
 		base.OnInitialized();
 	}
+
+	private void RaiseOnTermChangedClick(ShokouhPardisTermClass term)
+	{
+		OnTermChanged.InvokeAsync(term);
+	}
+
+	private string RowClassFunc(ShokouhPardisTimeTable timeTable, int rowNumber)
+	{
+		return CurrentTerm.Id == timeTable.TermId ? "selected" : string.Empty;
+	}
+
+	private void RowDetaileClick(ShokouhPardisTimeTable timeTable)
+	{
+		timeTable.Selected = !timeTable.Selected;
+	}
+
+	[Parameter] public bool Detailed { get; set; } = true;
+
 }

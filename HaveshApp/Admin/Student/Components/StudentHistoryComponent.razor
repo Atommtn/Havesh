@@ -2,114 +2,18 @@
 @using Havesh.Model.Model
 @using HaveshApp.Admin.DailyJV.Components
 @using System.ComponentModel
-
-@code {
-	private void RaiseOnTermChangedClick(ShokouhPardisTermClass term)
-	{
-		OnTermChanged.InvokeAsync(term);
-	}
-
-	private string RowClassFunc(ShokouhPardisTimeTable timeTable, int rowNumber)
-	{
-		return CurrentTerm.Id == timeTable.TermId ? "selected" : string.Empty;
-	}
-
-	private void RowDetaileClick(ShokouhPardisTimeTable timeTable)
-	{
-		timeTable.Selected = !timeTable.Selected;
-	}
-
-	[Parameter] public bool Detailed { get; set; } = true;
-
-	enum AccountBalanceTypeEnum
-	{
-		[Description("تسویه")]
-		Settle,
-		[Description("بدهکار")]
-		Debtor,
-		[Description("بستانکار")]
-		Crediator
-	}
-	public static string GetDescription(Enum value)
-	{
-		var fieldInfo = value.GetType().GetField(value.ToString());
-		var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(DescriptionAttribute));
-		return attribute != null ? attribute.Description : value.ToString();
-	}
-
-	private (int ShehriehTerm, Dictionary<string, int> payments, AccountBalanceTypeEnum status, int Diff) AccountStatis(ShokouhPardisTimeTable timeTable)
-	{
-		var levelBookPrice = _dataProvider.GetLevelBookPrice(timeTable);
-		if (levelBookPrice == null)
-		{
-			return default;
-		}
-		var shahriehTerm = levelBookPrice.TuitionAmount;
-		var djvs = _dataProvider.GetDailyJvBy(timeTable.TermId, Student.Id);
-		var payments = djvs
-							.GroupBy(x => x.FeeFor!)
-							.ToDictionary(x => x.Key, y => y.Sum(z => z.Fee));
-		var _status = AccountBalanceTypeEnum.Settle;
-		int diff = shahriehTerm;
-		if (payments.TryGetValue("شهریه", out var payedShahrieh))
-		{
-			diff = shahriehTerm - payedShahrieh;
-			_status = diff switch
-			{
-				0 => AccountBalanceTypeEnum.Settle,
-				> 0 => AccountBalanceTypeEnum.Debtor,
-				_ => AccountBalanceTypeEnum.Crediator
-			};
-		}
-		else
-		{
-			_status = AccountBalanceTypeEnum.Debtor;
-		}
-		return (shahriehTerm, payments, _status, diff);
-	}
-
-
-	private Color GetColor(AccountBalanceTypeEnum accStatusStatus)
-	{
-		return accStatusStatus switch
-		{
-			AccountBalanceTypeEnum.Settle => Color.Success,
-			AccountBalanceTypeEnum.Debtor => Color.Error,
-			AccountBalanceTypeEnum.Crediator => Color.Warning
-		};
-	}
-
-	private string? GetFeeForStyle(string value)
-	{
-		var color = "#08714a";
-		var opa = "";
-		switch (value)
-		{
-			case "شهریه":
-				opa = "ff";
-				break;
-			case "کتاب":
-				opa = "80";
-				break;
-			default:
-				opa = "99";
-				break;
-		}
-
-		return "background-color:" + color + opa + ";color:#ffffff";
-	}
-
-}
 <style>
 	.selected {
 		background-color: #505050 !important;
 	}
 
-		.selected > td {
-			color: white !important;
-		}
+	.selected > td {
+		color: white !important;
+	}
 </style>
-
+<MudToolBar>
+	<MudCheckBox @bind-Checked="Detailed">نمایش جزئیات پرداخت</MudCheckBox>
+</MudToolBar>
 <MudTable @ref="_studentTables" Items="@studentHisory.OrderByDescending(x=>x.TermId)"
 		  RowsPerPage="100" RowClassFunc="RowClassFunc" Hover="true" Dense="true">
 	<HeaderContent>
@@ -130,43 +34,10 @@
 			<MudTd DataLabel="نام استاد">@context.Teacher.FullName</MudTd>
 			<MudTd DataLabel="سطح">@context.Level.LevelName</MudTd>
 			<MudTd>
-				@{
-					if (Detailed)
-					{
-						var accStatus = AccountStatis(context);
-						if (accStatus == default)
-						{
-							<MudText Typo="Typo.body1">No Level Price</MudText>
-						}
-						else
-						{
-							<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-								شهریه ترم
-								<MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
-							</MudChip>
-							<MudText Typo="Typo.body1">پرداختی ها :</MudText>
-							@foreach (var x in accStatus.payments)
-							{
-								<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-									پرداختی بابت @x.Key
-									<MudChip Style="@GetFeeForStyle(x.Key)">@x.Value تومان</MudChip>
-								</MudChip>
-							}
-
-							<MudText Typo="Typo.body1">وضعیت حساب :</MudText>
-							<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-								در ترم @context.Term.TermName شهریه
-								@if (accStatus.Diff != 0)
-								{
-									<text>به مبلغ</text>
-									<MudChip Color="Color.Info">@accStatus.Diff.ToString("N0") تومان</MudChip>
-								}
-								<MudChip Color="GetColor(accStatus.status)">@GetDescription(accStatus.status)</MudChip>
-								است
-							</MudChip>
-						}
-					}
-			}
+				@if (Detailed)
+				{
+					<StudentPaymentStatusForTimetableComponent ShowTution="ShowTutionPriceInDetailes" Student="Student" TimeTable="context" />
+				}
 		</MudTd>
 		<MudTd DataLabel="برنامه کلاسی">@context.Schedule.Title</MudTd>
 			<MudTd>
@@ -189,6 +60,3 @@
 		}
 	</ChildRowContent>
 </MudTable>
-
-
-

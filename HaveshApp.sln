@@ -25,11 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havesh.Application", "Haves
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migration", "Migration", "{4F43DA55-EAB4-4028-B463-F9782963A818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ins.Havesh.UI.Blazor", "Ins.Havesh.UI.Blazor\Ins.Havesh.UI.Blazor\Ins.Havesh.UI.Blazor.csproj", "{CEC7A61A-002E-4AA5-A398-38C9A8A4328B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ins.Havesh.UI.Blazor", "Ins.Havesh.UI.Blazor\Ins.Havesh.UI.Blazor\Ins.Havesh.UI.Blazor.csproj", "{CEC7A61A-002E-4AA5-A398-38C9A8A4328B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ins.Havesh.UI.Blazor.Client", "Ins.Havesh.UI.Blazor\Ins.Havesh.UI.Blazor.Client\Ins.Havesh.UI.Blazor.Client.csproj", "{691B14B8-1530-427B-97AF-E7BD49D21AD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ins.Havesh.UI.Blazor.Client", "Ins.Havesh.UI.Blazor\Ins.Havesh.UI.Blazor.Client\Ins.Havesh.UI.Blazor.Client.csproj", "{691B14B8-1530-427B-97AF-E7BD49D21AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ins.Havesh.ReactiveUI.Blazor", "Ins.Havesh.ReactiveUI.Blazor\Ins.Havesh.ReactiveUI.Blazor.csproj", "{03BC4E93-74F1-4E64-8253-8DA7C0E391E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ins.Havesh.ReactiveUI.Blazor", "Ins.Havesh.ReactiveUI.Blazor\Ins.Havesh.ReactiveUI.Blazor.csproj", "{03BC4E93-74F1-4E64-8253-8DA7C0E391E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
