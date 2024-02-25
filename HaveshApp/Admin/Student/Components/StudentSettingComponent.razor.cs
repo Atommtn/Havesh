@@ -9,8 +9,6 @@ namespace HaveshApp.Admin.Student.Components;
 
 public partial class StudentSettingComponent
 {
-	private bool _showAmountValue;
-
 	[Parameter]
 	public ShokouhPardisTimeTableStudent? TimeTableStudent { get; set; }
 
@@ -39,18 +37,16 @@ public partial class StudentSettingComponent
 
      
 
-	public bool ShowAmountValue
-	{
-		get => _showAmountValue;
-		set
-		{
-			_showAmountValue = value;
-                
-		}
-	}
+	public bool ShowAmountValue { get; set; }
 
 	private void SetPercent()
 	{
+		if (TimeTableStudent == null)
+		{
+			_snackBar.Add("این زبان آموز در این ترم در تایم تیبل رکوردی ندارد"  ,  Severity.Error);
+			return;
+		}
+
 		Price = _dataProvider.GetLevelBookPrice(TimeTableStudent.TimeTable.TermId,
 			TimeTableStudent.TimeTable.LevelId);
 

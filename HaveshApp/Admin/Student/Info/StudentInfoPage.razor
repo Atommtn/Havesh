@@ -58,7 +58,7 @@
 
 	</MudTabPanel>
 	<MudTabPanel Text="سابقه آموزشی">
-		<StudentHistoryComponent Student="Student"></StudentHistoryComponent>
+		<StudentHistoryComponent Student="Student" OnTermChanged="Callback" ></StudentHistoryComponent>
 
 
 	</MudTabPanel>
@@ -83,28 +83,23 @@
 			if (_term == value) return;
 			_term = value;
 
-			GetStudentClassByTerm();
+			GetStudentClassByTerm(Student, Term);
+			GetTimeTableStudentByTerm(Student, Term);
 		}
 	}
-	private ShokouhPardisTermClass? TimeTableStudentTerm
+
+	private void GetTimeTableStudentByTerm(ShokouhPardisStudentClass student, ShokouhPardisTermClass term)
 	{
-		get => _timeTableStudentTerm;
-		set
+		var shokouhPardisTimeTableStudent = _dataProvider.GetTimeTableStudent(student, term);
+		if (shokouhPardisTimeTableStudent is null)
 		{
-			if (_timeTableStudentTerm == value) return;
-			_timeTableStudentTerm = value;
-
-			GetTimeTableStudentByTerm();
+			_snackBar.Add("برای این زبان آموز در این ترم رکوردی وجود ندارد" , Severity.Error);
 		}
+		else 
+			TimeTableStudent = shokouhPardisTimeTableStudent;
 	}
 
-	private void GetTimeTableStudentByTerm()
-	{
-		TimeTableStudent = _dataProvider.GetTimeTableStudent(Student, TimeTableStudentTerm);
-
-	}
-
-	private List<ShokouhPardisTermClass> Terms;
+	//private List<ShokouhPardisTermClass> Terms;
 
 	protected override void OnInitialized()
 	{
@@ -124,34 +119,34 @@
 
 			_studentGuid = guid;
 			Student = DataProvider.GetStudentClassByGuid(_studentGuid);
-
 		}
 	}
 
 	protected override void OnParametersSet()
 	{
 		if (Student is not null && Term is not null)
-			GetStudentClassByTerm();
+			GetStudentClassByTerm(Student, Term);
 
 		base.OnParametersSet();
 	}
 
+	ShokouhPardisTimeTableStudent TimeTableStudent { get; set; }
 	ShokouhPardisStudentClass? Student { get; set; }
 	ShokouhPardisTimeTable? timeTable;
 	ShokouhPardisLevelBookPrice? bookPrice;
-	List<ShokouhPardisDailyJv> StudentDailyJvs;
+	//List<ShokouhPardisDailyJv> StudentDailyJvs;
 	private ShokouhPardisTermClass? _term;
 	private ShokouhPardisTermClass _timeTableStudentTerm;
 
-	void GetStudentClassByTerm()
+	void GetStudentClassByTerm(ShokouhPardisStudentClass? student, ShokouhPardisTermClass? term)
 	{
-		if (Student == null)
+		if (student == null)
 			return;
 
 		if (Term != null)
 		{
-			timeTable = DataProvider.GetStudentTermClass(Student.Id, Term.Id);
-			StudentDailyJvs = DataProvider.GetDailyJvBy(Term.Id, Student.Id);
+			timeTable = DataProvider.GetStudentTermClass(student.Id, term.Id);
+			//StudentDailyJvs = DataProvider.GetDailyJvBy(term.Id, student.Id);
 		}
 
 		if (timeTable != null)
@@ -159,6 +154,11 @@
 
 	}
 
-	public ShokouhPardisTimeTableStudent TimeTableStudent { get; set; }
+
+	private void Callback(ShokouhPardisTermClass term)
+	{
+		Term = term;
+		StateHasChanged();
+	}
 
 }

@@ -6,6 +6,10 @@ namespace HaveshApp.Admin.Student.Components;
 
 public partial class StudentHistoryComponent
 {
+
+	[Parameter]
+	public EventCallback<ShokouhPardisTermClass> OnTermChanged { get; set; }
+
 	[Parameter]
 	public ShokouhPardisStudentClass Student { get; set; }
 

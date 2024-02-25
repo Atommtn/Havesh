@@ -1,4 +1,12 @@
 ﻿@using Admin.Planning.Components
+@using Havesh.Model.Model
+
+@code {
+	private void RaiseOnTermChangedClick(ShokouhPardisTermClass term)
+	{
+		OnTermChanged.InvokeAsync(term);
+	}
+}
 
 
 <MudTable @ref="_studentTables" Items="@studentHisory"
@@ -11,7 +19,9 @@
             
     </HeaderContent>
     <RowTemplate >
-        <MudTd DataLabel="ترم">@context.Term.TermName</MudTd>
+	    <MudTd DataLabel="ترم">
+            <MudChip Label="true" OnClick="() => RaiseOnTermChangedClick(context.Term)">@context.Term.TermName</MudChip>
+		</MudTd>
         <MudTd DataLabel="نام استاد">@context.Teacher.FullName</MudTd>
         <MudTd DataLabel="سطح">@context.Level.LevelName</MudTd>
         <MudTd DataLabel="برنامه کلاسی">@context.Schedule.Title</MudTd>
