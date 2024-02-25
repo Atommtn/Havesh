@@ -17,5 +17,5 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: HaveshApp/Dockerfile
-        tags: "version7"
+        tags: "version8,Latest"
 
