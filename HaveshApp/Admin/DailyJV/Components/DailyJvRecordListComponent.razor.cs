@@ -31,16 +31,20 @@ public partial class DailyJvRecordListComponent
     public bool ShowRecordId { get; set; }
 
     private ShokouhPardisTermClass _term;
-	[Parameter]
-	public ShokouhPardisTermClass? selectedTerm
+	
+    [Parameter]
+	public ShokouhPardisTermClass? SelectedTerm
 	{
 		get => _term;
 		set
 		{
+			if(_term == value) return;
 			_term = value;
 			table?.ReloadServerData();
+			StateHasChanged();
 		}
 	}
+
 	[Parameter]
 	public DateTime? SelectedDate
 	{
@@ -49,8 +53,10 @@ public partial class DailyJvRecordListComponent
 		{
 			_selectedDate = value;
 			table?.ReloadServerData();
+			StateHasChanged();
 		}
 	}
+
     [Parameter]
     public EventCallback<DateTime?> SelectedDateChanged { get; set; }
 
@@ -66,15 +72,6 @@ public partial class DailyJvRecordListComponent
 
 	string? SearchText { get; set; } = null;
 	public ShokouhPardisDailyJv dJvTemp { get; private set; }
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-	}
-
-	protected override Task OnInitializedAsync()
-	{
-		return base.OnInitializedAsync();
-	}
 
 	private CacheManager _cacheManager = new(new MemoryCache(new MemoryCacheOptions()));
 	async Task<TableData<ShokouhPardisDailyJv>> ServerReload(TableState state)
@@ -82,7 +79,7 @@ public partial class DailyJvRecordListComponent
 		int total;
 		List<ShokouhPardisDailyJv> pagedJvs;
 
-		return _cacheManager.GetOrSet($"jv-{Student?.Id}-{SelectedDate?.ToString("M/d/yy")}-{SearchText}" , () =>
+		return _cacheManager.GetOrSet($"jv-{Student?.Id}-{SelectedDate?.ToString("M/d/yy")}-{SearchText}-{SelectedTerm?.Id}" , () =>
 			{
 				if (Student is null)
 				{
@@ -92,9 +89,9 @@ public partial class DailyJvRecordListComponent
 				}
 				else
 				{
-					total = DataProvider.GetTotalDailyJv(Student.Id, selectedTerm.Id);
+					total = DataProvider.GetTotalDailyJv(Student.Id, SelectedTerm.Id);
 					pagedJvs = DataProvider
-						.GetPagedJvs(state.Page, state.PageSize, Student.Id, selectedTerm.Id, SearchText);
+						.GetPagedJvs(state.Page, state.PageSize, Student.Id, SelectedTerm.Id, SearchText);
 				}
 
 
@@ -119,7 +116,7 @@ public partial class DailyJvRecordListComponent
 	};
 	public async Task FilterData()
 	{
-		await table.ReloadServerData();
+		await table?.ReloadServerData();
 	}
 
 	private async Task EditDailyJVClick(ShokouhPardisDailyJv dailyJv)

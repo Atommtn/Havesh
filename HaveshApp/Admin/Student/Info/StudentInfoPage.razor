@@ -8,160 +8,157 @@
 @using HaveshApp.Admin.Student.Components
 @using Havesh.Model.Model
 
+<TermSelectorComponent @bind-Term="Term" />
 <MudTabs>
-    <MudTabPanel Text="مشخصات آموزشی">
-        <TermSelectorComponent @bind-Term="Term" />
-        <MudGrid>
-            <MudItem xs="12" md="6">
-                @if (timeTable != null)
-                {
-                    <TimeTableItemComponent ShowRecordId="true" TimeTable="timeTable">
-                        <ChildContent>
-                            @if (bookPrice != null)
-                            {
-                                <MudStack Row="true" Spacing="1">
-                                    <MudChip Color="Color.Info">
-                                        <MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Material.Filled.Book">
-                                             کتاب:
-                                        </MudChip>
-                                        <MudText Typo="Typo.h6">
-                                            @bookPrice.BookPrice.ToString("##,###") تومان
-                                        </MudText>
-                                    </MudChip>
+	<MudTabPanel Text="مشخصات آموزشی">
+		<MudGrid>
+			<MudItem xs="12" md="6">
+				@if (timeTable != null)
+				{
+					<TimeTableItemComponent ShowRecordId="true" TimeTable="timeTable">
+						<ChildContent>
+							@if (bookPrice != null)
+							{
+								<MudStack Row="true" Spacing="1">
+									<MudChip Color="Color.Info">
+										<MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Material.Filled.Book">
+											کتاب:
+										</MudChip>
+										<MudText Typo="Typo.h6">
+											@bookPrice.BookPrice.ToString("##,###") تومان
+										</MudText>
+									</MudChip>
 
-                                    <MudChip Color="Color.Tertiary">
-                                        <MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Material.Filled.Money">
-                                             شهریه:
-                                        </MudChip>
-                                        <MudText Typo="Typo.h6">
-                                            @bookPrice.TuitionAmount.ToString("##,###") تومان
-                                        </MudText>
-                                    </MudChip>
-                                    
-                                </MudStack>
-                            }
-                        </ChildContent>
-                    </TimeTableItemComponent>
-                }
-            </MudItem>
-        </MudGrid>
+									<MudChip Color="Color.Tertiary">
+										<MudChip Label="true" Color="Color.Dark" Size="Size.Large" Icon="@Icons.Material.Filled.Money">
+											شهریه:
+										</MudChip>
+										<MudText Typo="Typo.h6">
+											@bookPrice.TuitionAmount.ToString("##,###") تومان
+										</MudText>
+									</MudChip>
 
-    </MudTabPanel>
+								</MudStack>
+							}
+						</ChildContent>
+					</TimeTableItemComponent>
+				}
+			</MudItem>
+		</MudGrid>
 
-    <MudTabPanel Text="واریز شهریه">
-        <TermSelectorComponent @bind-Term="Term" />
-        <DailyJvRecordListComponent ShowRecordId="true" selectedTerm="Term" Student="Student">
+	</MudTabPanel>
 
-        </DailyJvRecordListComponent>
-    </MudTabPanel>
-    <MudTabPanel Text="مشخصات دانش آموز">
-        <StudentInfoComponent Student="Student" ></StudentInfoComponent>
+	<MudTabPanel Text="واریز شهریه">
+		<DailyJvRecordListComponent ShowRecordId="true" SelectedTerm="Term" Student="Student">
 
-    </MudTabPanel>
-    <MudTabPanel Text="سابقه آموزشی">
-        <StudentHistoryComponent Student="Student" ></StudentHistoryComponent>
-  
-        
-    </MudTabPanel>
-    <MudTabPanel Text="تخفیفات - توضیحات">
-       
-        <TermSelectorComponent @bind-Term="TimeTableStudentTerm"/>
-        <StudentSettingComponent TimeTableStudent="TimeTableStudent"></StudentSettingComponent>
+		</DailyJvRecordListComponent>
+	</MudTabPanel>
+	<MudTabPanel Text="مشخصات دانش آموز">
+		<StudentInfoComponent Student="Student"></StudentInfoComponent>
 
-    </MudTabPanel>
+	</MudTabPanel>
+	<MudTabPanel Text="سابقه آموزشی">
+		<StudentHistoryComponent Student="Student"></StudentHistoryComponent>
+
+
+	</MudTabPanel>
+	<MudTabPanel Text="تخفیفات - توضیحات">
+		<StudentSettingComponent TimeTableStudent="TimeTableStudent"></StudentSettingComponent>
+
+	</MudTabPanel>
 </MudTabs>
 @code {
 
-    [Inject]
-    DataProviderService DataProvider { get; set; }
+	[Inject]
+	DataProviderService DataProvider { get; set; }
 
-    private Guid? _studentGuid;
+	private Guid? _studentGuid;
 
-    ShokouhPardisYearClass Year;
-    private ShokouhPardisTermClass? Term
-    {
-        get => _term;
-        set
-        {
-            if (_term == value) return;
-            _term = value;
+	ShokouhPardisYearClass Year;
+	private ShokouhPardisTermClass? Term
+	{
+		get => _term;
+		set
+		{
+			if (_term == value) return;
+			_term = value;
 
-            GetStudentClassByTerm();
-        }
-    }
-    private ShokouhPardisTermClass? TimeTableStudentTerm
-    {
-        get => _timeTableStudentTerm;
-        set
-        {
-            if (_timeTableStudentTerm == value) return;
-            _timeTableStudentTerm = value;
+			GetStudentClassByTerm();
+		}
+	}
+	private ShokouhPardisTermClass? TimeTableStudentTerm
+	{
+		get => _timeTableStudentTerm;
+		set
+		{
+			if (_timeTableStudentTerm == value) return;
+			_timeTableStudentTerm = value;
 
-            GetTimeTableStudentByTerm();
-        }
-    }
+			GetTimeTableStudentByTerm();
+		}
+	}
 
-    private void GetTimeTableStudentByTerm()
-    {
-        TimeTableStudent = _dataProvider.GetTimeTableStudent(Student, TimeTableStudentTerm);
+	private void GetTimeTableStudentByTerm()
+	{
+		TimeTableStudent = _dataProvider.GetTimeTableStudent(Student, TimeTableStudentTerm);
 
-    }
+	}
 
-    private List<ShokouhPardisTermClass> Terms;
+	private List<ShokouhPardisTermClass> Terms;
 
-    protected override void OnInitialized()
-    {
-        //Year = DataProvider.GetYearsInRange();
-        //Terms = DataProvider.GetTerms(Year);
-        Term = DataProvider.GetTermsInRangeToday();
-        base.OnInitialized();
-    }
+	protected override void OnInitialized()
+	{
+		//Year = DataProvider.GetYearsInRange();
+		//Terms = DataProvider.GetTerms(Year);
+		Term = DataProvider.GetTermsInRangeToday();
+		base.OnInitialized();
+	}
 
-    [Parameter]
-    public string? StudentGuid
-    {
-        get => _studentGuid?.ToString("N");
-        set
-        {
-            if (!Guid.TryParse(value, out var guid)) return;
+	[Parameter]
+	public string? StudentGuid
+	{
+		get => _studentGuid?.ToString("N");
+		set
+		{
+			if (!Guid.TryParse(value, out var guid)) return;
 
-            _studentGuid = guid;
-            Student = DataProvider.GetStudentClassByGuid(_studentGuid);
-            
-        }
-    }
+			_studentGuid = guid;
+			Student = DataProvider.GetStudentClassByGuid(_studentGuid);
 
-    protected override void OnParametersSet()
-    {
-        if (Student is { } && Term is { })
-            GetStudentClassByTerm();
+		}
+	}
 
-        base.OnParametersSet();
-    }
+	protected override void OnParametersSet()
+	{
+		if (Student is not null && Term is not null)
+			GetStudentClassByTerm();
 
-    ShokouhPardisStudentClass? Student { get; set; }
-    ShokouhPardisTimeTable? timeTable;
-    ShokouhPardisLevelBookPrice? bookPrice;
-    List<ShokouhPardisDailyJv> StudentDailyJvs;
-    private ShokouhPardisTermClass? _term;
-    private ShokouhPardisTermClass _timeTableStudentTerm;
+		base.OnParametersSet();
+	}
 
-    void GetStudentClassByTerm()
-    {
-        if (Student == null)
-            return;
+	ShokouhPardisStudentClass? Student { get; set; }
+	ShokouhPardisTimeTable? timeTable;
+	ShokouhPardisLevelBookPrice? bookPrice;
+	List<ShokouhPardisDailyJv> StudentDailyJvs;
+	private ShokouhPardisTermClass? _term;
+	private ShokouhPardisTermClass _timeTableStudentTerm;
 
-        if (Term != null)
-        {
-            timeTable = DataProvider.GetStudentTermClass(Student.Id, Term.Id);
-            StudentDailyJvs = DataProvider.GetDailyJvBy(Term.Id,Student.Id);
-        }
+	void GetStudentClassByTerm()
+	{
+		if (Student == null)
+			return;
 
-        if (timeTable != null)
-            bookPrice = DataProvider.GetLevelBookPrice(timeTable);
+		if (Term != null)
+		{
+			timeTable = DataProvider.GetStudentTermClass(Student.Id, Term.Id);
+			StudentDailyJvs = DataProvider.GetDailyJvBy(Term.Id, Student.Id);
+		}
 
-    }
+		if (timeTable != null)
+			bookPrice = DataProvider.GetLevelBookPrice(timeTable);
 
-    public ShokouhPardisTimeTableStudent TimeTableStudent { get; set; }
+	}
+
+	public ShokouhPardisTimeTableStudent TimeTableStudent { get; set; }
 
 }
