@@ -37,7 +37,9 @@ public partial class StudentSettingComponent
 
      
 
-	public bool ShowAmountValue
+	public bool ShowAmountValue { get; set; }
+
+	private void SetPercent()
 	{
 		if (TimeTableStudent == null)
 		{
@@ -45,12 +47,20 @@ public partial class StudentSettingComponent
 			return;
 		}
 
-	private void SetPercent()
-	{
 		Price = _dataProvider.GetLevelBookPrice(TimeTableStudent.TimeTable.TermId,
 			TimeTableStudent.TimeTable.LevelId);
 
-		TimeTableStudent.StudentPercentDiscount = (TimeTableStudent.StudentAmountDiscount * 100) / Price.TuitionAmount;
-		StateHasChanged();
+        if (Price != null)
+            TimeTableStudent.StudentPercentDiscount =
+                (TimeTableStudent.StudentAmountDiscount * 100) / Price.TuitionAmount;
+        StateHasChanged();
 	}
+
+    private void SetAmount()
+    {
+
+        if (Price != null)
+            TimeTableStudent.StudentAmountDiscount =
+                (Price.TuitionAmount * TimeTableStudent.StudentPercentDiscount)/100 ;
+    }
 }
