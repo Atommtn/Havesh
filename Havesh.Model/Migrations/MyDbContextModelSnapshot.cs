@@ -1542,9 +1542,6 @@ namespace HaveshApp.Migrations
                     b.Property<DateTime?>("ModifiedWhen")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PayBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PaymentType")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -1566,9 +1563,6 @@ namespace HaveshApp.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXCode");
-
-                    b.Property<bool?>("VPay")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
