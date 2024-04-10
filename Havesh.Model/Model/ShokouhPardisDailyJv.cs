@@ -22,5 +22,8 @@ public partial class ShokouhPardisDailyJv : BranchBaseModel
         
 	public int? TimeTableFk { get; set; }
 	public bool? IsPreRegister { get; set; }
+
+	public bool? VPay { get; set; }
+	public string? PayBy { get; set; }
         
 }

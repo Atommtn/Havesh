@@ -50,7 +50,17 @@ public partial class StudentSettingComponent
 		Price = _dataProvider.GetLevelBookPrice(TimeTableStudent.TimeTable.TermId,
 			TimeTableStudent.TimeTable.LevelId);
 
-		TimeTableStudent.StudentPercentDiscount = (TimeTableStudent.StudentAmountDiscount * 100) / Price.TuitionAmount;
-		StateHasChanged();
+        if (Price != null)
+            TimeTableStudent.StudentPercentDiscount =
+                (TimeTableStudent.StudentAmountDiscount * 100) / Price.TuitionAmount;
+        StateHasChanged();
 	}
+
+    private void SetAmount()
+    {
+
+        if (Price != null)
+            TimeTableStudent.StudentAmountDiscount =
+                (Price.TuitionAmount * TimeTableStudent.StudentPercentDiscount)/100 ;
+    }
 }
