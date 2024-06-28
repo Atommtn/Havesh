@@ -97,14 +97,21 @@ namespace HaveshApp.Admin.DailyJV
             }
             else
             {
-                _snackBar.Add("ترم پیش ثبت نام انتخاب نگردید.", Severity.Success);
+                _snackBar.Add("ترم پیش ثبت نام انتخاب نگردید.", Severity.Warning);
                 return Task.CompletedTask;
             }
 
+            var HasPreRegister = _dataProvider.GetPreRegisterStudentByTerm(NextTerm.Id,((ShokouhPardisStudentClass)arg.First()).Id);
+            if (HasPreRegister)
+            {
+                _snackBar.Add("این دانش آموز برای ترم انتخابی پیش ثبت نام شده است. از منوی ثبت نام ثبت نام را ادامه دهید.", Severity.Error);
+                return Task.CompletedTask;
+            }
             ShowStudent = true;
             Student = arg.First();
             //NextTerm = _dataProvider.GetTermsInRangeToday();
             FindStudentLastTimeTable = _dataProvider.FindStudentLastTimeTable(Student);
+            //todo FindStudentPreRegisterاگر این شاگرد پیش ثبت نام در این ترم نموده است سطح بعدی نباید اعمال شود و باید در همان سطح پیش ثبت نام شود 
             if (FindStudentLastTimeTable == null)
             {
                 LastTerm = _dataProvider.GetTermsInRangeToday();
@@ -135,7 +142,7 @@ namespace HaveshApp.Admin.DailyJV
                 if (!result.Canceled)
                 {
                     NextLevel = result.Data as ShokouhPardisLevelClass;
-
+                    
                     _snackBar.Add("سطح مورد نظر با موفقیت انتخاب شد.", Severity.Success);
                 }
                 else
@@ -276,6 +283,7 @@ namespace HaveshApp.Admin.DailyJV
                 NextLevel = result.Data as ShokouhPardisLevelClass;
 
                 _snackBar.Add("سطح جدید مورد نظر با موفقیت انتخاب شد.", Severity.Success);
+                //todo تغییر قیمت شهریه
             }
             else
             {

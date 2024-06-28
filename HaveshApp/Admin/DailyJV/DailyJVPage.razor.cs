@@ -45,8 +45,9 @@ public partial class DailyJVPage
 
 	CultureInfo _ir = new CultureInfo("fa-Ir");
 	bool initComplete = false;
+    private bool studentHasPreRegistration = false;
 
-	private bool IsOutOfIns
+    private bool IsOutOfIns
 	{
 		get => _isOutOfIns;
         set
@@ -189,7 +190,17 @@ public partial class DailyJVPage
 	async Task SaveClick()
 	{
 		_dailyJV.TermId = SelectedTerm.Id;
-		_dailyJV.TimeTableFk= _timeTable?.Id;
+        if (studentHasPreRegistration)
+        {
+            _dailyJV.TimeTableFk = null;
+            _dailyJV.IsPreRegister = true;
+            //todo farzad check by mohammad describtion
+        }
+        else
+        {
+            _dailyJV.TimeTableFk = _timeTable?.Id;
+        }
+		
 		_dailyJV.DateOfSettle += ts;
 		if (_dailyJV.CurrentDate == DateTime.Today)
 		{
@@ -235,6 +246,15 @@ public partial class DailyJVPage
         _timeTable = _dataProvider.GetStudetnLevel(student, term)!;
         if (_timeTable != null) 
             return _timeTable.Level;
+        else
+        {
+            studentHasPreRegistration = _dataProvider.GetPreRegisterStudentByTerm(term.Id,student.Id);
+            if(studentHasPreRegistration)
+            {
+                return _dataProvider.GetPreRegistrationLevel(student.Id, term.Id);
+
+            }
+        }
 
         var parameters = new DialogParameters
         {

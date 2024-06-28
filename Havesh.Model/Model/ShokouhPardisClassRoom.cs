@@ -21,4 +21,13 @@ public partial class ShokouhPardisClassRoom : BranchBaseModel
 	public int? MaxCapacity { get; set; }
 	[Id(6)]
 	public string? Describtion { get; set; }
+
+    public static ShokouhPardisClassRoom CreateClassRoom()
+    {
+        return new ShokouhPardisClassRoom()
+        {
+            ClassRoomGuid = Guid.NewGuid(),
+            ClassRoomLastModified = DateTime.Now
+        };
+    }
 }

@@ -1,18 +1,28 @@
 ﻿@using HaveshApp.Classes
 @using Havesh.Domain
 <MudSelect T="string" @bind-Value="Value" SelectedValuesChanged="SelectedChange" Label="بابت" Dense="true" TransformOrigin="Origin.TopCenter">
-  
-    <MudSelectItem Value="@FeeForStatuses.TuitionAmount"/>
-    <MudSelectItem Value="@FeeForStatuses.Book"/>
-    <MudSelectItem Value="@FeeForStatuses.PrivateClass"/>
-    <MudSelectItem Value="@FeeForStatuses.Final"/>
-    <MudSelectItem Value="@FeeForStatuses.Placement"/>
-    <MudSelectItem Value="@FeeForStatuses.Refund"/>
+    @if (TuitionAmountOnly)
+    {
+        <MudSelectItem Value="@FeeForStatuses.TuitionAmount" />
+    }
+    else
+    {
+        <MudSelectItem Value="@FeeForStatuses.TuitionAmount" />
+        <MudSelectItem Value="@FeeForStatuses.Book"/>
+        <MudSelectItem Value="@FeeForStatuses.PrivateClass"/>
+        <MudSelectItem Value="@FeeForStatuses.Final"/>
+        <MudSelectItem Value="@FeeForStatuses.Placement"/>
+        <MudSelectItem Value="@FeeForStatuses.Refund"/>    
+    }
+    
 </MudSelect>
 @code {
 
     [Parameter]
     public string Value { get; set; }
+
+    [Parameter]
+    public bool TuitionAmountOnly { get; set; } = false;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }

@@ -4,6 +4,7 @@ using HaveshApp.Classes;
 using System.Xml;
 using System.Linq;
 using Havesh.Model.Model;
+using HaveshApp.Admin.Student;
 
 namespace Havesh.Domain.Services;
 
@@ -304,4 +305,10 @@ public class StudentService
 		var list = queryable.Skip(page * size).Take(size).ToList();
 		return list;
 	}
+
+    public FollowUp GetFollowUp(ShokouhPardisStudentClass student)
+    {
+		//_dbConntext.FollowUp
+        throw new NotImplementedException();
+    }
 }

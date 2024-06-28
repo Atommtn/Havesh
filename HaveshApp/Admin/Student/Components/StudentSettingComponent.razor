@@ -3,34 +3,42 @@
 
 <MudPaper Class="pa-2 ma-2" Outlined="true">
     <MudGrid>
-        <MudItem md="6">
+       
+        <MudItem md="12">
+            <MudText Typo="Typo.h5" Color="Color.Info" GutterBottom="true">
+                قیمت کتاب :
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Warning" GutterBottom="true">
+                @(Price.BookPrice.ToString("##,###") + " تومان ")
+            </MudText>
+            <MudText Typo="Typo.h5" Color="Color.Info" GutterBottom="true">
+                شهریه: 
+            </MudText>
+
+            <MudText Typo="Typo.h5" Color="Color.Error" GutterBottom="true">
+                @(Price.TuitionAmount.ToString("##,###") + " تومان ")
+                
+            </MudText>
+ 
+            
+        </MudItem>
+        <MudItem md="12">
+           
+            <MudTextField  @bind-Value="TimeTableStudent.StudentPercentDiscount" Label="درصد تخفیف" ReadOnly="ShowAmountValue" @onblur="@(()=>SetAmount())" />
+        </MudItem>
+        <MudItem md="12">-
             <MudCheckBox @bind-Checked="ShowAmountValue" Label=" آیا میخواهید مبلغ تخفیف عددی مشخص باشد." LabelPosition="LabelPosition.Start">
 
             </MudCheckBox>
-           
-            @if (ShowAmountValue)
-            {
-                <MudTextField @bind-Value="TimeTableStudent.StudentAmountDiscount" Label="مبلغ تخفیف" ReadOnly="!ShowAmountValue" Immediate="false" @onblur="@(()=>SetPercent())" />
-            }
-        </MudItem>
-        <MudItem md="6">
-           
-                <MudTextField  @bind-Value="TimeTableStudent.StudentPercentDiscount" Label="درصد تخفیف" ReadOnly="ShowAmountValue"/>
-            
-        </MudItem>
-        <MudItem md="6">
-            <MudCheckBox @bind-Checked="TimeTableStudent.IsBookPaymentComplete" Disabled="true" Label="پرداخت کتاب" LabelPosition="LabelPosition.Start"></MudCheckBox>
-        </MudItem>
-        <MudItem md="6">
-            <MudCheckBox @bind-Checked="TimeTableStudent.IsPaymentComplete" Disabled="true" Label="پرداخت شهریه" LabelPosition="LabelPosition.Start"></MudCheckBox>
+            <MudTextField @bind-Value="TimeTableStudent.StudentAmountDiscount" Label="مبلغ تخفیف" ReadOnly="!ShowAmountValue" Immediate="false" @onblur="@(()=>SetPercent())" />
         </MudItem>
         <MudItem md="12">
-            <MudTextField @bind-Value="TimeTableStudent.Description" Label="توضیحات" />
+            <MudTextField @bind-Value="TimeTableStudent.Description" Label="توضیحات لازم و دلیل تخفیف" />
         </MudItem>
     </MudGrid>
 </MudPaper>
 
-    <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveClick">
-        ذخیره
-    </MudButton>
-
+<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveClick">
+    ذخیره
+</MudButton>
