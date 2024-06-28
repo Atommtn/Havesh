@@ -53,7 +53,8 @@ public partial class StudentsListComponent
 	[Parameter] public bool MultiSelect { get; set; }
 	[Parameter] public bool RowStyle { get; set; }
 	[Parameter] public int RowPage { get; set; } = 60;
-	[Parameter] public Func<StudentActionArgs, Task>? OnEditStudentAction { get; set; }
+    [Parameter] public bool AllowFollowUp { get; set; }
+    [Parameter] public Func<StudentActionArgs, Task>? OnEditStudentAction { get; set; }
 	[Parameter] public Func<StudentActionArgs, Task<bool>>? OnDeleteStudentAction { get; set; }
 	[Parameter] public Func<List<ShokouhPardisStudentClass>, Task>? OnSelectStudentAction { get; set; }
 	[Inject] IDialogService DialogService { get; set; }
@@ -103,7 +104,7 @@ public partial class StudentsListComponent
 			total = StudentService.GetStudentsInTermCount(Term,SearchText, HasnotIdNo);
 			pagedStudents = StudentService.GetStudentsInTermPaged(Term, state.Page, state.PageSize, SearchText, HasnotIdNo);
 		}
-            
+            //todo نمایش پیش ثبت نام های بدون کلاس - تایم تیبل
 		else
 		{
 			total = StudentService.GetTotalStudentCount(studentIds);
@@ -215,6 +216,7 @@ public partial class StudentsListComponent
 	List<ShokouhPardisStudentClass> selectedStudents = new List<ShokouhPardisStudentClass>();
 	ShokouhPardisTermClass? _term;
 	private bool _showPreRigesterItem = true;
+
 	private bool _hasnotIdNo = false;
 
 	void ItemChanged()
@@ -237,10 +239,10 @@ public partial class StudentsListComponent
 	}
 
 	[Inject] Navigation Navigation { get; set; }
-        
+    
 
 
-	void StudentProfileClick(ShokouhPardisStudentClass student)
+    void StudentProfileClick(ShokouhPardisStudentClass student)
 	{
 		Navigation.NavigateTo("/StudentInfo/" + student.StudentClassGuid.ToString("N"));
 	}
@@ -296,4 +298,24 @@ public partial class StudentsListComponent
 
 		//}
 	}
+
+    private async Task FollowUpClick(ShokouhPardisStudentClass student)
+    {
+        var dialogReference = DialogService.Show<AddNewFollowUpDialog>(
+            " پیگیری " ,
+            new DialogParameters
+            {
+                ["Student"] = student
+            },
+            new DialogOptions()
+            {
+                CloseButton = true,
+                MaxWidth = MaxWidth.Large
+            });
+        var dialogResult = await dialogReference.Result;
+        if (dialogResult.Cancelled == false)
+        {
+            Log.Warning("User {UserName} Save FollowUp Student {StudentId}", _userSession.Payload.UserName, student.Id);
+        }
+    }
 }

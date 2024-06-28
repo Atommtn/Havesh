@@ -20,7 +20,11 @@
             <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="AddStudent">
                 اضافه نمودن دانش آموز
             </MudButton>
-
+           @*  <MudSelect T="bool" Label="فیلتر" AnchorOrigin="Origin.BottomCenter">
+                    <MudSelectItem @bind-Checked="@HasnotIdNo" Value="@("بدون فیلتر")" />
+                    <MudSelectItem @bind-Checked="@HasnotIdNo" Value="@("بدون کد ملی")" />
+            <MudSelectItem @bind-Checked="@ShowPreRigesterItem" Value="@("بدون تخصیص کلاس")" />
+            </MudSelect> *@
                 <MudCheckBox @bind-Checked="@HasnotIdNo">بدون کد ملی</MudCheckBox>
         }
         @if (MultiSelect)
@@ -35,6 +39,7 @@
         {
                 <MudSwitch @bind-Checked="@ShowPreRigesterItem" Label="پیشنهاد پیش ثبت نام" Color="Color.Secondary" />
         }
+      
         <MudSpacer />
         <MudTextField @ref="SearchTextField" 
                       @bind-Value="SearchText"
@@ -47,6 +52,7 @@
                       Clearable="true" />
     </ToolBarContent>
     <HeaderContent>
+        <MudTh></MudTh>
         <MudTh></MudTh>
         <MudTh></MudTh>
         <MudTh></MudTh>
@@ -84,8 +90,14 @@
             {
                 <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Success" Variant="Variant.Outlined" OnClick="() => StudentProfileClick(student)"/>
             }
-        </MudTd> 
-        <MudTd>
+        </MudTd>
+            <MudTd>
+                @if (AllowFollowUp is true)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.FollowTheSigns" Color="Color.Warning" Variant="Variant.Outlined" OnClick="() => FollowUpClick(student)" />
+                }
+            </MudTd>
+            <MudTd>
             @if (RowStyle)
             {
                 <MudIconButton Icon="@Icons.Material.Filled.Money" Color="Color.Warning" Variant="Variant.Text" OnClick="() => { student.ShowDetail = !student.ShowDetail; }"/>

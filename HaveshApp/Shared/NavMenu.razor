@@ -38,6 +38,7 @@
                 <MudDivider/>
                 <MudNavLink Href="/TeacherDefinition" Match="NavLinkMatch.Prefix">Teacher Definition</MudNavLink>
                 <MudNavLink Href="/IntervalDefinition" Match="NavLinkMatch.Prefix">Interval Definition</MudNavLink>
+                <MudNavLink Href="/ClassRoomDefinition" Match="NavLinkMatch.Prefix">ClassRoom Definition</MudNavLink>
                 <MudNavLink Href="/DaySesseionDefinition" Match="NavLinkMatch.Prefix">DaySession Definition</MudNavLink>
                 <MudNavLink Href="/ScheduleDefinition" Match="NavLinkMatch.Prefix">Schedule Definition</MudNavLink>
                 <MudNavLink Href="/LevelPriceDefinition" Match="NavLinkMatch.Prefix">Level Price Definition</MudNavLink>
@@ -70,6 +71,7 @@
                 <MudNavLink Href="/prereg" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.RecordVoiceOver">پیش ثبت نام</MudNavLink>
                 <MudDivider></MudDivider>
                 <MudNavLink Href="/StudentSearch" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonSearch" IconColor="Color.Success">زبان آموزان</MudNavLink>
+                <MudNavLink Href="/FollowUp" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FollowTheSigns" IconColor="Color.Warning">پیگیری</MudNavLink>
                 <MudNavLink Href="/Profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BookOnline">پروفایهای آنلاین</MudNavLink>
             </MudNavGroup>
         </Authorized>
@@ -104,6 +106,7 @@
     </AuthorizeView>
     <AuthorizeView Roles="Teacher">
         <Authorized>
+            <MudNavLink Href="/TimeSheet/" Match="NavLinkMatch.Prefix">Teacher Scheduler</MudNavLink>
         </Authorized>
     </AuthorizeView>
 

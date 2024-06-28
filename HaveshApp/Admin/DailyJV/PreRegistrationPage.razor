@@ -95,7 +95,7 @@
                             <MudStack>
                                 <PaymentTypesComponent @bind-Value="_dailyJV.PaymentType"></PaymentTypesComponent>
 
-                                <FeeForComponent @bind-Value="FeeFor"></FeeForComponent>
+                                <FeeForComponent TuitionAmountOnly="true" @bind-Value="FeeFor"></FeeForComponent>
 
 
                                 <MudTextField @bind-Value="_dailyJV.Fee" Immediate="true" Label="مبلغ به تومان" Style="font-size: 24pt" HelperText="@(_dailyJV.Fee.NumberToText(Language.Persian) + " تومان")" />

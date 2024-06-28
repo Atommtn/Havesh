@@ -1,0 +1,49 @@
+﻿@page "/ClassRoomDefinition"
+
+@using HaveshApp.Admin.Definition.ClassRoom
+
+@layout PersianPagesLayout
+
+<h3>تعریف سانس های کلاس ها</h3>
+
+<MudTable @ref="table"
+          Hover="true"
+          Breakpoint="Breakpoint.None"
+          Items="ClassRoom"
+          RowsPerPage="30"
+          Style="background-color: #3c4043;">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">جدول کلاس های </MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewClassRoomClick">
+            اضافه کردن سانس جدید
+        </MudButton>
+
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>نام کلاس</MudTh>
+        <MudTh>ظرفیت نرمال</MudTh>
+        <MudTh>کمترین ظرفیت</MudTh>
+        <MudTh>بیشترین ظرفیت</MudTh>
+        <MudTh>توضیحات</MudTh>
+        <MudTh></MudTh>
+
+    </HeaderContent>
+    <RowTemplate Context="classRoom">
+        <MudTd DataLabel="نام کلاس">@classRoom.ClassRoomName</MudTd>
+            <MudTd DataLabel="ظرفیت نرمال">@classRoom.Capacity</MudTd>
+            <MudTd DataLabel="کمترین ظرفیت">@classRoom.MinCapacity</MudTd>
+            <MudTd DataLabel="بیشترین ظرفیت">@classRoom.MaxCapacity</MudTd>
+            <MudTd DataLabel="توضیحات">@classRoom.Describtion</MudTd>
+        <MudTd >
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() =>EditButtonClick(classRoom)"></MudIconButton>
+        </MudTd>
+
+
+    </RowTemplate>
+   
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+
+</MudTable>

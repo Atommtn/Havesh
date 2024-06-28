@@ -1,0 +1,67 @@
+﻿@using HaveshApp.Admin.Components
+@using Havesh.Model.Model
+
+
+<MtnDialog>
+    <ChildComponent>
+        @if (ClassRoom is { })
+        {
+            <MudGrid>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="@ClassRoom.ClassRoomName" Required Label="نام کلاس" />
+                </MudItem>
+                <MudItem md="6">
+                     <MudTextField @bind-Value="@ClassRoom.Capacity" Required Label="ظرفیت نرمال" />
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="@ClassRoom.MinCapacity"  Label="کمترین ظرفیت" />
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="@ClassRoom.MaxCapacity"  Label="بیشترین ظرفیت" />
+                </MudItem>
+ <MudItem md="6">
+                    <MudTextField @bind-Value="@ClassRoom.Describtion"  Label="توضیحات" />
+                </MudItem>
+
+
+            </MudGrid>
+        }
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisClassRoom? ClassRoom { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    private void SaveDialogClick()
+    {
+        DialogInstance.Close(ClassRoom);
+    }
+}

@@ -1,0 +1,229 @@
+﻿@page "/TimeSheet/{TermIdParam}/{TeacherIdParam}"
+@using HaveshApp.Admin.Components
+@using HaveshApp.Admin.Clone
+@using Olive
+@using Havesh.Model.Model
+@using HaveshApp.Managment.Session.SessionActions
+@layout PersianPagesLayout
+
+@attribute [Authorize(Roles = "Teacher")]
+
+<MudGrid>
+    @* <MudItem md="6">
+        <TermSelectorComponent @bind-Term="Term" />
+    </MudItem>
+    <MudItem md="6">
+        <TeacherSelectorComponent @bind-Teacher="Teacher" Label="Teacher" Term="Term" />
+    </MudItem> *@
+
+    <MudItem md="12">
+        @foreach (var shokouhPardisWeekDay in DataProvider.GetWeekDays())
+        {
+
+            <MudStack Row="true" Spacing="2">
+                <MudButton Style="Width:150px">
+                    @shokouhPardisWeekDay.Title
+                </MudButton>
+                @foreach (var shokouhPardisInterval in DataProvider.GetIntervals(Term))
+                {
+                    <MudButton Color="Color.Info"
+                               Variant="@GetItemVariant(shokouhPardisWeekDay,shokouhPardisInterval)"
+                               OnClick="()=>SelectIntervalClick(shokouhPardisWeekDay,shokouhPardisInterval)">
+                        @shokouhPardisInterval.Title
+                    </MudButton>
+
+                }
+            </MudStack>
+
+        }
+    </MudItem>
+    <MudItem md="6">
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveClick">
+            @if (TeacherIdParam.IsEmpty())
+            {
+                <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                    Save
+                </MudText>
+
+            }
+            else
+            {
+                <MudText Typo="Typo.caption" Color="Color.Default" GutterBottom="true">
+                    Update
+                </MudText>
+
+            }
+        </MudButton>
+
+    </MudItem>
+
+</MudGrid>
+
+@code {
+    [Inject] DataProviderService DataProvider { get; set; }
+
+    ShokouhPardisTermClass Term
+    {
+        get => _term;
+        set
+        {
+            _term = value;
+            if (_term == value) return;
+            CheckForEdit();
+        }
+    }
+
+    ShokouhPardisTeacherClass Teacher
+    {
+        get => _teacher;
+        set
+        {
+            if (_teacher == value) return;
+            _teacher = value;
+            CheckForEdit();
+        }
+    }
+
+    private void CheckForEdit()
+    {
+        if (Term is not { Id: > 0 } || Teacher is not { Id: > 0 }) return;
+
+        var anyExist = DataProvider.AnyTeacherTimeSheet(Term, Teacher);
+        var pageName = NavigationManager.Uri.Replace(NavigationManager.BaseUri, null);
+        if (pageName.IndexOf("/") > 0)
+            pageName = pageName.Substring(0, pageName.IndexOf("/"));
+
+        if (anyExist)
+        {
+            if (TermIdParam.IsEmpty() && !TeacherIdParam.IsEmpty())
+            {
+                GoToEdit(pageName, Term.Id, Teacher.Id);
+            }
+            else
+            {
+                if (TermIdParam == Term.Id.ToString() || TeacherIdParam == Teacher.Id.ToString())
+                {
+
+                }
+                else
+                {
+                    GoToEdit(pageName, Term.Id, Teacher.Id);
+                }
+            }
+        }
+        else
+        {
+            GotoNew(pageName);
+        }
+
+    }
+
+    private void GotoNew(string pageName)
+    {
+        NavigationManager.NavigateTo($"{pageName}");
+        _delTeacherTimeSheets = new();
+        _teacherTimeSheets = new();
+        StateHasChanged();
+    }
+
+    private void GoToEdit(string pageName, int termTermClassId, int teacherTeacherClassId)
+    {
+        NavigationManager.NavigateTo($"{pageName}/{termTermClassId}/{teacherTeacherClassId}", true);
+        Refresh();
+        StateHasChanged();
+    }
+
+    public ShokouhPardisYearClass Year { get; set; }
+
+    [Parameter]
+    public string TermIdParam
+    {
+        get => _termIdParam;
+        set
+        {
+            _termIdParam = value;
+
+        }
+    }
+
+    [Parameter]
+    public string TeacherIdParam
+    {
+        get => _teacherIdParam;
+        set => _teacherIdParam = value;
+    }
+
+    private MudChipSet? _intervalSelector;
+
+    [Inject] ISnackbar Snackbar { get; set; }
+    List<ShokouhPardisTeacherTimeSheet>? _teacherTimeSheets;
+    List<ShokouhPardisTeacherTimeSheet> _delTeacherTimeSheets = new();
+    private ShokouhPardisTermClass _term;
+    private ShokouhPardisTeacherClass _teacher;
+    string _termIdParam;
+    string _teacherIdParam;
+
+    protected override void OnInitialized()
+    {
+        if (!TermIdParam.IsEmpty() && !TeacherIdParam.IsEmpty())
+        {
+            Refresh();
+            Term = _teacherTimeSheets.First().Term;
+            Teacher = _teacherTimeSheets.First().Teacher;
+            Year = Term.Year;
+            
+        }
+    }
+
+    private void Refresh()
+    {
+        _teacherTimeSheets = DataProvider.GetTermTeacherTimeSheets(Convert.ToInt32(TermIdParam), Convert.ToInt32(TeacherIdParam));
+    }
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+    private void SaveClick()
+    {
+        DataProvider.SaveTeacherTimeSheets(_teacherTimeSheets, _delTeacherTimeSheets);
+        Snackbar.Add("Data has been saved successfully ...");
+        if (TermIdParam.IsEmpty())
+        {
+            var pageName = NavigationManager.Uri.Replace(NavigationManager.BaseUri, null);
+            NavigationManager.NavigateTo($"{pageName}/{Term.Id}/{Teacher.Id}");
+        }
+    }
+
+    private Variant GetItemVariant(ShokouhPardisWeekDay weekDay, ShokouhPardisInterval interval)
+    {
+        if (_teacherTimeSheets is null)
+            return Variant.Text;
+        return _teacherTimeSheets.Any(x => x.WeekDayId == weekDay.Id && x.IntervalId == interval.Id) ?
+            Variant.Filled :
+            Variant.Text;
+    }
+
+    private void SelectIntervalClick(ShokouhPardisWeekDay weekDay, ShokouhPardisInterval interval)
+    {
+        if (_teacherTimeSheets?.Any(x => x.WeekDayId == weekDay.Id && x.IntervalId == interval.Id) ?? false)
+        {
+            var delItem = _teacherTimeSheets.First(x => x.WeekDayId == weekDay.Id && x.IntervalId == interval.Id);
+            _teacherTimeSheets.Remove(delItem);
+            if (delItem.Id > 0)
+                _delTeacherTimeSheets.Add(delItem);
+            return;
+        }
+
+        var shokouhPardisTeacherTimeSheet = new ShokouhPardisTeacherTimeSheet()
+            {
+                WeekDayId = weekDay.Id,
+                IntervalId = interval.Id,
+                TeacherId = Teacher.Id,
+                TermId = Term.Id,
+                TeacherTimeSheetGuid = Guid.NewGuid(),
+                TeacherTimeSheetLastModified = DateTime.Now,
+                IsAvailable = true
+            };
+        _teacherTimeSheets ??= new();
+        _teacherTimeSheets?.Add(shokouhPardisTeacherTimeSheet);
+    }
+
+}

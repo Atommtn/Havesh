@@ -4,15 +4,28 @@ using Havesh.Application.Services;
 using Havesh.Domain.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using YamlDotNet.Core.Tokens;
 
 namespace HaveshApp.Admin.Student.Components;
 
 public partial class StudentSettingComponent
 {
-	[Parameter]
-	public ShokouhPardisTimeTableStudent? TimeTableStudent { get; set; }
+	private bool _showAmountValue;
+    private ShokouhPardisTimeTableStudent? _timeTableStudent;
 
-	[Parameter]
+    [Parameter]
+    public ShokouhPardisTimeTableStudent? TimeTableStudent
+    {
+        get => _timeTableStudent;
+        set
+        {
+            _timeTableStudent = value;
+
+            if (_timeTableStudent != null) Price = _dataProvider.GetLevelBookPrice(_timeTableStudent.TimeTable);
+        }
+    }
+
+    [Parameter]
 	public RenderFragment NoContent { get; set; }
 
 	[Parameter]
@@ -34,33 +47,26 @@ public partial class StudentSettingComponent
 	{
            
 	}
+	
 
-     
+    
 
-	public bool ShowAmountValue { get; set; }
+    public bool ShowAmountValue { get; set; }
 
-	private void SetPercent()
-	{
-		if (TimeTableStudent == null)
-		{
-			_snackBar.Add("این زبان آموز در این ترم در تایم تیبل رکوردی ندارد"  ,  Severity.Error);
-			return;
-		}
-
-		Price = _dataProvider.GetLevelBookPrice(TimeTableStudent.TimeTable.TermId,
-			TimeTableStudent.TimeTable.LevelId);
-
-        if (Price != null)
-            TimeTableStudent.StudentPercentDiscount =
-                (TimeTableStudent.StudentAmountDiscount * 100) / Price.TuitionAmount;
-        StateHasChanged();
-	}
-
+    
     private void SetAmount()
     {
 
         if (Price != null)
             TimeTableStudent.StudentAmountDiscount =
-                (Price.TuitionAmount * TimeTableStudent.StudentPercentDiscount)/100 ;
+                (Price.TuitionAmount * TimeTableStudent.StudentPercentDiscount) / 100;
+    }
+    private void SetPercent()
+    {
+        Price = _dataProvider.GetLevelBookPrice(TimeTableStudent.TimeTable.TermId,
+            TimeTableStudent.TimeTable.LevelId);
+
+        TimeTableStudent.StudentPercentDiscount = (TimeTableStudent.StudentAmountDiscount * 100) / Price.TuitionAmount;
+        StateHasChanged();
     }
 }

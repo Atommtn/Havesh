@@ -60,7 +60,7 @@ public class BaseModel : ICanBeSoftDeleted
 
 	[Id(3)]
     public int CreatedByUserId { get; set; } = 4;
-	
+	//todo set userId when save data by valid userID
     /*
     [ForeignKey(nameof(CreatedByUserId))]
     public User CreatedBy { get; set; }

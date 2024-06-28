@@ -1,0 +1,118 @@
+﻿@using HaveshApp.Admin.Components
+@using Havesh.Model.Model
+<MtnDialog>
+    <ChildComponent>
+
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudBadge Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Success" Overlap="true" Bordered="true" Class="mx-6 my-4">
+                <MudAlert Severity="Severity.Success" Icon="null" ContentAlignment="HorizontalAlignment.Left">پیگیری زبان آموز</MudAlert>
+
+            </MudBadge>
+
+            <MudGrid>
+                <MudItem md="12">
+                    @if (Student.Gender is false)
+                    {
+                        <MudChip
+                            Variant="Variant.Filled" Color="Color.Error"
+                            Icon="@Icons.Material.Filled.Female"
+                        >
+                            دختر
+                        </MudChip>
+                    }
+                    else if (Student.Gender is true)
+                    {
+                        <MudChip
+                            Variant="Variant.Filled" Color="Color.Info"
+                            Icon="@Icons.Material.Filled.Male"
+                        >
+                            پسر
+                        </MudChip>
+
+                    }
+                </MudItem>
+                <MudItem md="6">
+                    <MudText @bind-Value="Student.StudentName" Label="نام زبان آموز" Clearable="true" />
+                </MudItem>
+                <MudItem md="6">
+                    <MudText @bind-Value="Student.StudentFamily" Label="نام خانوادگی زبان آموز" Clearable="true" />
+                </MudItem>
+
+            </MudGrid>
+        </MudPaper>
+@* 
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudBadge Icon="@Icons.Material.Filled.ContactPhone" Color="Color.Warning" Overlap="true" Bordered="true" Class="mx-6 my-4">
+                <MudAlert Severity="Severity.Warning" Icon="null" ContentAlignment="HorizontalAlignment.Left">
+                    اطلاعات تماس
+                </MudAlert>
+            </MudBadge>
+            <MudGrid>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.StudentPhone" Label="شماره همراه زبان آموز" Clearable="true" />
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.HomePhone" Label="تلفن منزل" Clearable="true" />
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.FatherPhone" Label="شماره همراه پدر زبان آموز" Clearable="true" />
+                </MudItem>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.MotherPhone" Label="شماره همراه مادر زبان آموز" Clearable="true" />
+                </MudItem>
+
+                <MudItem md="6">
+                    <MudTextField @bind-Value="Student.WhatsAppPhone" Label="شماره واتساپ" Clearable="true" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper> *@
+
+
+    </ChildComponent>
+    <DialogAction>
+
+        <MudButton Color="@Color.Success" StartIcon="@Icons.Material.Filled.Save"
+                   Variant="@Variant.Filled" OnClick="@SaveDialogClick">
+            Save
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>
+@code {
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisStudentClass? Student { get; set; }
+    [Inject] ISnackbar Snackbar { get; set; }
+
+    [Inject] StudentService StudentService { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        StudentService.GetFollowUp(Student);
+        base.OnParametersSet();
+    }
+
+    private void SaveDialogClick()
+    {
+
+        if (!StudentService.IsDuplicatedStudent(Student, Student.Id))
+        {
+            Snackbar.Add("Student Save Successfully", severity: Severity.Success);
+            Student.BCode = Student.Gender switch
+            {
+                true => "0011,", // TODO : Remove Harcode
+                false => "0012,",  // TODO : Remove Hardcode
+                _ => Student.BCode
+            };
+            DialogInstance.Close(Student);
+        }
+        else
+        {
+            Snackbar.Add("There is a student same you enter", severity: Severity.Error);
+        }
+
+    }
+
+}
