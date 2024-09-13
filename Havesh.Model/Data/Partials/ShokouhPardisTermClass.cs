@@ -21,4 +21,14 @@ public partial class ShokouhPardisTermClass
     {
         return new ShokouhPardisTermClass();
     }
+
+    public static ShokouhPardisTermClass CreateClassRoom()
+    {
+
+        return new ShokouhPardisTermClass()
+        {
+            TermClassGuid = Guid.NewGuid(),
+            TermClassLastModified = DateTime.Now
+        };
+    }
 }

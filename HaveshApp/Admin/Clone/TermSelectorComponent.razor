@@ -34,7 +34,7 @@
                     <MudSelect @bind-Value="Term" Label="ترم" Dense="true">
                         @if (AllowAll)
                         {
-                            <MudSelectItem Value="@(null as ShokouhPardisTermClass)">همه ترمها</MudSelectItem>
+                            <MudSelectItem Value="@(null as ShokouhPardisTermClass)">@AllowAllText</MudSelectItem>
                         }
                         @foreach (var t in Terms)
                         {
@@ -83,6 +83,24 @@
     public string Title { get; set; }
 
     [Parameter]
+    public int? TermId
+    {
+        get => _termId;
+        set
+        {
+            if (_termId == value ) return;
+            
+            _termId = value;
+            if (TermId > 0 && _termId is not null)
+            {
+                initializing = true;
+                Term = _dataProvider.GetTerm((int)_termId);
+                if (Term != null) Year = Term.Year;
+            }
+        }
+    }
+
+    [Parameter]
     public bool YearOnly { get; set; }
 
     [Parameter]
@@ -113,6 +131,9 @@
     public bool AllowAll { get; set; }
 
     [Parameter]
+    public string AllowAllText { get; set; } = "همه ترم ها";
+
+    [Parameter]
     public EventCallback<ShokouhPardisTermClass>? TermChanged { get; set; }
     [Parameter]
     public EventCallback<ShokouhPardisYearClass>? YearChanged { get; set; }
@@ -123,6 +144,8 @@
     ShokouhPardisYearClass? _year;
 
     bool initializing = false;
+    private int? _termId;
+
     private void Init()
     {
         if (initComplete) return;

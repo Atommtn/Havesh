@@ -36,3 +36,14 @@ public class PaymentSummary
 	public string FeeFor { get; set; }
 	public double TotalFee { get; set; }
 }
+public class StudentRegisterSummary
+{
+	public int StudentId { get; set; }
+    public DateTime? Day { get; set; }
+    public string LevelName { get; set; }
+    public bool? Gender { get; set; }
+    public int TotalStudents { get; set; }
+    public int RegisteredStudents { get; set; }
+    public int UnregisteredStudents { get; set; }
+    public object LevelNames { get; set; }
+}

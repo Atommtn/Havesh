@@ -4,10 +4,57 @@
 @layout PersianPagesLayout
 <h3>تعریف ترم</h3>
 
-<TermSelectorComponent YearOnly="true"  Year="Year" ></TermSelectorComponent>
+<TermSelectorComponent YearOnly="true" Year="yearSelect" ></TermSelectorComponent>
 
-@code {
+<MudTable @ref="table"
+          Hover="true"
+          Breakpoint="Breakpoint.None"
+          Items="Term"
+          RowsPerPage="30"
+          Style="background-color: #3c4043;">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">جدول کلاس های </MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewTermClick">
+            اضافه کردن ترم جدید
+        </MudButton>
 
-    public ShokouhPardisYearClass Year { get; set; }
-    
-}
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>نام ترم</MudTh>
+        <MudTh>تاریخ شروع - تاریخ پایان</MudTh>
+        <MudTh>ترم بعدی</MudTh>
+        <MudTh>ترم قبلی</MudTh>
+        <MudTh></MudTh>
+        
+
+    </HeaderContent>
+    <RowTemplate Context="term">
+        <MudTd DataLabel="نام ترم">@term.TermName</MudTd>
+        
+        <MudDatePicker @bind-Date="term.StartDate"
+                       Label="تاریخ شروع"
+                       FirstDayOfWeek="DayOfWeek.Saturday"
+                       Culture="@GetPersianCulture()"
+                       MaxDate="DateTime.Today"
+                       TitleDateFormat="dddd, dd MMMM" />
+        <MudDatePicker @bind-Date="term.EndDate"
+                       Label="تاریخ پایان"
+                       FirstDayOfWeek="DayOfWeek.Saturday"
+                       Culture="@GetPersianCulture()"
+                       MaxDate="DateTime.Today"
+                       TitleDateFormat="dddd, dd MMMM" />
+            <MudTd DataLabel="ترم بعدی">@GetTermName(term.NextTermFk)</MudTd>
+            <MudTd DataLabel="ترم قبلی">@GetTermName(term.LastTermFk)</MudTd>
+        <MudTd >
+            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() =>EditButtonClick(term)"></MudIconButton>
+        </MudTd>
+
+
+    </RowTemplate>
+   
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+
+</MudTable>

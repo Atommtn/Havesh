@@ -1,42 +1,53 @@
 ﻿@using System.ComponentModel
+@using System.Diagnostics.Eventing.Reader
 @using Havesh.Model.Model
 @{
-	var accStatus = AccountStatis(TimeTable);
-	if (accStatus == default)
-	{
-		<MudText Typo="Typo.body1">No Level Price</MudText>
-	}
-	else
-	{
-		@if (ShowTution)
-		{
-			<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-				شهریه ترم
-				<MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
-			</MudChip>
-		}
+    if (ShowNothing)
+    {
+        <MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+            این دانش آموزش در ترم پیش کلاسی نداشته است. برای بررسی سوابق پرداخت به صفحه مشخصات آموزشی مراجعه نمایید.
+            
+        </MudChip>
+    }
+    else
+    {
+        var accStatus = AccountStatis(TimeTable);
+        @if (accStatus == default)
+        {
+            <MudText Typo="Typo.body1">No Level Price</MudText>
+        }
+        else
+        {
+            @if (ShowTution)
+            {
+                <MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+                    شهریه ترم
+                    <MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
+                </MudChip>
+            }
 
-		<MudText Typo="Typo.body1">پرداختی ها :</MudText>
-		@foreach (var x in accStatus.payments)
-		{
-			<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-				پرداختی بابت @x.Key
-				<MudChip Style="@GetFeeForStyle(x.Key)">@x.Value تومان</MudChip>
-			</MudChip>
-		}
+            <MudText Typo="Typo.body1">پرداختی ها :</MudText>
+            @foreach (var x in accStatus.payments)
+            {
+                <MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+                    پرداختی بابت @x.Key
+                    <MudChip Style="@GetFeeForStyle(x.Key)">@x.Value تومان</MudChip>
+                </MudChip>
+            }
 
-		<MudText Typo="Typo.body1">وضعیت حساب :</MudText>
-		<MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-			در ترم @TimeTable.Term.TermName شهریه
-			@if (accStatus.Diff != 0)
-			{
-				<text>به مبلغ</text>
-				<MudChip Color="Color.Info">@accStatus.Diff.ToString("N0") تومان</MudChip>
-			}
-			<MudChip Color="GetColor(accStatus.status)">@GetDescription(accStatus.status)</MudChip>
-			است
-		</MudChip>
-	}
+            <MudText Typo="Typo.body1">وضعیت حساب :</MudText>
+            <MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+                در ترم @TimeTable.Term.TermName شهریه
+                @if (accStatus.Diff != 0)
+                {
+                    <text>به مبلغ</text>
+                    <MudChip Color="Color.Info">@accStatus.Diff.ToString("N0") تومان</MudChip>
+                }
+                <MudChip Color="GetColor(accStatus.status)">@GetDescription(accStatus.status)</MudChip>
+                است
+            </MudChip>
+        }
+    }
 }
 @code {
 
@@ -44,8 +55,35 @@
 	public bool ShowTution { get; set; }
 	[Parameter]
 	public ShokouhPardisTimeTable TimeTable { get; set; }
-	[Parameter]
-	public ShokouhPardisStudentClass Student { get; set; }
+
+    [Parameter]
+    public ShokouhPardisStudentClass Student { get; set; } 
+
+    
+    [Parameter]
+    public bool LastTimeTable { get; set; } = false;
+    
+    public bool ShowNothing { get; set; }= false;
+
+    protected override void OnParametersSet()
+    {
+        if (LastTimeTable && TimeTable is null)
+        {
+            var curretTerm = _dataProvider.GetTermsInRangeToday();
+            var lastTimetable = _dataProvider.GetTimeTableByTermId(curretTerm.LastTermFk,Student.Id);
+            if (lastTimetable is not null)
+            {
+                TimeTable = lastTimetable;
+            }
+            else
+            {
+                ShowNothing = true;
+            }
+    //todo پیدا کردن قبلی
+
+        }
+        base.OnParametersSet();
+    }
 
 	enum AccountBalanceTypeEnum
 	{
@@ -124,5 +162,7 @@
 
 		return "background-color:" + color + opa + ";color:#ffffff";
 	}
+
+    
 
 }

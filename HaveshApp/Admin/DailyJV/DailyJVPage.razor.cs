@@ -52,8 +52,7 @@ public partial class DailyJVPage
 		get => _isOutOfIns;
         set
 		{
-           
-			_isOutOfIns = value;
+            _isOutOfIns = value;
 			if (value)
 			{
 				_selectedStudent.StudentName = OutOfInsFullName;
@@ -252,7 +251,6 @@ public partial class DailyJVPage
             if(studentHasPreRegistration)
             {
                 return _dataProvider.GetPreRegistrationLevel(student.Id, term.Id);
-
             }
         }
 

@@ -1,0 +1,112 @@
+﻿@page "/NewStudentChart"
+@using HaveshApp.Admin.DailyJV.Components
+@using System.Globalization
+@using DNTPersianUtils.Core
+@using Havesh.Domain
+@using Havesh.Model.Model
+@using HaveshApp.Classes
+<h3>DailyJVChart</h3>
+<MudStack Class="pa">
+    <MudCard Style="Width: 250px">
+        <MudCardContent>
+            <MudDatePicker @bind-Date="DateFrom"
+                           Label="از تاریخ"
+                           FirstDayOfWeek="DayOfWeek.Saturday"
+                           Culture="@GetPersianCulture()"
+                           MaxDate="DateTime.Today"
+                           TitleDateFormat="dddd, dd MMMM" />
+            <MudSpacer></MudSpacer>
+            <MudDatePicker @bind-Date="DateTo"
+                           Label="از تاریخ"
+                           FirstDayOfWeek="DayOfWeek.Saturday"
+                           Culture="@GetPersianCulture()"
+                           MaxDate="DateTime.Today"
+                           TitleDateFormat="dddd, dd MMMM" />
+
+        </MudCardContent>
+    </MudCard>
+
+</MudStack>
+<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.ShowChart" Variant="Variant.Text" OnClick="ShowChartClick">
+    Show Chart
+</MudButton>
+@if (savedStudentsSeries is { Count: > 0 })
+{
+
+    <MudChart ChartType="ChartType.Bar" ChartSeries="@savedStudentsSeries" ChartOptions="ChartOp"
+              @bind-SelectedIndex="Index"
+              XAxisLabels="@XAxisLabels.ToArray()" Width="100%" Height="350px"/>
+
+
+    <MudChart ChartType="ChartType.Line" ChartSeries="@savedStudentsSeries" @bind-SelectedIndex="Index"
+              XAxisLabels="@XAxisLabels.ToArray()" Width="100%" Height="350px" ChartOptions="@ChartOp" />
+    @* <MudChart ChartType="ChartType.Bar" ChartSeries="@registeredStudentsSeries" ChartOptions="ChartOp"
+              @bind-SelectedIndex="Index"
+              XAxisLabels="@XAxisLabels.ToArray()" Width="100%" Height="350px"/>
+
+    <MudChart ChartType="ChartType.Bar" ChartSeries="@unregisteredStudentsSeries" ChartOptions="ChartOp"
+              @bind-SelectedIndex="Index"
+              XAxisLabels="@XAxisLabels.ToArray()" Width="100%" Height="350px"/> *@
+
+    <style>
+        .mud-chart-x-axis-label {
+            transform: rotate(-90deg);
+            white-space: nowrap;
+        }
+    </style>
+}
+@code {
+
+    List<ShokouhPardisWeekDay> days;
+    private int Index = 0; //default value cannot be 0 -> first selectedindex is 0.
+    public DateTime? DateFrom { get; set; }
+    public DateTime? DateTo { get; set; }
+    public List<string> XAxisLabels;//= { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+
+    public ChartOptions ChartOp { get; set; }
+    
+    public string FeeForBind { get; set; }
+    private List<ChartSeries> savedStudentsSeries;
+    private List<ChartSeries> registeredStudentsSeries;
+    private List<ChartSeries> unregisteredStudentsSeries;
+
+
+
+
+    CultureInfo GetPersianCulture()
+    {
+        var culture = new CultureInfo("fa-IR");
+        return culture;
+    }
+
+
+    public List<ChartSeries> NewStudentSeries { get; set; }
+
+    private void ShowChartClick()
+    {
+
+        ChartOp = new ChartOptions()
+        {
+
+
+
+        };
+        savedStudentsSeries = _dataProvider.GetStudentCountsByGenderAndDate(DateFrom.Value, DateTo.Value);
+        // registeredStudentsSeries = _dataProvider.GetRegisteredStudentsByLevelAndGender(DateFrom.Value, DateTo.Value, 41);
+    
+    // unregisteredStudentsSeries = _dataProvider.GetUnregisteredStudents(DateFrom.Value, DateTo.Value);
+
+        XAxisLabels = Enumerable.Range(0, (DateTo.Value - DateFrom.Value).Days + 1)
+            .Select(o => DateFrom.Value.AddDays(o).ToString("yyyy-MM-dd"))
+            .ToList();
+    
+    // var dateFrom = DateTo - DateFrom;
+    // for (var i = 0; i <= dateFrom?.Days; i++)
+    // {
+    //     var dateTime = DateFrom.Value.AddDays(i);
+    //     XAxisLabels.Add(dateTime.GetPersianMonth() + "/" + dateTime.GetPersianDayOfMonth().ToString());
+    // }
+    }
+
+
+}

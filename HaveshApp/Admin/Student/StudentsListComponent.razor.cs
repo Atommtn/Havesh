@@ -72,7 +72,17 @@ public partial class StudentsListComponent
 		}
 	}
 
-	MudTextField<string?>? SearchTextField { get; set; }
+    public bool NoClass 
+    {
+        get => _noClass;
+        set
+        {
+            _noClass = value;
+			FilterData();
+        }
+    }
+
+    MudTextField<string?>? SearchTextField { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -99,12 +109,16 @@ public partial class StudentsListComponent
 			total = StudentService.GetStudentsInTimeTableCount(TimeTable);
 			pagedStudents = StudentService.GetStudentsInTimeTablePaged(TimeTable, state.Page, state.PageSize, SearchText);
 		}
-		else if (Term is not null)
+		else if (Term is not null && NoClass is not true)
 		{
 			total = StudentService.GetStudentsInTermCount(Term,SearchText, HasnotIdNo);
 			pagedStudents = StudentService.GetStudentsInTermPaged(Term, state.Page, state.PageSize, SearchText, HasnotIdNo);
 		}
-            //todo نمایش پیش ثبت نام های بدون کلاس - تایم تیبل
+        else if (NoClass)
+        {
+            total = StudentService.GetTotalPreRegisterStudentCount(Term);
+            pagedStudents = StudentService.GetPreRegisterStudentPaged(state.Page, state.PageSize, SearchText, Term);
+        }
 		else
 		{
 			total = StudentService.GetTotalStudentCount(studentIds);
@@ -218,8 +232,10 @@ public partial class StudentsListComponent
 	private bool _showPreRigesterItem = true;
 
 	private bool _hasnotIdNo = false;
+    private string? _filterBy;
+    private bool _noClass = false;
 
-	void ItemChanged()
+    void ItemChanged()
 	{
             
 	}
@@ -239,7 +255,26 @@ public partial class StudentsListComponent
 	}
 
 	[Inject] Navigation Navigation { get; set; }
-    
+
+    public string? FilterBy
+    {
+        get => _filterBy;
+        set
+        {
+            _filterBy = value;
+
+            switch (_filterBy)
+            {
+				case "noId":
+                    HasnotIdNo = true;
+                    break;
+				case "noClass":
+                    NoClass = true;
+                    break;
+
+            }
+        }
+    }
 
 
     void StudentProfileClick(ShokouhPardisStudentClass student)

@@ -274,8 +274,38 @@ public class StudentService
 		}
 		return iQ.Count();
 	}
+    public int GetTotalPreRegisterStudentCount(ShokouhPardisTermClass term)
+    {
+        return _dbConntext.ShokouhPardisDailyJvs.Count(x => (x.IsPreRegister == true) && x.TermId == term.Id);
+    }
+    public List<ShokouhPardisStudentClass> GetPreRegisterStudentPaged(int page, int size, string? searchText, ShokouhPardisTermClass term)
+    {
 
-	public List<ShokouhPardisStudentClass> GetPreRegisterStudentPaged(int page, int size, string? searchText, ShokouhPardisTimeTable tt)
+        IQueryable<ShokouhPardisStudentClass?> queryable = _dbConntext.ShokouhPardisDailyJvs
+            .Include(x => x.Student)
+            .Where(x => x.TermId == term.Id && x.IsPreRegister == true)
+            .Select(x => x.Student).AsQueryable();
+
+        if (searchText is not null)
+        {
+            var words = searchText.Trim().Split(new[] { ' ', '-', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var word in words)
+            {
+                queryable = queryable.Where(x => x.StudentName.Contains(word) ||
+                                                 x.StudentFamily.Contains(word) ||
+                                                 x.StudentPhone.Contains(word) ||
+                                                 x.FatherPhone.Contains(word) ||
+                                                 x.MotherPhone.Contains(word) ||
+                                                 x.HomePhone.Contains(word) ||
+                                                 x.StudentIdno.Contains(word) ||
+                                                 x.StudentMotherFullName.Contains(word));
+
+            }
+        }
+        var list = queryable.Skip(page * size).Take(size).ToList();
+        return list;
+    }
+    public List<ShokouhPardisStudentClass> GetPreRegisterStudentPaged(int page, int size, string? searchText, ShokouhPardisTimeTable tt)
 	{
 
 

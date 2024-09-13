@@ -20,12 +20,13 @@
             <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="AddStudent">
                 اضافه نمودن دانش آموز
             </MudButton>
-           @*  <MudSelect T="bool" Label="فیلتر" AnchorOrigin="Origin.BottomCenter">
-                    <MudSelectItem @bind-Checked="@HasnotIdNo" Value="@("بدون فیلتر")" />
-                    <MudSelectItem @bind-Checked="@HasnotIdNo" Value="@("بدون کد ملی")" />
-            <MudSelectItem @bind-Checked="@ShowPreRigesterItem" Value="@("بدون تخصیص کلاس")" />
-            </MudSelect> *@
-                <MudCheckBox @bind-Checked="@HasnotIdNo">بدون کد ملی</MudCheckBox>
+            <MudSelect @bind-Value="FilterBy" Label="فیلتر" AnchorOrigin="Origin.BottomCenter">
+                    <MudSelectItem  Value="@("none")">بدون فیلتر</MudSelectItem>
+                    <MudSelectItem Value="@("noId")">بدون کد ملی</MudSelectItem>
+                    <MudSelectItem Value="@("noClass")">بدون تخصیص کلاس</MudSelectItem>
+
+            </MudSelect>
+                @* <MudCheckBox @bind-Checked="@HasnotIdNo">بدون کد ملی</MudCheckBox> *@
         }
         @if (MultiSelect)
         {

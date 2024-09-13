@@ -1,0 +1,143 @@
+﻿@using HaveshApp.Admin.Components
+@using Havesh.Model.Model
+@using System.Globalization
+
+
+<MtnDialog>
+    <ChildComponent>
+        @if (Term is { })
+        {
+            <MudGrid>
+                <MudItem md="6">
+                    <MudTextField @bind-Value="@Term.TermName" Required Label="نام ترم" />
+                </MudItem>
+                <MudItem md="6">
+                     
+                    <MudDatePicker @bind-Date="Term.StartDate"
+                                   Label="تاریخ شروع"
+                                   FirstDayOfWeek="DayOfWeek.Saturday"
+                                   Culture="@GetPersianCulture()"
+                                   MaxDate="DateTime.Today"
+                                   TitleDateFormat="dddd, dd MMMM" />
+                    
+                    
+                </MudItem>
+                <MudItem md="6">
+                     <MudDatePicker @bind-Date="Term.EndDate"
+                                    Label="تاریخ پایان"
+                                    FirstDayOfWeek="DayOfWeek.Saturday"
+                                    Culture="@GetPersianCulture()"
+                                    MaxDate="DateTime.Today"
+                                    TitleDateFormat="dddd, dd MMMM" />
+                </MudItem>
+                <MudItem md="6">
+                     <TermSelectorComponent TermId="@Term.NextTermFk" AllowAll="true" AllowAllText="هیچکدام" @bind-Term="NextTerm" Title="ترم بعدی"></TermSelectorComponent>
+                </MudItem>
+                <MudItem md="6">
+                     <TermSelectorComponent TermId="@Term.LastTermFk" AllowAll="true" AllowAllText="هیچکدام" @bind-Term="LastTerm" Title="ترم قبلی"></TermSelectorComponent>
+                </MudItem>
+
+
+         
+                </MudGrid>
+        }
+    </ChildComponent>
+    <DialogAction>
+        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" OnClick="SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance DialogInstance { get; set; }
+
+    [Parameter]
+    public ShokouhPardisTermClass? Term { get; set; }
+
+    public ShokouhPardisTermClass NextTerm
+    {
+        get => _nextTerm;
+        set
+        {
+            if (_nextTerm == value) return;
+            _nextTerm = value;
+            if (_nextTerm is not null)
+            {
+                var next = _dataProvider.GetTermId(_nextTerm);
+
+                if (next is not null)
+                {
+                    Term.NextTermFk = next;
+                }
+                else
+                {
+                    Term.NextTermFk = null;
+                }
+            }
+            else
+            {
+                Term.NextTermFk = null;
+            }
+        }
+    }
+
+    public ShokouhPardisTermClass LastTerm
+    {
+        get => _lastTerm;
+        set
+        {
+            if(_lastTerm == value) return;
+            _lastTerm = value;
+            if (_lastTerm is not null)
+            {
+                var last = _dataProvider.GetTermId(_lastTerm);
+                if (last is not null)
+                {
+                    Term.LastTermFk = last;
+                }
+                else
+                {
+                    Term.LastTermFk = null;
+                }
+            }
+            else
+            {
+                Term.LastTermFk = null;
+            }
+
+        }
+    }
+
+
+    CultureInfo GetPersianCulture()
+    {
+        var culture = new CultureInfo("fa-IR");
+        return culture;
+    }
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+    private void CloseDialogClick()
+    {
+        DialogInstance.Cancel();
+    }
+
+    private void SaveDialogClick()
+    {
+        DialogInstance.Close(Term);
+    }
+
+    private ShokouhPardisTermClass _nextTerm;
+    private ShokouhPardisTermClass _lastTerm;
+}

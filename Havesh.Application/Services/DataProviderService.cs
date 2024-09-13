@@ -12,6 +12,9 @@ using Havesh.Domain.Infrastructure;
 using Havesh.Model.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq;
+using Microsoft.IdentityModel.Tokens;
+using static System.Collections.Specialized.BitVector32;
+using Microsoft.VisualBasic;
 
 
 /*
@@ -394,7 +397,16 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		var timeTableStudent = DbContext.ShokouhPardisTimeTableStudents
 			.First(x => x.TimeTableId == timeTableItem.Id &&
 						x.StudentId == student.Id);
-		DbContext.ShokouhPardisTimeTableStudents.Remove(timeTableStudent);
+        var dailyJvs = DbContext.ShokouhPardisDailyJvs.Where(x => x.StudentId == student.Id &&
+                                                                  x.TimeTableFk == timeTableItem.Id).ToList();
+            if (dailyJvs.Any())
+            {
+                dailyJvs.ForEach(x => x.TimeTableFk = null);
+                dailyJvs.ForEach(x => x.IsPreRegister = true);
+            }
+            
+
+        DbContext.ShokouhPardisTimeTableStudents.Remove(timeTableStudent);
 
 		SaveAll();
 	}
@@ -542,8 +554,14 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		var termClass = query.FirstOrDefault(x => x.StartDate <= dt && x.EndDate >= dt);
 		return termClass;
 	}
+    public ShokouhPardisYearClass GetYearInRang(int persianYear)
+    {
+       var query = DbContext.ShokouhPardisYearClasses.AsQueryable();
 
-	public Dictionary<int, int> GetTimeTableStudentsCount(ShokouhPardisTermClass term)
+      var year = query.FirstOrDefault(x => x.YearName  == persianYear.ToString());
+        return year;
+    }
+    public Dictionary<int, int> GetTimeTableStudentsCount(ShokouhPardisTermClass term)
 	{
 		var xx = DbContext.ShokouhPardisTimeTableStudents
 			.Include(x => x.TimeTable)
@@ -934,7 +952,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	IQueryable<ShokouhPardisJvfromSite> GetAllSiteJvQuery(string? search)
 	{
 		var data = DbContext.ShokouhPardisJvfromSites.AsQueryable();
-		if (!search.IsEmpty())
+		if (!search.IsNullOrEmpty())
 			data = data.Where(x => x.StudentName.Contains(search) ||
 								   x.StudentFamil.Contains(search) ||
 								   x.StudentIdNumber.Contains(search) ||
@@ -1643,7 +1661,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 	public User? GetUserByUserName(string? userName)
 	{
-		if (userName.IsEmpty()) return null;
+		if (userName.IsNullOrEmpty()) return null;
 		return DbContext
 			.Users
 			.Include(x => x.Roles)
@@ -2206,7 +2224,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		var registrations = DbContext.PreRegistrations
 			.Where(x => studentIds.Contains(x.StudentFk)).ToList();
 		registrations.ForEach(x => x.IsArchive = true);
-		DbContext.PreRegistrations.UpdateRange(registrations);
+        
+
+        DbContext.PreRegistrations.UpdateRange(registrations);
 		SaveAll();
 
 	}
@@ -2220,7 +2240,8 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		foreach (var x in shokouhPardisDailyJvs)
 		{
 			x.TimeTableFk = tt.Id;
-		}
+            x.IsPreRegister = false;
+        }
 		DbContext.UpdateRange(shokouhPardisDailyJvs);
 		SaveAll();
 	}
@@ -2271,8 +2292,13 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		return DbContext.ShokouhPardisTermClasses
 			.FirstOrDefault(x => x.Id == i);
 	}
-
-	public ShokouhPardisTermClass? GetLatestTerm()
+    public int? GetTermId(ShokouhPardisTermClass nextTerm)
+    {
+        return DbContext.ShokouhPardisTermClasses
+            .FirstOrDefault(x => x.Id == nextTerm.Id)
+            ?.Id;
+    }
+    public ShokouhPardisTermClass? GetLatestTerm()
 	{
 		return DbContext
 			.ShokouhPardisTermClasses
@@ -2290,7 +2316,6 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 	public List<ChartSeries> GetDailyJvSeriesPaymentType(DateTime dateFrom, DateTime dateTo)
 	{
-
 		var paymentSummaries = DbContext.ShokouhPardisDailyJvs
 		.Where(p => p.CurrentDate >= dateFrom && p.CurrentDate <= dateTo)
 		.GroupBy(p => new { p.CurrentDate, p.PaymentType })
@@ -2331,9 +2356,39 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 		return chartSeriesList;
 	}
-	public List<ChartSeries> GetDailyJvSeriesFeeFor(DateTime dateFrom, DateTime dateTo)
-	{
+    public List<ChartSeries> GetStudentCountsByGenderAndDate(DateTime dateFrom, DateTime dateTo)
+    {
+        var students = DbContext.ShokouhPardisStudentClasses
+            .Where(s => s.CreatedWhen >= dateFrom && s.CreatedWhen <= dateTo)
+            .GroupBy(s => new { s.CreatedWhen.Date, s.Gender })
+            .Select(g => new
+            {
+                Date = g.Key.Date,
+                Gender = g.Key.Gender,
+                Count = g.Count()
+            })
+            .ToList();
 
+        var dates = Enumerable.Range(0, (dateTo - dateFrom).Days + 1)
+            .Select(offset => dateFrom.AddDays(offset))
+            .ToList();
+
+        var boysData = dates.Select(d => students.FirstOrDefault(s => s.Date == d && s.Gender == true)?.Count ?? 0).ToList();
+        var girlsData = dates.Select(d => students.FirstOrDefault(s => s.Date == d && s.Gender == false)?.Count ?? 0).ToList();
+        var unknownData = dates.Select(d => students.FirstOrDefault(s => s.Date == d && s.Gender == null)?.Count ?? 0).ToList();
+
+        var chartSeries = new List<ChartSeries>
+        {
+            new ChartSeries { Name = "Boys", Data = boysData.Select(count => (double)count).ToArray() },
+            new ChartSeries { Name = "Girls", Data = girlsData.Select(count => (double)count).ToArray() },
+            new ChartSeries { Name = "Unknown", Data = unknownData.Select(count => (double)count).ToArray() }
+        };
+
+        return chartSeries;
+    }
+    public List<ChartSeries> GetDailyJvSeriesFeeFor(DateTime dateFrom, DateTime dateTo)
+	{
+		
 		List<PaymentSummary> paymentSummaries = DbContext.ShokouhPardisDailyJvs
 			.Where(p => p.CurrentDate >= dateFrom && p.CurrentDate <= dateTo)
 			.GroupBy(p => new { p.CurrentDate, p.FeeFor })
@@ -2587,7 +2642,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 			.Include(x => x.Schedule)
 			.Where(x => x.TermId == termId &&
 						x.Schedule.Programs.Any(p => weekdayIds.Contains(p.DaySession.WeekdayId)));
-		if (!search.IsEmpty())
+		if (!search.IsNullOrEmpty())
 		{
 			query = query.Where(x => search != null && x.Schedule.Title.Contains(search));
 		}
@@ -2608,7 +2663,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 												&& x.Schedule.Programs.All(p => weekdayIds.Contains(p.DaySession.WeekdayId))
 												);
 
-		if (!search.IsEmpty())
+		if (!search.IsNullOrEmpty())
 			query = query.Where(x => search != null && x.Schedule.Title.Contains(search));
 
 		if (includeQuery is not null)
@@ -2638,5 +2693,90 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 			.ToList();
 	}
 
+    public bool GetPreRegisterStudentByTerm(int termId, int studentId)
+    {
+        var result = DbContext.PreRegistrations.Any(x =>
+        x.TermFk == termId &&
+            x.StudentFk == studentId);
+        return result;
+    }
+
+    public ShokouhPardisLevelClass GetPreRegistrationLevel(int studentId, int termId)
+    {
+        var result = DbContext.PreRegistrations.First(x =>
+            x.TermFk == termId &&
+            x.StudentFk == studentId).Level;
+        return result;
+
+    }
+
+    public bool SaveEditClassRoom(ShokouhPardisClassRoom classRoom)
+    {
+        bool isDuplicate = ClassRoomDuplicate(classRoom);
+        if (isDuplicate)
+        {
+            
+        }
+        else
+        {
+            DbContext.ShokouhPardisClassRooms.Update(classRoom);
+            SaveAll();
+        }
+
+        return isDuplicate;
+    }
+
+    bool ClassRoomDuplicate(ShokouhPardisClassRoom classRoom)
+    {
+        var result = DbContext.ShokouhPardisClassRooms.Any(x =>
+            x.ClassRoomName == classRoom.ClassRoomName &&
+			x.Id <= 0
+            );
+        return result;
+    }
+
+   
+
+    public ShokouhPardisTimeTable? GetTimeTableByTermId(int? lastTermId, int studentId)
+    {
+	    var TTS= DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault(
+		    x => x.TimeTable.TermId == lastTermId
+		         && x.StudentId == studentId);
+        if (TTS is null)
+        {
+            return null;
+        }
+	    return DbContext.ShokouhPardisTimeTables
+		    .Include(x=>x.Level)
+		    .FirstOrDefault(x => x.Id == TTS.TimeTableId);
+    }
+
+    public bool SaveEditTerm(ShokouhPardisTermClass Term)
+    {
+        bool isDuplicate = TermDuplicate(Term);
+        if (isDuplicate)
+        {
+
+        }
+        else
+        {
+            DbContext.ShokouhPardisTermClasses.Update(Term);
+            SaveAll();
+        }
+
+        return isDuplicate;
+    }
+
+    bool TermDuplicate(ShokouhPardisTermClass Term)
+    {
+        var result = DbContext.ShokouhPardisTermClasses.Any(x =>
+            x.TermName == Term.TermName &&
+            x.Id <= 0
+        );
+        return result;
+    }
+
+
+    
 }
 

@@ -19,4 +19,8 @@ public partial class ShokouhPardisTermClass : BranchBaseModel
 	public DateTime? StartDate { get; set; }
 	[Id(5)]
 	public DateTime? EndDate { get; set; }
+	[Id(6)]
+	public int? NextTermFk { get; set; }
+	[Id(7)]
+	public int? LastTermFk { get; set; }
 }

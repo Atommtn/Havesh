@@ -4,6 +4,7 @@
 @using HaveshApp.Admin.Student
 @using System.Globalization
 @using DNTPersianUtils.Core
+@using HaveshApp.Admin.Student.Components
 @using Olive
 @using HaveshApp.Admin.Clone
 @attribute [Authorize]
@@ -44,9 +45,17 @@
                                         }
                                     </MudSelect>
                                 </MudPaper>
+                                
+
                             }
                         </MudStack>
+                        @if (_selectedStudent is { })
+                        {
+                                <MudStack Row="true" Class="pa-4 bi-align-center">
+                                <StudentPaymentStatusForTimetableComponent ShowTution="false" Student="_selectedStudent" LastTimeTable="true"/>
+                            </MudStack>
                         }
+                    }
                         @*<MudStack Row="true" Class="pa-4">
                             <MudCheckBox @bind-Checked="@IsOutOfIns" Label="فروش خارج از آموزشگاه"></MudCheckBox>
                             @if (IsOutOfIns)
