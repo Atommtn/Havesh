@@ -36,16 +36,16 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 
 	public async Task<IEnumerable<ShokouhPardisStudentClass>?> GetStudents()
 	{
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
 
 		return await CacheManager.GetOrSet("TT_Students_" + GrainKey, async () =>
 		{
 			var students = DataProviderService.GetTimeTableStudents(GrainKey);
 			
 			if (students == null) return students;
-
 			foreach (var student in students)
 			{
-				var studentGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisStudentClass>>(student.Id);
+				var studentGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisStudentClass>>(branchName+student.Id);
 				await studentGrain.Set(student);
 			}
 

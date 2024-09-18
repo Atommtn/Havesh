@@ -43,7 +43,8 @@ public class WidgetServiceBase
 
 	private async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
 	{
-		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(sessionId);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(branchName+sessionId);
 		var activities = 
 			((await sessionGrain.GetSessionActivities())!)
 			.ToList(); 
@@ -56,7 +57,8 @@ public class WidgetServiceBase
 
 		if (timeTable == null) return null;
 
-		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+timeTable.Id);
 		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
 		var _date = await settingsGrain.Date();
 		var timeTableSession = await timeTableGrain.GetTodaySession(_date);
@@ -142,7 +144,8 @@ public class WidgetServiceBase
 		var _date = await settingsGrain.Date();
 
 
-		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+timeTable.Id);
 		var timeTableSession = await timeTableGrain.GetTodaySession(_date);
 		return timeTableSession;
 	}
@@ -166,7 +169,8 @@ public class WidgetServiceBase
 		// var startTime = UserSession.Debug?.time ?? DateTime.Now.TimeOfDay;
 
 		term ??= await GetTerm();
-		var termGrain = ClusterClient.GetGrain<ITermGrain>(term.Id);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var termGrain = ClusterClient.GetGrain<ITermGrain>(branchName+term.Id);
 		var fromMinutes = TimeSpan.FromMinutes(3);
 		var interval = 
 			await termGrain.GetIntervalByStartTime(startTime, fromMinutes) 

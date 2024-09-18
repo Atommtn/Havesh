@@ -213,8 +213,9 @@
 		{
 			_weekdays = await weekdayManagerGrain.GetWeekDays();
 		}
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
 
-		var termGrain = ClusterClient.GetGrain<ITermGrain>(Term.Id);
+		var termGrain = ClusterClient.GetGrain<ITermGrain>(branchName+Term.Id);
 		if (Term != null)
 			_intervals = await termGrain.GetIntervals(Term.Id);
 

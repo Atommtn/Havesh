@@ -24,11 +24,13 @@ public class TeacherManagerGrain : HaveshManagerGrainBase , ITeacherManagerGrain
 
 	public Task<ShokouhPardisTeacherClass?> GetTeacherByUserId(int? userId)
 	{
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		
 		return CacheManager.GetOrSet($"Teacher-{userId}", async () =>
 		{
 			if (userId == null) return null;
 
-			var userGrain = GrainFactory.GetGrain<IHaveshGrain<User>>((long)userId);
+			var userGrain = GrainFactory.GetGrain<IHaveshGrain<User>>(branchName+(long)userId);
 			if (userGrain == null) return null;
 
 			var user = await userGrain.Get()!;
@@ -39,7 +41,7 @@ public class TeacherManagerGrain : HaveshManagerGrainBase , ITeacherManagerGrain
 			if (teacher == null)
 				throw new Exception("There is not any Teacher assign to this User");
 
-			var teacherGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTeacherClass>>(teacher.Id);
+			var teacherGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTeacherClass>>(branchName+teacher.Id);
 			await teacherGrain.Set(teacher);
 			_userTeacherDictionary.TryAdd((int)userId, teacherGrain);
 

@@ -28,7 +28,8 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables()
 	{
 		var interval = await GetInterval();
-		var intervalGrain = ClusterClient.GetGrain<IIntervallGrain>(interval.Id);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var intervalGrain = ClusterClient.GetGrain<IIntervallGrain>(branchName+interval.Id);
 		var weekday = await GetWeekday();
 		var timeTables = await intervalGrain.GetIntervalTimeTables(weekday.Id);
 		return timeTables;

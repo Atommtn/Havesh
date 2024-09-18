@@ -23,7 +23,9 @@ public class StudentSessionActivityManagerGrain : HaveshManagerGrainBase , IStud
 
 	public async Task CreateStudentSessionActivity(StudentSessionActivity ssa)
 	{
-		var sessionActivityGrain = GrainFactory.GetGrain<IHaveshGrain<StudentSessionActivity>>(ssa.Id);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		
+		var sessionActivityGrain = GrainFactory.GetGrain<IHaveshGrain<StudentSessionActivity>>(branchName + ssa.Id);
 		await sessionActivityGrain.Set(ssa);
 
 		await NotifySessionActivity(ssa);

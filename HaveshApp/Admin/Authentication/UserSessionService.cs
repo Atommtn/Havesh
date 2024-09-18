@@ -35,9 +35,10 @@ public class UserSessionService : IUserSessionService
         if (Payload == null)
             return null;
 
+        var branchName = Environment.GetEnvironmentVariable("BranchName");
         if (Payload?.UserId != null)
         {
-            var userGrain = _client.GetGrain<IHaveshGrain<User>>((int)Payload?.UserId);
+            var userGrain = _client.GetGrain<IHaveshGrain<User>>(branchName+(int)Payload?.UserId);
             _user = await userGrain.Get();
         }
 

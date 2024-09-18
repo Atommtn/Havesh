@@ -32,7 +32,8 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 				return null;
 
 			var teacherManagerGrain = ClusterClient.GetGrain<ITeacherManagerGrain>(Guid.Empty);
-			var userGrain = ClusterClient.GetGrain<IHaveshGrain<User>>(UserSession.User.Id);
+			var branchName = Environment.GetEnvironmentVariable("BranchName");
+			var userGrain = ClusterClient.GetGrain<IHaveshGrain<User>>(branchName+UserSession.User.Id);
 			var user = await userGrain.Get();
 			var teacher = await teacherManagerGrain.GetTeacherByUserId(user?.Id);
 
@@ -47,7 +48,8 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			if (teacherTimeTable == null) 
 				return 0;
 
-			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(teacherTimeTable.Id);
+			var branchName = Environment.GetEnvironmentVariable("BranchName");
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+teacherTimeTable.Id);
 			return await timeTableGrain.GetStudentCount();
 		}
 
@@ -76,7 +78,8 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
 			if (timeTable == null) return null;
 
-			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id);
+			var branchName = Environment.GetEnvironmentVariable("BranchName");
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+timeTable.Id);
 			var students = await timeTableGrain.GetStudents();
 			return students;
 

@@ -1,5 +1,5 @@
 ﻿namespace Havesh.GrainInterfaces.Entity;
 
-public interface IStudentGrain : IGrainWithIntegerKey
+public interface IStudentGrain : IGrainWithStringKey
 {
 }

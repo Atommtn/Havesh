@@ -19,6 +19,7 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 
 	public Task<ShokouhPardisTimeTable?> GetTeacherTimeTable(int termId, int teacherId, int weekdayId, int intervalId)
 	{
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
 		var key = $"{termId}-{teacherId}-{weekdayId}-{intervalId}";
 		return CacheManager.GetOrSet(key, async () =>
 		{
@@ -26,7 +27,7 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 			if (timeTable == null)
 				return timeTable;
 
-			var timeTableGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTimeTable>>(timeTable.Id);
+			var timeTableGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTimeTable>>(branchName+timeTable.Id);
 			await timeTableGrain.Set(timeTable);
 			return timeTable;
 		}, CacheExpireTime);

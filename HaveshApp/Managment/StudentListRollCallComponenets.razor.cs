@@ -36,7 +36,8 @@ public partial class StudentListRollCallComponenets
 	async Task<TableData<ShokouhPardisStudentClass>> ServerReload(TableState state)
 	{
 
-		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(TimeTableSession.TimeTableFk);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+TimeTableSession.TimeTableFk);
 		var students = await ttGrain.GetStudents();
 		if (students == null)
 			return new TableData<ShokouhPardisStudentClass>();
@@ -140,10 +141,11 @@ public partial class StudentListRollCallComponenets
 
             _dataProvider.SaveStudentSessionActivity(studentSessionActivity);
             await manager.CreateStudentSessionActivity(studentSessionActivity);
+            var branchName = Environment.GetEnvironmentVariable("BranchName");
 
             if (obj.Item3.ShowByValue != null)
             {
-                var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(studentSessionActivity.ActivityFk);
+                var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(branchName+studentSessionActivity.ActivityFk);
                 var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(obj.Item3.ShowByValue);
                 if (valueOption != null)
                 {

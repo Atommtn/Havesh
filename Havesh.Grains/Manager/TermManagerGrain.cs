@@ -22,6 +22,7 @@ public class TermManagerGrain : HaveshManagerGrainBase, ITermGrainManager
 	public async Task<ShokouhPardisTermClass?> GetTermsInRangeToday(DateTime? overrideDate=null)
 	{
 		overrideDate ??= DateTime.Today;
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
 		
 		var term= await CacheManager.GetOrSet("Term-" + overrideDate.Value.ToShortDateString(), async () =>
 			{
@@ -30,7 +31,7 @@ public class TermManagerGrain : HaveshManagerGrainBase, ITermGrainManager
 				if (term == null) 
 					return null;
 
-				var termGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTermClass>>(term.Id);
+				var termGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTermClass>>(branchName+term.Id);
 				await termGrain.Set(term);
 				return term;
 			}

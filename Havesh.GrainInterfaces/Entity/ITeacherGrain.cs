@@ -1,6 +1,6 @@
 ﻿namespace Havesh.GrainInterfaces.Entity;
 
-public interface ITeacherGrain : IGrainWithIntegerKey
+public interface ITeacherGrain : IGrainWithStringKey
 {
 
 }

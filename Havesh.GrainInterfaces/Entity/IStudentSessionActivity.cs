@@ -1,6 +1,6 @@
 ﻿namespace Havesh.Grains.Manager;
 
-public interface IStudentSessionActivity  : IGrainWithIntegerKey
+public interface IStudentSessionActivity  : IGrainWithStringKey
 {
 
 }

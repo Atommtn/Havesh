@@ -84,7 +84,8 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSe
 
 	public async Task<IEnumerable<SessionActivityValueOption>?> GetSessionActivitiesPerformed(int timeTableSessionId)
 	{
-		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(timeTableSessionId);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(branchName+timeTableSessionId);
 		var activities = await ttsGrain.GetStudentSessionActivities();
 		var sessionActivityValueOptions = activities?
 			.Select(x => x.ActivityValueOption)
@@ -93,7 +94,9 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSe
 	}
 	public async Task<IEnumerable<StudentSessionActivity>?> GetSessionStudentActivitiesPerformed(int timeTableSessionId)
 	{
-		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(timeTableSessionId);
+		var branchName = Environment.GetEnvironmentVariable("BranchName");
+
+		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(branchName+timeTableSessionId);
 		var activities = await ttsGrain.GetStudentSessionActivities();
 		
 		if (activities == null) 
