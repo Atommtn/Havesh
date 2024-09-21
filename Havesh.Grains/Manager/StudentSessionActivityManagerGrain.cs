@@ -10,22 +10,19 @@ namespace Havesh.Grains.Manager;
 
 public class StudentSessionActivityManagerGrain : HaveshManagerGrainBase , IStudentSessionActivityManagerGrain
 {
-	private readonly DataProviderService _dataProviderService;
 	private readonly ILogger<StudentSessionActivityManagerGrain> _logger;
 
 	public StudentSessionActivityManagerGrain(
 		DataProviderService dataProviderService,
 		ILogger<StudentSessionActivityManagerGrain> logger)
 	{
-		_dataProviderService = dataProviderService;
+		DataProviderService = dataProviderService;
 		_logger = logger;
 	}
 
 	public async Task CreateStudentSessionActivity(StudentSessionActivity ssa)
 	{
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		
-		var sessionActivityGrain = GrainFactory.GetGrain<IHaveshGrain<StudentSessionActivity>>(branchName + ssa.Id);
+		var sessionActivityGrain = GrainFactory.GetGrain<IHaveshGrain<StudentSessionActivity>>( ssa.Id, GrainBranchKey);
 		await sessionActivityGrain.Set(ssa);
 
 		await NotifySessionActivity(ssa);
@@ -35,7 +32,7 @@ public class StudentSessionActivityManagerGrain : HaveshManagerGrainBase , IStud
 	{
 		return CacheManager.GetOrSet("SessionActivities", () =>
 		{
-			var sessionActivities = _dataProviderService.GetGeneralSessionActivities();
+			var sessionActivities = DataProviderService!.GetGeneralSessionActivities();
 			return sessionActivities;
 		} , CacheExpireTime);
 	}
@@ -44,7 +41,7 @@ public class StudentSessionActivityManagerGrain : HaveshManagerGrainBase , IStud
 	{
 		return CacheManager.GetOrSet("DefaultSessionActivity", () =>
 		{
-			var sessionActivities = _dataProviderService.GetDefaultSessionActivity();
+			var sessionActivities = DataProviderService!.GetDefaultSessionActivity();
 			return sessionActivities;
 		}, CacheExpireTime);
 	}

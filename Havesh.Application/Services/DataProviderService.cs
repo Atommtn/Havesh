@@ -1,25 +1,13 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Xml.Linq;
+﻿using System.Globalization;
 using Havesh.Domain;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Olive;
-using Havesh.Model.Model;
-using Microsoft.EntityFrameworkCore.Query;
 using MudBlazor;
 using Havesh.Domain.Infrastructure;
 using Havesh.Model.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Linq;
 using Microsoft.IdentityModel.Tokens;
-using static System.Collections.Specialized.BitVector32;
-using Microsoft.VisualBasic;
-
-
-/*
-using Havesh.Model.Model.MyDbContext;
-*/
 
 namespace Havesh.Application.Services;
 
@@ -27,7 +15,28 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 {
 	private readonly GrainEntityDependency _grainEntityDependency;
 	private readonly IClusterClient _clusterClient;
-	public MyDbContext DbContext { get; }
+	private MyDbContext? _dbContext=null;
+	public MyDbContext DbContext => _dbContext ??= GetDbContextForBranch(BranchName);
+	private string? _branchName;
+	
+	/// Init the BranchName IMMEDIATELY Before First Use of Injected DataProviderService
+	/// Specially for use inside GRAINS !
+	/// Default Value IS the BranchName from Environment Variable so it Sould have [BranchName]__DataSource and [BranchName]__InitialCatalog , ...
+	public string BranchName
+	{
+		get => _branchName ??= Environment.GetEnvironmentVariable("BranchName")!.Trim().TrimEnd("_");
+		set => _branchName = value;
+	}
+
+	private readonly MyDbContextFactory _dbContextFactory;
+	MyDbContext GetDbContextForBranch(string branchName)
+	{
+		// Create DbContext with the appropriate connection string
+		var dbContextForBranch = _dbContextFactory.CreateDbContextForBranch(branchName);
+		dbContextForBranch.EntityTouched += DbContextOnEntityTouched;
+		//dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+		return dbContextForBranch;
+	}
 
 	public void SaveAll()
 	{
@@ -35,17 +44,17 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	}
 
 	public DataProviderService(
-		MyDbContext dbContext,
+		//MyDbContext dbContext,
+		MyDbContextFactory dbContextFactory,
 		GrainEntityDependency grainEntityDependency,
 		IClusterClient clusterClient
 		)
 	{
+		_dbContextFactory = dbContextFactory;
 		_grainEntityDependency = grainEntityDependency;
 		_clusterClient = clusterClient;
-		DbContext = dbContext;
+		//DbContext = dbContext;
 
-		dbContext.EntityTouched += DbContextOnEntityTouched;
-		//dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
 	}
 	public async ValueTask DisposeAsync()
 	{

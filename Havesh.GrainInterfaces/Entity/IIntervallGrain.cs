@@ -2,7 +2,7 @@
 
 namespace Havesh.GrainInterfaces.Entity;
 
-public interface IIntervallGrain  : IGrainWithStringKey
+public interface IIntervallGrain  : IGrainWithIntegerCompoundKey
 {
 	Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables(int weekdayId);
 }

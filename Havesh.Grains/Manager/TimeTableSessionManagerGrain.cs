@@ -15,8 +15,6 @@ namespace Havesh.Grains.Manager;
 
 public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSessionManagerGrain
 {
-	private DataProviderService DataProviderService { get; }
-
 	public TimeTableSessionManagerGrain(DataProviderService dataProviderService)
 	{
 		DataProviderService = dataProviderService;
@@ -26,7 +24,7 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSe
 	{
 		return CacheManager.GetOrSet("Sessions-"+timeTableId, () =>
 		{
-			var timeTableSessions = DataProviderService.GetTimeTableSessions(timeTableId);
+			var timeTableSessions = DataProviderService!.GetTimeTableSessions(timeTableId);
 			return timeTableSessions;
 		}, CacheExpireTime);
 
@@ -36,7 +34,7 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSe
 	{
 		return CacheManager.GetOrSet("Sessions-summary-"+timeTableId, () =>
 		{
-			var timeTableSessions = DataProviderService.GetTimeTableSessionActivitySummary(timeTableId);
+			var timeTableSessions = DataProviderService!.GetTimeTableSessionActivitySummary(timeTableId);
 			return timeTableSessions;
 		}, CacheExpireTime);
 
@@ -78,14 +76,13 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSe
 	{
 		dateTime ??= DateTime.Today;
 		return CacheManager.GetOrSet("TTS_" + dateTime?.ToShortDateString(),
-			() => DataProviderService.GetTimeTableSessions(sessionStartTime , dateTime),
+			() => DataProviderService!.GetTimeTableSessions(sessionStartTime , dateTime),
 			CacheExpireTime);
 	}
 
 	public async Task<IEnumerable<SessionActivityValueOption>?> GetSessionActivitiesPerformed(int timeTableSessionId)
 	{
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(branchName+timeTableSessionId);
+		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(timeTableSessionId,GrainBranchKey);
 		var activities = await ttsGrain.GetStudentSessionActivities();
 		var sessionActivityValueOptions = activities?
 			.Select(x => x.ActivityValueOption)
@@ -94,9 +91,7 @@ public class TimeTableSessionManagerGrain : HaveshManagerGrainBase, ITimeTableSe
 	}
 	public async Task<IEnumerable<StudentSessionActivity>?> GetSessionStudentActivitiesPerformed(int timeTableSessionId)
 	{
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-
-		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(branchName+timeTableSessionId);
+		var ttsGrain = GrainFactory.GetGrain<ITimeTableSessionGrain>(timeTableSessionId,GrainBranchKey);
 		var activities = await ttsGrain.GetStudentSessionActivities();
 		
 		if (activities == null) 

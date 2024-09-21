@@ -45,6 +45,7 @@
 	</DialogActions>
 </MudDialog>
 @code {
+	protected static string BranchName => Environment.GetEnvironmentVariable("BranchName")!;
 
 	[Parameter] public ShokouhPardisTimeTable TimeTable { get; set; }
 
@@ -58,11 +59,11 @@
 	IEnumerable<SessionActivity>? _sesionActivities;
 	protected override async Task OnInitializedAsync()
 	{
-		var timeTableSessionManagerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(HaveshConstants.GeneralKey);
+		var timeTableSessionManagerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(HaveshConstants.GeneralKey , BranchName);
 		Sessions = await timeTableSessionManagerGrain.GetTimeTableSessions(TimeTable.Id);
 
 		_summary = GetStudentSessionActivities(TimeTable.Id);
-		var managerGrain = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+		var managerGrain = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty , BranchName);
 		_sesionActivities = await managerGrain.GetGeneralSesionActivities();
 
 		await base.OnInitializedAsync();

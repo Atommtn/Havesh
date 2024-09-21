@@ -2,7 +2,7 @@
 
 namespace Havesh.GrainInterfaces.Entity;
 
-public interface ITermGrain : IGrainWithStringKey
+public interface ITermGrain : IGrainWithIntegerCompoundKey
 {
 	Task<IEnumerable<ShokouhPardisClassRoom>> GetClassRooms();
 

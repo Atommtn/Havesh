@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Havesh.GrainInterfaces.Common;
 
-public interface IResetSupportGrain : IGrainWithStringKey
+public interface IResetSupportGrain : IGrainWithIntegerCompoundKey
 {
 	Task DeactivateGrainAsync();
 

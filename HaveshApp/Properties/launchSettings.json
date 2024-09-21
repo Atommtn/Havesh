@@ -6,12 +6,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "FRZ_TEST": "true",
-        "BranchName": "SHPB_",
         
-        "Db__DataSource" : "185.220.227.176",
-        "Db__InitialCatalog" : "HaveshAppDb",
-        "Db__UserId" : "ShoukouhPardis12DBAdmin",
-        "Db__Password" : "ShoukouhPardis12DB@pass",
+        "BranchName": "SHPB",
+        "SHPB__DataSource" : "185.220.227.176",
+        "SHPB__InitialCatalog" : "HaveshAppDb",
+        "SHPB__UserId" : "ShoukouhPardis12DBAdmin",
+        "SHPB__Password" : "ShoukouhPardis12DB@pass",
         
         "SiloPOD_IP": "haveshapp-silo",
         "SiloPOD_Name": "haveshapp-silo",

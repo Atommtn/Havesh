@@ -20,7 +20,6 @@ public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervallGrai
 		: base(persistentState, grainContext, dataProviderService, logger)
 	{
 	}
-
 	protected override ShokouhPardisInterval? GetEntity(int id)
 	{
 		return DataProviderService.GetIntervalById(id);
@@ -34,7 +33,7 @@ public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervallGrai
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables(int weekdayId)
 	{
 		return CacheManager.GetOrSet("TT_" + weekdayId, 
-			() => DataProviderService.GetTimeTables(GrainKeyInt, weekdayId)
+			() => DataProviderService.GetTimeTables(GrainKey, weekdayId)
 			, TimeSpan.FromHours(1));
 		
 	}

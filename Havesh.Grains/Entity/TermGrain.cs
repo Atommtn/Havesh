@@ -44,7 +44,7 @@ public class TermGrain : HaveshGrain<ShokouhPardisTermClass> , ITermGrain
 	public Task<IEnumerable<ShokouhPardisInterval>> GetIntervals(int termId)
 	{
 		return CacheManager.GetOrSet($"Term-Intervals-{this.GrainKey}",
-			() => Task.FromResult(DataProviderService.GetIntervals(this.GrainKeyInt).OrEmpty().AsEnumerable())
+			() => Task.FromResult(DataProviderService.GetIntervals(this.GrainKey).OrEmpty().AsEnumerable())
 			, TimeSpan.FromHours(1));
 	}
 
@@ -52,7 +52,7 @@ public class TermGrain : HaveshGrain<ShokouhPardisTermClass> , ITermGrain
 	{
 		return CacheManager.GetOrSet($"Term-Timed-Intervals-{GrainKey}-{startTime:g}" , () =>
 		{
-			var interval = DataProviderService.GetInterval(GrainKeyInt, startTime, fromMinutes);
+			var interval = DataProviderService.GetInterval(GrainKey, startTime, fromMinutes);
 			return interval;
 		}, TimeSpan.FromHours(1));
 	}

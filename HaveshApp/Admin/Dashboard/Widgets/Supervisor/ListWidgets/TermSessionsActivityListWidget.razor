@@ -175,7 +175,8 @@
 	async Task FilterUi()
 	{
 		await InitData();
-		var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(HaveshConstants.GeneralKey);
+
+		var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(HaveshConstants.GeneralKey,BranchName);
 		if (Term is not null)
 		{
 			_timeTables = (await timeTableManagerGrain.GetTermTimeTables(Term.Id, SelectedWeekdays.Select(x => x.Id).ToArray())).ToArray();
@@ -197,7 +198,7 @@
 	{
 		_isPm = DateTime.Now.Hour >= 12;
 		OddEvenSwitch = DateTime.Now.DayOfWeek is not (DayOfWeek.Saturday or DayOfWeek.Monday or DayOfWeek.Wednesday);
-		var termGrainManager = ClusterClient.GetGrain<ITermGrainManager>(HaveshConstants.GeneralKey);
+		var termGrainManager = ClusterClient.GetGrain<ITermGrainManager>(HaveshConstants.GeneralKey,BranchName);
 		Term = await termGrainManager.GetTermsInRangeToday();
 
 		await InitData();
@@ -208,14 +209,13 @@
 	private async Task InitData()
 	{
 
-		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(HaveshConstants.GeneralKey);
+		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(HaveshConstants.GeneralKey,BranchName);
 		if (weekdayManagerGrain != null)
 		{
 			_weekdays = await weekdayManagerGrain.GetWeekDays();
 		}
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
 
-		var termGrain = ClusterClient.GetGrain<ITermGrain>(branchName+Term.Id);
+		var termGrain = ClusterClient.GetGrain<ITermGrain>(Term.Id,BranchName);
 		if (Term != null)
 			_intervals = await termGrain.GetIntervals(Term.Id);
 

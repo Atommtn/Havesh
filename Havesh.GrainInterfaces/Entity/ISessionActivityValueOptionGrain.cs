@@ -2,7 +2,7 @@
 
 namespace Havesh.GrainInterfaces.Entity;
 
-public interface ISessionActivityValueOptionGrain : IGrainWithStringKey
+public interface ISessionActivityValueOptionGrain : IGrainWithIntegerCompoundKey
 {
 
 }

@@ -8,9 +8,9 @@ namespace Havesh.Domain.Services;
 public class MessageDataProviderService : DataProviderService
 {
 	public MessageDataProviderService(
-		MyDbContext dbContext,
+		MyDbContextFactory dbContextFactory,
 		GrainEntityDependency grainEntityDependency, IClusterClient clusterClient)
-		: base(dbContext, grainEntityDependency, clusterClient)
+		: base(dbContextFactory, grainEntityDependency, clusterClient)
 	{
 
 	}

@@ -20,6 +20,7 @@ namespace HaveshApp.Managment;
 
 public partial class StudentListRollCallComponenets
 {
+	protected static string BranchName => Environment.GetEnvironmentVariable("BranchName")!;
 
 	[Inject] public StudentService StudentService { get; set; }
 	[Parameter] public TimeTableSession TimeTableSession { get; set; }
@@ -36,8 +37,7 @@ public partial class StudentListRollCallComponenets
 	async Task<TableData<ShokouhPardisStudentClass>> ServerReload(TableState state)
 	{
 
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+TimeTableSession.TimeTableFk);
+		var ttGrain = ClusterClient.GetGrain<ITimeTableGrain>(TimeTableSession.TimeTableFk,BranchName);
 		var students = await ttGrain.GetStudents();
 		if (students == null)
 			return new TableData<ShokouhPardisStudentClass>();
@@ -137,15 +137,14 @@ public partial class StudentListRollCallComponenets
             };
 
 
-            var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+            var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty , BranchName);
 
             _dataProvider.SaveStudentSessionActivity(studentSessionActivity);
             await manager.CreateStudentSessionActivity(studentSessionActivity);
-            var branchName = Environment.GetEnvironmentVariable("BranchName");
 
             if (obj.Item3.ShowByValue != null)
             {
-                var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(branchName+studentSessionActivity.ActivityFk);
+                var sessionActivityGrain = ClusterClient.GetGrain<ISessionActivityGrain>(studentSessionActivity.ActivityFk,BranchName);
                 var valueOption = await sessionActivityGrain.GetSessionActivityValueOptionByValueAsync(obj.Item3.ShowByValue);
                 if (valueOption != null)
                 {
@@ -173,7 +172,7 @@ public partial class StudentListRollCallComponenets
 	private async Task CancelStudentSessionActivity(StudentSessionActivity sac, bool reload = true)
 	{
 
-		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty);
+		var manager = ClusterClient.GetGrain<IStudentSessionActivityManagerGrain>(Guid.Empty,BranchName);
 		_dataProvider.SetActivityDeleteTime(sac);
 		 //await manager.RemoveStudentSessionActivity(sac);
 		 await manager.NotifySessionActivity(sac);

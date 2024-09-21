@@ -2,7 +2,7 @@
 
 namespace Havesh.Grains.Manager;
 
-public interface ITimeTableSessionManagerGrain : IGrainWithGuidKey
+public interface ITimeTableSessionManagerGrain : IGrainWithGuidCompoundKey
 {
 	Task<IEnumerable<TimeTableSession>?> GetTimeTableSessions(int timeTableId);
 	Task<IDictionary<TimeTableSession,IEnumerable<IEnumerable<StudentSessionActivity>>>?> GetTimeTableSessionsIncludeActivities(int timeTableId);

@@ -3,6 +3,7 @@ using Olive;
 using HaveshApp.Classes;
 using System.Xml;
 using System.Linq;
+using Havesh.Application.Services;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Student;
 
@@ -12,9 +13,10 @@ public class StudentService
 {
 	readonly MyDbContext _dbConntext;
 
-	public StudentService(MyDbContext dbConntext)
+	public StudentService(MyDbContextFactory dbConntextFactory)
 	{
-		_dbConntext = dbConntext;
+		var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+		_dbConntext = dbConntextFactory.CreateDbContextForBranch(branchName);
 	}
 
 	public List<ShokouhPardisStudentClass> GetStudents()

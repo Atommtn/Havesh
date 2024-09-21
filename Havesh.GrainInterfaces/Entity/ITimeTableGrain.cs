@@ -2,7 +2,7 @@
 
 namespace Havesh.GrainInterfaces.Entity;
 
-public interface ITimeTableGrain : IGrainWithStringKey
+public interface ITimeTableGrain : IGrainWithIntegerCompoundKey
 {
 	Task<int> GetStudentCount();
 	Task<IEnumerable<ShokouhPardisStudentClass>?> GetStudents();

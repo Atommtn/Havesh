@@ -14,14 +14,13 @@ namespace Havesh.Grains.Manager;
 
 public class SessionActivityOptionManagerGrain : HaveshManagerGrainBase , ISessionActivityOptionManagerGrain
 {
-    private readonly DataProviderService _dataProviderService;
     private readonly ILogger<SessionActivityOptionManagerGrain> _logger;
 
     public SessionActivityOptionManagerGrain(
         DataProviderService dataProviderService,
         ILogger<SessionActivityOptionManagerGrain> logger)
     {
-        _dataProviderService = dataProviderService;
+        DataProviderService = dataProviderService;
         _logger = logger;
     }
 
@@ -32,7 +31,7 @@ public class SessionActivityOptionManagerGrain : HaveshManagerGrainBase , ISessi
 	    return CacheManager.GetOrSet($"SessionActivityValueOptions-{sessionActivityId}" , () =>
 	    {
             _logger.LogTrace("Data fetch from DB In :" + nameof(GetSessionActivityOptions));
-		    var sessionActivityValueOptions = _dataProviderService.GetSessionActivityValueOptions(sessionActivityId);
+		    var sessionActivityValueOptions = DataProviderService!.GetSessionActivityValueOptions(sessionActivityId);
 		    return sessionActivityValueOptions;
 
 	    }, CacheExpireTime);

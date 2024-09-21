@@ -19,12 +19,13 @@ public class UserSessionService : IUserSessionService
     private readonly MyDbContext _dbContext;
     private DataProviderService? _dataProviderService;
     public event Func<MessageDto, Task> MessageReceived;
+    protected static string BranchName => Environment.GetEnvironmentVariable("BranchName")!;
 
-    public UserSessionService(IServiceProvider serviceProvider, IClusterClient client,MyDbContext dbContext)
+    public UserSessionService(IServiceProvider serviceProvider, IClusterClient client,MyDbContextFactory dbContextFactory)
     {
         _serviceProvider = serviceProvider;
         _client = client;
-        _dbContext = dbContext;
+        _dbContext = dbContextFactory.CreateDbContextForBranch(BranchName);
         //Console.Beep();
     }
 
@@ -35,10 +36,9 @@ public class UserSessionService : IUserSessionService
         if (Payload == null)
             return null;
 
-        var branchName = Environment.GetEnvironmentVariable("BranchName");
         if (Payload?.UserId != null)
         {
-            var userGrain = _client.GetGrain<IHaveshGrain<User>>(branchName+(int)Payload?.UserId);
+            var userGrain = _client.GetGrain<IHaveshGrain<User>>((int)Payload?.UserId, BranchName);
             _user = await userGrain.Get();
         }
 

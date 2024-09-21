@@ -32,9 +32,7 @@ public class SignalRRegisterUserGrain : HaveshManagerGrainBase, ISignalRRegister
 
     public async Task RegisterUser(int userId, string? ip, string connectionId)
     {
-        var branchName = Environment.GetEnvironmentVariable("BranchName");
-        
-        var user = await _grainFactory.GetGrain<IHaveshGrain<User>>(branchName+ userId).Get();
+        var user = await _grainFactory.GetGrain<IHaveshGrain<User>>( userId, GrainBranchKey).Get();
         if (user != null)
         {
             if (_persistentState.State.ConnectedUsers.Any(x => x.Key.Id == userId))
@@ -55,8 +53,7 @@ public class SignalRRegisterUserGrain : HaveshManagerGrainBase, ISignalRRegister
         if (pair.Equals(default(KeyValuePair<User, List<Connection>>)))
             return;
 
-        var branchName = Environment.GetEnvironmentVariable("BranchName");
-        var userGrain = _grainFactory.GetGrain<IHaveshGrain<User>>(branchName+ userId);
+        var userGrain = _grainFactory.GetGrain<IHaveshGrain<User>>( userId, GrainBranchKey);
         var user = await userGrain.Get();
         pair.Value.RemoveWhere(x=>x.ConnectionId == connectionId);
         if (pair.Value.Count == 0 && user != null)

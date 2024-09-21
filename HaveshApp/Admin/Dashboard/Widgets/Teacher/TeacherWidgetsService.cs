@@ -31,9 +31,8 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			if (UserSession.User == null)
 				return null;
 
-			var teacherManagerGrain = ClusterClient.GetGrain<ITeacherManagerGrain>(Guid.Empty);
-			var branchName = Environment.GetEnvironmentVariable("BranchName");
-			var userGrain = ClusterClient.GetGrain<IHaveshGrain<User>>(branchName+UserSession.User.Id);
+			var teacherManagerGrain = ClusterClient.GetGrain<ITeacherManagerGrain>(Guid.Empty , BranchName);
+			var userGrain = ClusterClient.GetGrain<IHaveshGrain<User>>(UserSession.User.Id, BranchName);
 			var user = await userGrain.Get();
 			var teacher = await teacherManagerGrain.GetTeacherByUserId(user?.Id);
 
@@ -48,8 +47,7 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			if (teacherTimeTable == null) 
 				return 0;
 
-			var branchName = Environment.GetEnvironmentVariable("BranchName");
-			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+teacherTimeTable.Id);
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(teacherTimeTable.Id,BranchName);
 			return await timeTableGrain.GetStudentCount();
 		}
 
@@ -59,7 +57,7 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			var teacher = await GetTeacher();
 			var weekday = await GetWeekday();
 			var interval = await GetInterval(term);
-			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty);
+			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty , BranchName);
 			if (term == null || teacher == null || interval == null) return null;
 
 			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
@@ -72,14 +70,13 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			var teacher = await GetTeacher();
 			var weekday = await GetWeekday();
 			var interval = await GetInterval(term);
-			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty);
+			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty,BranchName);
 			if (term == null || teacher == null || interval == null) return null;
 
 			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
 			if (timeTable == null) return null;
 
-			var branchName = Environment.GetEnvironmentVariable("BranchName");
-			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+timeTable.Id);
+			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id,BranchName);
 			var students = await timeTableGrain.GetStudents();
 			return students;
 

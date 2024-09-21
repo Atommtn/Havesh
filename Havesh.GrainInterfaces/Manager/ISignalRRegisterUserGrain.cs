@@ -9,7 +9,7 @@ using Havesh.Model.Model;
 
 namespace Havesh.GrainInterfaces.Manager;
 
-public interface ISignalRRegisterUserGrain : IGrainWithGuidKey
+public interface ISignalRRegisterUserGrain : IGrainWithGuidCompoundKey
 {
     Task RegisterUser(int userId, string? ip, string connectionId);
     Task UnregisterUser(int userId, string connectionId);

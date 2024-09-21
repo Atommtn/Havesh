@@ -9,9 +9,10 @@ public class DashboardService
     public MyDbContext DbContext { get; }
 
 
-    public DashboardService(MyDbContext dbContext)
+    public DashboardService(MyDbContextFactory dbContextFactory)
     {
-        DbContext = dbContext;
+        var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+        DbContext = dbContextFactory.CreateDbContextForBranch(branchName);
     }
 
 

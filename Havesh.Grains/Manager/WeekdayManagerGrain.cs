@@ -10,15 +10,13 @@ namespace Havesh.Grains.Manager;
 
 public class WeekdayManagerGrain : HaveshManagerGrainBase, IWeekdayManagerGrain
 {
-	DataProviderService DataProviderService { get; }
-
 	public WeekdayManagerGrain(DataProviderService dataProviderService)
 	{
 		DataProviderService = dataProviderService;
 	}
 
 	private List<ShokouhPardisWeekDay>? weekDays;
-	private List<ShokouhPardisWeekDay> WeekDays => weekDays ??= DataProviderService.GetWeekDays();
+	private List<ShokouhPardisWeekDay> WeekDays => weekDays ??= DataProviderService!.GetWeekDays();
 
 	public async Task<List<ShokouhPardisWeekDay>?> GetWeekDays()
 	{

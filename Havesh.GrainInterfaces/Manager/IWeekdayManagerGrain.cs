@@ -2,7 +2,7 @@
 
 namespace Havesh.Grains.Manager;
 
-public interface IWeekdayManagerGrain : IGrainWithGuidKey
+public interface IWeekdayManagerGrain : IGrainWithGuidCompoundKey
 {
 	Task<List<ShokouhPardisWeekDay>?> GetWeekDays();
 	Task<ShokouhPardisWeekDay?> GetTodayWeekDay(int? test_dayofweek = null);

@@ -28,8 +28,7 @@ public class SupervisorWidgetsService : WidgetServiceBase
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables()
 	{
 		var interval = await GetInterval();
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var intervalGrain = ClusterClient.GetGrain<IIntervallGrain>(branchName+interval.Id);
+		var intervalGrain = ClusterClient.GetGrain<IIntervallGrain>(interval.Id,BranchName);
 		var weekday = await GetWeekday();
 		var timeTables = await intervalGrain.GetIntervalTimeTables(weekday.Id);
 		return timeTables;
@@ -41,7 +40,7 @@ public class SupervisorWidgetsService : WidgetServiceBase
 		var interval = await GetInterval();
 		if (interval?.StartTime == null) return null;
 
-		var managerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+		var managerGrain = ClusterClient.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty , BranchName);
 		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
 		var _date = await settingsGrain.Date();
 		var timeTableSessions = await managerGrain.GetTimeTableSessions(interval.StartTime.Value, _date);

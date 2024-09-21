@@ -1,4 +1,5 @@
-﻿using Havesh.Model.Data;
+﻿using Havesh.Application.Services;
+using Havesh.Model.Data;
 using Havesh.Model.Model;
 
 namespace Havesh.Domain.Services;
@@ -7,9 +8,10 @@ public class TermPlanningService
 {
     public MyDbContext DbContext { get; }
 
-    public TermPlanningService(MyDbContext dbContext)
+    public TermPlanningService(MyDbContextFactory dbContextFactory)
     {
-        DbContext = dbContext;
+        var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+        DbContext = dbContextFactory.CreateDbContextForBranch(branchName);
     }
 
 }

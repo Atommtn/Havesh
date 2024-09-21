@@ -190,10 +190,7 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<Message> Messages { get; set; } = null!;
     public virtual DbSet<MessageAction> MessageActions { get; set; } = null!;
     public virtual DbSet<MessageActionOption> MessageActionOptions { get; set; } = null!;
-
-
-
-
+    
     public virtual DbSet<ShokouhPardisMediaAttachment> MediaAttachments { get; set; } = null!;
     public virtual DbSet<StudentSessionActivity> StudentSessionActivities { get; set; } = null!;
     public virtual DbSet<SessionActivity> SessionActivities { get; set; } = null!;

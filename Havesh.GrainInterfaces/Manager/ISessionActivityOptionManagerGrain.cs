@@ -2,7 +2,7 @@
 
 namespace Havesh.Grains.Manager;
 
-public interface ISessionActivityOptionManagerGrain : IGrainWithGuidKey
+public interface ISessionActivityOptionManagerGrain : IGrainWithGuidCompoundKey
 {
 	Task<List<SessionActivityValueOption>> GetSessionActivityOptions(int sessionActivityId);
 }

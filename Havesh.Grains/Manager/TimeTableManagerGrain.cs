@@ -10,8 +10,6 @@ namespace Havesh.Grains.Manager;
 
 public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGrain
 {
-	DataProviderService DataProviderService { get; }
-
 	public TimeTableManagerGrain(DataProviderService dataProviderService)
 	{
 		DataProviderService = dataProviderService;
@@ -19,15 +17,14 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 
 	public Task<ShokouhPardisTimeTable?> GetTeacherTimeTable(int termId, int teacherId, int weekdayId, int intervalId)
 	{
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
 		var key = $"{termId}-{teacherId}-{weekdayId}-{intervalId}";
 		return CacheManager.GetOrSet(key, async () =>
 		{
-			var timeTable = DataProviderService.GetTeacherTimeTable(termId, teacherId, weekdayId, intervalId);
+			var timeTable = DataProviderService!.GetTeacherTimeTable(termId, teacherId, weekdayId, intervalId);
 			if (timeTable == null)
 				return timeTable;
 
-			var timeTableGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTimeTable>>(branchName+timeTable.Id);
+			var timeTableGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTimeTable>>(timeTable.Id, GrainBranchKey);
 			await timeTableGrain.Set(timeTable);
 			return timeTable;
 		}, CacheExpireTime);
@@ -39,7 +36,7 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 		return CacheManager.GetOrSet($"TimeTablesInTerm-{search}-" + termId, () =>
 		{
 			var timeTables =
-				DataProviderService.GetTimeTables(termId, search, null, null, timeTables =>
+				DataProviderService!.GetTimeTables(termId, search, null, null, timeTables =>
 			{
 				return timeTables.Include(x => x.Sessions);
 			});
@@ -52,7 +49,7 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 	{
 		return CacheManager.GetOrSet($"TimeTables-Term{termId}-weekdays{string.Join(',', weekdayIds)}-{search}", () =>
 		{
-			var timeTables = DataProviderService.GetTermTimeTablesInWeekdays(termId, weekdayIds, search ,
+			var timeTables = DataProviderService!.GetTermTimeTablesInWeekdays(termId, weekdayIds, search ,
 				q=>q
 					.Include(x=>x.Schedule)
 					.ThenInclude(x=>x.Programs)
@@ -71,7 +68,7 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 	{
 		return CacheManager.GetOrSet($"TimeTables-GroupbySchedule-Term{termId}-weekdays{string.Join(',',weekdayIds)}-{search}", () =>
 		{
-			var timeTables = DataProviderService.GetTermTimeTablesGroupBySchedule(termId, weekdayIds, search);
+			var timeTables = DataProviderService!.GetTermTimeTablesGroupBySchedule(termId, weekdayIds, search);
 			return timeTables;
 
 		}, search.IsEmpty() ? CacheExpireTime : TimeSpan.FromMinutes(1));

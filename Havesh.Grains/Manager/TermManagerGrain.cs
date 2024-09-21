@@ -12,7 +12,6 @@ namespace Havesh.Grains.Manager;
 //[StatelessWorker]
 public class TermManagerGrain : HaveshManagerGrainBase, ITermGrainManager
 {
-	DataProviderService DataProviderService { get; }
 
 	public TermManagerGrain(DataProviderService dataProviderService)
 	{
@@ -22,16 +21,14 @@ public class TermManagerGrain : HaveshManagerGrainBase, ITermGrainManager
 	public async Task<ShokouhPardisTermClass?> GetTermsInRangeToday(DateTime? overrideDate=null)
 	{
 		overrideDate ??= DateTime.Today;
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		
 		var term= await CacheManager.GetOrSet("Term-" + overrideDate.Value.ToShortDateString(), async () =>
 			{
-				var term = DataProviderService.GetTermsInRangeToday(overrideDate,
+				var term = DataProviderService!.GetTermsInRangeToday(overrideDate,
 					q => q.Include(x => x.Year));
 				if (term == null) 
 					return null;
 
-				var termGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTermClass>>(branchName+term.Id);
+				var termGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTermClass>>(term.Id, GrainBranchKey);
 				await termGrain.Set(term);
 				return term;
 			}
@@ -43,6 +40,6 @@ public class TermManagerGrain : HaveshManagerGrainBase, ITermGrainManager
 
 	public Task<ShokouhPardisTermClass?> GetLatestTerm()
 	{
-		return Task.FromResult(DataProviderService.GetLatestTerm());
+		return Task.FromResult(DataProviderService!.GetLatestTerm());
 	}
 }

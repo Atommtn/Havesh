@@ -17,6 +17,7 @@ public class WidgetServiceBase
 	protected readonly IClusterClient ClusterClient;
 	protected readonly UserSessionService UserSession;
 	private readonly DataProviderService _dataProviderService;
+	protected static string BranchName => Environment.GetEnvironmentVariable("BranchName")!;
 
 	protected WidgetServiceBase(
 		IClusterClient clusterClient,
@@ -31,7 +32,7 @@ public class WidgetServiceBase
 
 	protected async Task<ShokouhPardisTermClass?> GetTerm()
 	{
-		var termManager = ClusterClient.GetGrain<ITermGrainManager>(Guid.Empty);
+		var termManager = ClusterClient.GetGrain<ITermGrainManager>(Guid.Empty,BranchName);
 		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
 		var _date = await settingsGrain.Date();
 		var term = await termManager.GetTermsInRangeToday(_date) 
@@ -43,8 +44,7 @@ public class WidgetServiceBase
 
 	private async Task<IEnumerable<SessionActivity>?> GetTimeTableSessionActivities(int sessionId)
 	{
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(branchName+sessionId);
+		var sessionGrain = ClusterClient.GetGrain<ITimeTableSessionGrain>(sessionId,BranchName);
 		var activities = 
 			((await sessionGrain.GetSessionActivities())!)
 			.ToList(); 
@@ -57,8 +57,7 @@ public class WidgetServiceBase
 
 		if (timeTable == null) return null;
 
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+timeTable.Id);
+		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id,BranchName);
 		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
 		var _date = await settingsGrain.Date();
 		var timeTableSession = await timeTableGrain.GetTodaySession(_date);
@@ -144,15 +143,14 @@ public class WidgetServiceBase
 		var _date = await settingsGrain.Date();
 
 
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(branchName+timeTable.Id);
+		var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id,BranchName);
 		var timeTableSession = await timeTableGrain.GetTodaySession(_date);
 		return timeTableSession;
 	}
 
 	protected async Task<ShokouhPardisWeekDay> GetWeekday()
 	{
-		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(Guid.Empty);
+		var weekdayManagerGrain = ClusterClient.GetGrain<IWeekdayManagerGrain>(Guid.Empty , BranchName);
 		var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
 		var _date = await settingsGrain.Date();
 		var weekday = await weekdayManagerGrain.GetTodayWeekDay((int)_date.DayOfWeek);
@@ -169,8 +167,7 @@ public class WidgetServiceBase
 		// var startTime = UserSession.Debug?.time ?? DateTime.Now.TimeOfDay;
 
 		term ??= await GetTerm();
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-		var termGrain = ClusterClient.GetGrain<ITermGrain>(branchName+term.Id);
+		var termGrain = ClusterClient.GetGrain<ITermGrain>(term.Id,BranchName);
 		var fromMinutes = TimeSpan.FromMinutes(3);
 		var interval = 
 			await termGrain.GetIntervalByStartTime(startTime, fromMinutes) 

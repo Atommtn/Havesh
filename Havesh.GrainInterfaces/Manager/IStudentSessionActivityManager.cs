@@ -7,7 +7,7 @@ using Havesh.Model.Model;
 
 namespace Havesh.Grains.Manager;
 
-public interface IStudentSessionActivityManagerGrain : IGrainWithGuidKey
+public interface IStudentSessionActivityManagerGrain : IGrainWithGuidCompoundKey
 {
 	Task CreateStudentSessionActivity(StudentSessionActivity ssa);
 	Task<IEnumerable<SessionActivity>?> GetGeneralSesionActivities();

@@ -1,4 +1,5 @@
-﻿using Havesh.Model.Model;
+﻿using Havesh.Application.Services;
+using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havesh.Domain.Services;
@@ -7,9 +8,10 @@ public class FinancialService
 {
 	readonly MyDbContext _dbConntext;
 
-	public FinancialService(MyDbContext dbConntext)
+	public FinancialService(MyDbContextFactory dbConntextFactory)
 	{
-		_dbConntext = dbConntext;
+		var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+		_dbConntext = dbConntextFactory.CreateDbContextForBranch(branchName);
 	}
 
 	public void AccountTransaction(int studentId, int termId, int amount, string? shortTransKey, string? description)

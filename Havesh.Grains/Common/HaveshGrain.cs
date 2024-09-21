@@ -21,14 +21,22 @@ public abstract class HaveshGrain<T>
     protected ILogger<HaveshGrain<T>> Logger { get; }
 
     protected readonly CacheManager CacheManager;
-    protected string GrainKey => this.GetPrimaryKeyString();
-    protected int GrainKeyInt
+
+    
+    protected int GrainKey => (int)this.GetPrimaryKeyLong(out var ex);
+    protected string GrainBranchKey
     {
         get
         {
-            var branchName = Environment.GetEnvironmentVariable("BranchName");
-            return Convert.ToInt32(this.GetPrimaryKeyString().Replace(branchName, null));
+            _ = this.GetPrimaryKeyLong(out var branch);
+            return branch;
         }
+    }
+
+    public override Task OnActivateAsync(CancellationToken cancellationToken)
+    {
+        DataProviderService.BranchName = GrainBranchKey;
+        return base.OnActivateAsync(cancellationToken);
     }
 
     protected HaveshGrain(
@@ -51,7 +59,7 @@ public abstract class HaveshGrain<T>
 		    PersistentState.State.IsInitialized) 
 			return;
 
-		PersistentState.State.Item = GetEntity(GrainKeyInt);
+		PersistentState.State.Item = GetEntity(GrainKey);
 		PersistentState.State.IsInitialized = true;
 
 	}
@@ -63,10 +71,10 @@ public abstract class HaveshGrain<T>
 		if (forceFromDb is null or false && PersistentState.State.Item != null)
             return PersistentState.State.Item;
 
-        if (string.IsNullOrEmpty(GrainKey ))
+        if (GrainKey <= 0)
             return default(T);
 
-        PersistentState.State.Item = GetEntity(GrainKeyInt);
+        PersistentState.State.Item = GetEntity(GrainKey);
         PersistentState.State.IsInitialized = true;
 
 		return PersistentState.State.Item;

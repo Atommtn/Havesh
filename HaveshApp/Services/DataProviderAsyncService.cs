@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Havesh.Application.Services;
 using Havesh.Model.Model;
 using Olive;
 
@@ -10,9 +11,10 @@ public class DataProviderAsyncService
 {
 	readonly MyDbContext _dbConntext;
 
-	public DataProviderAsyncService(MyDbContext dbConntext)
+	public DataProviderAsyncService(MyDbContextFactory dbConntextFactory)
 	{
-		_dbConntext = dbConntext;
+		var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+		_dbConntext = dbConntextFactory.CreateDbContextForBranch(branchName);
 	}
 	public async Task<List<ShokouhPardisYearClass>> GetYearsAsync()
 	{

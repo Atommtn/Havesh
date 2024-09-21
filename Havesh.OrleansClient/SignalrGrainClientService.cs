@@ -15,12 +15,14 @@ public class SignalrGrainClientService : IAsyncDisposable
 {
 	private readonly IClusterClient _clusterClient;
 	private readonly ILogger<SignalrGrainClientService> _logger;
+	private readonly string _branchName;
 	public event Func<User[],Task>? OnlineUserChanged;
 
     public SignalrGrainClientService(IClusterClient clusterClient,ILogger<SignalrGrainClientService> logger)
 	{
 		_clusterClient = clusterClient;
 		_logger = logger;
+		_branchName = Environment.GetEnvironmentVariable("BranchName")!;
 
 	}
 
@@ -44,39 +46,40 @@ public class SignalrGrainClientService : IAsyncDisposable
 
 	public async Task RegisterUser(int userId, string? ip, string connectionId)
 	{
-        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
+		
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty, _branchName);
 		await connectedUsersGrain.RegisterUser(userId,ip, connectionId);
 	}
 
 	public async Task UnregisterUser(int userId , string connectionId)
 	{
-        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty, _branchName);
 		await connectedUsersGrain.UnregisterUser(userId, connectionId);
 	}
 
 	public Task<User[]> GetOnlineUsers()
 	{
-        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty, _branchName);
 		return connectedUsersGrain.GetOnlineUsers();
 	}
 
 	public Task<Dictionary<User, List<Connection>>> GetOnlineUsersConnections()
 	{
-        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty, _branchName);
 		return connectedUsersGrain.GetRegisteredUsersConnections();
 
 	}
 
     public async Task<IEnumerable<string>?> GetOnlineUserConnections(User user)
     {
-        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty, _branchName);
         var connections = await connectedUsersGrain.GetUserConnections(user);
         return connections;
     }
 
     public async Task<IEnumerable<Connection>?> GetOnlineConnectionsUserInRole(string[] roles)
     {
-        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty);
+        var connectedUsersGrain = _clusterClient.GetGrain<ISignalRRegisterUserGrain>(Guid.Empty, _branchName);
         var userConnections = await connectedUsersGrain.GetUserConnectionsInRoles(roles);
         var connections = userConnections.SelectMany(x=>x.Value);
 		return connections;

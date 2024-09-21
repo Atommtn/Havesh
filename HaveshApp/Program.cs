@@ -33,6 +33,8 @@ using Havesh.Model;
 using Havesh.Model.Contract;
 using Havesh.Model.Interceptors;
 using HaveshApp;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 // Configure logging to log to MSSqlServer database
 
@@ -52,8 +54,10 @@ builder.Services.AddMudServices();
 //builder.Services.AddMudExtensions();
 //builder.Services.AddMudServicesWithExtensions();
 var dbSettings = new DbSettings();
-builder.Configuration.GetSection("Db").Bind(dbSettings);
+var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+builder.Configuration.GetSection(branchName).Bind(dbSettings);
 var conStr = dbSettings.GetConnectionString();
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .Enrich.With(new MtnUserEnricher(builder.Services))
@@ -103,13 +107,26 @@ builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(serviceProvider =>
 serviceProvider.GetRequiredService<CustomAuthenticationStateProvider>());
 
-
-
+builder.Services.AddSingleton<MyDbContextFactory>();
+/*
 builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
 {
+    optionsBuilder
+        .UseSqlServer(conStr)
+        //.UseChangeTrackingProxies(false,false)
+        //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+        .EnableSensitiveDataLogging();
+
+    optionsBuilder.UseLoggerFactory(
+        LoggerFactory.Create(builder => builder.AddConsole()));
+    optionsBuilder.ConfigureWarnings(warnings =>
+    {
+        warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
+    });
+
     // INTERCEPTOR 
     //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
-}, ServiceLifetime.Scoped);
+}, ServiceLifetime.Scoped);*/
 
 builder.Services.AddScoped<DataProviderService>();
 

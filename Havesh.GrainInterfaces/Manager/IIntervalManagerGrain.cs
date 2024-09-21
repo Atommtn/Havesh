@@ -7,7 +7,7 @@ using Havesh.Model.Model;
 
 namespace Havesh.GrainInterfaces.Manager;
 
-public interface IIntervalManagerGrain : IGrainWithGuidKey
+public interface IIntervalManagerGrain : IGrainWithGuidCompoundKey
 {
 
 }

@@ -24,7 +24,9 @@ builder.Services.AddServerSideBlazor();
 //builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 
-builder.Services.AddDbContext<MyDbContext>();
+//builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddSingleton<MyDbContextFactory>();
+
 builder.Services.AddTransient<DataProviderService>();
 
 builder.Host.UseOrleans(siloBuilder =>

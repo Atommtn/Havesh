@@ -36,16 +36,14 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 
 	public async Task<IEnumerable<ShokouhPardisStudentClass>?> GetStudents()
 	{
-		var branchName = Environment.GetEnvironmentVariable("BranchName");
-
 		return await CacheManager.GetOrSet("TT_Students_" + GrainKey, async () =>
 		{
-			var students = DataProviderService.GetTimeTableStudents(GrainKeyInt);
+			var students = DataProviderService.GetTimeTableStudents(GrainKey);
 			
 			if (students == null) return students;
 			foreach (var student in students)
 			{
-				var studentGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisStudentClass>>(branchName+student.Id);
+				var studentGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisStudentClass>>(student.Id , GrainBranchKey);
 				await studentGrain.Set(student);
 			}
 
@@ -59,14 +57,14 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 	{
 
 		return CacheManager.GetOrSet("TT_Student_Count_" + GrainKey, 
-			() => DataProviderService.GetTimeTableStudentCount(GrainKeyInt), 
+			() => DataProviderService.GetTimeTableStudentCount(GrainKey), 
 			TimeSpan.FromHours(1));
 
 	}
 
 	public async Task<IEnumerable<TimeTableSession>?> GetSessions()
 	{
-		var sessionManagerGrain = GrainFactory.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+		var sessionManagerGrain = GrainFactory.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty , GrainBranchKey);
 		var timeTableId = (int)this.GetPrimaryKeyLong();
 		var tableSessions = await sessionManagerGrain.GetTimeTableSessions(timeTableId);
 		return tableSessions;
@@ -76,7 +74,7 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 	public async Task<TimeTableSession?> GetTodaySession(DateTime? dateTime = null)
 	{	
 		var timeTableId = (int)this.GetPrimaryKeyLong();
-		var sessionManagerGrain = GrainFactory.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty);
+		var sessionManagerGrain = GrainFactory.GetGrain<ITimeTableSessionManagerGrain>(Guid.Empty, GrainBranchKey);
 		dateTime ??= DateTime.Today;
 		var timeTableSession = await sessionManagerGrain.GetSessionByDate(timeTableId, dateTime);
 		return timeTableSession;

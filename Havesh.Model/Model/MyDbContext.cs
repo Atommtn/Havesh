@@ -12,15 +12,12 @@ namespace Havesh.Model.Model;
 
 public partial class MyDbContext : DbContext
 {
-	private readonly IConfiguration _configuration;
     public IUserSessionService UserSessionService { get; }
 
-    public MyDbContext(DbContextOptions<MyDbContext> options, 
-		IConfiguration configuration
+    public MyDbContext(DbContextOptions<MyDbContext> options 
 	)
 		: base(options)
     {
-        _configuration = configuration;
     }
 
 
@@ -54,29 +51,7 @@ public partial class MyDbContext : DbContext
         
 	public virtual DbSet<StatementMeliN> StatementMeliNs { get; set; } = null!;
 	public virtual DbSet<StatementParsianM> StatementParsianMs { get; set; } = null!;
-        
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		if (optionsBuilder.IsConfigured) 
-			return;
-
-		var dbSettings = new DbSettings();
-		_configuration.GetSection("Db").Bind(dbSettings);
-		var conStr = dbSettings.GetConnectionString();  //_configuration.GetConnectionString("ArvanConnection");
-		optionsBuilder
-			.UseSqlServer(conStr)
-			//.UseChangeTrackingProxies(false,false)
-			//.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-			.EnableSensitiveDataLogging();
-
-		optionsBuilder.UseLoggerFactory(
-			LoggerFactory.Create(builder => builder.AddConsole()));
-		optionsBuilder.ConfigureWarnings(warnings =>
-		{
-			warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
-		});
-	}
-
+	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.HasDefaultSchema("dbo")
