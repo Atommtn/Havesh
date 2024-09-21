@@ -40,7 +40,7 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 
 		return await CacheManager.GetOrSet("TT_Students_" + GrainKey, async () =>
 		{
-			var students = DataProviderService.GetTimeTableStudents(GrainKey);
+			var students = DataProviderService.GetTimeTableStudents(GrainKeyInt);
 			
 			if (students == null) return students;
 			foreach (var student in students)
@@ -59,7 +59,7 @@ public class TimeTableGrain : HaveshGrain<ShokouhPardisTimeTable>, ITimeTableGra
 	{
 
 		return CacheManager.GetOrSet("TT_Student_Count_" + GrainKey, 
-			() => DataProviderService.GetTimeTableStudentCount(GrainKey), 
+			() => DataProviderService.GetTimeTableStudentCount(GrainKeyInt), 
 			TimeSpan.FromHours(1));
 
 	}

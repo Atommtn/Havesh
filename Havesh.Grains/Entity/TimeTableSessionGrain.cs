@@ -48,7 +48,7 @@ public class TimeTableSessionGrain :
 
 	public async Task OnNextAsync(StudentSessionActivity item, StreamSequenceToken? token = null)
 	{
-		if (item.TimeTableSessionFk == GrainKey)
+		if (item.TimeTableSessionFk == GrainKeyInt)
 		{
 			Logger.LogInformation($"Received Student Activity to {nameof(TimeTableSessionGrain)} {GrainKey}: {item.ActivityValue}");
 			//Console.Beep(1000,100);

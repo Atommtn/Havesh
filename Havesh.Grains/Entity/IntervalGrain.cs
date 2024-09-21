@@ -34,7 +34,7 @@ public class IntervalGrain : HaveshGrain<ShokouhPardisInterval> , IIntervallGrai
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetIntervalTimeTables(int weekdayId)
 	{
 		return CacheManager.GetOrSet("TT_" + weekdayId, 
-			() => DataProviderService.GetTimeTables(GrainKey, weekdayId)
+			() => DataProviderService.GetTimeTables(GrainKeyInt, weekdayId)
 			, TimeSpan.FromHours(1));
 		
 	}

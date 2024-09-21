@@ -40,7 +40,7 @@ public class SessionActivityGrain : HaveshGrain<SessionActivity> , ISessionActiv
 	{
 		return CacheManager.GetOrSet("SAP-" + value, () =>
 		{
-			var optionByValue = DataProviderService.GetSessionActivityValueOptionByValue(GrainKey, value);
+			var optionByValue = DataProviderService.GetSessionActivityValueOptionByValue(GrainKeyInt, value);
 			return optionByValue;
 
 		}, TimeSpan.FromHours(1));

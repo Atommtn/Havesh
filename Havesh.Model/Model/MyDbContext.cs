@@ -2,6 +2,7 @@
 using Havesh.Model.Data;
 using Havesh.Model.Filter;
 using Havesh.Model.Interceptors;
+using HaveshApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -59,7 +60,9 @@ public partial class MyDbContext : DbContext
 		if (optionsBuilder.IsConfigured) 
 			return;
 
-		var conStr = _configuration.GetConnectionString("ArvanConnection");
+		var dbSettings = new DbSettings();
+		_configuration.GetSection("Db").Bind(dbSettings);
+		var conStr = dbSettings.GetConnectionString();  //_configuration.GetConnectionString("ArvanConnection");
 		optionsBuilder
 			.UseSqlServer(conStr)
 			//.UseChangeTrackingProxies(false,false)

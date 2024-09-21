@@ -29,8 +29,10 @@ using Microsoft.AspNetCore.Diagnostics;
 using Havesh.Domain.Infrastructure;
 using Havesh.Grains.Entity;
 using Havesh.Grains.System;
+using Havesh.Model;
 using Havesh.Model.Contract;
 using Havesh.Model.Interceptors;
+using HaveshApp;
 
 // Configure logging to log to MSSqlServer database
 
@@ -49,8 +51,9 @@ builder.Services.AddNotifications();
 builder.Services.AddMudServices();
 //builder.Services.AddMudExtensions();
 //builder.Services.AddMudServicesWithExtensions();
-
-var conStr = builder.Configuration.GetConnectionString("ArvanConnection");
+var dbSettings = new DbSettings();
+builder.Configuration.GetSection("Db").Bind(dbSettings);
+var conStr = dbSettings.GetConnectionString();
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .Enrich.With(new MtnUserEnricher(builder.Services))
@@ -160,14 +163,18 @@ builder.Services.AddOrleansClient(clientBuilder =>
 #else
 		.UseAdoNetClustering(options =>
 		{
-			options.ConnectionString = builder.Configuration["ConnectionStrings:GrainsConnection"];
+            var grainClusterDbSettings = new DbSettings();
+            builder.Configuration.GetSection("GrainClusterDb").Bind(grainClusterDbSettings);
+
+            options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
 			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 
 		.Configure<ClusterOptions>(options =>
 		{
 			options.ClusterId = "havesh-main-cluster";
-			options.ServiceId = "haveshapp-silo";
+            var podName = Environment.GetEnvironmentVariable("SiloPOD_Name") ?? "haveshapp-silo";
+			options.ServiceId = podName;
 		})
 #endif
         .ConfigureServices(services =>

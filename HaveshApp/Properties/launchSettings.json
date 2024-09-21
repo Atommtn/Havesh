@@ -5,7 +5,21 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "FRZ_TEST": "true"
+        "FRZ_TEST": "true",
+        "BranchName": "SHPB_",
+        
+        "Db__DataSource" : "185.220.227.176",
+        "Db__InitialCatalog" : "HaveshAppDb",
+        "Db__UserId" : "ShoukouhPardis12DBAdmin",
+        "Db__Password" : "ShoukouhPardis12DB@pass",
+        
+        "SiloPOD_IP": "haveshapp-silo",
+        "SiloPOD_Name": "haveshapp-silo",
+        
+        "GrainClusterDb__DataSource" : "185.220.227.176",
+        "GrainClusterDb__InitialCatalog" : "HaveshGrains",
+        "GrainClusterDb__UserId" : "ShoukouhPardis12DBAdmin",
+        "GrainClusterDb__Password" : "ShoukouhPardis12DB@pass"
       },
       "applicationUrl": "https://localhost:8138;http://localhost:5138",
       "dotnetRunMessages": true,
@@ -16,7 +30,11 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "BranchName": "Phase2"
+        "BranchName": "Phase2",
+        "Db__DataSource" : "185.220.227.176",
+        "Db__InitialCatalog" : "HaveshAppDb",
+        "Db__UserId" : "ShoukouhPardis12DBAdmin",
+        "Db__Password" : "ShoukouhPardis12DB@pass"
       }
     },
     "Docker": {
