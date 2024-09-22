@@ -39,7 +39,6 @@ builder.Host.UseOrleans(siloBuilder =>
 
 	siloBuilder
 
-		.UseKubeMembership()
 		
 		.AddStreaming()
 
@@ -70,6 +69,7 @@ builder.Host.UseOrleans(siloBuilder =>
 #if DEBUGx
 		.UseLocalhostClustering()
 #else
+		.UseKubeMembership()
 		.UseKubernetesHosting()
 
 		.Configure<SiloOptions>(options =>

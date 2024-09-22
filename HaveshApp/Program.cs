@@ -36,6 +36,7 @@ using Havesh.Model.Interceptors;
 using HaveshApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Orleans.Clustering.Kubernetes;
 
 // Configure logging to log to MSSqlServer database
 
@@ -179,7 +180,8 @@ builder.Services.AddOrleansClient(clientBuilder =>
 #if DEBUGx
         .UseLocalhostClustering()
 #else
-
+        .UseKubeGatewayListProvider()
+        
         .Configure<ClusterOptions>(options =>
         {
             var clusterId = Environment.GetEnvironmentVariable("ORLEANS_CLUSTER_ID") ?? "havesh-silo";
