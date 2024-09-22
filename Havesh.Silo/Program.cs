@@ -33,7 +33,7 @@ builder.Services.AddTransient<DataProviderService>();
 builder.Host.UseOrleans(siloBuilder =>
 {
 	var dbSettings = new DbSettings();
-	builder.Configuration.GetSection("GrainClusterDb").Bind(dbSettings);
+	builder.Configuration.GetSection("GrainDb").Bind(dbSettings);
 
 	siloBuilder
 		
@@ -75,14 +75,14 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.SiloName = podName; // POD name
 		})
 
-		.Configure<EndpointOptions>(options =>
-		{
-
-			options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("SiloPOD_IP") ?? "127.0.0.1");  // POD IP
-			options.SiloPort = 11111;
-			options.GatewayPort = 30000;
-
-		})
+		// .Configure<EndpointOptions>(options =>
+		// {
+		//
+		// 	options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("SiloPOD_IP") ?? "127.0.0.1");  // POD IP
+		// 	options.SiloPort = 11111;
+		// 	options.GatewayPort = 30000;
+		//
+		// })
 
 		.Configure<ClusterOptions>(options =>
 		{
@@ -91,10 +91,6 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.ServiceId = podName;
 		})
 
-		 /*.UseKubernetesHosting(optionsBuilder =>
-		 {
-
-		 })*/
 #endif
 		;
 
