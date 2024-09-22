@@ -30,12 +30,16 @@ builder.Services.AddSingleton<MyDbContextFactory>();
 
 builder.Services.AddTransient<DataProviderService>();
 
+
+
 builder.Host.UseOrleans(siloBuilder =>
 {
 	var dbSettings = new DbSettings();
 	builder.Configuration.GetSection("GrainDb").Bind(dbSettings);
 
 	siloBuilder
+
+		.UseKubeMembership()
 		
 		.AddStreaming()
 
@@ -46,18 +50,18 @@ builder.Host.UseOrleans(siloBuilder =>
 		{
 			options.ConnectionString = dbSettings.GetConnectionString();
 			options.Invariant = "System.Data.SqlClient";
-			
+
 			options.GrainStorageSerializer = new JsonGrainStorageSerializer(
 				new OrleansJsonSerializer(new OptionsWrapper<OrleansJsonSerializerOptions>(
-						new OrleansJsonSerializerOptions()
-						{
+					new OrleansJsonSerializerOptions()
+					{
 
-						})));
+					})));
 
 		}))
-		
+
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
-		
+
 		.UseDashboard(options =>
 		{
 			options.HostSelf = true;
@@ -66,19 +70,18 @@ builder.Host.UseOrleans(siloBuilder =>
 #if DEBUGx
 		.UseLocalhostClustering()
 #else
+		.UseKubernetesHosting()
 
-		.UseKubeMembership()
-		
 		.Configure<SiloOptions>(options =>
 		{
-			var podName = Environment.GetEnvironmentVariable("SiloPOD_Name") ?? "haveshapp-silo";
+			var podName = Environment.GetEnvironmentVariable("POD_NAME") ?? "haveshapp-silo";
 			options.SiloName = podName; // POD name
 		})
 
 		// .Configure<EndpointOptions>(options =>
 		// {
 		//
-		// 	options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("SiloPOD_IP") ?? "127.0.0.1");  // POD IP
+		// 	options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("POD_IP") ?? "127.0.0.1");  // POD IP
 		// 	options.SiloPort = 11111;
 		// 	options.GatewayPort = 30000;
 		//
@@ -86,9 +89,10 @@ builder.Host.UseOrleans(siloBuilder =>
 
 		.Configure<ClusterOptions>(options =>
 		{
-			options.ClusterId = "havesh-main-cluster";
-            var podName = Environment.GetEnvironmentVariable("SiloPOD_Name") ?? "haveshapp-silo";
-			options.ServiceId = podName;
+			var clusterId = Environment.GetEnvironmentVariable("ORLEANS_CLUSTER_ID") ?? "haveshapp-silo";
+			options.ClusterId = clusterId;
+			var serviceId = Environment.GetEnvironmentVariable("ORLEANS_SERVICE_ID") ?? "haveshapp-silo";
+			options.ServiceId = serviceId;
 		})
 
 #endif

@@ -41,7 +41,8 @@
         "GrainDb__DataSource" : "185.220.227.176",
         "GrainDb__InitialCatalog" : "HaveshGrains",
         "GrainDb__UserId" : "ShoukouhPardis12DBAdmin",
-        "GrainDb__Password" : "ShoukouhPardis12DB@pass"
+        "GrainDb__Password" : "ShoukouhPardis12DB@pass",
+        "POD_NAMESPACE": "ns1"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
@@ -68,7 +69,9 @@
         "GrainDb__DataSource" : "185.220.227.176",
         "GrainDb__InitialCatalog" : "HaveshGrains",
         "GrainDb__UserId" : "ShoukouhPardis12DBAdmin",
-        "GrainDb__Password" : "ShoukouhPardis12DB@pass"
+        "GrainDb__Password" : "ShoukouhPardis12DB@pass",
+        "POD_NAMESPACE": "ns1"
+        
       },
       "publishAllPorts": true,
       "useSSL": true
