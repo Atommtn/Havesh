@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.ResponseCompression;
 using Append.Blazor.Notifications;
 using System.Globalization;
+using System.Net;
 using Havesh.Common;
 using Havesh.Domain.Services;
 using Microsoft.AspNetCore.Localization;
@@ -35,6 +36,7 @@ using Havesh.Model.Interceptors;
 using HaveshApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Orleans.Clustering.Kubernetes;
 
 // Configure logging to log to MSSqlServer database
 
@@ -175,17 +177,13 @@ builder.Services.AddOrleansClient(clientBuilder =>
         .AddStreaming()
 
         .AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
-#if DEBUG
+#if DEBUGx
         .UseLocalhostClustering()
 #else
-		.UseAdoNetClustering(options =>
-		{
-            var grainClusterDbSettings = new DbSettings();
-            builder.Configuration.GetSection("GrainClusterDb").Bind(grainClusterDbSettings);
-
-            options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
-			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
-		})
+        .UseKubeGatewayListProvider(options =>
+        {
+            
+        })
 
 		.Configure<ClusterOptions>(options =>
 		{
@@ -194,9 +192,6 @@ builder.Services.AddOrleansClient(clientBuilder =>
 			options.ServiceId = podName;
 		})
 #endif
-        .ConfigureServices(services =>
-        {
-        })
         ;
 });
 

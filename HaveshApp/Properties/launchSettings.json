@@ -13,7 +13,7 @@
         "SHPB__UserId" : "ShoukouhPardis12DBAdmin",
         "SHPB__Password" : "ShoukouhPardis12DB@pass",
         
-        "SiloPOD_IP": "haveshapp-silo",
+        "SiloPOD_IP": "185.228.236.71",
         "SiloPOD_Name": "haveshapp-silo",
         
         "GrainClusterDb__DataSource" : "185.220.227.176",
@@ -24,18 +24,6 @@
       "applicationUrl": "https://localhost:8138;http://localhost:5138",
       "dotnetRunMessages": true,
       "hotReloadEnabled": true
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "BranchName": "Phase2",
-        "Db__DataSource" : "185.220.227.176",
-        "Db__InitialCatalog" : "HaveshAppDb",
-        "Db__UserId" : "ShoukouhPardis12DBAdmin",
-        "Db__Password" : "ShoukouhPardis12DB@pass"
-      }
     },
     "Docker": {
       "commandName": "Docker",

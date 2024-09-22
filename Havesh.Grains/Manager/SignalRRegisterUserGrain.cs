@@ -70,7 +70,7 @@ public class SignalRRegisterUserGrain : HaveshManagerGrainBase, ISignalRRegister
     public Task<Dictionary<User, List<Connection>>> GetRegisteredUsersConnections()
     {
 
-        return Task.FromResult(_persistentState.State.ConnectedUsers.ToDictionary());
+        return Task.FromResult(_persistentState.State.ConnectedUsers.ToDictionary(pair => pair.Key , pair => pair.Value));
     }
 
     public async Task<string[]?> GetUserConnections(User user)

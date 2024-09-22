@@ -9,6 +9,7 @@ using Havesh.Silo;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.Extensions.Options;
 using MudBlazor.Services;
+using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Orleans.Serialization;
 using Orleans.Storage;
@@ -54,11 +55,6 @@ builder.Host.UseOrleans(siloBuilder =>
 						})));
 
 		}))
-		.UseAdoNetClustering(options =>
-		{
-			options.ConnectionString = dbSettings.GetConnectionString();
-			options.Invariant = "System.Data.SqlClient"; 
-		})
 		
 		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
 		
@@ -67,9 +63,11 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.HostSelf = true;
 		})
 
-#if DEBUG
+#if DEBUGx
 		.UseLocalhostClustering()
 #else
+
+		.UseKubeMembership()
 		
 		.Configure<SiloOptions>(options =>
 		{
