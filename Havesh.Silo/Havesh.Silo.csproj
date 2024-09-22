@@ -12,9 +12,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
-    <PackageReference Include="Orleans.Clustering.Kubernetes" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Orleans.Hosting.Kubernetes" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.Server" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.Streaming" Version="8.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />

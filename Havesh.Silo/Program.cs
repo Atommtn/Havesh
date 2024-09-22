@@ -9,7 +9,6 @@ using Havesh.Silo;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.Extensions.Options;
 using MudBlazor.Services;
-using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
 using Orleans.Serialization;
 using Orleans.Storage;
@@ -69,9 +68,16 @@ builder.Host.UseOrleans(siloBuilder =>
 #if DEBUGx
 		.UseLocalhostClustering()
 #else
-		.UseKubeMembership()
-		.UseKubernetesHosting()
+		
+		.UseAdoNetClustering(options =>
+		{
+			var grainClusterDbSettings = new DbSettings();
+			builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
 
+			options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
+			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+		})
+		
 		.Configure<SiloOptions>(options =>
 		{
 			var podName = Environment.GetEnvironmentVariable("POD_NAME") ?? "haveshapp-silo";

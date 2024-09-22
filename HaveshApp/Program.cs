@@ -16,27 +16,16 @@ using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.ResponseCompression;
 using Append.Blazor.Notifications;
 using System.Globalization;
-using System.Net;
 using Havesh.Common;
 using Havesh.Domain.Services;
 using Microsoft.AspNetCore.Localization;
-using Havesh.Model.Model;
 using HaveshApp.Admin.Dashboard.Widgets.Supervisor;
 using HaveshApp.Admin.Dashboard.Widgets.Teacher;
 using Havesh.OrleansClient;
 using Orleans.Configuration;
-using Orleans.Streams;
-using Microsoft.AspNetCore.Diagnostics;
-using Havesh.Domain.Infrastructure;
-using Havesh.Grains.Entity;
-using Havesh.Grains.System;
 using Havesh.Model;
 using Havesh.Model.Contract;
-using Havesh.Model.Interceptors;
-using HaveshApp;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Orleans.Clustering.Kubernetes;
+
 
 // Configure logging to log to MSSqlServer database
 
@@ -175,12 +164,19 @@ builder.Services.AddOrleansClient(clientBuilder =>
 {
     clientBuilder
         .AddStreaming()
-
+        //.ConfigureLogging(logging => logging.AddConsole())
         .AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
 #if DEBUGx
         .UseLocalhostClustering()
 #else
-        .UseKubeGatewayListProvider()
+        .UseAdoNetClustering(options =>
+        {
+            var grainClusterDbSettings = new DbSettings();
+            builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
+
+            options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
+            options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+        })
         
         .Configure<ClusterOptions>(options =>
         {
