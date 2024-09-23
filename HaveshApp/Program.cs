@@ -169,7 +169,8 @@ builder.Services.AddOrleansClient(clientBuilder =>
 #if DEBUGx
         .UseLocalhostClustering()
 #else
-        .UseAdoNetClustering(options =>
+        .UseLocalhostClustering()
+        /*.UseAdoNetClustering(options =>
         {
             var grainClusterDbSettings = new DbSettings();
             builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
@@ -177,14 +178,14 @@ builder.Services.AddOrleansClient(clientBuilder =>
             options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
             options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
         })
-        
+
         .Configure<ClusterOptions>(options =>
         {
             var clusterId = Environment.GetEnvironmentVariable("ORLEANS_CLUSTER_ID") ?? "havesh-silo";
             options.ClusterId = clusterId;
             var serviceId = Environment.GetEnvironmentVariable("ORLEANS_SERVICE_ID") ?? "havesh-silo";
             options.ServiceId = serviceId;
-        })
+        })*/
 #endif
         ;
 });

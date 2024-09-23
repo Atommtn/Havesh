@@ -13,13 +13,12 @@
         "SHPB__UserId" : "ShoukouhPardis12DBAdmin",
         "SHPB__Password" : "ShoukouhPardis12DB@pass",
         
-        "SiloPOD_IP": "185.228.236.71",
         "SiloPOD_Name": "haveshapp-silo",
         
-        "GrainClusterDb__DataSource" : "185.220.227.176",
-        "GrainClusterDb__InitialCatalog" : "HaveshGrains",
-        "GrainClusterDb__UserId" : "ShoukouhPardis12DBAdmin",
-        "GrainClusterDb__Password" : "ShoukouhPardis12DB@pass"
+        "GrainDb__DataSource" : "185.220.227.176",
+        "GrainDb__InitialCatalog" : "HaveshGrains",
+        "GrainDb__UserId" : "ShoukouhPardis12DBAdmin",
+        "GrainDb__Password" : "ShoukouhPardis12DB@pass"
       },
       "applicationUrl": "https://localhost:8138;http://localhost:5138",
       "dotnetRunMessages": true,

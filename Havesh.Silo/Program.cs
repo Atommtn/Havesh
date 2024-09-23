@@ -69,6 +69,7 @@ builder.Host.UseOrleans(siloBuilder =>
 		.UseLocalhostClustering()
 #else
 		
+		/*
 		.UseAdoNetClustering(options =>
 		{
 			var grainClusterDbSettings = new DbSettings();
@@ -77,6 +78,7 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
 			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
+		*/
 		
 		.Configure<SiloOptions>(options =>
 		{
@@ -93,6 +95,7 @@ builder.Host.UseOrleans(siloBuilder =>
 		//
 		// })
 
+		/*
 		.Configure<ClusterOptions>(options =>
 		{
 			var clusterId = Environment.GetEnvironmentVariable("ORLEANS_CLUSTER_ID") ?? "haveshapp-silo";
@@ -100,6 +103,7 @@ builder.Host.UseOrleans(siloBuilder =>
 			var serviceId = Environment.GetEnvironmentVariable("ORLEANS_SERVICE_ID") ?? "haveshapp-silo";
 			options.ServiceId = serviceId;
 		})
+		*/
 
 #endif
 		;
