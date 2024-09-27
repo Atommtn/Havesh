@@ -58,14 +58,14 @@ builder.Host.UseOrleans(siloBuilder =>
 
 		}))
 
-		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Information).AddConsole())
+		.ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Trace).AddConsole())
 
 		.UseDashboard(options =>
 		{
 			options.HostSelf = true;
 		})
 
-#if DEBUGx
+#if DEBUG
 		.UseLocalhostClustering()
 #else
 		

@@ -167,7 +167,7 @@ builder.Services.AddOrleansClient(clientBuilder =>
         //.ConfigureLogging(logging => logging.AddConsole())
         .AddMemoryStreams(HaveshConstants.OrleansSimpleMessageProviderName)
 #if DEBUGx
-        .UseLocalhostClustering()
+        //.UseLocalhostClustering()
 #else
         .UseLocalhostClustering()
         /*.UseAdoNetClustering(options =>
