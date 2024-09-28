@@ -25,11 +25,34 @@ using Havesh.OrleansClient;
 using Orleans.Configuration;
 using Havesh.Model;
 using Havesh.Model.Contract;
+using System.Security.Cryptography.X509Certificates;
 
 
 // Configure logging to log to MSSqlServer database
 
 var builder = WebApplication.CreateBuilder(args);
+var certPath = "C:\\Frz\\Cert\\certificate.pfx";
+var certPassword = "Atom.Mtn";
+var cert = new X509Certificate2(certPath, certPassword);
+builder.WebHost.UseKestrel(options =>
+{
+    options.ListenAnyIP(443, listenOptions =>
+    {
+        listenOptions.UseHttps(cert);
+
+        // listenOptions.UseHttps("C:\\FRZ\\Cert\\myserver.crt", "C:\\FRZ\\Cert\\myserver.key");
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+
+
+    // Specify minimum TLS version
+    options.ConfigureHttpsDefaults(listenOptions =>
+    {
+        listenOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls12 |
+                                     System.Security.Authentication.SslProtocols.Tls13;
+    });
+});
+
 
 // Add services to the container.
 //builder.Services.AddElectron();
@@ -98,7 +121,11 @@ builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(serviceProvider =>
 serviceProvider.GetRequiredService<CustomAuthenticationStateProvider>());
 
-builder.Services.AddSingleton<MyDbContextFactory>();
+builder.Services.AddTransient<MyDbContextFactory>();
+
+builder.Services.AddTransient<DataProviderService>();
+
+//builder.Services.AddSingleton<MyDbContextFactory>();
 /*
 builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
 {
@@ -119,7 +146,7 @@ builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
     //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
 }, ServiceLifetime.Scoped);*/
 
-builder.Services.AddScoped<DataProviderService>();
+//builder.Services.AddScoped<DataProviderService>();
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();

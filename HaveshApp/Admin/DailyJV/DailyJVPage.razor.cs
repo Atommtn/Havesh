@@ -216,11 +216,14 @@ public partial class DailyJVPage
 
 		try
 		{
-			_dataProvider.SaveDailyJV(_dailyJV);
+			_dataProvider.SaveEditDailyJV(_dailyJV);
 			_userSession.LastJvDate = _dailyJV.CurrentDate;
-			Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
+			_dailyJV.Student ??= _dataProvider.GetStudent(_dailyJV.StudentId);
+
+            Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
 			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
-			await _dailyJVListComponent.FilterData();
+
+			await _dailyJVListComponent.FilterData(); 
             await PrintDailyJvFishClick(_dailyJV);
             await Reset();
 

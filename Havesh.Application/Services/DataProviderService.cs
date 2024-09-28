@@ -8,6 +8,7 @@ using Havesh.Domain.Infrastructure;
 using Havesh.Model.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
+using static Dapper.SqlMapper;
 
 namespace Havesh.Application.Services;
 
@@ -483,7 +484,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	{
 		//_financialService.ApplyDailyJv(dailyJv);
 		SaveEditDailyJV(dailyJv);
-		SaveAll();
+		////SaveAll();
 	}
 
 	public int GenerateBillNoDailyJv(ShokouhPardisDailyJv dailyJv)
@@ -517,8 +518,10 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public ShokouhPardisDailyJv GetDailyJv(int dailyJvid)
 	{
 		var jv = DbContext.ShokouhPardisDailyJvs
+            .AsNoTracking()
 			.Include(x => x.Student)
-			.Include(x => x.Term)
+            .AsNoTracking()
+            .Include(x => x.Term)
 			.Include(x => x.TimeTable)
 			.Include(x => x.TimeTable.Level)
 			.FirstOrDefault(x => x.Id == dailyJvid);
@@ -770,6 +773,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	{
 		if (selectedDate is null) return 0;
 		var iQ = DbContext.ShokouhPardisDailyJvs
+            .AsNoTracking()
 			.Where(x => x.CurrentDate >= selectedDate.Value.Date &&
 											x.CurrentDate < selectedDate.Value.Date.AddDays(1)
 			)
@@ -790,7 +794,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public List<ShokouhPardisDailyJv> GetPagedJvs(int page, int size, DateTime? selDate, string? searchText)
 	{
 		var queryable = DbContext.ShokouhPardisDailyJvs
+            .AsNoTracking()
 			.Include(x => x.Student)
+            .AsNoTracking()
 			.OrderBy(x => x.Id)
 			.Where(x => selDate != null
 						&& x.CurrentDate >= selDate.Value.Date
@@ -828,7 +834,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		string? searchText)
 	{
 		var baseQuery = DbContext.ShokouhPardisDailyJvs
+            .AsNoTracking()
 			.Include(x => x.Student)
+            .AsNoTracking()
 			.OrderBy(x => x.PosCode);
 
 		var queryable = baseQuery
@@ -1553,13 +1561,29 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 			}
 		}
 
+        //var x = dailyJv.Student;
+        //var existingEntity = context.Entry(shokouhPardisStudentClass);
+        //if (existingEntity != null)
+        //{
+        //    context.Entry(shokouhPardisStudentClass).State = EntityState.Detached;
+        //}
+
+        if (dailyJv.StudentId > 0)
+        {
+            //DbContext.Entry(dailyJv.Student).State = EntityState.Detached;
+
+            dailyJv.Student = null;
+        }
+
 		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 		SaveAll();
-	}
+       // dailyJv.Student = x;
+    }
 
 	bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 	{
-		var result = DbContext.ShokouhPardisDailyJvs.Any(x =>
+        
+        var result = DbContext.ShokouhPardisDailyJvs.AsNoTracking().Any(x =>
 			x.Fee == dailyJv.Fee &&
 			x.StudentId == dailyJv.StudentId &&
 			x.FeeFor == dailyJv.FeeFor &&
@@ -2757,6 +2781,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
         }
 	    return DbContext.ShokouhPardisTimeTables
 		    .Include(x=>x.Level)
+            .Include(x=>x.Term)
 		    .FirstOrDefault(x => x.Id == TTS.TimeTableId);
     }
 

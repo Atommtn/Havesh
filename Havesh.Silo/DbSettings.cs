@@ -9,7 +9,7 @@ public class DbSettings
 
     public string GetConnectionString()
     {
-        var conStr = $"Data Source={DataSource};Initial Catalog={InitialCatalog};User ID={UserId};Password={Password};Integrated Security=False;Persist Security Info=False;Connect Timeout=60;Encrypt=False;Current Language=English;";
+        var conStr = $"Data Source={DataSource.Replace(@"\\",@"\")};Initial Catalog={InitialCatalog};User ID={UserId};Password={Password};Integrated Security=False;Persist Security Info=False;Connect Timeout=60;Encrypt=False;Current Language=English;";
         return conStr;
     }
 }

@@ -25,10 +25,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 
 //builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddSingleton<MyDbContextFactory>();
+//builder.Services.AddSingleton<MyDbContextFactory>();
+
+//builder.Services.AddTransient<DataProviderService>();
+builder.Services.AddTransient<MyDbContextFactory>();
 
 builder.Services.AddTransient<DataProviderService>();
-
 
 
 builder.Host.UseOrleans(siloBuilder =>
