@@ -16,6 +16,7 @@ using Orleans.Streams;
 
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
+builder.Configuration.AddEnvironmentVariables();
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
@@ -69,9 +70,7 @@ builder.Host.UseOrleans(siloBuilder =>
 			options.HostSelf = true;
 		})
 
-#if DEBUG
 		.UseLocalhostClustering()
-#else
 		
 		/*
 		.UseAdoNetClustering(options =>
@@ -84,11 +83,11 @@ builder.Host.UseOrleans(siloBuilder =>
 		})
 		*/
 		
-		.Configure<SiloOptions>(options =>
+		/*.Configure<SiloOptions>(options =>
 		{
 			var podName = Environment.GetEnvironmentVariable("POD_NAME") ?? "haveshapp-silo";
 			options.SiloName = podName; // POD name
-		})
+		})*/
 
 		// .Configure<EndpointOptions>(options =>
 		// {
@@ -109,7 +108,6 @@ builder.Host.UseOrleans(siloBuilder =>
 		})
 		*/
 
-#endif
 		;
 
 });
