@@ -4,21 +4,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "FRZ_TEST": "true",
-
-        "BranchName": "SHPB",
-        "SHPB__DataSource": "172.16.1.140\\sql2019",
-        "SHPB__InitialCatalog": "HaveshAppDb",
-        "SHPB__UserId": "ShoukouhPardis12DBAdmin2",
-        "SHPB__Password": "ShoukouhPardis12DB@pass",
-
-        "SiloPOD_Name": "haveshapp-silo",
-
-        "GrainDb__DataSource": "172.16.1.140\\sql2019",
-        "GrainDb__InitialCatalog": "HaveshGrains",
-        "GrainDb__UserId": "ShoukouhPardis12DBAdmin2",
-        "GrainDb__Password": "ShoukouhPardis12DB@pass"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:8138;http://localhost:5138",
       "dotnetRunMessages": true,

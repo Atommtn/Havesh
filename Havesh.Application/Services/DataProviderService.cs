@@ -1579,13 +1579,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
         //    context.Entry(shokouhPardisStudentClass).State = EntityState.Detached;
         //}
 
-        if (dailyJv.StudentId > 0)
-        {
-            //DbContext.Entry(dailyJv.Student).State = EntityState.Detached;
-
-            dailyJv.Student = null;
-        }
-
+        
 		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 		SaveAll();
        // dailyJv.Student = x;
@@ -1595,7 +1589,6 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	{
         
         var result = DbContext.ShokouhPardisDailyJvs
-	        .AsNoTracking()
 	        .Any(x =>
 			x.Fee == dailyJv.Fee &&
 			x.StudentId == dailyJv.StudentId &&
