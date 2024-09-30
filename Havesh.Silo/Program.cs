@@ -15,6 +15,7 @@ using Orleans.Storage;
 using Orleans.Streams;
 
 var builder = WebApplication.CreateBuilder(args);
+DotNetEnv.Env.Load();
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 

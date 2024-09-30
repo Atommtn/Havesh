@@ -27,6 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Append.Blazor.Notifications" Version="1.1.0" />
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="7.0.0" />
     <PackageReference Include="AspectCore.Core" Version="2.4.0" />
     <PackageReference Include="AspectCore.Extensions.LightInject" Version="2.4.0" />
