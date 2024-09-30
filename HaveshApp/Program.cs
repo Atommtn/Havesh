@@ -35,9 +35,13 @@ DotNetEnv.Env.Load();
 var certPath = "C:\\Frz\\Cert\\certificate.pfx";
 var certPassword = "Atom.Mtn";
 var cert = new X509Certificate2(certPath, certPassword);
+
+var httpsPort = 443;
+if (!builder.Environment.IsDevelopment()) httpsPort = 1443;
+
 builder.WebHost.UseKestrel(options =>
 {
-    options.ListenAnyIP(1443, listenOptions =>
+    options.ListenAnyIP(httpsPort, listenOptions =>
     {
         listenOptions.UseHttps(cert);
 
