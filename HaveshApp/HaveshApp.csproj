@@ -93,4 +93,9 @@
     <None Include="Admin\Dashboard\Personal\Widgets\LargWidget.razor" />
     <None Include="Admin\Dashboard\Personal\Widgets\SmallWidget.razor" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update=".env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

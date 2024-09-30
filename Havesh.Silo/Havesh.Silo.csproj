@@ -33,4 +33,10 @@
     <ProjectReference Include="..\Havesh.Grains\Havesh.Grains.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update=".env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
