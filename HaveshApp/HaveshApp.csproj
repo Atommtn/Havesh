@@ -16,6 +16,9 @@
     <EmbeddedResource Remove="StudentsStuff\**" />
     <None Remove="Client\**" />
     <None Remove="StudentsStuff\**" />
+    <None Update=".env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Admin\DailyJV\Components\PreRegistrationPage.razor.cs" />
