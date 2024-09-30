@@ -36,7 +36,7 @@ var certPassword = "Atom.Mtn";
 var cert = new X509Certificate2(certPath, certPassword);
 builder.WebHost.UseKestrel(options =>
 {
-    options.ListenAnyIP(443, listenOptions =>
+    options.ListenAnyIP(1443, listenOptions =>
     {
         listenOptions.UseHttps(cert);
 
@@ -121,9 +121,9 @@ builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(serviceProvider =>
 serviceProvider.GetRequiredService<CustomAuthenticationStateProvider>());
 
-builder.Services.AddTransient<MyDbContextFactory>();
+builder.Services.AddScoped<MyDbContextFactory>();
 
-builder.Services.AddTransient<DataProviderService>();
+builder.Services.AddScoped<DataProviderService>();
 
 //builder.Services.AddSingleton<MyDbContextFactory>();
 /*

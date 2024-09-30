@@ -335,19 +335,30 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public void AddStudentsToTeacherTimeSheet(ShokouhPardisTimeTable timeTable,
 		List<ShokouhPardisStudentClass> selectedStudents)
 	{
-		foreach (var student in selectedStudents)
+		try
 		{
-			DbContext.ShokouhPardisTimeTableStudents.Add(new ShokouhPardisTimeTableStudent()
+			foreach (var student in selectedStudents)
 			{
-				Student = student,
-				TimeTable = timeTable,
-				TimeTableStudentsGuid = Guid.NewGuid(),
-				TimeTableStudentsLastModified = DateTime.Now
-			});
+				var shokouhPardisTimeTableStudent = new ShokouhPardisTimeTableStudent()
+				{
+					StudentId = student.Id,
+					TimeTableId = timeTable.Id,
+					TimeTableStudentsGuid = Guid.NewGuid(),
+					TimeTableStudentsLastModified = DateTime.Now
+				};
+			
+				DbContext.ShokouhPardisTimeTableStudents.Add(
+					shokouhPardisTimeTableStudent);
+				SaveAll();
+			}
 
 		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+			throw;
+		}
 
-		SaveAll();
 
 	}
 
@@ -518,9 +529,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public ShokouhPardisDailyJv GetDailyJv(int dailyJvid)
 	{
 		var jv = DbContext.ShokouhPardisDailyJvs
-            .AsNoTracking()
+            //.AsNoTracking()
 			.Include(x => x.Student)
-            .AsNoTracking()
+            //.AsNoTracking()
             .Include(x => x.Term)
 			.Include(x => x.TimeTable)
 			.Include(x => x.TimeTable.Level)
@@ -773,7 +784,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	{
 		if (selectedDate is null) return 0;
 		var iQ = DbContext.ShokouhPardisDailyJvs
-            .AsNoTracking()
+            //.AsNoTracking()
 			.Where(x => x.CurrentDate >= selectedDate.Value.Date &&
 											x.CurrentDate < selectedDate.Value.Date.AddDays(1)
 			)
@@ -794,9 +805,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public List<ShokouhPardisDailyJv> GetPagedJvs(int page, int size, DateTime? selDate, string? searchText)
 	{
 		var queryable = DbContext.ShokouhPardisDailyJvs
-            .AsNoTracking()
+            //.AsNoTracking()
 			.Include(x => x.Student)
-            .AsNoTracking()
+            //.AsNoTracking()
 			.OrderBy(x => x.Id)
 			.Where(x => selDate != null
 						&& x.CurrentDate >= selDate.Value.Date
@@ -834,9 +845,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		string? searchText)
 	{
 		var baseQuery = DbContext.ShokouhPardisDailyJvs
-            .AsNoTracking()
+            //.AsNoTracking()
 			.Include(x => x.Student)
-            .AsNoTracking()
+            //.AsNoTracking()
 			.OrderBy(x => x.PosCode);
 
 		var queryable = baseQuery
@@ -1583,7 +1594,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 	{
         
-        var result = DbContext.ShokouhPardisDailyJvs.AsNoTracking().Any(x =>
+        var result = DbContext.ShokouhPardisDailyJvs
+	        .AsNoTracking()
+	        .Any(x =>
 			x.Fee == dailyJv.Fee &&
 			x.StudentId == dailyJv.StudentId &&
 			x.FeeFor == dailyJv.FeeFor &&

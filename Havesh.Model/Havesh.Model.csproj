@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
@@ -10,15 +10,15 @@
   <ItemGroup>
     <PackageReference Include="Dapper.FluentMap" Version="2.0.0" />
     <PackageReference Include="Dapper.SqlBuilder" Version="2.0.78" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Orleans.Sdk" Version="8.2.0" />
-    <PackageReference Include="Microsoft.Orleans.Serialization" Version="8.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20" />
+    <PackageReference Include="Microsoft.Orleans.Sdk" Version="7.2.6" />
+    <PackageReference Include="Microsoft.Orleans.Serialization" Version="7.2.6" />
     <PackageReference Include="MudBlazor" Version="6.11.1" />
     <PackageReference Include="Olive" Version="2.1.355" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />

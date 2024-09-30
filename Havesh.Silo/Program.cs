@@ -64,6 +64,7 @@ builder.Host.UseOrleans(siloBuilder =>
 
 		.UseDashboard(options =>
 		{
+			options.Port = 8081;
 			options.HostSelf = true;
 		})
 
