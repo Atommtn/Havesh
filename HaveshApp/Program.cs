@@ -32,6 +32,9 @@ using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
+builder.Configuration.AddEnvironmentVariables();
+
+
 var certPath = "C:\\Frz\\Cert\\certificate.pfx";
 var certPassword = "Atom.Mtn";
 var cert = new X509Certificate2(certPath, certPassword);
