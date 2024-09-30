@@ -37,7 +37,7 @@ var certPassword = "Atom.Mtn";
 var cert = new X509Certificate2(certPath, certPassword);
 
 var httpsPort = 443;
-if (!builder.Environment.IsDevelopment()) httpsPort = 1443;
+if (builder.Environment.IsDevelopment()) httpsPort = 1443;
 
 builder.WebHost.UseKestrel(options =>
 {
