@@ -36,7 +36,7 @@ var certPassword = "Atom.Mtn";
 var cert = new X509Certificate2(certPath, certPassword);
 builder.WebHost.UseKestrel(options =>
 {
-    options.ListenAnyIP(1443, listenOptions =>
+    options.ListenAnyIP(443, listenOptions =>
     {
         listenOptions.UseHttps(cert);
 
