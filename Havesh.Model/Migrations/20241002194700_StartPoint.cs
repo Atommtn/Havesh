@@ -5,7 +5,7 @@
 namespace Havesh.Model.Migrations
 {
     /// <inheritdoc />
-    public partial class EditIds5 : Migration
+    public partial class StartPoint : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

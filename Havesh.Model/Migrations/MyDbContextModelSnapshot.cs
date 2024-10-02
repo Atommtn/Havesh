@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HaveshApp.Migrations
+namespace Havesh.Model.Migrations
 {
     [DbContext(typeof(MyDbContext))]
     partial class MyDbContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace HaveshApp.Migrations
             modelBuilder
                 .HasDefaultSchema("dbo")
                 .UseCollation("Latin1_General_CI_AS")
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -3196,8 +3196,7 @@ namespace HaveshApp.Migrations
                     b.Property<int?>("StudentAmountDiscount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StudentId")
-                        .IsRequired()
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("StudentPercentDiscount")

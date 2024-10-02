@@ -12,17 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Havesh.Model.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20231208222938_DashboardUser")]
-    partial class DashboardUser
+    [Migration("20241002194218_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("ShoukouhPardis12DBAdmin")
+                .HasDefaultSchema("dbo")
                 .UseCollation("Latin1_General_CI_AS")
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -50,7 +50,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("SettingCategoryFk");
 
-                    b.ToTable("ApplicationSettings", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ApplicationSettings", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.ApplicationSettingsCategory", b =>
@@ -70,7 +70,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationSettingsCategory", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ApplicationSettingsCategory", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Branch", b =>
@@ -96,7 +96,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("ParentBranchFk");
 
-                    b.ToTable("AppBranch", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("AppBranch", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
@@ -119,7 +119,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("UserFk");
 
-                    b.ToTable("Dashboards", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Dashboards", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplate", b =>
@@ -141,7 +141,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BelongsToRoleId");
 
-                    b.ToTable("DashboardTemplates", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("DashboardTemplates", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplateWidget", b =>
@@ -163,7 +163,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("WidgetId");
 
-                    b.ToTable("DashboardTemplateWidgets", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("DashboardTemplateWidgets", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardWidgetSetting", b =>
@@ -218,7 +218,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("WidgetId");
 
-                    b.ToTable("DashboardWidgetSettings", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("DashboardWidgetSettings", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.Widget", b =>
@@ -272,7 +272,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Widgets", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Widgets", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.WidgetGroup", b =>
@@ -317,7 +317,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("DashboardTemplateId");
 
-                    b.ToTable("WidgetGroup", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("WidgetGroup", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.AdvanceRegistration", b =>
@@ -372,7 +372,48 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("AdvanceRegistrations", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("AdvanceRegistrations", "dbo");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Model.EntityChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ActionByFk")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ActionWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EntityKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Field")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionByFk");
+
+                    b.ToTable("EntityChanges", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>
@@ -422,7 +463,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("LevelFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlan", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlan", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanAttachment", b =>
@@ -437,7 +478,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("AttachmentId");
 
-                    b.ToTable("ShokouhPardis_LessonPlanAttachments", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanAttachments", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSection", b =>
@@ -499,7 +540,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("SectionTypeFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlanSection", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanSection", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSectionItem", b =>
@@ -550,7 +591,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("LessonPlanSectionFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlanSectionItem", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanSectionItem", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSectionType", b =>
@@ -593,7 +634,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlanSectionType", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanSectionType", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Message", b =>
@@ -685,7 +726,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("ToId");
 
-                    b.ToTable("Messages", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Messages", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageAction", b =>
@@ -733,7 +774,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("MessageActions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageActions", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageActionOption", b =>
@@ -793,7 +834,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("MessageActionId");
 
-                    b.ToTable("MessageActionOptions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageActionOptions", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageBox", b =>
@@ -837,48 +878,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("MessageBoxes", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.MyDbContext+EntityChange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ActionById")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ActionWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EntityKey")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Field")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OldValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionById");
-
-                    b.ToTable("EntityChanges", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageBoxes", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Permission", b =>
@@ -924,7 +924,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("Permissions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Permissions", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.PreRegistration", b =>
@@ -992,7 +992,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermFk");
 
-                    b.ToTable("ShokouhPardis_PreRegistration", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_PreRegistration", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Role", b =>
@@ -1035,7 +1035,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("Roles", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Roles", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.SessionActivity", b =>
@@ -1124,7 +1124,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_SessionActivity", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_SessionActivity", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.SessionActivityValueOption", b =>
@@ -1189,7 +1189,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("SessionActivityFk");
 
-                    b.ToTable("ShokouhPardis_SessionActivityValueOption", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_SessionActivityValueOption", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingCode", b =>
@@ -1262,7 +1262,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_AccountingCode", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_AccountingCode", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingTransaction", b =>
@@ -1342,7 +1342,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_AccountingTransaction", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_AccountingTransaction", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisBookClass", b =>
@@ -1545,6 +1545,9 @@ namespace Havesh.Model.Migrations
                     b.Property<DateTime?>("ModifiedWhen")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PayBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PaymentType")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -1567,6 +1570,9 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXCode");
 
+                    b.Property<bool?>("VPay")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
@@ -1577,7 +1583,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableFk");
 
-                    b.ToTable("ShokouhPardis_DailyJV", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_DailyJV", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisDaySession", b =>
@@ -1692,7 +1698,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_Employee", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_Employee", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisFileAttachment", b =>
@@ -1759,7 +1765,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_FileAttachment", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_FileAttachment", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisFinanceFlat", b =>
@@ -1856,7 +1862,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_Finance_Flat", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_Finance_Flat", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisInterval", b =>
@@ -2039,7 +2045,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_JVFromSite", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_JVFromSite", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisLevelBookPrice", b =>
@@ -2105,7 +2111,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("ShokouhPardis_LevelBookPrice", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LevelBookPrice", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisLevelClass", b =>
@@ -2230,7 +2236,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("ShokouhPardis_MediaAttachment", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_MediaAttachment", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisProgram", b =>
@@ -2571,7 +2577,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_StudentClass_Dto", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_StudentClass_Dto", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClassOnlineForm", b =>
@@ -2716,7 +2722,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_StudentClass_OnlineForm", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_StudentClass_OnlineForm", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherClass", b =>
@@ -2861,7 +2867,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_TeacherLevels", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TeacherLevels", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherTermClass", b =>
@@ -2916,7 +2922,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermFk");
 
-                    b.ToTable("ShokouhPardis_TeacherTermClass", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TeacherTermClass", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherTimeSheet", b =>
@@ -2991,7 +2997,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("WeekDayId");
 
-                    b.ToTable("ShokouhPardis_TeacherTimeSheet", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TeacherTimeSheet", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTermClass", b =>
@@ -3024,11 +3030,17 @@ namespace Havesh.Model.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LastTermFk")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedWhen")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("NextTermFk")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -3139,7 +3151,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("ShokouhPardis_TimeTable", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TimeTable", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTimeTableStudent", b =>
@@ -3187,8 +3199,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int?>("StudentAmountDiscount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StudentId")
-                        .IsRequired()
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("StudentPercentDiscount")
@@ -3213,7 +3224,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableId");
 
-                    b.ToTable("ShokouhPardis_TimeTableStudents", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TimeTableStudents", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisWeekDay", b =>
@@ -3375,7 +3386,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatementMeliN", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("StatementMeliN", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.StatementParsianM", b =>
@@ -3424,7 +3435,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatementParsianM", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("StatementParsianM", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.StudentSessionActivity", b =>
@@ -3509,7 +3520,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableSessionFk");
 
-                    b.ToTable("ShokouhPardis_StudentSessionActivity", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_StudentSessionActivity", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.TermSessionTemplate", b =>
@@ -3564,7 +3575,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermFk");
 
-                    b.ToTable("ShokouhPardis_TermSessionTemplate", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TermSessionTemplate", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.TermSessionTemplateDate", b =>
@@ -3617,7 +3628,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermSessionTemplateFk");
 
-                    b.ToTable("ShokouhPardis_TermSessionTemplateDate", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TermSessionTemplateDate", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.TimeTableSession", b =>
@@ -3692,7 +3703,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableFk");
 
-                    b.ToTable("ShokouhPardis_TimeTableSession", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TimeTableSession", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.User", b =>
@@ -3757,7 +3768,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("Users", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Users", "dbo");
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -3772,7 +3783,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("RolesId");
 
-                    b.ToTable("PermissionRole", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("PermissionRole", "dbo");
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -3787,7 +3798,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("RoleUser", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.ApplicationSettings", b =>
@@ -3914,6 +3925,15 @@ namespace Havesh.Model.Migrations
                         .IsRequired();
 
                     b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Model.EntityChange", b =>
+                {
+                    b.HasOne("Havesh.Model.Model.User", "ActionBy")
+                        .WithMany()
+                        .HasForeignKey("ActionByFk");
+
+                    b.Navigation("ActionBy");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>
@@ -4095,15 +4115,6 @@ namespace Havesh.Model.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.MyDbContext+EntityChange", b =>
-                {
-                    b.HasOne("Havesh.Model.Model.User", "ActionBy")
-                        .WithMany()
-                        .HasForeignKey("ActionById");
-
-                    b.Navigation("ActionBy");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Permission", b =>

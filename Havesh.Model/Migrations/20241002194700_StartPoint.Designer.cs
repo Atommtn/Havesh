@@ -12,17 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Havesh.Model.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20231103121019_Dashboard5")]
-    partial class Dashboard5
+    [Migration("20241002194700_StartPoint")]
+    partial class StartPoint
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("ShoukouhPardis12DBAdmin")
+                .HasDefaultSchema("dbo")
                 .UseCollation("Latin1_General_CI_AS")
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -50,7 +50,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("SettingCategoryFk");
 
-                    b.ToTable("ApplicationSettings", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ApplicationSettings", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.ApplicationSettingsCategory", b =>
@@ -70,7 +70,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationSettingsCategory", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ApplicationSettingsCategory", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Branch", b =>
@@ -96,7 +96,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("ParentBranchFk");
 
-                    b.ToTable("AppBranch", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("AppBranch", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
@@ -107,14 +107,19 @@ namespace Havesh.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("DashboardTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserFk")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DashboardTemplateId");
 
-                    b.ToTable("Dashboards", "ShoukouhPardis12DBAdmin");
+                    b.HasIndex("UserFk");
+
+                    b.ToTable("Dashboards", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplate", b =>
@@ -136,16 +141,40 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BelongsToRoleId");
 
-                    b.ToTable("DashboardTemplates", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("DashboardTemplates", "dbo");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplateWidget", b =>
+                {
+                    b.Property<int>("DashboardTemplateId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("WidgetId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<int?>("WidgetGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DashboardTemplateId", "WidgetId");
+
+                    b.HasIndex("WidgetGroupId");
+
+                    b.HasIndex("WidgetId");
+
+                    b.ToTable("DashboardTemplateWidgets", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardWidgetSetting", b =>
                 {
                     b.Property<int>("DashboardId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<int>("WidgetId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("BreakPoints")
                         .HasColumnType("nvarchar(max)");
@@ -159,8 +188,17 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("Icon")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("IconSize")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("IsInline")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -171,11 +209,16 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("TitleClass")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("WidgetGroupId")
+                        .HasColumnType("int");
+
                     b.HasKey("DashboardId", "WidgetId");
+
+                    b.HasIndex("WidgetGroupId");
 
                     b.HasIndex("WidgetId");
 
-                    b.ToTable("DashboardWidgetSettings", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("DashboardWidgetSettings", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.Widget", b =>
@@ -192,14 +235,11 @@ namespace Havesh.Model.Migrations
                     b.Property<bool>("AllowRemove")
                         .HasColumnType("bit");
 
-                    b.Property<string>("BreakPoints")
+                    b.Property<string>("BelongToRoles")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DashboardId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DashboardTemplateId")
-                        .HasColumnType("int");
+                    b.Property<string>("BreakPoints")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Height")
                         .HasColumnType("nvarchar(max)");
@@ -216,6 +256,9 @@ namespace Havesh.Model.Migrations
                     b.Property<int?>("IconSize")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsInline")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -229,11 +272,52 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DashboardId");
+                    b.ToTable("Widgets", "dbo");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.WidgetGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BelongToRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DashboardTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BelongToRoleId");
 
                     b.HasIndex("DashboardTemplateId");
 
-                    b.ToTable("Widgets", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("WidgetGroup", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.AdvanceRegistration", b =>
@@ -247,13 +331,34 @@ namespace Havesh.Model.Migrations
                     b.Property<bool?>("Allow")
                         .HasColumnType("bit");
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -267,16 +372,57 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("AdvanceRegistrations", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("AdvanceRegistrations", "dbo");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Model.EntityChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ActionByFk")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ActionWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EntityKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Field")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionByFk");
+
+                    b.ToTable("EntityChanges", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>
                 {
-                    b.Property<int>("LessonPlanId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessonPlanId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -284,8 +430,26 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LevelFk")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SessionNumber")
                         .HasColumnType("int");
@@ -293,13 +457,13 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("LessonPlanId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
                     b.HasIndex("LevelFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlan", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlan", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanAttachment", b =>
@@ -314,7 +478,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("AttachmentId");
 
-                    b.ToTable("ShokouhPardis_LessonPlanAttachments", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanAttachments", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSection", b =>
@@ -331,11 +495,29 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Duration")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LessonPlanFk")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -358,7 +540,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("SectionTypeFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlanSection", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanSection", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSectionItem", b =>
@@ -369,8 +551,32 @@ namespace Havesh.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LessonPlanSectionFk")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -381,9 +587,11 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchFk");
+
                     b.HasIndex("LessonPlanSectionFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlanSectionItem", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanSectionItem", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSectionType", b =>
@@ -400,6 +608,24 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -408,7 +634,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_LessonPlanSectionType", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LessonPlanSectionType", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Message", b =>
@@ -419,13 +645,28 @@ namespace Havesh.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
 
                     b.Property<string>("Command")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CommandArg")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeliveredDateTime")
@@ -434,8 +675,20 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("FromId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MessageBoxId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ReadDateTime")
                         .HasColumnType("datetime2");
@@ -463,6 +716,8 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchFk");
+
                     b.HasIndex("FromId");
 
                     b.HasIndex("MessageBoxId");
@@ -471,7 +726,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("ToId");
 
-                    b.ToTable("Messages", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Messages", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageAction", b =>
@@ -486,14 +741,40 @@ namespace Havesh.Model.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MessageId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchFk");
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("MessageActions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageActions", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageActionOption", b =>
@@ -507,14 +788,38 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("ActionUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Icon")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MessageActionId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -525,9 +830,11 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchFk");
+
                     b.HasIndex("MessageActionId");
 
-                    b.ToTable("MessageActionOptions", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageActionOptions", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageBox", b =>
@@ -538,143 +845,40 @@ namespace Havesh.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchFk");
+
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("MessageBoxes", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.OnlineTeacherLink", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ItemID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
-
-                    b.Property<string>("Book")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("DocName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<int?>("ItemCreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemCreatedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ItemGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ItemGUID");
-
-                    b.Property<int?>("ItemModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemModifiedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ItemOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<int>("SessionNo")
-                        .HasColumnType("int")
-                        .HasColumnName("sessionNo");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.HasKey("ItemId");
-
-                    b.ToTable("Online_TeacherLink", "ShoukouhPardis12DBAdmin");
-                });
-
-            modelBuilder.Entity("Havesh.Model.Model.OnlineTermTable", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ItemID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
-
-                    b.Property<string>("DayOf")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<int?>("ItemCreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemCreatedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ItemGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ItemGUID");
-
-                    b.Property<int?>("ItemModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ItemModifiedWhen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ItemOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("NewProgram")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("TeacherName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("TimOf")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.HasKey("ItemId");
-
-                    b.ToTable("Online_TermTable", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("MessageBoxes", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Permission", b =>
@@ -688,13 +892,39 @@ namespace Havesh.Model.Migrations
                     b.Property<bool>("Allow")
                         .HasColumnType("bit");
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions", "ShoukouhPardis12DBAdmin");
+                    b.HasIndex("BranchFk");
+
+                    b.ToTable("Permissions", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.PreRegistration", b =>
@@ -711,14 +941,32 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DailyJVFk")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("IsArchive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LevelFk")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("PreRegistrationGuid")
                         .HasColumnType("uniqueidentifier");
@@ -744,7 +992,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermFk");
 
-                    b.ToTable("ShokouhPardis_PreRegistration", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_PreRegistration", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.Role", b =>
@@ -755,22 +1003,48 @@ namespace Havesh.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "ShoukouhPardis12DBAdmin");
+                    b.HasIndex("BranchFk");
+
+                    b.ToTable("Roles", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.SessionActivity", b =>
                 {
-                    b.Property<int>("SessionActivityID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SessionActivityID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ActivityTitle")
                         .IsRequired()
@@ -782,11 +1056,50 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Color")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconColor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IconSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LevelGroups")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Levels")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("SessionActivityGuid")
                         .HasColumnType("uniqueidentifier");
@@ -807,11 +1120,11 @@ namespace Havesh.Model.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SessionActivityID");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_SessionActivity", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_SessionActivity", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.SessionActivityValueOption", b =>
@@ -822,8 +1135,41 @@ namespace Havesh.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BroadcastToRoles")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SessionActivityFk")
                         .HasColumnType("int");
@@ -839,19 +1185,21 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchFk");
+
                     b.HasIndex("SessionActivityFk");
 
-                    b.ToTable("ShokouhPardis_SessionActivityValueOption", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_SessionActivityValueOption", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingCode", b =>
                 {
-                    b.Property<int>("AccountingCodeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountingCodeID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountingCodeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AccountType")
                         .HasColumnType("int");
@@ -878,12 +1226,30 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Describtion")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("LastSq")
                         .HasColumnType("int")
                         .HasColumnName("LastSQ");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("SubjectRecFk")
                         .HasColumnType("int");
@@ -892,21 +1258,21 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("AccountingCodeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_AccountingCode", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_AccountingCode", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingTransaction", b =>
                 {
-                    b.Property<int>("AccountingTransactionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountingTransactionID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountingTransactionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AccountingCodeFk")
                         .HasColumnType("int");
@@ -932,6 +1298,12 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("Credit")
                         .HasColumnType("int");
 
@@ -940,6 +1312,18 @@ namespace Havesh.Model.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ShortTxKey")
                         .HasMaxLength(512)
@@ -954,21 +1338,21 @@ namespace Havesh.Model.Migrations
                     b.Property<DateTime?>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AccountingTransactionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_AccountingTransaction", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_AccountingTransaction", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisBookClass", b =>
                 {
-                    b.Property<int>("BookClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("BookClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -996,7 +1380,25 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
-                    b.HasKey("BookClassId");
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1005,12 +1407,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisClassRoom", b =>
                 {
-                    b.Property<int>("ClassRoomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ClassRoomID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassRoomId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1036,8 +1438,20 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasDefaultValueSql("(N'')");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Describtion")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("MaxCapacity")
                         .HasColumnType("int");
@@ -1045,7 +1459,13 @@ namespace Havesh.Model.Migrations
                     b.Property<int?>("MinCapacity")
                         .HasColumnType("int");
 
-                    b.HasKey("ClassRoomId");
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1054,12 +1474,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisDailyJv", b =>
                 {
-                    b.Property<int>("DailyJvid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DailyJVID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DailyJvid"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1073,6 +1493,12 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("CardPostfix")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("CurrentDate")
                         .HasColumnType("datetime2");
@@ -1101,11 +1527,26 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsPreRegister")
                         .HasColumnType("bit");
 
                     b.Property<int?>("JvFromSiteFk")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PayBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentType")
                         .HasMaxLength(200)
@@ -1129,7 +1570,10 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXCode");
 
-                    b.HasKey("DailyJvid");
+                    b.Property<bool?>("VPay")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1139,23 +1583,29 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableFk");
 
-                    b.ToTable("ShokouhPardis_DailyJV", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_DailyJV", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisDaySession", b =>
                 {
-                    b.Property<int>("DaySessionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DaySessionID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DaySessionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("DaySessionGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1165,9 +1615,21 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("IntervalId")
                         .HasColumnType("int")
                         .HasColumnName("IntervalID");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TermFk")
                         .HasColumnType("int");
@@ -1176,7 +1638,7 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("WeekdayID");
 
-                    b.HasKey("DaySessionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1189,18 +1651,24 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisEmployee", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("EmployeeID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("EmployeeGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1210,15 +1678,27 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_Employee", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_Employee", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisFileAttachment", b =>
@@ -1226,7 +1706,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -1239,6 +1719,12 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DataUrl")
                         .HasColumnType("nvarchar(max)");
@@ -1261,32 +1747,47 @@ namespace Havesh.Model.Migrations
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_FileAttachment", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_FileAttachment", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisFinanceFlat", b =>
                 {
-                    b.Property<int>("FinanceFlatId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Finance_FlatID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinanceFlatId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreditCardPostFixNo")
                         .HasMaxLength(16)
@@ -1301,6 +1802,18 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Finance_FlatLastModified")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("PaymentAmount")
                         .HasColumnType("bigint");
@@ -1345,21 +1858,21 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Verification_Status");
 
-                    b.HasKey("FinanceFlatId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_Finance_Flat", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_Finance_Flat", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisInterval", b =>
                 {
-                    b.Property<int>("IntervalId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("IntervalID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IntervalId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1367,8 +1880,17 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<TimeSpan?>("EndTime")
                         .HasColumnType("time");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IntervalGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1377,6 +1899,15 @@ namespace Havesh.Model.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<TimeSpan?>("StartTime")
                         .HasColumnType("time");
@@ -1394,7 +1925,7 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("IntervalId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1403,12 +1934,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisJvfromSite", b =>
                 {
-                    b.Property<int>("DailyJvid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DailyJVID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DailyJvid"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdminDescription")
                         .HasColumnType("nvarchar(max)");
@@ -1431,6 +1962,12 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("DailyJvguid")
@@ -1457,11 +1994,23 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsRequiredInvestigation")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11)
@@ -1490,23 +2039,23 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("TXCode");
 
-                    b.HasKey("DailyJvid");
+                    b.HasKey("Id");
 
                     b.HasIndex("AttachmentFk");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_JVFromSite", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_JVFromSite", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisLevelBookPrice", b =>
                 {
-                    b.Property<int>("LevelBookPriceId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LevelBookPriceID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LevelBookPriceId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1516,6 +2065,18 @@ namespace Havesh.Model.Migrations
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("LevelBookPriceGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1529,6 +2090,12 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("LevelID");
 
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("TermId")
                         .HasColumnType("int")
                         .HasColumnName("TermID");
@@ -1536,7 +2103,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("TuitionAmount")
                         .HasColumnType("int");
 
-                    b.HasKey("LevelBookPriceId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1544,17 +2111,17 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("ShokouhPardis_LevelBookPrice", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_LevelBookPrice", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisLevelClass", b =>
                 {
-                    b.Property<int>("LevelClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LevelClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LevelClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1566,8 +2133,20 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Grouping")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("LevelClassGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1588,11 +2167,17 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasDefaultValueSql("(N'')");
 
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("NextLevelFk")
                         .HasColumnType("int")
                         .HasColumnName("NextLevelFK");
 
-                    b.HasKey("LevelClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1615,14 +2200,32 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<byte[]>("FileData")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MessageId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -1633,21 +2236,45 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("ShokouhPardis_MediaAttachment", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_MediaAttachment", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisProgram", b =>
                 {
-                    b.Property<int>("ProgramId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ProgramID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgramId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DaysessionId")
                         .HasColumnType("int")
                         .HasColumnName("DaysessionID");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProgramGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1663,7 +2290,9 @@ namespace Havesh.Model.Migrations
                         .HasColumnName("ScheduleID")
                         .HasDefaultValueSql("((0))");
 
-                    b.HasKey("ProgramId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchFk");
 
                     b.HasIndex("DaysessionId");
 
@@ -1674,18 +2303,36 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisSchedule", b =>
                 {
-                    b.Property<int>("ScheduleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ScheduleID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ScheduleGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1705,7 +2352,7 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasDefaultValueSql("(N'')");
 
-                    b.HasKey("ScheduleId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1714,18 +2361,24 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClass", b =>
                 {
-                    b.Property<int>("StudentClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StudentClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FatherJob")
                         .HasMaxLength(200)
@@ -1738,9 +2391,21 @@ namespace Havesh.Model.Migrations
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("HomePhone")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MotherJob")
                         .HasMaxLength(200)
@@ -1811,7 +2476,7 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("StudentClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -1820,12 +2485,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClassDto", b =>
                 {
-                    b.Property<int>("StudentClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StudentClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1833,9 +2498,27 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FatherJob")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MotherJob")
                         .HasMaxLength(200)
@@ -1890,21 +2573,21 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("StudentSHNo");
 
-                    b.HasKey("StudentClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_StudentClass_Dto", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_StudentClass_Dto", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisStudentClassOnlineForm", b =>
                 {
-                    b.Property<int>("StudentClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StudentClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -1915,6 +2598,12 @@ namespace Havesh.Model.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FatherJob")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -1923,15 +2612,27 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("HomePhone")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsGirl")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MotherJob")
                         .HasMaxLength(200)
@@ -2017,27 +2718,45 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("StudentClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_StudentClass_OnlineForm", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_StudentClass_OnlineForm", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherClass", b =>
                 {
-                    b.Property<int>("TeacherClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TeacherClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("TeacherBirthDay")
                         .HasColumnType("datetime2");
@@ -2085,7 +2804,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("TeacherClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2094,12 +2813,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherLevel", b =>
                 {
-                    b.Property<int>("TeacherLevelsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TeacherLevelsID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherLevelsId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2107,9 +2826,27 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LevelId")
                         .HasColumnType("int")
                         .HasColumnName("LevelID");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ProficiencyLevel")
                         .HasColumnType("int");
@@ -2126,11 +2863,11 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
-                    b.HasKey("TeacherLevelsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("ShokouhPardis_TeacherLevels", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TeacherLevels", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherTermClass", b =>
@@ -2138,7 +2875,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -2148,13 +2885,28 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TeacherFk")
                         .HasColumnType("int");
@@ -2170,17 +2922,17 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermFk");
 
-                    b.ToTable("ShokouhPardis_TeacherTermClass", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TeacherTermClass", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTeacherTimeSheet", b =>
                 {
-                    b.Property<int>("TeacherTimeSheetId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TeacherTimeSheetID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherTimeSheetId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2188,12 +2940,30 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("IntervalId")
                         .HasColumnType("int")
                         .HasColumnName("IntervalID");
 
                     b.Property<bool?>("IsAvailable")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("int")
@@ -2215,7 +2985,7 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("WeekDayID");
 
-                    b.HasKey("TeacherTimeSheetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2227,17 +2997,17 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("WeekDayId");
 
-                    b.ToTable("ShokouhPardis_TeacherTimeSheet", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TeacherTimeSheet", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTermClass", b =>
                 {
-                    b.Property<int>("TermClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TermClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TermClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2245,8 +3015,32 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("LastTermFk")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("NextTermFk")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -2267,7 +3061,7 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("YearID");
 
-                    b.HasKey("TermClassId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2278,12 +3072,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTimeTable", b =>
                 {
-                    b.Property<int>("TimeTableId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TimeTableID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimeTableId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2294,8 +3088,20 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("ClassRoomId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
@@ -2303,6 +3109,12 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("LevelId")
                         .HasColumnType("int")
                         .HasColumnName("LevelID");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");
@@ -2325,7 +3137,7 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("TimeTableId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2339,17 +3151,17 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("ShokouhPardis_TimeTable", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TimeTable", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisTimeTableStudent", b =>
                 {
-                    b.Property<int>("TimeTableStudentsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TimeTableStudentsID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimeTableStudentsId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2357,20 +3169,37 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool?>("IsBookPaymentComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsPaymentComplete")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("StudentAmountDiscount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StudentId")
-                        .IsRequired()
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("StudentPercentDiscount")
@@ -2387,7 +3216,7 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
-                    b.HasKey("TimeTableStudentsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2395,17 +3224,41 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableId");
 
-                    b.ToTable("ShokouhPardis_TimeTableStudents", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TimeTableStudents", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisWeekDay", b =>
                 {
-                    b.Property<int>("WeekDayId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("WeekDayID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeekDayId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .HasMaxLength(200)
@@ -2419,19 +3272,45 @@ namespace Havesh.Model.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("('1/1/0001 12:00:00 AM')");
 
-                    b.HasKey("WeekDayId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchFk");
 
                     b.ToTable("ShokouhPardis_WeekDay", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisYearClass", b =>
                 {
-                    b.Property<int>("YearClassId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("YearClassID");
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("YearClassId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchFk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("YearClassGuid")
                         .HasColumnType("uniqueidentifier");
@@ -2445,7 +3324,9 @@ namespace Havesh.Model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("YearClassId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchFk");
 
                     b.ToTable("ShokouhPardis_YearClass", "dbo");
                 });
@@ -2455,7 +3336,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -2505,7 +3386,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatementMeliN", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("StatementMeliN", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.StatementParsianM", b =>
@@ -2513,7 +3394,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -2554,16 +3435,16 @@ namespace Havesh.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatementParsianM", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("StatementParsianM", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.StudentSessionActivity", b =>
                 {
-                    b.Property<int>("StudentSessionActivityID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentSessionActivityID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("ActivityDateTime")
                         .HasColumnType("datetime2");
@@ -2577,14 +3458,35 @@ namespace Havesh.Model.Migrations
                     b.Property<string>("ActivityValue")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ActivityValueOptionFk")
+                        .HasColumnType("int");
+
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -2598,29 +3500,36 @@ namespace Havesh.Model.Migrations
                     b.Property<DateTime>("StudentSessionActivityLastModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TimeTableFk")
+                        .HasColumnType("int");
+
                     b.Property<int>("TimeTableSessionFk")
                         .HasColumnType("int");
 
-                    b.HasKey("StudentSessionActivityID");
+                    b.HasKey("Id");
 
                     b.HasIndex("ActivityFk");
+
+                    b.HasIndex("ActivityValueOptionFk");
 
                     b.HasIndex("BranchFk");
 
                     b.HasIndex("StudentFk");
 
+                    b.HasIndex("TimeTableFk");
+
                     b.HasIndex("TimeTableSessionFk");
 
-                    b.ToTable("ShokouhPardis_StudentSessionActivity", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_StudentSessionActivity", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.TermSessionTemplate", b =>
                 {
-                    b.Property<int>("TermSessionTemplateID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TermSessionTemplateID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2628,8 +3537,26 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TemplateName")
                         .IsRequired()
@@ -2642,22 +3569,22 @@ namespace Havesh.Model.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TermSessionTemplateID");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
                     b.HasIndex("TermFk");
 
-                    b.ToTable("ShokouhPardis_TermSessionTemplate", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TermSessionTemplate", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.TermSessionTemplateDate", b =>
                 {
-                    b.Property<int>("TermSessionTemplateDateID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TermSessionTemplateDateID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2665,11 +3592,29 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SessionNumber")
                         .HasColumnType("int");
@@ -2677,22 +3622,22 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("TermSessionTemplateFk")
                         .HasColumnType("int");
 
-                    b.HasKey("TermSessionTemplateDateID");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
                     b.HasIndex("TermSessionTemplateFk");
 
-                    b.ToTable("ShokouhPardis_TermSessionTemplateDate", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TermSessionTemplateDate", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.TimeTableSession", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BCode")
                         .HasColumnType("nvarchar(max)");
@@ -2702,6 +3647,24 @@ namespace Havesh.Model.Migrations
 
                     b.Property<int>("ClassRoomFk")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ReplacementTimeTableSessionFk")
                         .HasColumnType("int");
@@ -2728,7 +3691,7 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("TimeTableFk")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("BranchFk");
 
@@ -2740,7 +3703,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("TimeTableFk");
 
-                    b.ToTable("ShokouhPardis_TimeTableSession", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("ShokouhPardis_TimeTableSession", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.User", b =>
@@ -2757,6 +3720,12 @@ namespace Havesh.Model.Migrations
                     b.Property<int>("BranchFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -2766,11 +3735,23 @@ namespace Havesh.Model.Migrations
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModifiedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -2787,7 +3768,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("BranchFk");
 
-                    b.ToTable("Users", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("Users", "dbo");
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -2802,7 +3783,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("RolesId");
 
-                    b.ToTable("PermissionRole", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("PermissionRole", "dbo");
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -2817,7 +3798,7 @@ namespace Havesh.Model.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser", "ShoukouhPardis12DBAdmin");
+                    b.ToTable("RoleUser", "dbo");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.ApplicationSettings", b =>
@@ -2842,11 +3823,19 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
                 {
-                    b.HasOne("Havesh.Model.Model.User", "User")
+                    b.HasOne("Havesh.Model.Data.Dashboard.DashboardTemplate", "DashboardTemplate")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("DashboardTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Havesh.Model.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DashboardTemplate");
 
                     b.Navigation("User");
                 });
@@ -2862,16 +3851,45 @@ namespace Havesh.Model.Migrations
                     b.Navigation("BelongsToRole");
                 });
 
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplateWidget", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Dashboard.DashboardTemplate", "DashboardTemplate")
+                        .WithMany("DashboardTemplateWidgets")
+                        .HasForeignKey("DashboardTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.WidgetGroup", "WidgetGroup")
+                        .WithMany()
+                        .HasForeignKey("WidgetGroupId");
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.Widget", "Widget")
+                        .WithMany("DashboardTemplateWidgets")
+                        .HasForeignKey("WidgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DashboardTemplate");
+
+                    b.Navigation("Widget");
+
+                    b.Navigation("WidgetGroup");
+                });
+
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardWidgetSetting", b =>
                 {
                     b.HasOne("Havesh.Model.Data.Dashboard.Dashboard", "Dashboard")
-                        .WithMany()
+                        .WithMany("DashboardWidgets")
                         .HasForeignKey("DashboardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Havesh.Model.Data.Dashboard.Widget", "Widget")
+                    b.HasOne("Havesh.Model.Data.Dashboard.WidgetGroup", "WidgetGroup")
                         .WithMany()
+                        .HasForeignKey("WidgetGroupId");
+
+                    b.HasOne("Havesh.Model.Data.Dashboard.Widget", "Widget")
+                        .WithMany("DashboardWidgets")
                         .HasForeignKey("WidgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2879,17 +3897,23 @@ namespace Havesh.Model.Migrations
                     b.Navigation("Dashboard");
 
                     b.Navigation("Widget");
+
+                    b.Navigation("WidgetGroup");
                 });
 
-            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Widget", b =>
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.WidgetGroup", b =>
                 {
-                    b.HasOne("Havesh.Model.Data.Dashboard.Dashboard", null)
-                        .WithMany("Widgets")
-                        .HasForeignKey("DashboardId");
+                    b.HasOne("Havesh.Model.Model.Role", "BelongToRole")
+                        .WithMany()
+                        .HasForeignKey("BelongToRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Havesh.Model.Data.Dashboard.DashboardTemplate", null)
-                        .WithMany("Widgets")
+                        .WithMany("WidgetGroups")
                         .HasForeignKey("DashboardTemplateId");
+
+                    b.Navigation("BelongToRole");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.AdvanceRegistration", b =>
@@ -2901,6 +3925,15 @@ namespace Havesh.Model.Migrations
                         .IsRequired();
 
                     b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Model.EntityChange", b =>
+                {
+                    b.HasOne("Havesh.Model.Model.User", "ActionBy")
+                        .WithMany()
+                        .HasForeignKey("ActionByFk");
+
+                    b.Navigation("ActionBy");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>
@@ -2970,11 +4003,19 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlanSectionItem", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.LessonPlanSection", "Section")
                         .WithMany("Items")
                         .HasForeignKey("LessonPlanSectionFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Branch");
 
                     b.Navigation("Section");
                 });
@@ -2992,6 +4033,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.Message", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.User", "From")
                         .WithMany()
                         .HasForeignKey("FromId")
@@ -3012,6 +4059,8 @@ namespace Havesh.Model.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Branch");
+
                     b.Navigation("From");
 
                     b.Navigation("ReplyToMessage");
@@ -3021,27 +4070,62 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.MessageAction", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.Message", null)
                         .WithMany("Actions")
                         .HasForeignKey("MessageId");
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageActionOption", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.MessageAction", null)
                         .WithMany("Options")
                         .HasForeignKey("MessageActionId");
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.MessageBox", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Branch");
+
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Model.Permission", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.PreRegistration", b =>
@@ -3087,6 +4171,17 @@ namespace Havesh.Model.Migrations
                     b.Navigation("Term");
                 });
 
+            modelBuilder.Entity("Havesh.Model.Model.Role", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Havesh.Model.Model.SessionActivity", b =>
                 {
                     b.HasOne("Havesh.Model.Data.Branch", "Branch")
@@ -3100,11 +4195,19 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.SessionActivityValueOption", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.SessionActivity", null)
                         .WithMany("ValueOptions")
                         .HasForeignKey("SessionActivityFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisAccountingCode", b =>
@@ -3333,6 +4436,12 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisProgram", b =>
                 {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.ShokouhPardisDaySession", "DaySession")
                         .WithMany()
                         .HasForeignKey("DaysessionId")
@@ -3344,6 +4453,8 @@ namespace Havesh.Model.Migrations
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Branch");
 
                     b.Navigation("DaySession");
 
@@ -3583,11 +4694,39 @@ namespace Havesh.Model.Migrations
                     b.Navigation("TimeTable");
                 });
 
+            modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisWeekDay", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Model.ShokouhPardisYearClass", b =>
+                {
+                    b.HasOne("Havesh.Model.Data.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Havesh.Model.Model.StudentSessionActivity", b =>
                 {
                     b.HasOne("Havesh.Model.Model.SessionActivity", "Activity")
                         .WithMany()
                         .HasForeignKey("ActivityFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Havesh.Model.Model.SessionActivityValueOption", "ActivityValueOption")
+                        .WithMany()
+                        .HasForeignKey("ActivityValueOptionFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3603,6 +4742,12 @@ namespace Havesh.Model.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Havesh.Model.Model.TimeTableSession", "TimeTable")
+                        .WithMany()
+                        .HasForeignKey("TimeTableFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Havesh.Model.Model.TimeTableSession", "TimeTableSession")
                         .WithMany()
                         .HasForeignKey("TimeTableSessionFk")
@@ -3611,9 +4756,13 @@ namespace Havesh.Model.Migrations
 
                     b.Navigation("Activity");
 
+                    b.Navigation("ActivityValueOption");
+
                     b.Navigation("Branch");
 
                     b.Navigation("Student");
+
+                    b.Navigation("TimeTable");
 
                     b.Navigation("TimeTableSession");
                 });
@@ -3740,12 +4889,21 @@ namespace Havesh.Model.Migrations
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.Dashboard", b =>
                 {
-                    b.Navigation("Widgets");
+                    b.Navigation("DashboardWidgets");
                 });
 
             modelBuilder.Entity("Havesh.Model.Data.Dashboard.DashboardTemplate", b =>
                 {
-                    b.Navigation("Widgets");
+                    b.Navigation("DashboardTemplateWidgets");
+
+                    b.Navigation("WidgetGroups");
+                });
+
+            modelBuilder.Entity("Havesh.Model.Data.Dashboard.Widget", b =>
+                {
+                    b.Navigation("DashboardTemplateWidgets");
+
+                    b.Navigation("DashboardWidgets");
                 });
 
             modelBuilder.Entity("Havesh.Model.Model.LessonPlan", b =>
