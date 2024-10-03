@@ -3,7 +3,7 @@
 
 
 
-<PageTitle>Havesh App</PageTitle>
+<PageTitle>@_title</PageTitle>
 
 <MudRTLProvider RightToLeft="true">
 
@@ -14,9 +14,9 @@
 	<HubConnectorComponent />
 
 	<MudLayout>
-		<MudAppBar Fixed="true" Elevation="1">
+		<MudAppBar Style="@_appBarStyle" Fixed="true" Elevation="1">
 			<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-			HAVESH Portal
+            @_title_farsi
 			<MudSpacer />
 			<AuthorizeView>
 				<Authorized>
@@ -109,8 +109,20 @@
 		await base.OnAfterRenderAsync(firstRender);
 	}
 
+	string _title;
+	string _title_farsi;
+    string _appBarStyle;
 
-	void DrawerToggle()
+    protected override void OnInitialized()
+    {
+		_title = Environment.GetEnvironmentVariable("App_Title")!;
+		_title_farsi = Environment.GetEnvironmentVariable("App_Title_Farsi")!;
+		var appBarStyle = Environment.GetEnvironmentVariable("App_BarBgColor")!;
+        _appBarStyle = $"background-color:#{appBarStyle};";
+        base.OnInitialized();
+    }
+
+    void DrawerToggle()
 	{
 		_drawerOpen = !_drawerOpen;
 	}

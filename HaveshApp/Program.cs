@@ -38,9 +38,8 @@ builder.Configuration.AddEnvironmentVariables();
 var certPath = "C:\\Frz\\Cert\\certificate.pfx";
 var certPassword = "Atom.Mtn";
 var cert = new X509Certificate2(certPath, certPassword);
+var httpsPort = Convert.ToInt32( Environment.GetEnvironmentVariable("HTTPS_PORT"))!;
 
-var httpsPort = 443;
-if (builder.Environment.IsDevelopment()) httpsPort = 1443;
 
 builder.WebHost.UseKestrel(options =>
 {
