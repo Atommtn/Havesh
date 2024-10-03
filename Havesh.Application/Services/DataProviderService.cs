@@ -1579,7 +1579,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
         //    context.Entry(shokouhPardisStudentClass).State = EntityState.Detached;
         //}
 
-        
+        DbContext.ChangeTracker.Clear();
 		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 		SaveAll();
        // dailyJv.Student = x;
