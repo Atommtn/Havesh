@@ -20,6 +20,12 @@
 
         <ToolBarContent>
             <MudStack Row="true" Spacing="3" AlignItems="AlignItems.Center" Style="width: 100%">
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="GoToTimetabel200">
+                            ارسال زبان آموزان به تایم تیبل 200
+                        </MudButton>
+                    </Authorized></AuthorizeView>
 
                 <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="NewTimesheetClick">
                     تعریف برنامه کلاسی

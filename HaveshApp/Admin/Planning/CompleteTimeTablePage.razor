@@ -68,7 +68,7 @@
         set
         {
             _timeTableId = value;
-            TimeTableItem = DataProvider.GetTimeTable(Convert.ToInt32(_timeTableId));
+            TimeTableItem = _dataProvider.GetTimeTable(Convert.ToInt32(_timeTableId));
             /*InvokeAsync(async () =>
             {
                 await studentsTableComponent.ReloadData();
@@ -79,7 +79,7 @@
 
     ShokouhPardisTimeTable? TimeTableItem { get; set; }
 
-    [Inject] DataProviderService DataProvider { get; set; }
+    
     [Inject] IDialogService DialogService { get; set; }
 
     private async Task AddStudentsToClassClick()
@@ -105,10 +105,20 @@
             {
                 if (await ValidateStudents(TimeTableItem, selectedStudents))
                 {
-                    // todo: transaction
-                    DataProvider.AddStudentsToTeacherTimeSheet(TimeTableItem, selectedStudents);
-                    _dataProvider.ArchivePreRegister(selectedStudents);
-                    _dataProvider.DailyJvAssignToTimeTable(TimeTableItem, selectedStudents);
+                    _dataProvider.CreateTransaction();
+                    try
+                    {
+                        _dataProvider.AddStudentsToTeacherTimeSheet(TimeTableItem, selectedStudents);
+                        _dataProvider.ArchivePreRegister(selectedStudents);
+                        _dataProvider.DailyJvAssignToTimeTable(TimeTableItem, selectedStudents);
+                        _dataProvider.CommitTransaction();
+                    }
+                    catch (Exception exception)
+                    {
+                        _dataProvider.RollBackTransaction();
+                        _snackBar.Add(exception.Message, Severity.Error);
+                    }
+                    
                     await studentsTableComponent?.ReloadData()!;
                 }
             }
@@ -118,12 +128,15 @@
     private async Task<bool> ValidateStudents(ShokouhPardisTimeTable timeTable,
         IEnumerable<ShokouhPardisStudentClass> selectedStudents)
     {
-        foreach (var student in selectedStudents
-            .Where(student => DataProvider.IsStudentInOtherClassesInTheTerm(timeTable, student)))
+        foreach (var student in selectedStudents)
         {
-            await DialogService.ShowMessageBox("Warning",
-                $"Student {student.StudentName} {student.StudentFamily} is in Another classes");
-            return false;
+            if (_dataProvider.IsStudentInOtherClassesInTheTerm(timeTable, student))
+            {
+                await DialogService.ShowMessageBox("Warning",
+                    $"Student {student.StudentName} {student.StudentFamily} is in Another classes");
+                return false;    
+            }
+            
         }
 
         return true;
@@ -142,7 +155,7 @@
         var result = await DialogService.ShowMessageBox("Delete student From Class Plan", $"Are you sure you want delete {args.Student.StudentName} {args.Student.StudentFamily} from this class plan ?", "Yes", "No");
         if (result is true)
         {
-            DataProvider.deleteStudentFromClassPlan(args.Student, args.TimeTable);
+            _dataProvider.deleteStudentFromClassPlan(args.Student, args.TimeTable);
             return true;
         }
         return false;
@@ -154,7 +167,7 @@
     private async Task ChangeStudentTimeTableClick(ShokouhPardisStudentClass student)
     {
         //todo: move student time table
-        var dialogReference = DialogService.Show<TimeTableSelectDialog>("انتقال کلاسی",
+        var dialogReference =await DialogService.ShowAsync<TimeTableSelectDialog>("انتقال کلاسی",
             new DialogParameters()
             {
                 ["TimeTable"] = TimeTableItem,

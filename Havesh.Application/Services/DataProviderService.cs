@@ -7,6 +7,7 @@ using MudBlazor;
 using Havesh.Domain.Infrastructure;
 using Havesh.Model.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.Tokens;
 using static Dapper.SqlMapper;
 
@@ -367,7 +368,8 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		var any = DbContext.ShokouhPardisTimeTableStudents
 			.Any(x =>
 				x.StudentId == student.Id &&
-				x.TimeTable.TermId == timeTable.TermId
+				x.TimeTable.TermId == timeTable.TermId &&
+				x.TimeTable.Id != 3466
 			);
 		return any;
 	}
@@ -2817,6 +2819,54 @@ public class DataProviderService : IAsyncDisposable , IDisposable
     }
 
 
-    
+    public void ChangeTimeTableIdAndDailyJVTimeTableId(int studentId, int termId)
+    {
+        try
+        {
+            var sql = "Update TimeTableStudent Set ";
+            var timeTableStudent = DbContext.ShokouhPardisTimeTableStudents
+                .First(x => x.StudentId == studentId &&
+                            x.TimeTable.TermId == termId);
+            timeTableStudent.TimeTableId = 3466;
+            DbContext.ShokouhPardisTimeTableStudents.Update(timeTableStudent);
+            var dailyJvs = DbContext.ShokouhPardisDailyJvs
+                .Where(x => x.StudentId == studentId && x.TermId == termId).ToList();
+            foreach (var dJv in dailyJvs)
+            {
+                dJv.TimeTableFk = 3466;
+            }
+            DbContext.ShokouhPardisDailyJvs.UpdateRange(dailyJvs);
+            SaveAll();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+    IDbContextTransaction? _transaction;
+
+	public void CreateTransaction()
+    {
+
+	    _transaction ??= DbContext.Database.BeginTransaction();
+    }
+
+    public void CommitTransaction()
+    {
+	    _transaction?.Commit();
+	    _transaction?.Dispose();
+	    _transaction = null;
+    }
+
+    public void RollBackTransaction()
+    {
+	    _transaction?.Rollback();
+	    _transaction?.Dispose();
+	    _transaction = null;
+    }
+
+
 }
 
