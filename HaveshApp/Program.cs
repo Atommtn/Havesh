@@ -26,6 +26,9 @@ using Orleans.Configuration;
 using Havesh.Model;
 using Havesh.Model.Contract;
 using System.Security.Cryptography.X509Certificates;
+using Havesh.Model.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Serilog.Sinks.Loki;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -133,8 +136,7 @@ builder.Services.AddScoped<MyDbContextFactory>();
 
 builder.Services.AddScoped<DataProviderService>();
 
-//builder.Services.AddSingleton<MyDbContextFactory>();
-/*
+// برای ساخت میگریشن باید کانکشن مستقیم به دیتابیس داشته باشیم همینطور باید MyDBContext هم اضافه شود نه فقط فکتوری
 builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
 {
     optionsBuilder
@@ -152,7 +154,7 @@ builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
 
     // INTERCEPTOR 
     //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
-}, ServiceLifetime.Scoped);*/
+}, ServiceLifetime.Scoped);
 
 //builder.Services.AddScoped<DataProviderService>();
 
