@@ -8,6 +8,7 @@ using HaveshApp.Admin.Student;
 using HaveshApp.Managment.Session;
 using Havesh.Application.Services;
 using Havesh.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace HaveshApp.Admin.Planning;
@@ -33,9 +34,9 @@ public partial class TimeTablePage
 		{
 			_isPrivate = value;
 			if (table == null) return;
-            InvokeAsync(table.ReloadServerData);
+			InvokeAsync(table.ReloadServerData);
 
-        }
+		}
 	}
 
 	ShokouhPardisTermClass? Term
@@ -43,7 +44,7 @@ public partial class TimeTablePage
 		get => _term;
 		set
 		{
-			if(_term == value) return;
+			if (_term == value) return;
 			_term = value;
 
 			_timeTableStudentsCount = DataProvider.GetTimeTableStudentsCount(_term);
@@ -60,7 +61,7 @@ public partial class TimeTablePage
 	void Init()
 	{
 		if (initComplete)
-			return ;
+			return;
 		DataLoading = true;
 		StateHasChanged();
 		Term = DataProvider.GetTermsInRangeToday();
@@ -76,24 +77,24 @@ public partial class TimeTablePage
 
 		return EditButtonClick(timeTable);
 	}
-    Task NewPrivateTimesheetClick()
-    {
-        var timeTable = ShokouhPardisTimeTable.CreateTimeTable();
-        timeTable.IsPrivate = true;
-        return PrivateEditButtonClick(timeTable);
-    }
-    async Task<TableData<ShokouhPardisTimeTable>> ServerReload(TableState state)
+	Task NewPrivateTimesheetClick()
+	{
+		var timeTable = ShokouhPardisTimeTable.CreateTimeTable();
+		timeTable.IsPrivate = true;
+		return PrivateEditButtonClick(timeTable);
+	}
+	async Task<TableData<ShokouhPardisTimeTable>> ServerReload(TableState state)
 	{
 		Init();
 
 		DataLoading = true;
 		StateHasChanged();
 
-		var total = DataProvider.GetTotalTimeTablesCount(Term.Id ,SearchText , isPrivate);
-		var timeTables = DataProvider.GetTimeTables(state.Page, state.PageSize, SearchText, Term , isPrivate).ToList();
+		var total = DataProvider.GetTotalTimeTablesCount(Term.Id, SearchText, isPrivate);
+		var timeTables = DataProvider.GetTimeTables(state.Page, state.PageSize, SearchText, Term, isPrivate).ToList();
 		timeTables.ForEach(x =>
 		{
-			if(_timeTableStudentsCount.TryGetValue(x.Id,out var zz))
+			if (_timeTableStudentsCount.TryGetValue(x.Id, out var zz))
 				x.StudentsCount = zz;
 		});
 		DataLoading = false;
@@ -113,14 +114,14 @@ public partial class TimeTablePage
 	}
 
 	Task EditButtonClick(ShokouhPardisTimeTable timeTable)
-    {
-        return isPrivate ? OpenPrivateTimesTableDialog(timeTable) : OpenTimesTableDialog(timeTable);
-    }
-    Task PrivateEditButtonClick(ShokouhPardisTimeTable timeTable)
-    {
-        return OpenPrivateTimesTableDialog(timeTable);
-    }
-    async Task OpenTimesTableDialog(ShokouhPardisTimeTable context)
+	{
+		return isPrivate ? OpenPrivateTimesTableDialog(timeTable) : OpenTimesTableDialog(timeTable);
+	}
+	Task PrivateEditButtonClick(ShokouhPardisTimeTable timeTable)
+	{
+		return OpenPrivateTimesTableDialog(timeTable);
+	}
+	async Task OpenTimesTableDialog(ShokouhPardisTimeTable context)
 	{
 		var dialogReference = DialogService.Show<TimesTableDialog>(
 			(context.Id > 0 ? "Edit " : "New ") + "Time-Table " + Term.TermName,
@@ -138,7 +139,7 @@ public partial class TimeTablePage
 		if (dialogResult.Cancelled == false)
 		{
 			var retData = (ShokouhPardisTimeTable)dialogResult.Data;
-            retData.TeacherId = retData.Teacher.Id;
+			retData.TeacherId = retData.Teacher.Id;
 			var result = DataProvider.SaveTeacherTimeTable(retData);
 			if (result)
 			{
@@ -154,7 +155,7 @@ public partial class TimeTablePage
 			}
 			else
 			{
-				
+
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
 				Log.Warning("User {UserName} Save TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
 			}
@@ -163,48 +164,48 @@ public partial class TimeTablePage
 			StateHasChanged();
 		}
 	}
-    async Task OpenPrivateTimesTableDialog(ShokouhPardisTimeTable context)
-    {
-        var dialogReference = await DialogService.ShowAsync<PrivateTimesTableDialog>(
-            (context.Id > 0 ? "Edit " : "New ") + "Private " + Term.TermName,
-            new DialogParameters
-            {
-                ["TimeTableItem"] = context,
-                ["TermPram"] = Term,
-            },
-            new DialogOptions()
-            {
-                CloseButton = true,
-                MaxWidth = MaxWidth.Large
-            });
-        var dialogResult = await dialogReference.Result;
-        if (dialogResult.Cancelled == false)
-        {
-            var retData = (ShokouhPardisTimeTable)dialogResult.Data;
-            var result = DataProvider.SaveTeacherTimeTable(retData);
-            if (result)
-            {
-                bool? result1 = await DialogService.ShowMessageBox(
-                    "خطا",
-                    (MarkupString)
-                    @$"کلاسی با این مشخصات قبلا ذخیره شده است!
+	async Task OpenPrivateTimesTableDialog(ShokouhPardisTimeTable context)
+	{
+		var dialogReference = await DialogService.ShowAsync<PrivateTimesTableDialog>(
+			(context.Id > 0 ? "Edit " : "New ") + "Private " + Term.TermName,
+			new DialogParameters
+			{
+				["TimeTableItem"] = context,
+				["TermPram"] = Term,
+			},
+			new DialogOptions()
+			{
+				CloseButton = true,
+				MaxWidth = MaxWidth.Large
+			});
+		var dialogResult = await dialogReference.Result;
+		if (dialogResult.Cancelled == false)
+		{
+			var retData = (ShokouhPardisTimeTable)dialogResult.Data;
+			var result = DataProvider.SaveTeacherTimeTable(retData);
+			if (result)
+			{
+				bool? result1 = await DialogService.ShowMessageBox(
+					"خطا",
+					(MarkupString)
+					@$"کلاسی با این مشخصات قبلا ذخیره شده است!
                         <br/>{retData.Teacher.TeacherName}
                         <br/>{retData.Teacher.TeacherFamily}
                         <br/>{retData.Level.LevelName}
                         <br/>{retData.Schedule.Title}",
-                    yesText: "متوجه شدم!");
-            }
-            else
-            {
-                Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-                Log.Warning("User {UserName} Save Private TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
-            }
+					yesText: "متوجه شدم!");
+			}
+			else
+			{
+				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
+				Log.Warning("User {UserName} Save Private TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
+			}
 
-            await table?.ReloadServerData()!;
-            StateHasChanged();
-        }
-    }
-    async Task DeleteButtonClick(ShokouhPardisTimeTable context)
+			await table?.ReloadServerData()!;
+			StateHasChanged();
+		}
+	}
+	async Task DeleteButtonClick(ShokouhPardisTimeTable context)
 	{
 		var result = await DialogService.ShowMessageBox("Delete Timesheet Item", "Are you sure to delete this item ?", "Yes", "No");
 		if (result is true)
@@ -233,17 +234,52 @@ public partial class TimeTablePage
 
 	async Task ManageSessionClick(ShokouhPardisTimeTable timeTable)
 	{
-		await DialogService.ShowAsync<TimeTableSessionManagementDialog>("Manage Sessions",new DialogParameters()
-			{
-				["TimeTable"] = timeTable
-			}, 
+		await DialogService.ShowAsync<TimeTableSessionManagementDialog>("Manage Sessions", new DialogParameters()
+		{
+			["TimeTable"] = timeTable
+		},
 			new DialogOptions()
 			{
 				MaxWidth = MaxWidth.Medium,
 				FullWidth = true
 			});
-            
+
 	}
 
-    
+
+	private async Task GoToTimetabel200()
+	{
+		var termId = 43;
+        _dataProvider.CreateTransaction();
+		var dialog = await DialogService.ShowAsync<MoveTo200Dialog>("Please Wait");
+
+
+
+        var AllStudents = _dataProvider.GetStudentByTerm(termId).ToList();
+
+
+        try
+        {
+
+			foreach (var student in AllStudents)
+			{
+				_dataProvider.ChangeTimeTableIdAndDailyJVTimeTableId(student.Id, termId);
+			}
+
+			_dataProvider.CommitTransaction();
+			_snackBar.Add("با موفقیت انجام شد", Severity.Success);
+		}
+		catch (Exception ex)
+		{
+			// در صورت بروز خطا، تراکنش را بازگردان (Rollback) می‌کنیم
+			_dataProvider.RollBackTransaction();
+
+			// هندل کردن خطا
+			_snackBar.Add("با خطا روبرو شد", Severity.Error);
+			_snackBar.Add($"Error: {ex.Message}", Severity.Error);
+
+
+		}
+		dialog.Close();
+	}
 }
