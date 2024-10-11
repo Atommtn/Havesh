@@ -26,6 +26,8 @@ using Orleans.Configuration;
 using Havesh.Model;
 using Havesh.Model.Contract;
 using System.Security.Cryptography.X509Certificates;
+using Serilog.Sinks.Loki;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 
 // Configure logging to log to MSSqlServer database
@@ -33,7 +35,7 @@ using System.Security.Cryptography.X509Certificates;
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
 builder.Configuration.AddEnvironmentVariables();
-
+var branchName = Environment.GetEnvironmentVariable("BranchName")!;
 
 var certPath = "C:\\Frz\\Cert\\certificate.pfx";
 var certPassword = "Atom.Mtn";
@@ -75,7 +77,6 @@ builder.Services.AddMudServices();
 //builder.Services.AddMudExtensions();
 //builder.Services.AddMudServicesWithExtensions();
 var dbSettings = new DbSettings();
-var branchName = Environment.GetEnvironmentVariable("BranchName")!;
 builder.Configuration.GetSection(branchName).Bind(dbSettings);
 var conStr = dbSettings.GetConnectionString();
 
@@ -229,6 +230,36 @@ builder.Services.AddSingleton(RegisterGrainCachependecies.RegisterDependencies()
 
 builder.Services.AddHostedService<SignalrGrainClientInitializationService>();
 
+Log.Logger = new LoggerConfiguration()
+    
+    .WriteTo.File($"/var/log/{branchName}/all.log", rollingInterval: RollingInterval.Day) // لاگ‌ها را به فایل ذخیره کنید
+    .CreateLogger();
+
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .MinimumLevel.Information() // تنظیم سطح لاگ به Debug برای دریافت همه لاگ‌ها
+        .Enrich.FromLogContext()
+        .Enrich.WithProperty("app", branchName)
+        .WriteTo.LokiHttp("http://localhost:3100")
+//        .WriteTo.Console()
+);
+
+//    .UseSerilog(
+//     (context, configuration) =>
+// {
+//     configuration
+//         .MinimumLevel.Information() // تنظیم سطح لاگ به Debug برای دریافت همه لاگ‌ها
+//         .Enrich.FromLogContext()
+//         .Enrich.WithProperty("app", branchName)
+//         .WriteTo.LokiHttp("http://localhost:3100")
+//         .WriteTo.Console() // لاگ‌ها را به کنسول ارسال کنید
+//         .WriteTo.File($"/var/log/{branchName}/all.log", rollingInterval: RollingInterval.Day) // لاگ‌ها را به فایل ذخیره کنید
+//         ;
+// }
+//    );
+
 var app = builder.Build();
 
 
@@ -275,4 +306,17 @@ app.MapHealthChecks("/healthz");
 //    ElectronBootstrap();
 //}
 
-app.Run();
+try
+{
+    Log.Information($"Starting up the {branchName} application");
+    app.Run();
+}
+catch (Exception e)
+{
+    Log.Fatal(e, $"{branchName} Application startup failed");
+}
+finally
+{
+    Log.Warning($"{branchName} Application Stoped");
+    Log.CloseAndFlush();
+}

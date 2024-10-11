@@ -13,10 +13,25 @@ using Orleans.Configuration;
 using Orleans.Serialization;
 using Orleans.Storage;
 using Orleans.Streams;
+using Serilog;
+using Serilog.Sinks.Loki;
 
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
 builder.Configuration.AddEnvironmentVariables();
+
+
+Log.Logger = new LoggerConfiguration()
+	.MinimumLevel.Debug() // تنظیم سطح لاگ به Debug برای دریافت همه لاگ‌ها
+	.ReadFrom.Configuration(builder.Configuration)
+	.Enrich.FromLogContext()
+	.Enrich.WithProperty("app", "Silo")
+	.WriteTo.LokiHttp("http://localhost:3100")
+	.WriteTo.Console() // لاگ‌ها را به کنسول ارسال کنید
+	.WriteTo.File("/var/log/silo/all.log", rollingInterval: RollingInterval.Day) // لاگ‌ها را به فایل ذخیره کنید
+	.CreateLogger();
+
+builder.Host.UseSerilog();
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
@@ -135,5 +150,16 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-
-app.Run();
+try
+{
+	Log.Information("Starting up the Silo application");
+	app.Run();
+}
+catch (Exception e)
+{
+	Log.Fatal(e, "Silo Application startup failed");
+}
+finally
+{
+	Log.CloseAndFlush();
+}
