@@ -340,16 +340,31 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		{
 			foreach (var student in selectedStudents)
 			{
-				var shokouhPardisTimeTableStudent = new ShokouhPardisTimeTableStudent()
-				{
-					StudentId = student.Id,
-					TimeTableId = timeTable.Id,
-					TimeTableStudentsGuid = Guid.NewGuid(),
-					TimeTableStudentsLastModified = DateTime.Now
-				};
+                var TimeTableStudent = DbContext.ShokouhPardisTimeTableStudents.FirstOrDefault(
+                    x=>x.StudentId==student.Id 
+                    && x.TimeTableId == 3466);
+                if (TimeTableStudent is not null)
+                {
+                    TimeTableStudent.StudentId = student.Id;
+                    TimeTableStudent.TimeTableId = timeTable.Id;
+                    TimeTableStudent.TimeTableStudentsLastModified = DateTime.Now;
+                    DbContext.ShokouhPardisTimeTableStudents.Update(TimeTableStudent);
+                }
+                else
+                {
+                    var shokouhPardisTimeTableStudent = new ShokouhPardisTimeTableStudent()
+                    {
+                        StudentId = student.Id,
+                        TimeTableId = timeTable.Id,
+                        TimeTableStudentsGuid = Guid.NewGuid(),
+                        TimeTableStudentsLastModified = DateTime.Now
+                    };
+                    DbContext.ShokouhPardisTimeTableStudents.Add(
+                        shokouhPardisTimeTableStudent);
+                }
+                
 			
-				DbContext.ShokouhPardisTimeTableStudents.Add(
-					shokouhPardisTimeTableStudent);
+				
 				SaveAll();
 			}
 

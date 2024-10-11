@@ -229,7 +229,7 @@ public partial class StudentsListComponent
 
 	List<ShokouhPardisStudentClass> selectedStudents = new List<ShokouhPardisStudentClass>();
 	ShokouhPardisTermClass? _term;
-	private bool _showPreRigesterItem = true;
+	private bool _showPreRigesterItem = false;
 
 	private bool _hasnotIdNo = false;
     private string? _filterBy;

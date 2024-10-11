@@ -18,7 +18,8 @@ public partial class ShokouhPardisDailyJv : BranchBaseModel
 	public string? Description { get; set; }
 	public int? PosCode { get; set; }
 	public string? CardPostfix { get; set; }
-	public int? JvFromSiteFk { get; set; }
+    public string? InCardPostFix { get; set; }
+    public int? JvFromSiteFk { get; set; }
         
 	public int? TimeTableFk { get; set; }
 	public bool? IsPreRegister { get; set; }

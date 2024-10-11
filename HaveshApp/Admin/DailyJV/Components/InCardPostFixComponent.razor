@@ -1,0 +1,37 @@
+﻿@using HaveshApp.Classes
+@using Havesh.Domain
+<MudSelect T="string" @bind-Value="Value" SelectedValuesChanged="SelectedChange" Label="واریز به کارت" Dense="true" TransformOrigin="Origin.TopCenter">
+
+    <MudSelectItem Value="@CardNumber.CN5642" />
+    <MudSelectItem Value="@CardNumber.CN4500" />
+    <MudSelectItem Value="@CardNumber.CN1368" />
+    <MudSelectItem Value="@CardNumber.CN5683" />
+    <MudSelectItem Value="@CardNumber.CN8304" />
+    <MudSelectItem Value="@CardNumber.CN9335" />
+    <MudSelectItem Value="@CardNumber.CN3586" />
+    <MudSelectItem Value="@CardNumber.CN1602" />
+    <MudSelectItem Value="@CardNumber.CN4601" />
+    <MudSelectItem Value="@CardNumber.CN4421" />
+    <MudSelectItem Value="@CardNumber.CN5307" />
+    <MudSelectItem Value="@CardNumber.CN2189" />
+    <MudSelectItem Value="@CardNumber.CN1670" />
+
+</MudSelect>
+@code {
+
+    [Parameter]
+    public string Value { get; set; }
+
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private async Task SelectedChange()
+    {
+        await ValueChanged.InvokeAsync(Value);
+
+    }
+
+
+    private string _value;
+}

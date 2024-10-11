@@ -140,6 +140,7 @@
                                 <MudTimePicker @bind-time="ts" Label="ساعت واریز" />
                                 <MudTextField @bind-Value="_dailyJV.Txcode" Label="شناسه واریز" />
                                 <MudTextField @bind-Value="_dailyJV.CardPostfix" Label="چهار رقم آخر شماره کارت واریز کننده" />
+                                <InCardPostFixComponent @bind-Value="InCardPostFix"></InCardPostFixComponent>
                             }
                             <MudTextField @bind-Value="_dailyJV.Description" Label="توضیحات" />
                         </MudStack>

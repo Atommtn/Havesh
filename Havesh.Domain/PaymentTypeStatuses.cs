@@ -36,6 +36,25 @@ public class PaymentSummary
 	public string FeeFor { get; set; }
 	public double TotalFee { get; set; }
 }
+public class CardNumber
+{
+    public const string CN5642 = "6037991792585642 ملی محمد طایفه نفر";
+    public const string CN4500 = "6221061216334500 پارسیان محمد طایفه نفر";
+    public const string CN1368 = "6063731166881368 مهر ایران ندا طاهری";
+    public const string CN5683 = "6037991792585683 جاری ملی محمد طایفه نفر";
+    public const string CN8304 = "6037998113668304 ملی زهره حبیبی";
+    public const string CN9335 = "6280231359459335 مسکن محمد طایفا نفر";
+    public const string CN3586 = "5894631207073586 رفاه فرشید طایفه نفر";
+    public const string CN1602 = "6221061224361602 پارسیان ندا طاهری";
+    public const string CN4601 = "6037998228834601 ملی حسین طایفه نفر";
+    public const string CN4421 = "6362141089084421 آینده علی اکبر طایفه نفر";
+    public const string CN5307 = "5041721201075307 رسالت نرگس طایفه نفر";
+    public const string CN2189 = "5892101506202189 سپه عباس طاهری";
+    public const string CN1670 = "6280231358791670 مسکن ندا طاهری";
+}
+
+
+
 public class StudentRegisterSummary
 {
 	public int StudentId { get; set; }

@@ -63,8 +63,9 @@ public partial class DailyJVPage
 	bool DataLoading;
 	private bool _isOutOfIns;
 	private DailyJvRecordListComponent _dailyJVListComponent;
+    private string? _inCardPostFix;
 
-	public string? OutOfInsFullName { get; set; }
+    public string? OutOfInsFullName { get; set; }
 
     async Task Init()
 	{
@@ -287,6 +288,19 @@ public partial class DailyJVPage
 		}
 	}
 
+    public string? InCardPostFix
+    {
+        get => _inCardPostFix;
+        set
+        {
+            _inCardPostFix = value;
+            if (value != null)
+            {
+                _dailyJV.InCardPostFix = value;
+            }
+        }
+    }
+
     private string? FeeFor
 	{
 		get => _dailyJV.FeeFor;
@@ -307,8 +321,6 @@ public partial class DailyJVPage
 
 				x += _price.BookPrice;
 			}
-
-			Console.WriteLine("*********");
 			_dailyJV.Fee = (int)x;
 		}
 	}
