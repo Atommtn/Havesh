@@ -1,0 +1,54 @@
+﻿version: '3.8'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    depends_on:
+      - haveshapp
+      - haveshsilo
+    ports:
+      - "80:80"  # Nginx will listen on port 80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Mount the custom Nginx configuration
+    networks:
+      - haveshapp-network    
+      
+      
+  haveshapp:
+    image: 172.16.1.117:5000/haveshapp:latest  # Image tagged for the local registry
+    networks:
+      - haveshapp-network
+    build:
+      context: .
+      dockerfile: HaveshApp/Dockerfile
+    ports:
+      - target: 80
+        published: 8080  # Map port 80 inside container to 8080 on the host
+        mode: host
+      - target: 443
+        published: 8443  # Map port 443 inside container to 8443 on the host
+        mode: host
+    depends_on:
+      - haveshsilo
+  
+  haveshsilo:
+    image: 172.16.1.117:5000/haveshsilo:latest  # Image tagged for the local registry
+    networks:
+      - haveshapp-network
+    build:
+      context: .
+      dockerfile: Havesh.Silo/Dockerfile
+    ports:
+      - target: 11111
+        published: 11111  # Map port 11111 directly to the host
+        mode: host
+      - target: 80
+        published: 8081  # Map port 80 inside container to 8081 on the host
+        mode: host
+      - target: 443
+        published: 8444  # Map port 443 inside container to 8444 on the host
+        mode: host
+
+networks:
+  haveshapp-network:
+    driver: bridge
