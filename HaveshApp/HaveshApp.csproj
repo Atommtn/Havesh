@@ -12,11 +12,14 @@
     <Compile Remove="StudentsStuff\**" />
     <Content Remove="Client\**" />
     <Content Remove="StudentsStuff\**" />
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
     <EmbeddedResource Remove="Client\**" />
     <EmbeddedResource Remove="StudentsStuff\**" />
     <None Remove="Client\**" />
     <None Remove="StudentsStuff\**" />
-    <None Update=".env">
+    <None Update="file.env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

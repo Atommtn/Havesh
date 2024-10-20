@@ -40,17 +40,17 @@ DotNetEnv.Env.Load();
 builder.Configuration.AddEnvironmentVariables();
 var branchName = Environment.GetEnvironmentVariable("BranchName")!;
 
-var certPath = "C:\\Frz\\Cert\\certificate.pfx";
-var certPassword = "Atom.Mtn";
-var cert = new X509Certificate2(certPath, certPassword);
-var httpsPort = Convert.ToInt32( Environment.GetEnvironmentVariable("HTTPS_PORT"))!;
+//var certPath = "C:\\Frz\\Cert\\certificate.pfx";
+//var certPassword = "Atom.Mtn";
+//var cert = new X509Certificate2(certPath, certPassword);
+//var httpsPort = Convert.ToInt32( Environment.GetEnvironmentVariable("HTTPS_PORT"))!;
 
 
-builder.WebHost.UseKestrel(options =>
+/*builder.WebHost.UseKestrel(options =>
 {
-    options.ListenAnyIP(httpsPort, listenOptions =>
+    options.ListenAnyIP(443, listenOptions =>
     {
-        listenOptions.UseHttps(cert);
+       // listenOptions.UseHttps(cert);
 
         // listenOptions.UseHttps("C:\\FRZ\\Cert\\myserver.crt", "C:\\FRZ\\Cert\\myserver.key");
         listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
@@ -63,7 +63,7 @@ builder.WebHost.UseKestrel(options =>
         listenOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls12 |
                                      System.Security.Authentication.SslProtocols.Tls13;
     });
-});
+});*/
 
 
 // Add services to the container.
@@ -137,24 +137,24 @@ builder.Services.AddScoped<MyDbContextFactory>();
 builder.Services.AddScoped<DataProviderService>();
 
 // برای ساخت میگریشن باید کانکشن مستقیم به دیتابیس داشته باشیم همینطور باید MyDBContext هم اضافه شود نه فقط فکتوری
-builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
-{
-    optionsBuilder
-        .UseSqlServer(conStr)
-        //.UseChangeTrackingProxies(false,false)
-        //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-        .EnableSensitiveDataLogging();
+//builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
+//{
+//    optionsBuilder
+//        .UseSqlServer(conStr)
+//        //.UseChangeTrackingProxies(false,false)
+//        //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+//        .EnableSensitiveDataLogging();
 
-    optionsBuilder.UseLoggerFactory(
-        LoggerFactory.Create(builder => builder.AddConsole()));
-    optionsBuilder.ConfigureWarnings(warnings =>
-    {
-        warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
-    });
+//    optionsBuilder.UseLoggerFactory(
+//        LoggerFactory.Create(builder => builder.AddConsole()));
+//    optionsBuilder.ConfigureWarnings(warnings =>
+//    {
+//        warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored);
+//    });
 
-    // INTERCEPTOR 
-    //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
-}, ServiceLifetime.Scoped);
+//    // INTERCEPTOR 
+//    //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
+//}, ServiceLifetime.Scoped);
 
 //builder.Services.AddScoped<DataProviderService>();
 
@@ -206,8 +206,8 @@ builder.Services.AddOrleansClient(clientBuilder =>
 #if DEBUGx
         //.UseLocalhostClustering()
 #else
-        .UseLocalhostClustering()
-        /*.UseAdoNetClustering(options =>
+       // .UseLocalhostClustering()
+        .UseAdoNetClustering(options =>
         {
             var grainClusterDbSettings = new DbSettings();
             builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
@@ -218,11 +218,11 @@ builder.Services.AddOrleansClient(clientBuilder =>
 
         .Configure<ClusterOptions>(options =>
         {
-            var clusterId = Environment.GetEnvironmentVariable("ORLEANS_CLUSTER_ID") ?? "havesh-silo";
+            var clusterId = Environment.GetEnvironmentVariable("ORLEANS_CLUSTER_ID") ?? "haveshapp-silo";
             options.ClusterId = clusterId;
-            var serviceId = Environment.GetEnvironmentVariable("ORLEANS_SERVICE_ID") ?? "havesh-silo";
+            var serviceId = Environment.GetEnvironmentVariable("ORLEANS_SERVICE_ID") ?? "haveshapp-silo";
             options.ServiceId = serviceId;
-        })*/
+        })
 #endif
         ;
 });
@@ -287,7 +287,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
