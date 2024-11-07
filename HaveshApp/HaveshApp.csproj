@@ -12,9 +12,6 @@
     <Compile Remove="StudentsStuff\**" />
     <Content Remove="Client\**" />
     <Content Remove="StudentsStuff\**" />
-    <Content Include="..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
     <EmbeddedResource Remove="Client\**" />
     <EmbeddedResource Remove="StudentsStuff\**" />
     <None Remove="Client\**" />

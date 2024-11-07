@@ -15,7 +15,7 @@ services:
       
       
   haveshapp:
-    image: 172.16.1.117:5000/haveshapp:latest  # Image tagged for the local registry
+    image: 172.16.1.199:5000/haveshapp:latest  # Image tagged for the local registry
     networks:
       - haveshapp-network
     build:
@@ -32,7 +32,7 @@ services:
       - haveshsilo
   
   haveshsilo:
-    image: 172.16.1.117:5000/haveshsilo:latest  # Image tagged for the local registry
+    image: 172.16.1.199:5000/haveshsilo:latest  # Image tagged for the local registry
     networks:
       - haveshapp-network
     build:
