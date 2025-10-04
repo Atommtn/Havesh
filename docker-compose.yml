@@ -1,38 +1,50 @@
-﻿version: '3.8'
-services:
-  nginx:
+﻿services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Atomtneda
+    ports:
+      - "1433:1433"
+    networks:
+      - haveshapp-network
+  
+  havesh-nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: havesh-nginx
     depends_on:
-      - haveshapp
-      - haveshsilo
+      - havesh-app
+      - havesh-silo
     ports:
       - "80:80"  # Nginx will listen on port 80
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Mount the custom Nginx configuration
+      - ~/HaveshApp/nginx/nginx.conf:/etc/nginx/nginx.conf  # Mount the custom Nginx configuration
     networks:
-      - haveshapp-network    
-      
-      
-  haveshapp:
-    image: 172.16.1.199:5000/haveshapp:latest  # Image tagged for the local registry
+      - haveshapp-network
+  
+  
+  havesh-app:
+    image: 185.227.66.72:5000/haveshapp:latest  # Image tagged for the local registry
+    container_name: havesh-app
     networks:
       - haveshapp-network
     build:
       context: .
       dockerfile: HaveshApp/Dockerfile
     ports:
-      - target: 80
-        published: 8080  # Map port 80 inside container to 8080 on the host
+      - target: 8080
+        published: 80  # Map port 80 inside container to 80 on the host
         mode: host
       - target: 443
-        published: 8443  # Map port 443 inside container to 8443 on the host
+        published: 443  # Map port 443 inside container to 8443 on the host
         mode: host
     depends_on:
-      - haveshsilo
+      - havesh-silo
   
-  haveshsilo:
-    image: 172.16.1.199:5000/haveshsilo:latest  # Image tagged for the local registry
+  havesh-silo:
+    image: 185.227.66.72:5000/haveshsilo:latest  # Image tagged for the local registry
+    container_name: havesh-silo
     networks:
       - haveshapp-network
     build:
@@ -42,11 +54,11 @@ services:
       - target: 11111
         published: 11111  # Map port 11111 directly to the host
         mode: host
-      - target: 80
+      - target: 8081
         published: 8081  # Map port 80 inside container to 8081 on the host
         mode: host
       - target: 443
-        published: 8444  # Map port 443 inside container to 8444 on the host
+        published: 8443  # Map port 443 inside container to 8444 on the host
         mode: host
 
 networks:

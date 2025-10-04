@@ -30,12 +30,7 @@
                                     MaxDate="DateTime.Today"
                                     TitleDateFormat="dddd, dd MMMM" />
                 </MudItem>
-                <MudItem md="6">
-                     <TermSelectorComponent TermId="@Term.NextTermFk" AllowAll="true" AllowAllText="هیچکدام" @bind-Term="NextTerm" Title="ترم بعدی"></TermSelectorComponent>
-                </MudItem>
-                <MudItem md="6">
-                     <TermSelectorComponent TermId="@Term.LastTermFk" AllowAll="true" AllowAllText="هیچکدام" @bind-Term="LastTerm" Title="ترم قبلی"></TermSelectorComponent>
-                </MudItem>
+                
 
 
          
@@ -61,61 +56,7 @@
 
     [Parameter]
     public ShokouhPardisTermClass? Term { get; set; }
-
-    public ShokouhPardisTermClass NextTerm
-    {
-        get => _nextTerm;
-        set
-        {
-            if (_nextTerm == value) return;
-            _nextTerm = value;
-            if (_nextTerm is not null)
-            {
-                var next = _dataProvider.GetTermId(_nextTerm);
-
-                if (next is not null)
-                {
-                    Term.NextTermFk = next;
-                }
-                else
-                {
-                    Term.NextTermFk = null;
-                }
-            }
-            else
-            {
-                Term.NextTermFk = null;
-            }
-        }
-    }
-
-    public ShokouhPardisTermClass LastTerm
-    {
-        get => _lastTerm;
-        set
-        {
-            if(_lastTerm == value) return;
-            _lastTerm = value;
-            if (_lastTerm is not null)
-            {
-                var last = _dataProvider.GetTermId(_lastTerm);
-                if (last is not null)
-                {
-                    Term.LastTermFk = last;
-                }
-                else
-                {
-                    Term.LastTermFk = null;
-                }
-            }
-            else
-            {
-                Term.LastTermFk = null;
-            }
-
-        }
-    }
-
+    
 
     CultureInfo GetPersianCulture()
     {
@@ -137,7 +78,4 @@
     {
         DialogInstance.Close(Term);
     }
-
-    private ShokouhPardisTermClass _nextTerm;
-    private ShokouhPardisTermClass _lastTerm;
 }

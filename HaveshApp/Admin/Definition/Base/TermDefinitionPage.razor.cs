@@ -58,7 +58,7 @@ namespace HaveshApp.Admin.Definition.Base
 
         async Task NewTermClick()
         {
-            ShokouhPardisTermClass term = ShokouhPardisTermClass.CreateClassRoom();
+            ShokouhPardisTermClass term = ShokouhPardisTermClass.CreateTermClass();
 
             await EditButtonClick(term);
         }

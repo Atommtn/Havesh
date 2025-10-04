@@ -22,13 +22,16 @@ public partial class ShokouhPardisTermClass
         return new ShokouhPardisTermClass();
     }
 
-    public static ShokouhPardisTermClass CreateClassRoom()
+    public static ShokouhPardisTermClass CreateTermClass()
     {
 
         return new ShokouhPardisTermClass()
         {
             TermClassGuid = Guid.NewGuid(),
-            TermClassLastModified = DateTime.Now
+            TermClassLastModified = DateTime.Now,
+            LastTermFk = null, NextTermFk = null
         };
     }
+
+   
 }

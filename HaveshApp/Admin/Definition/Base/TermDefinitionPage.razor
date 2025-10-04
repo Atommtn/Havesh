@@ -23,8 +23,7 @@
     <HeaderContent>
         <MudTh>نام ترم</MudTh>
         <MudTh>تاریخ شروع - تاریخ پایان</MudTh>
-        <MudTh>ترم بعدی</MudTh>
-        <MudTh>ترم قبلی</MudTh>
+       
         <MudTh></MudTh>
         
 
@@ -44,8 +43,7 @@
                        Culture="@GetPersianCulture()"
                        MaxDate="DateTime.Today"
                        TitleDateFormat="dddd, dd MMMM" />
-            <MudTd DataLabel="ترم بعدی">@GetTermName(term.NextTermFk)</MudTd>
-            <MudTd DataLabel="ترم قبلی">@GetTermName(term.LastTermFk)</MudTd>
+         
         <MudTd >
             <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="() =>EditButtonClick(term)"></MudIconButton>
         </MudTd>
