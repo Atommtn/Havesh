@@ -213,7 +213,7 @@ builder.Services.AddOrleansClient(clientBuilder =>
             builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
 
             options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
-            options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+            options.Invariant = "Microsoft.Data.SqlClient"; // Or whichever is appropriate for your DB
         })
 
         .Configure<ClusterOptions>(options =>
