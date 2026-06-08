@@ -66,7 +66,7 @@ builder.Host.UseOrleans(siloBuilder =>
 		.AddAdoNetGrainStorage("HaveshGrainStore", (options =>
 		{
 			options.ConnectionString = dbSettings.GetConnectionString();
-			options.Invariant = "System.Data.SqlClient";
+			options.Invariant = "Microsoft.Data.SqlClient";
 
 			options.GrainStorageSerializer = new JsonGrainStorageSerializer(
 				new OrleansJsonSerializer(new OptionsWrapper<OrleansJsonSerializerOptions>(
@@ -94,7 +94,7 @@ builder.Host.UseOrleans(siloBuilder =>
 			builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
 
 			options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
-			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+			options.Invariant = "Microsoft.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 		
 		
