@@ -16,6 +16,8 @@
     <EmbeddedResource Remove="StudentsStuff\**" />
     <None Remove="Client\**" />
     <None Remove="StudentsStuff\**" />
+    <None Remove="wwwroot\onepage\css\style.css" />
+    <None Remove="wwwroot\onepage\vendor\bootstrap\css\*.css" />
     <None Update=".env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

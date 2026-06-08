@@ -1,0 +1,45 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  haveshapp:
+    build:
+      context: "C:\\FRZ\\NewHavesh\\HaveshApp"
+      dockerfile: "HaveshApp/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/HaveshApp.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net7.0/HaveshApp.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "172.16.1.117:5000/haveshapp:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Mohammad\\AppData\\Roaming\\Microsoft\\UserSecrets:/root/.microsoft/usersecrets"
+    - "C:\\Users\\Mohammad\\.nuget\\packages:/root/.nuget/packages"
+    - "C:\\FRZ\\NewHavesh\\HaveshApp\\HaveshApp:/app:rw"
+    - "C:\\FRZ\\NewHavesh\\HaveshApp:/src:rw"
+    working_dir: "/app"
+  haveshsilo:
+    build:
+      context: "C:\\FRZ\\NewHavesh\\HaveshApp"
+      dockerfile: "Havesh.Silo/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/Havesh.Silo.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net7.0/Havesh.Silo.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "172.16.1.117:5000/haveshsilo:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Mohammad\\AppData\\Roaming\\Microsoft\\UserSecrets:/root/.microsoft/usersecrets"
+    - "C:\\Users\\Mohammad\\.nuget\\packages:/root/.nuget/packages"
+    - "C:\\FRZ\\NewHavesh\\HaveshApp\\Havesh.Silo:/app:rw"
+    - "C:\\FRZ\\NewHavesh\\HaveshApp:/src:rw"
+    working_dir: "/app"

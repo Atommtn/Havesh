@@ -1,4 +1,4 @@
-using Havesh.Model;
+﻿using Havesh.Model;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -12,6 +12,7 @@ public class MyDbContextFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IConfiguration _configuration;
+
 
     public MyDbContextFactory(IServiceProvider serviceProvider, IConfiguration configuration)
     {

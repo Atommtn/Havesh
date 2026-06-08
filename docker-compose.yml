@@ -64,3 +64,9 @@
 networks:
   haveshapp-network:
     driver: bridge
+
+  haveshapp:
+    image: haveshapp
+    build:
+      context: .
+      dockerfile: HaveshApp/Dockerfile

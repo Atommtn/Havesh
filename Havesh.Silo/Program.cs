@@ -66,7 +66,7 @@ builder.Host.UseOrleans(siloBuilder =>
 		.AddAdoNetGrainStorage("HaveshGrainStore", (options =>
 		{
 			options.ConnectionString = dbSettings.GetConnectionString();
-			options.Invariant = "System.Data.SqlClient";
+			options.Invariant = "Microsoft.Data.SqlClient";
 
 			options.GrainStorageSerializer = new JsonGrainStorageSerializer(
 				new OrleansJsonSerializer(new OptionsWrapper<OrleansJsonSerializerOptions>(
@@ -94,24 +94,24 @@ builder.Host.UseOrleans(siloBuilder =>
 			builder.Configuration.GetSection("GrainDb").Bind(grainClusterDbSettings);
 
 			options.ConnectionString = grainClusterDbSettings.GetConnectionString(); //builder.Configuration["ConnectionStrings:GrainsConnection"];
-			options.Invariant = "System.Data.SqlClient"; // Or whichever is appropriate for your DB
+			options.Invariant = "Microsoft.Data.SqlClient"; // Or whichever is appropriate for your DB
 		})
 		
 		
-		/*.Configure<SiloOptions>(options =>
+		.Configure<EndpointOptions>(options =>
 		{
-			var podName = Environment.GetEnvironmentVariable("POD_NAME") ?? "haveshapp-silo";
-			options.SiloName = podName; // POD name
-		})*/
+			//options.ListenOnAnyHostAddress = true;
 
-		// .Configure<EndpointOptions>(options =>
-		// {
-		//
-		// 	options.AdvertisedIPAddress = IPAddress.Parse(Environment.GetEnvironmentVariable("POD_IP") ?? "127.0.0.1");  // POD IP
-		// 	options.SiloPort = 11111;
-		// 	options.GatewayPort = 30000;
-		//
-		// })
+			options.AdvertisedIPAddress =
+				IPAddress.TryParse(Environment.GetEnvironmentVariable("POD_IP"), out var podIp) ? podIp : Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+
+			options.SiloPort =
+				int.Parse(Environment.GetEnvironmentVariable("SILO_PORT") ?? "11111");
+
+			options.GatewayPort =
+				int.Parse(Environment.GetEnvironmentVariable("GATEWAY_PORT") ?? "30000");
+		})
+
 
 		
 		.Configure<ClusterOptions>(options =>

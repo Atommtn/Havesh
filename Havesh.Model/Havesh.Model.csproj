@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -22,6 +22,10 @@
     <PackageReference Include="MudBlazor" Version="6.11.1" />
     <PackageReference Include="Olive" Version="2.1.355" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DesignTime\" />
   </ItemGroup>
 
 </Project>
