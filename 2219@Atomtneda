@@ -1,0 +1,43 @@
+# ===================================================
+# docker-compose.branch.yml
+# تمپلیت مشترک برای هر دو شعبه
+# SQL Server از کانتینر موجود sql2019 استفاده می‌کند
+# ===================================================
+
+services:
+
+  havesh-silo:
+    image: ${REGISTRY:-185.227.66.72:5000}/haveshsilo:latest
+    container_name: havesh-silo-${BranchName}
+    build:
+      context: ..
+      dockerfile: Havesh.Silo/Dockerfile
+    env_file:
+      - ${ENV_FILE:?ENV_FILE is required}
+    ports:
+      - "${SILO_PORT}:8081"
+      - "${SILO_DASHBOARD_PORT}:8082"
+    networks:
+      - shared-network
+    restart: unless-stopped
+
+  havesh-app:
+    image: ${REGISTRY:-185.227.66.72:5000}/haveshapp:latest
+    container_name: havesh-app-${BranchName}
+    build:
+      context: ..
+      dockerfile: HaveshApp/Dockerfile
+    env_file:
+      - ${ENV_FILE:?ENV_FILE is required}
+    ports:
+      - "${APP_PORT}:8080"
+    networks:
+      - shared-network
+    restart: unless-stopped
+    depends_on:
+      - havesh-silo
+
+networks:
+  shared-network:
+    external: true
+
