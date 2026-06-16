@@ -10,7 +10,7 @@ COPY Havesh.GrainInterfaces/*.csproj Havesh.GrainInterfaces/
 COPY Havesh.Grains/*.csproj Havesh.Grains/
 COPY Havesh.Silo/*.csproj Havesh.Silo/
 
-RUN dotnet restore
+RUN dotnet restore Havesh.Silo.sln
 
 # copy all projects
 COPY . .
