@@ -82,7 +82,7 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Supervisor.ListWidgets
 
 		private async Task<List<TimeTableSession>?> Search(string? search = null)
 		{
-			var timeTableSessions = ((await SupervisorWidgetsService.GetTimeTableSessions())).ToList();
+			var timeTableSessions = (await SupervisorWidgetsService.GetTimeTableSessions())?.ToList() ?? new List<TimeTableSession>();
 			timeTableSessions = await InitUIObjects(timeTableSessions);
 			if (!string.IsNullOrEmpty(search))
 			{
