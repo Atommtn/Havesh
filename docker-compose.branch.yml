@@ -1,5 +1,4 @@
 services:
-
   havesh-silo:
     image: ${REGISTRY:-185.227.66.72:5000}/haveshsilo:latest
     container_name: havesh-silo-${BranchName}
@@ -8,6 +7,12 @@ services:
       dockerfile: Havesh.Silo/Dockerfile
     env_file:
       - ${ENV_FILE:?ENV_FILE is required}
+    environment:
+      - VIRTUAL_HOST=
+      - VIRTUAL_PORT=
+      - LETSENCRYPT_HOST=
+      - LETSENCRYPT_EMAIL=
+    entrypoint: ["/bin/bash", "-c", "until bash -c '(echo >/dev/tcp/sql2019/1433) 2>/dev/null'; do echo 'Waiting for SQL Server...'; sleep 3; done; echo 'SQL ready. Starting silo...'; sleep 5; dotnet Havesh.Silo.dll"]
     ports:
       - "${SILO_PORT}:8081"
       - "${SILO_DASHBOARD_PORT}:8082"
@@ -24,7 +29,7 @@ services:
     env_file:
       - ${ENV_FILE:?ENV_FILE is required}
     ports:
-      - "${APP_PORT}:8080"
+      - "${APP_PORT}:80"
     networks:
       - shared-network
     restart: unless-stopped
