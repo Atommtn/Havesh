@@ -1,0 +1,49 @@
+@media (max-width: 600px) {
+
+    .persian-content {
+        font-size: 11pt;
+    }
+
+    .mud-container {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .mud-stack {
+        flex-wrap: wrap;
+    }
+
+    .mud-button-root {
+        min-width: auto;
+    }
+
+    .mud-simple-table,
+    .mud-table-container {
+        overflow-x: auto;
+        display: block;
+    }
+
+    /* استثنا: صفحات desktop-fixed-table (مثل ClassProgram) دقیقا مثل دسکتاپ باز می‌شن،
+       فقط روی گوشی اسکرول افقی می‌خورن به‌جای بهم‌ریختن */
+    .desktop-fixed-table {
+        font-size: 16pt !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+        .desktop-fixed-table .mud-stack {
+            flex-wrap: nowrap;
+        }
+
+        .desktop-fixed-table .mud-button-root {
+            min-width: 64px;
+        }
+
+        .desktop-fixed-table .mud-simple-table,
+        .desktop-fixed-table table {
+            display: table;
+            min-width: 1300px;
+        }
+}
