@@ -5,6 +5,7 @@ WORKDIR /src
 # copy sln & restore
 COPY *.sln ./
 COPY Havesh.Common/*.csproj Havesh.Common/
+COPY Havesh.Domain/*.csproj Havesh.Domain/
 COPY Havesh.Model/*.csproj Havesh.Model/
 COPY Havesh.GrainInterfaces/*.csproj Havesh.GrainInterfaces/
 COPY Havesh.Grains/*.csproj Havesh.Grains/
