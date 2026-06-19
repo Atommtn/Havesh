@@ -90,6 +90,14 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		return DbContext.ShokouhPardisTermClasses.Where(x => x.YearId == year.Id).ToList();
 	}
 
+	// همه‌ی ترم‌ها (بدون محدودیت به یک سال خاص) - برای انتخاب دستی "ترم قبلی/بعدی" در دیالوگ تعریف ترم
+	public List<ShokouhPardisTermClass> GetAllTerms()
+	{
+		return DbContext.ShokouhPardisTermClasses
+			.OrderByDescending(x => x.StartDate)
+			.ToList();
+	}
+
 
 	public List<ShokouhPardisSchedule> GetSchedules(ShokouhPardisTermClass term)
 	{
@@ -2842,11 +2850,80 @@ public class DataProviderService : IAsyncDisposable , IDisposable
         }
         else
         {
+            // قبل از Update چک می‌کنیم که ترم تازه‌ساخته‌شده است یا ویرایش ترم موجود،
+            // چون بعد از SaveAll() مقدار Id ترم جدید پر می‌شود.
+            bool isNewTerm = Term.Id <= 0;
+
             DbContext.ShokouhPardisTermClasses.Update(Term);
             SaveAll();
+
+            if (isNewTerm)
+            {
+                // فقط در اولین ساخت ترم، لینک با نزدیک‌ترین ترم قبلی (بر اساس تاریخ) به‌صورت خودکار برقرار می‌شود.
+                // در ویرایش‌های بعدی، کاربر خودش از لیست ترم‌ها در دیالوگ، ترم قبلی/بعدی را دستی انتخاب/اصلاح می‌کند.
+                LinkTermToPreviousTerm(Term);
+            }
+
+            // هر بار (هم در ساخت خودکار، هم در اصلاح دستی)، طرف مقابل لینک را هم‌خوان نگه می‌داریم
+            // تا رابطه‌ی LastTermFk/NextTermFk همیشه دوطرفه و درست باشد.
+            SyncReciprocalTermLinks(Term);
         }
 
         return isDuplicate;
+    }
+
+    // ترم قبلی را پیدا می‌کند: ترمی که تاریخ پایانش نزدیک‌ترین (و قبل یا هم‌زمان با) تاریخ شروع این ترم است.
+    private void LinkTermToPreviousTerm(ShokouhPardisTermClass term)
+    {
+        if (term.StartDate == null)
+            return;
+
+        var previousTerm = DbContext.ShokouhPardisTermClasses
+            .Where(x => x.Id != term.Id && x.EndDate != null && x.EndDate <= term.StartDate)
+            .OrderByDescending(x => x.EndDate)
+            .FirstOrDefault();
+
+        if (previousTerm == null)
+            return;
+
+        previousTerm.NextTermFk = term.Id;
+        term.LastTermFk = previousTerm.Id;
+
+        DbContext.ShokouhPardisTermClasses.Update(previousTerm);
+        DbContext.ShokouhPardisTermClasses.Update(term);
+        SaveAll();
+    }
+
+    // اگر LastTermFk/NextTermFk این ترم تنظیم شده باشد (چه خودکار، چه دستی از دیالوگ)،
+    // طرف مقابل را هم به‌روزرسانی می‌کند تا رابطه همیشه دوطرفه/هم‌خوان بماند.
+    private void SyncReciprocalTermLinks(ShokouhPardisTermClass term)
+    {
+        bool changed = false;
+
+        if (term.LastTermFk.HasValue)
+        {
+            var lastTerm = DbContext.ShokouhPardisTermClasses.FirstOrDefault(x => x.Id == term.LastTermFk);
+            if (lastTerm != null && lastTerm.NextTermFk != term.Id)
+            {
+                lastTerm.NextTermFk = term.Id;
+                DbContext.ShokouhPardisTermClasses.Update(lastTerm);
+                changed = true;
+            }
+        }
+
+        if (term.NextTermFk.HasValue)
+        {
+            var nextTerm = DbContext.ShokouhPardisTermClasses.FirstOrDefault(x => x.Id == term.NextTermFk);
+            if (nextTerm != null && nextTerm.LastTermFk != term.Id)
+            {
+                nextTerm.LastTermFk = term.Id;
+                DbContext.ShokouhPardisTermClasses.Update(nextTerm);
+                changed = true;
+            }
+        }
+
+        if (changed)
+            SaveAll();
     }
 
     bool TermDuplicate(ShokouhPardisTermClass Term)
