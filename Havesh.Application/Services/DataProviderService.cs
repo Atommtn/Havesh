@@ -2003,6 +2003,31 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 	}
 
+	// برای جلسات جبرانی (مثلاً کلاس زوج که قرار است شنبه/چهارشنبه باشد ولی این هفته دوشنبه برگزار می‌شود):
+	// به‌جای تطبیق با روز هفته‌ی ثابت برنامه، مستقیماً TimeTableSession را با تاریخ واقعی پیدا می‌کنیم
+	// و TimeTable متناظرش را برمی‌گردانیم.
+	public ShokouhPardisTimeTable? GetTeacherTimeTableByDate(int teacherId, DateTime dateTime)
+	{
+		var session = DbContext.TimeTableSessions
+			.Include(x => x.TimeTable)
+			.ThenInclude(x => x.ClassRoom)
+			.Include(x => x.TimeTable)
+			.ThenInclude(x => x.Level)
+			.Include(x => x.TimeTable)
+			.ThenInclude(x => x.Sessions)
+			.Include(x => x.TimeTable)
+			.ThenInclude(x => x.Schedule)
+			.ThenInclude(x => x.Programs)
+			.ThenInclude(x => x.DaySession)
+			.ThenInclude(x => x.Interval)
+			.FirstOrDefault(x =>
+				x.TeacherFk == teacherId &&
+				x.SessionDate == dateTime &&
+				x.SessionStatus != SessionStatuses.Canceled);
+
+		return session?.TimeTable;
+	}
+
 	public TimeTableSession GetTimeTableSessionById(int sessionId, Func<IQueryable<TimeTableSession>, IQueryable<TimeTableSession>>? customInclude = null)
 	{
 		var query = DbContext.TimeTableSessions.AsQueryable();

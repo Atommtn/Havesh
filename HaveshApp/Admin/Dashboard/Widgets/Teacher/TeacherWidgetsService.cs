@@ -2,6 +2,7 @@
 using Havesh.GrainInterfaces.Common;
 using Havesh.GrainInterfaces.Entity;
 using Havesh.GrainInterfaces.Manager;
+using Havesh.GrainInterfaces.System;
 using Havesh.Grains;
 using Havesh.Grains.Common;
 using Havesh.Grains.Entity;
@@ -61,19 +62,20 @@ namespace HaveshApp.Admin.Dashboard.Widgets.Teacher
 			if (term == null || teacher == null || interval == null) return null;
 
 			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
+			if (timeTable != null) return timeTable;
+
+			// جلسه جبرانی: روز جلسه با روز هفته‌ی ثابت برنامه مطابقت ندارد (مثلاً دوشنبه به‌جای چهارشنبه).
+			// به‌جای تطبیق weekday، مستقیماً بر اساس تاریخ واقعی جلسه‌ی همین معلم جستجو می‌کنیم.
+			var settingsGrain = ClusterClient.GetGrain<ISettingsGrain>(UserSession.UserName);
+			var date = await settingsGrain.Date();
+			timeTable = await timeTableManagerGrain.GetTeacherTimeTableByDate(teacher.Id, date);
 			return timeTable;
 		}
 
 		public async Task<IEnumerable<ShokouhPardisStudentClass>?> GetTimeTableStudents()
 		{
-			var term = await GetTerm();
-			var teacher = await GetTeacher();
-			var weekday = await GetWeekday();
-			var interval = await GetInterval(term);
-			var timeTableManagerGrain = ClusterClient.GetGrain<ITimeTableManagerGrain>(Guid.Empty,BranchName);
-			if (term == null || teacher == null || interval == null) return null;
-
-			var timeTable = await timeTableManagerGrain.GetTeacherTimeTable(term.Id, teacher.Id, weekday.Id, interval.Id);
+			// از همان GetTeacherTimeTable() با فال‌بک تاریخ استفاده می‌کنیم تا در روزهای جبرانی هم درست کار کند.
+			var timeTable = await GetTeacherTimeTable();
 			if (timeTable == null) return null;
 
 			var timeTableGrain = ClusterClient.GetGrain<ITimeTableGrain>(timeTable.Id,BranchName);

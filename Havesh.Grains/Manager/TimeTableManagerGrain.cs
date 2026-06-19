@@ -31,6 +31,23 @@ public class TimeTableManagerGrain : HaveshManagerGrainBase, ITimeTableManagerGr
 
 	}
 
+	// جلسات جبرانی (compensatory/makeup) ممکن است در روزی غیر از روز هفتگی تعریف‌شده‌ی کلاس برگزار شوند؛
+	// این متد به‌جای تطبیق با روز هفته‌ی برنامه‌ی ثابت، مستقیماً بر اساس تاریخ واقعی جلسه (TimeTableSession.SessionDate) جستجو می‌کند.
+	public Task<ShokouhPardisTimeTable?> GetTeacherTimeTableByDate(int teacherId, DateTime date)
+	{
+		var key = $"TeacherTimeTableByDate-{teacherId}-{date:yyyyMMdd}";
+		return CacheManager.GetOrSet(key, async () =>
+		{
+			var timeTable = DataProviderService!.GetTeacherTimeTableByDate(teacherId, date);
+			if (timeTable == null)
+				return timeTable;
+
+			var timeTableGrain = GrainFactory.GetGrain<IHaveshGrain<ShokouhPardisTimeTable>>(timeTable.Id, GrainBranchKey);
+			await timeTableGrain.Set(timeTable);
+			return timeTable;
+		}, TimeSpan.FromMinutes(2));
+	}
+
 	public async Task<IEnumerable<ShokouhPardisTimeTable>?> GetTermTimeTablesIncludeSeaaions(int termId, string? search = null)
 	{
 		return CacheManager.GetOrSet($"TimeTablesInTerm-{search}-" + termId, () =>
