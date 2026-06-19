@@ -12,46 +12,25 @@
                     <MudTextField @bind-Value="@Term.TermName" Required Label="نام ترم" />
                 </MudItem>
                 <MudItem md="6">
-                     
+
                     <MudDatePicker @bind-Date="Term.StartDate"
                                    Label="تاریخ شروع"
                                    FirstDayOfWeek="DayOfWeek.Saturday"
                                    Culture="@GetPersianCulture()"
-                                   MaxDate="DateTime.Today"
+                                   MaxDate="@MaxDate"
                                    TitleDateFormat="dddd, dd MMMM" />
-                    
-                    
+
+
                 </MudItem>
                 <MudItem md="6">
                      <MudDatePicker @bind-Date="Term.EndDate"
                                     Label="تاریخ پایان"
                                     FirstDayOfWeek="DayOfWeek.Saturday"
                                     Culture="@GetPersianCulture()"
-                                    MaxDate="DateTime.Today"
+                                    MaxDate="@MaxDate"
                                     TitleDateFormat="dddd, dd MMMM" />
                 </MudItem>
-
-                @if (Term.Id > 0)
-                {
-                    @* ترم جدید موقع ساخت به‌صورت خودکار بر اساس تاریخ به نزدیک‌ترین ترم قبلی لینک می‌شود.
-                       این دو فیلد فقط برای ویرایش/اصلاح دستی آن لینک در ترم‌های موجود هستند. *@
-                    <MudItem md="6">
-                        <MudSelect T="int?" @bind-Value="Term.LastTermFk" Label="ترم قبلی" Dense="true" Clearable="true">
-                            @foreach (var t in OtherTerms)
-                            {
-                                <MudSelectItem T="int?" Value="@((int?)t.Id)">@t.TermName</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                    <MudItem md="6">
-                        <MudSelect T="int?" @bind-Value="Term.NextTermFk" Label="ترم بعدی" Dense="true" Clearable="true">
-                            @foreach (var t in OtherTerms)
-                            {
-                                <MudSelectItem T="int?" Value="@((int?)t.Id)">@t.TermName</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                }
+                
 
 
          
@@ -72,16 +51,21 @@
 
 @code {
 
-    [Inject] DataProviderService DataProvider { get; set; }
-
     [CascadingParameter]
     MudDialogInstance DialogInstance { get; set; }
 
     [Parameter]
     public ShokouhPardisTermClass? Term { get; set; }
 
-    // لیست بقیه‌ی ترم‌ها (به‌جز خود این ترم) برای انتخاب دستی "ترم قبلی/بعدی"
-    List<ShokouhPardisTermClass> OtherTerms { get; set; } = new();
+    /// <summary>
+    /// حداکثر تاریخ قابل انتخاب برای شروع/پایان ترم.
+    /// پیش‌فرض null یعنی بدون محدودیت (برای دیالوگ ترم نباید محدود به امروز باشه).
+    /// اگر در آینده جای دیگه‌ای این دیالوگ با نیاز به محدودیت "تا امروز" استفاده شد،
+    /// می‌شه این پارامتر رو از بیرون پاس داد.
+    /// </summary>
+    [Parameter]
+    public DateTime? MaxDate { get; set; } = null;
+
 
     CultureInfo GetPersianCulture()
     {
@@ -90,12 +74,6 @@
     }
     protected override void OnInitialized()
     {
-        if (Term is { Id: > 0 })
-        {
-            OtherTerms = DataProvider.GetAllTerms()
-                .Where(x => x.Id != Term.Id)
-                .ToList();
-        }
 
         base.OnInitialized();
     }
