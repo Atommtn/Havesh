@@ -265,7 +265,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 var app = builder.Build();
 
 // پشت nginx-proxy هستیم؛ بدون این middleware اپ متوجه HTTPS بودن کانکشن نمی‌شود
-var forwardedHeadersOptions = new Microsoft.AspNetCore.HttpOverrides.ForwardedHeadersOptions
+var forwardedHeadersOptions = new Microsoft.AspNetCore.Builder.ForwardedHeadersOptions
 {
     ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
                         Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
