@@ -1,4 +1,4 @@
-﻿@using HaveshApp.Admin.Components
+@using HaveshApp.Admin.Components
 @using Havesh.Model.Model
 @using System.Globalization
 
@@ -30,10 +30,28 @@
                                     MaxDate="@MaxDate"
                                     TitleDateFormat="dddd, dd MMMM" />
                 </MudItem>
-                
+
+                @if (Term.Id > 0)
+                {
+                    <MudItem md="6">
+                        <MudSelect @bind-Value="Term.LastTermFk" Label="ترم قبلی" Dense="true" Clearable="true">
+                            @foreach (var t in OtherTerms)
+                            {
+                                <MudSelectItem Value="@((int?)t.Id)">@t.TermName</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem md="6">
+                        <MudSelect @bind-Value="Term.NextTermFk" Label="ترم بعدی" Dense="true" Clearable="true">
+                            @foreach (var t in OtherTerms)
+                            {
+                                <MudSelectItem Value="@((int?)t.Id)">@t.TermName</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                }
 
 
-         
                 </MudGrid>
         }
     </ChildComponent>
@@ -54,6 +72,8 @@
     [CascadingParameter]
     MudDialogInstance DialogInstance { get; set; }
 
+    [Inject] DataProviderService DataProvider { get; set; }
+
     [Parameter]
     public ShokouhPardisTermClass? Term { get; set; }
 
@@ -66,6 +86,12 @@
     [Parameter]
     public DateTime? MaxDate { get; set; } = null;
 
+    /// <summary>
+    /// لیست بقیه‌ی ترم‌ها برای انتخاب دستی "ترم قبلی"/"ترم بعدی" در حالت ویرایش.
+    /// فقط وقتی Term.Id > 0 (ویرایش) نمایش داده می‌شه؛ موقع ساخت ترم جدید این فیلدها دیده نمی‌شن
+    /// چون لینک‌شدن به ترم قبلی به‌صورت خودکار (بر اساس تاریخ) در SaveEditTerm انجام می‌شه.
+    /// </summary>
+    private List<ShokouhPardisTermClass> OtherTerms = new();
 
     CultureInfo GetPersianCulture()
     {
@@ -74,6 +100,10 @@
     }
     protected override void OnInitialized()
     {
+        if (Term is not null)
+        {
+            OtherTerms = DataProvider.GetAllTerms().Where(x => x.Id != Term.Id).ToList();
+        }
 
         base.OnInitialized();
     }

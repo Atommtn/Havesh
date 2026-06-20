@@ -1,4 +1,4 @@
-﻿using DNTPersianUtils.Core;
+using DNTPersianUtils.Core;
 using Havesh.Application.Services;
 using Havesh.Model.Model;
 using HaveshApp.Admin.Definition.ClassRoom;
@@ -29,7 +29,7 @@ namespace HaveshApp.Admin.Definition.Base
             }
         }
 
-        
+
 
         List<ShokouhPardisTermClass>? Term = null;
         MudTable<ShokouhPardisTermClass>? table;
@@ -54,7 +54,7 @@ namespace HaveshApp.Admin.Definition.Base
 
         }
 
-       
+
 
         async Task NewTermClick()
         {
