@@ -9,6 +9,13 @@
     <MudPaper>
         <TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب ترم"> </TermSelectorComponent>
     </MudPaper>
+    <MudPaper Class="pa-4">
+        <MudButton Variant="Variant.Filled" Color="Color.Tertiary"
+                   Disabled="@(SelectedTerm == null)"
+                   OnClick="ShowTermDebtors">
+            نمایش بدهکاران کل ترم (بدون زمان‌بندی)
+        </MudButton>
+    </MudPaper>
     <MudPaper>
         <MudSelect @bind-Value="Schedule" Label="زمانبندی" AnchorOrigin="Origin.BottomCenter">
             @foreach (var SS in Schedules)

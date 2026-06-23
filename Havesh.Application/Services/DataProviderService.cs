@@ -424,6 +424,15 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		return timeTable;
 	}
 
+	public List<ShokouhPardisTimeTable> GetTimeTableByTerm(ShokouhPardisTermClass selectedTerm)
+	{
+		var timeTable = DbContext.ShokouhPardisTimeTables
+			.Include(x => x.Level)
+			.Include(x => x.Teacher)
+			.Include(x => x.ClassRoom)
+			.Where(x => x.TermId == selectedTerm.Id).ToList();
+		return timeTable;
+	}
 	public List<ShokouhPardisTimeTable> GetTimeTableByTermSchedule(ShokouhPardisTermClass selectedTerm,
 		ShokouhPardisSchedule schedules)
 	{

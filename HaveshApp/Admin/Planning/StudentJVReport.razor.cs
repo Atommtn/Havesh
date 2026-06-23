@@ -162,4 +162,22 @@ public partial class StudentJVReport
             
 
 	}
+	async void ShowTermDebtors()
+	{
+		var allTimeTables = DataProvider.GetTimeTableByTerm(SelectedTerm);
+		Students = DataProvider.GetTimeTableStudents(allTimeTables);
+		_jvs = DataProvider.GetDailyJvsByTerm(SelectedTerm.Id);
+		var dialogReference = await DialogService.ShowAsync<DjvShowDetailsDialog>(
+			"بدهکاران کل ترم", new DialogParameters()
+			{
+				["_jvs"] = _jvs,
+				["SelectedTerm"] = SelectedTerm,
+				["Students"] = Students,
+			}, new DialogOptions()
+			{
+				CloseButton = true,
+				MaxWidth = MaxWidth.ExtraLarge,
+				FullWidth = true
+			});
+	}
 }
