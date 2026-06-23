@@ -3,8 +3,10 @@ using Olive;
 using HaveshApp.Classes;
 using System.Xml;
 using System.Linq;
+using Serilog; 
 using Havesh.Application.Services;
 using Havesh.Model.Model;
+using HaveshApp.Admin.Authentication;
 using HaveshApp.Admin.Student;
 
 namespace Havesh.Domain.Services;
@@ -12,10 +14,11 @@ namespace Havesh.Domain.Services;
 public class StudentService
 {
 	readonly MyDbContext _dbConntext;
-
-	public StudentService(MyDbContextFactory dbConntextFactory)
+	readonly UserSessionService _userSession;
+	public StudentService(MyDbContextFactory dbConntextFactory,UserSessionService userSession )
 	{
 		var branchName = Environment.GetEnvironmentVariable("BranchName")!;
+		_userSession = userSession;
 		_dbConntext = dbConntextFactory.CreateDbContextForBranch(branchName);
 	}
 
@@ -71,9 +74,14 @@ public class StudentService
 
 	public void SaveStudent(ShokouhPardisStudentClass student)
 	{
+		bool isNew = student.Id <= 0;
 		student.StudentClassLastModified = DateTime.Now;
 		_dbConntext.ShokouhPardisStudentClasses.Update(student);
 		_dbConntext.SaveChanges();
+
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "Student")
+			.Warning("User {UserName} {Action} Student {StudentId} ({StudentName} {StudentFamily})",
+				_userSession.Payload?.UserName, isNew ? "Created" : "Updated", student.Id, student.StudentName, student.StudentFamily);
 	}
 
 	public int GetStudentsInTimeTableCount(ShokouhPardisTimeTable timeTable)
@@ -163,8 +171,11 @@ public class StudentService
 	{
 		_dbConntext.ShokouhPardisStudentClasses.Remove(student);
 		_dbConntext.SaveChanges();
-	}
 
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "Student")
+			.Warning("User {UserName} Deleted Student {StudentId} ({StudentName} {StudentFamily})",
+				_userSession.Payload?.UserName, student.Id, student.StudentName, student.StudentFamily);
+	}
 	public List<ShokouhPardisStudentClassOnlineForm> GetStudentsprofile()
 	{
 

@@ -20,7 +20,6 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	private MyDbContext? _dbContext=null;
 	public MyDbContext DbContext => _dbContext ??= GetDbContextForBranch(BranchName);
 	private string? _branchName;
-	
 	/// Init the BranchName IMMEDIATELY Before First Use of Injected DataProviderService
 	/// Specially for use inside GRAINS !
 	/// Default Value IS the BranchName from Environment Variable so it Sould have [BranchName]__DataSource and [BranchName]__InitialCatalog , ...
@@ -1597,6 +1596,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 	public void SaveEditDailyJV(ShokouhPardisDailyJv dailyJv)
 	{
+		bool isNew = dailyJv.Id == 0;
 		if (dailyJv.Id == 0)
 		{
 			bool isDuplicate = DailyJVDuplicate(dailyJv);
@@ -1606,18 +1606,14 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 			}
 		}
 
-        //var x = dailyJv.Student;
-        //var existingEntity = context.Entry(shokouhPardisStudentClass);
-        //if (existingEntity != null)
-        //{
-        //    context.Entry(shokouhPardisStudentClass).State = EntityState.Detached;
-        //}
-
-        DbContext.ChangeTracker.Clear();
+		DbContext.ChangeTracker.Clear();
 		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 		SaveAll();
-       // dailyJv.Student = x;
-    }
+
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv")
+			.Warning("DailyJv {Action} {DailyJvId}", isNew ? "Created" : "Updated", dailyJv.Id);
+	}
+
 
 	bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 	{
@@ -3072,6 +3068,64 @@ public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> Ge
                 .ToList();
 }
 
+
+public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, string userName, string role, string entityType, int take = 500)
+{
+    var result = new List<ActivityLogEntry>();
+    var connection = DbContext.Database.GetDbConnection();
+    var wasClosed = connection.State != System.Data.ConnectionState.Open;
+    if (wasClosed) connection.Open();
+
+    try
+    {
+        using var cmd = connection.CreateCommand();
+        var sql = "SELECT TOP (@Take) Id, Message, Level, TimeStamp, UserName, Role, EntityType FROM HaveshAppLogs WHERE Activity = 1";
+
+        if (from.HasValue) sql += " AND TimeStamp >= @From";
+        if (to.HasValue) sql += " AND TimeStamp <= @To";
+        if (!string.IsNullOrWhiteSpace(userName)) sql += " AND UserName = @UserName";
+        if (!string.IsNullOrWhiteSpace(role)) sql += " AND Role = @Role";
+        if (!string.IsNullOrWhiteSpace(entityType)) sql += " AND EntityType = @EntityType";
+        sql += " ORDER BY TimeStamp DESC";
+
+        cmd.CommandText = sql;
+        AddParam(cmd, "@Take", take);
+        if (from.HasValue) AddParam(cmd, "@From", from.Value);
+        if (to.HasValue) AddParam(cmd, "@To", to.Value);
+        if (!string.IsNullOrWhiteSpace(userName)) AddParam(cmd, "@UserName", userName);
+        if (!string.IsNullOrWhiteSpace(role)) AddParam(cmd, "@Role", role);
+        if (!string.IsNullOrWhiteSpace(entityType)) AddParam(cmd, "@EntityType", entityType);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            result.Add(new ActivityLogEntry
+            {
+                Id = reader.GetInt32(0),
+                Message = reader.IsDBNull(1) ? null : reader.GetString(1),
+                Level = reader.IsDBNull(2) ? null : reader.GetString(2),
+                TimeStamp = reader.GetDateTime(3),
+                UserName = reader.IsDBNull(4) ? null : reader.GetString(4),
+                Role = reader.IsDBNull(5) ? null : reader.GetString(5),
+                EntityType = reader.IsDBNull(6) ? null : reader.GetString(6),
+            });
+        }
+    }
+    finally
+    {
+        if (wasClosed) connection.Close();
+    }
+
+    return result;
+}
+
+private void AddParam(System.Data.Common.DbCommand cmd, string name, object value)
+{
+    var p = cmd.CreateParameter();
+    p.ParameterName = name;
+    p.Value = value;
+    cmd.Parameters.Add(p);
+}
 
 }
 

@@ -53,14 +53,17 @@
 
     [Parameter] public string? LogOutString { get; set; }
     [Inject] AuthenticationService AuthenticationService { get; set; }
-
+   
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            if (LogOutString is  "Logout")
+            if (LogOutString is "Logout")
             {
-	            await AuthenticationService.LogOut();
+                var userName = _userSession?.Payload?.UserName;
+                Log.ForContext("Activity", true).ForContext("EntityType", "Login")
+                    .Information("User {UserName} logged out.", userName);
+                await AuthenticationService.LogOut();
             }
         }
 
@@ -81,24 +84,27 @@
         await Task.Delay(100);
 
         try
-	    {
-	        var user = await AuthenticationService.Login(UserName, Password);
-	    }
-	    catch (AuthenticationService.InvalidUserCredentialException e)
-	    {
-		    Log.Error("Someone tried to login by user: {UserName} with Password: {Password}", UserName, Password);
+        {
+            var user = await AuthenticationService.Login(UserName, Password);
+        }
+        catch (AuthenticationService.InvalidUserCredentialException e)
+        {
+            Log.ForContext("Activity", true).ForContext("EntityType", "Login")
+                .Error("Someone tried to login by user: {UserName} with Password: {Password}", UserName, Password);
             _snackBar.Add(e.Message, Severity.Error);
-		    _loginCheck = false;
-		    return;
-	    }
-	    catch (AuthenticationService.UserIsNotActiveException ex)
-	    {
-		    Log.Error("User {UserName} is Inactive but he(she) tried to login !",UserName);
+            _loginCheck = false;
+            return;
+        }
+        catch (AuthenticationService.UserIsNotActiveException ex)
+        {
+            Log.ForContext("Activity", true).ForContext("EntityType", "Login")
+                .Error("User {UserName} is Inactive but he(she) tried to login !", UserName);
             _snackBar.Add(ex.Message, Severity.Warning);
-		    _loginCheck = false;
-		    return;
-	    }
-        Log.Information("User {UserName} Successfully logged-in to application.",UserName);
+            _loginCheck = false;
+            return;
+        }
+        Log.ForContext("Activity", true).ForContext("EntityType", "Login")
+            .Information("User {UserName} Successfully logged-in to application.", UserName);
     }
     [Inject] public BrowserService BrowserService { get; set; }
 

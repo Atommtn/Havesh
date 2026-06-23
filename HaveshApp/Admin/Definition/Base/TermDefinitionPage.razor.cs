@@ -76,15 +76,8 @@ namespace HaveshApp.Admin.Definition.Base
         {
             var dialogReference = DialogService.Show<TermDefinitionDialog>(
                 (term.Id > 0 ? "ویرایش " : "جدید ") + "ترم ",
-                new DialogParameters
-                {
-                    ["Term"] = term
-                },
-                new DialogOptions()
-                {
-                    CloseButton = true,
-                    MaxWidth = MaxWidth.Large
-                });
+                new DialogParameters { ["Term"] = term },
+                new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Large });
             var dialogResult = await dialogReference.Result;
             if (dialogResult.Cancelled == false)
             {
@@ -92,19 +85,16 @@ namespace HaveshApp.Admin.Definition.Base
                 var result = DataProvider.SaveEditTerm(retData);
                 if (result)
                 {
-                    var parameters = new DialogParameters();
-
                     bool? result1 = await DialogService.ShowMessageBox(
                         "خطا",
-                        (MarkupString)
-                        @$"ترم با این نام قبلا ذخیره شده است!
-                        <br/>{retData.TermName}",
+                        (MarkupString)@$"ترم با این نام قبلا ذخیره شده است!<br/>{retData.TermName}",
                         yesText: "متوجه شدم!");
                 }
                 else
                 {
                     Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-                    Log.Warning("User {UserName} Save-Update Term {TermId}", _userSession.Payload.UserName, retData.Id);
+                    Log.ForContext("Activity", true).ForContext("EntityType", "Term")
+                        .Warning("User {UserName} Save-Update Term {TermId}", _userSession.Payload.UserName, retData.Id);
                 }
 
                 RefreshData();

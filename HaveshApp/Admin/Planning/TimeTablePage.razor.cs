@@ -157,7 +157,8 @@ public partial class TimeTablePage
 			{
 
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
+				Log.ForContext("Activity", true).ForContext("EntityType", "TimeTable")
+			       .Warning("User {UserName} Save Private TimeTable {TimeTableId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			await table?.ReloadServerData()!;
@@ -211,10 +212,11 @@ public partial class TimeTablePage
 		if (result is true)
 		{
 			DataProvider.DeleteTimesheet(context);
+			Log.ForContext("Activity", true).ForContext("EntityType", "TimeTable")
+				.Warning("User {UserName} Delete TimeTable {TimeTableId}", _userSession.Payload.UserName, context.Id);
 			await table?.ReloadServerData()!;
 		}
 	}
-
 
 	Task AddStudentToClassClick(ShokouhPardisTimeTable timeTable)
 	{

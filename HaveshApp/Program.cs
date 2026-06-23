@@ -31,7 +31,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Serilog.Sinks.Loki;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
-
+using System.Collections.ObjectModel;
+using System.Data;
+using Serilog.Sinks.MSSqlServer;
 
 // Configure logging to log to MSSqlServer database
 
@@ -83,18 +85,9 @@ var dbSettings = new DbSettings();
 builder.Configuration.GetSection(branchName).Bind(dbSettings);
 var conStr = dbSettings.GetConnectionString();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .Enrich.With(new MtnUserEnricher(builder.Services))
-    .WriteTo.MSSqlServer(
-        connectionString: conStr,
-        sinkOptions: new MSSqlServerSinkOptions
-        {
-            TableName = "HaveshAppLogs", // Table name in the database for logging
-            AutoCreateSqlTable = true // Create the table if it doesn't exist
-        },
-        restrictedToMinimumLevel: LogEventLevel.Information)
-    .CreateLogger();
+
+
+
 
 
 builder.Services.AddSingleton<SignalrGrainClientService>();
@@ -230,22 +223,40 @@ builder.Services.AddOrleansClient(clientBuilder =>
 builder.Services.AddSingleton(RegisterGrainCachependecies.RegisterDependencies());
 
 builder.Services.AddHostedService<SignalrGrainClientInitializationService>();
+var columnOptions = new ColumnOptions();
+columnOptions.AdditionalColumns = new Collection<SqlColumn>
+{
+    new SqlColumn { ColumnName = "Activity", DataType = SqlDbType.Bit, AllowNull = true },
+    new SqlColumn { ColumnName = "EntityType", DataType = SqlDbType.NVarChar, DataLength = 100, AllowNull = true },
+    new SqlColumn { ColumnName = "Role", DataType = SqlDbType.NVarChar, DataLength = 100, AllowNull = true },
+    new SqlColumn { ColumnName = "UserName", DataType = SqlDbType.NVarChar, DataLength = 200, AllowNull = true },
+};
 
 Log.Logger = new LoggerConfiguration()
-    
-    .WriteTo.File($"/var/log/{branchName}/all.log", rollingInterval: RollingInterval.Day) // لاگ‌ها را به فایل ذخیره کنید
+    .MinimumLevel.Information()
+    .Enrich.With(new MtnUserEnricher(builder.Services))
+    .WriteTo.File($"/var/log/{branchName}/all.log", rollingInterval: RollingInterval.Day) // لاگ فایل قبلی، حفظ شد
+    .WriteTo.MSSqlServer(
+        connectionString: conStr,
+        sinkOptions: new MSSqlServerSinkOptions
+        {
+            TableName = "HaveshAppLogs",
+            AutoCreateSqlTable = false // جدول از قبل وجود دارد؛ با اسکریپت ALTER TABLE ستون‌ها اضافه شدن
+        },
+        columnOptions: columnOptions,
+        restrictedToMinimumLevel: LogEventLevel.Information)
     .CreateLogger();
 
-
 builder.Host.UseSerilog((context, services, configuration) => configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .MinimumLevel.Information() // تنظیم سطح لاگ به Debug برای دریافت همه لاگ‌ها
-        .Enrich.FromLogContext()
-        .Enrich.WithProperty("app", branchName)
-        .WriteTo.LokiHttp("http://localhost:3100")
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .MinimumLevel.Information()
+            .Enrich.FromLogContext()
+            .Enrich.WithProperty("app", branchName)
+            .WriteTo.LokiHttp("http://localhost:3100")
 //        .WriteTo.Console()
-);
+        , preserveStaticLogger: true);
+
 
 //    .UseSerilog(
 //     (context, configuration) =>

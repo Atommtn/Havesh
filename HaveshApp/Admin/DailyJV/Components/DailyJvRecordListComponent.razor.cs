@@ -212,10 +212,10 @@ public partial class DailyJvRecordListComponent
             
 	}
 
+
 	private async Task DeleteDailyJVClick(ShokouhPardisDailyJv dJv)
 	{
 		var result = await DialogService.ShowMessageBox("حذف رسید پرداخت", "آیا از حذف این اطلاعات مطمئن هستید؟", "بله", "خیر");
-
 
 		if (result is true)
 		{
@@ -226,9 +226,9 @@ public partial class DailyJvRecordListComponent
 			}
 
 			Snackbar.Add("با موفقیت حذف گردید.", Severity.Success);
-			Log.Warning("User {UserName} Delete DailyJv {DailyJvid}", _userSession.Payload.UserName,dJv.Id);
+			Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv")
+				.Warning("User {UserName} Delete DailyJv {DailyJvid}", _userSession.Payload.UserName, dJv.Id);
 			await FilterData();
-
 		}
 	}
 

@@ -71,6 +71,8 @@ public class UserSessionService : IUserSessionService
     public string? UserName => Payload?.UserName;
     public string? FullName => Payload?.FirstName + " " + Payload?.LastName;
 
+
+
     public record DebugSetting(bool? IsDebug, DateTime? date, TimeSpan? time);
 
     //public DebugSetting? Debug { get; set; }
