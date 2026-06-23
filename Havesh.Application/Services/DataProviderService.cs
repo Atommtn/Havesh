@@ -3009,6 +3009,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	    _transaction?.Dispose();
 	    _transaction = null;
     }
+
 public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> GetDroppedStudents(ShokouhPardisTermClass selectedTerm)
 {
         var currentTermStudentIds = DbContext.ShokouhPardisTimeTableStudents
@@ -3037,7 +3038,9 @@ public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> Ge
                 .ToList();
 
         return lastPerStudent
-                .Select(x => (students.First(s => s.Id == x.StudentId), x.TimeTable.Term))
+                .Select(x => (students.FirstOrDefault(s => s.Id == x.StudentId), x.TimeTable.Term))
+                .Where(x => x.Item1 != null)
+                .Select(x => (x.Item1!, x.Item2))
                 .ToList();
 }
 
@@ -3065,9 +3068,9 @@ public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> Ge
         var allTerms = GetAllTerms();
 
         return lastPerStudent
-                .Select(x => (students.First(s => s.Id == x.StudentId), allTerms.FirstOrDefault(t => t.Id == x.TermId)))
-                .Where(x => x.Item2 != null)
-                .Select(x => (x.Item1, x.Item2!))
+                .Select(x => (students.FirstOrDefault(s => s.Id == x.StudentId), allTerms.FirstOrDefault(t => t.Id == x.TermId)))
+                .Where(x => x.Item1 != null && x.Item2 != null)
+                .Select(x => (x.Item1!, x.Item2!))
                 .ToList();
 }
 

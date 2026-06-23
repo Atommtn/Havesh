@@ -33,6 +33,7 @@
                     <MudTh>شماره همراه پدر</MudTh>
                     <MudTh>شماره همراه مادر</MudTh>
                     <MudTh>مربوط به ترم</MudTh>
+                    <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Name">@context.Student.StudentName @context.Student.StudentFamily</MudTd>
@@ -40,6 +41,11 @@
                     <MudTd DataLabel="Father">@context.Student.FatherPhone</MudTd>
                     <MudTd DataLabel="Mother">@context.Student.MotherPhone</MudTd>
                     <MudTd DataLabel="Term">@context.Term.TermName</MudTd>
+                    <MudTd>
+                        <MudButton Color="Color.Success" Variant="Variant.Text" OnClick="() => StudentProfileClick(context.Student)">
+                            نمایش پروفایل
+                        </MudButton>
+                    </MudTd>
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />

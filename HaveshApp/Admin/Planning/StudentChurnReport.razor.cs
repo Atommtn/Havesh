@@ -12,6 +12,9 @@ public partial class StudentChurnReport
 	[Inject]
 	public DataProviderService DataProvider { get; set; }
 
+	[Inject]
+	public NavigationManager Navigation { get; set; }
+
 	private ShokouhPardisTermClass _selectedTerm;
 	public ShokouhPardisTermClass SelectedTerm
 	{
@@ -38,5 +41,10 @@ public partial class StudentChurnReport
 	{
 		ReportTitle = "زبان‌آموزانی که تعیین سطح شدن ولی هنوز در هیچ کلاسی ثبت‌نام نشدن";
 		Results = DataProvider.GetLevelDeterminedWithoutClass();
+	}
+
+	void StudentProfileClick(ShokouhPardisStudentClass student)
+	{
+		Navigation.NavigateTo("/StudentInfo/" + student.StudentClassGuid.ToString("N"));
 	}
 }
