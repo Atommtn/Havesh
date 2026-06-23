@@ -3012,36 +3012,34 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 
 public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> GetDroppedStudents(ShokouhPardisTermClass selectedTerm)
 {
+        if (selectedTerm.LastTermFk == null)
+                return new List<(ShokouhPardisStudentClass, ShokouhPardisTermClass)>();
+
+        var previousTerm = DbContext.ShokouhPardisTermClasses
+                .FirstOrDefault(t => t.Id == selectedTerm.LastTermFk.Value);
+
+        if (previousTerm == null)
+                return new List<(ShokouhPardisStudentClass, ShokouhPardisTermClass)>();
+
         var currentTermStudentIds = DbContext.ShokouhPardisTimeTableStudents
                 .Where(x => x.TimeTable.TermId == selectedTerm.Id)
                 .Select(x => x.StudentId)
                 .Distinct()
                 .ToList();
 
-        var previousEnrollments = DbContext.ShokouhPardisTimeTableStudents
-                .Include(x => x.TimeTable)
-                .ThenInclude(x => x.Term)
-                .Where(x => x.TimeTable.Term.StartDate != null
-                                && selectedTerm.StartDate != null
-                                && x.TimeTable.Term.StartDate < selectedTerm.StartDate)
+        var previousTermStudentIds = DbContext.ShokouhPardisTimeTableStudents
+                .Where(x => x.TimeTable.TermId == previousTerm.Id)
+                .Select(x => x.StudentId)
+                .Distinct()
                 .ToList();
 
-        var lastPerStudent = previousEnrollments
-                .Where(x => !currentTermStudentIds.Contains(x.StudentId))
-                .GroupBy(x => x.StudentId)
-                .Select(g => g.OrderByDescending(x => x.TimeTable.Term.StartDate).First())
-                .ToList();
+        var droppedIds = previousTermStudentIds.Except(currentTermStudentIds).ToList();
 
-        var studentIds = lastPerStudent.Select(x => x.StudentId).ToList();
         var students = DbContext.ShokouhPardisStudentClasses
-                .Where(s => studentIds.Contains(s.Id))
+                .Where(s => droppedIds.Contains(s.Id))
                 .ToList();
 
-        return lastPerStudent
-                .Select(x => (students.FirstOrDefault(s => s.Id == x.StudentId), x.TimeTable.Term))
-                .Where(x => x.Item1 != null)
-                .Select(x => (x.Item1!, x.Item2))
-                .ToList();
+        return students.Select(s => (s, previousTerm)).ToList();
 }
 
 public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> GetLevelDeterminedWithoutClass()

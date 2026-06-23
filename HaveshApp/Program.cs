@@ -135,7 +135,7 @@ serviceProvider.GetRequiredService<CustomAuthenticationStateProvider>());
 builder.Services.AddScoped<MyDbContextFactory>();
 
 builder.Services.AddScoped<DataProviderService>();
-
+builder.Services.AddScoped<PageStateCacheService>();
 // برای ساخت میگریشن باید کانکشن مستقیم به دیتابیس داشته باشیم همینطور باید MyDBContext هم اضافه شود نه فقط فکتوری
 //builder.Services.AddDbContext<MyDbContext>((serviceProvider, optionsBuilder) =>
 //{
@@ -156,7 +156,6 @@ builder.Services.AddScoped<DataProviderService>();
 //    //optionsBuilder.AddInterceptors(new CustomQueryInterceptor(builder.Configuration));
 //}, ServiceLifetime.Scoped);
 
-//builder.Services.AddScoped<DataProviderService>();
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
