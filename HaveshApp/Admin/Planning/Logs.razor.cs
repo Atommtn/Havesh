@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 
 namespace HaveshApp.Admin.Planning;
+using Havesh.Model.Model;
 
 public partial class Logs
 {
