@@ -1,0 +1,50 @@
+@page "/StudentChurnReport/"
+@using Microsoft.AspNetCore.Components
+@using HaveshApp.Admin.Clone
+@attribute [Authorize]
+
+<MudStack Class="pa-12">
+    <MudPaper Class="pa-4">
+        <TermSelectorComponent @bind-Term="SelectedTerm" Title="انتخاب سال و ترم"></TermSelectorComponent>
+    </MudPaper>
+
+    <MudPaper Class="pa-4 d-flex gap-4">
+        <MudButton Variant="Variant.Filled" Color="Color.Warning"
+                   Disabled="@(SelectedTerm == null)"
+                   OnClick="ShowDroppedStudents">
+            ثبت‌نام‌نکرده‌های این ترم (بودن، الان نیستن)
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Error"
+                   OnClick="ShowLevelWithoutClass">
+            تعیین‌سطح‌شده بدون کلاس (کل دوره)
+        </MudButton>
+    </MudPaper>
+
+    @if (Results is { })
+    {
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h6" Class="mb-2">@ReportTitle</MudText>
+            <MudText Typo="Typo.caption" Class="mb-4">تعداد: @Results.Count</MudText>
+            <MudTable Items="@Results" Hover="true" RowsPerPage="50">
+                <HeaderContent>
+                    <MudTh>نام و نام خانوادگی</MudTh>
+                    <MudTh>شماره زبان‌آموز</MudTh>
+                    <MudTh>شماره همراه پدر</MudTh>
+                    <MudTh>شماره همراه مادر</MudTh>
+                    <MudTh>مربوط به ترم</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Student.StudentName @context.Student.StudentFamily</MudTd>
+                    <MudTd DataLabel="Idno">@context.Student.StudentIdno</MudTd>
+                    <MudTd DataLabel="Father">@context.Student.FatherPhone</MudTd>
+                    <MudTd DataLabel="Mother">@context.Student.MotherPhone</MudTd>
+                    <MudTd DataLabel="Term">@context.Term.TermName</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+                </PagerContent>
+            </MudTable>
+        </MudPaper>
+    }
+</MudStack>

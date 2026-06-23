@@ -3009,6 +3009,67 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	    _transaction?.Dispose();
 	    _transaction = null;
     }
+public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> GetDroppedStudents(ShokouhPardisTermClass selectedTerm)
+{
+        var currentTermStudentIds = DbContext.ShokouhPardisTimeTableStudents
+                .Where(x => x.TimeTable.TermId == selectedTerm.Id)
+                .Select(x => x.StudentId)
+                .Distinct()
+                .ToList();
+
+        var previousEnrollments = DbContext.ShokouhPardisTimeTableStudents
+                .Include(x => x.TimeTable)
+                .ThenInclude(x => x.Term)
+                .Where(x => x.TimeTable.Term.StartDate != null
+                                && selectedTerm.StartDate != null
+                                && x.TimeTable.Term.StartDate < selectedTerm.StartDate)
+                .ToList();
+
+        var lastPerStudent = previousEnrollments
+                .Where(x => !currentTermStudentIds.Contains(x.StudentId))
+                .GroupBy(x => x.StudentId)
+                .Select(g => g.OrderByDescending(x => x.TimeTable.Term.StartDate).First())
+                .ToList();
+
+        var studentIds = lastPerStudent.Select(x => x.StudentId).ToList();
+        var students = DbContext.ShokouhPardisStudentClasses
+                .Where(s => studentIds.Contains(s.Id))
+                .ToList();
+
+        return lastPerStudent
+                .Select(x => (students.First(s => s.Id == x.StudentId), x.TimeTable.Term))
+                .ToList();
+}
+
+public List<(ShokouhPardisStudentClass Student, ShokouhPardisTermClass Term)> GetLevelDeterminedWithoutClass()
+{
+        var enrolledStudentIds = DbContext.ShokouhPardisTimeTableStudents
+                .Select(x => x.StudentId)
+                .Distinct()
+                .ToList();
+
+        var levelJvs = DbContext.ShokouhPardisDailyJvs
+                .Where(x => x.FeeFor == "تعیین سطح" && !enrolledStudentIds.Contains(x.StudentId))
+                .ToList();
+
+        var lastPerStudent = levelJvs
+                .GroupBy(x => x.StudentId)
+                .Select(g => g.OrderByDescending(x => x.CurrentDate).First())
+                .ToList();
+
+        var studentIds = lastPerStudent.Select(x => x.StudentId).ToList();
+        var students = DbContext.ShokouhPardisStudentClasses
+                .Where(s => studentIds.Contains(s.Id))
+                .ToList();
+
+        var allTerms = GetAllTerms();
+
+        return lastPerStudent
+                .Select(x => (students.First(s => s.Id == x.StudentId), allTerms.FirstOrDefault(t => t.Id == x.TermId)))
+                .Where(x => x.Item2 != null)
+                .Select(x => (x.Item1, x.Item2!))
+                .ToList();
+}
 
 
 }
