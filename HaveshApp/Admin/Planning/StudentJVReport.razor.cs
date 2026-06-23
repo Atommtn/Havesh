@@ -1,4 +1,4 @@
-﻿using Amazon.Runtime.Internal;
+using Amazon.Runtime.Internal;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MudBlazor;
@@ -15,7 +15,7 @@ namespace HaveshApp.Admin.Planning;
 
 public partial class StudentJVReport
 {
-        
+
 	[Inject]
 	public DataProviderService DataProvider { get; set; }
 	[Inject]
@@ -29,7 +29,7 @@ public partial class StudentJVReport
 	public HashSet<ShokouhPardisTimeTableStudent> SelectStudent { get; set; }
 	private List<ShokouhPardisSchedule> Schedules;
 	private MudTable<ShokouhPardisTimeTable> _tables;
-     
+
 	public bool ShowTable = false;
 	private Dictionary<int, List<ShokouhPardisDailyJv>> StudentJVS = new Dictionary<int, List<ShokouhPardisDailyJv>>();
 	private Dictionary<int,int> StudentJVSFull ;
@@ -54,7 +54,7 @@ public partial class StudentJVReport
 		TimeTables=DataProvider.GetTimeTableByTermSchedule(SelectedTerm, Schedule);
 	}
 
-        
+
 
 
 	ShokouhPardisTermClass SelectedTerm
@@ -68,7 +68,7 @@ public partial class StudentJVReport
 		}
 	}
 
-        
+
 
 
 	void RefreshData()
@@ -76,7 +76,7 @@ public partial class StudentJVReport
 		Schedules = DataProvider.GetSchedules(SelectedTerm);
 
 	}
-      
+
 	List<ShokouhPardisTimeTableStudent> GetReport(ShokouhPardisTimeTable SelectTimeTable)
 	{
 		var report = DataProvider.GetTimeTableStudent(SelectTimeTable);
@@ -96,7 +96,7 @@ public partial class StudentJVReport
 
 	//    foreach (ShokouhPardisStudentClass student in Students)
 	//    {
-             
+
 	//        var list = DataProvider.GetDailyJvBy(SelectedTerm.TermClassId, student.StudentClassId);
 	//        if (list.Count > 0)
 	//            StudentJVS.Add(student.StudentClassId, list);
@@ -105,7 +105,7 @@ public partial class StudentJVReport
 
 	//    return StudentJVS;
 	//}
-     
+
 
 	//private int GetStudentPaymentStatus(ShokouhPardisStudentClass student)
 	//{
@@ -143,7 +143,7 @@ public partial class StudentJVReport
 	[Inject] IDialogService DialogService { get; set; }
 	async void ShowClass(ShokouhPardisTimeTable selectedTimeTable)
 	{
-            
+
 		Students = GetReport(selectedTimeTable);
 		_jvs = DataProvider.GetDailyJvsByTerm(SelectedTerm.Id);
 		var dialogReference = await DialogService.ShowAsync<DjvShowDetailsDialog>(
@@ -158,15 +158,19 @@ public partial class StudentJVReport
 				MaxWidth = MaxWidth.ExtraLarge,
 				FullWidth = true
 			});
-            
-            
+
+
 
 	}
+
 	async void ShowTermDebtors()
 	{
 		var allTimeTables = DataProvider.GetTimeTableByTerm(SelectedTerm);
-		Students = DataProvider.GetTimeTableStudents(allTimeTables);
+		var allStudents = DataProvider.GetTimeTableStudents(allTimeTables);
 		_jvs = DataProvider.GetDailyJvsByTerm(SelectedTerm.Id);
+
+		Students = allStudents.Where(IsDebtor).ToList();
+
 		var dialogReference = await DialogService.ShowAsync<DjvShowDetailsDialog>(
 			"بدهکاران کل ترم", new DialogParameters()
 			{
@@ -179,5 +183,21 @@ public partial class StudentJVReport
 				MaxWidth = MaxWidth.ExtraLarge,
 				FullWidth = true
 			});
+	}
+
+	bool IsDebtor(ShokouhPardisTimeTableStudent ttStudent)
+	{
+		var ttStdLevel = DataProvider.GetStudetnLevel(ttStudent.Student, SelectedTerm);
+		if (ttStdLevel?.Level == null) return false;
+
+		var shahriehDarInTerm = DataProvider.GetLevelBookPrice(SelectedTerm.Id, ttStdLevel.Level.Id);
+		if (shahriehDarInTerm == null) return false;
+
+		var list = _jvs.Where(x => x.StudentId == ttStudent.Student.Id);
+		int tedadJamPardakhtiShahrieh = list.Count(x => x.FeeFor.Equals("شهریه"));
+		int jamPardakhtiShahrieh = list.Where(x => x.FeeFor.Equals("شهریه")).Sum(x => x.Fee);
+
+		// هیچ پرداختی نکرده یا کمتر از شهریه‌ی ترم پرداخت کرده = بدهکار
+		return tedadJamPardakhtiShahrieh == 0 || jamPardakhtiShahrieh < shahriehDarInTerm.TuitionAmount;
 	}
 }

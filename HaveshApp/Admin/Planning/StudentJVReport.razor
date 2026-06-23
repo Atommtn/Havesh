@@ -1,4 +1,4 @@
-﻿@page "/StudentJVReport/"
+@page "/StudentJVReport/"
 @using Microsoft.AspNetCore.Components
 @using HaveshApp.Admin.Clone
 @using HaveshApp.Classes
@@ -37,7 +37,7 @@
                     <MudTh>نام استاد</MudTh>
                     <MudTh>نام کلاس</MudTh>
                     <MudTh></MudTh>
-                    
+
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Title">@context.Title</MudTd>
@@ -50,12 +50,12 @@
                         </MudButton>
 
                     </MudTd>
-                    
+
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
                 </PagerContent>
-                
+
             </MudTable>
             @*<MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Tertiary" OnClick="ShowClick">نمایش پرداخت ها</MudButton>*@
         </MudPaper>

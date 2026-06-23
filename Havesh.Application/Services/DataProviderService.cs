@@ -433,6 +433,7 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 			.Where(x => x.TermId == selectedTerm.Id).ToList();
 		return timeTable;
 	}
+	
 	public List<ShokouhPardisTimeTable> GetTimeTableByTermSchedule(ShokouhPardisTermClass selectedTerm,
 		ShokouhPardisSchedule schedules)
 	{
