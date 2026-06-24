@@ -400,3 +400,4 @@ FodyWeavers.xsd
 /Havesh.Silo/appsettings.Development.json
 /HaveshApp/appsettings.Development.json
 /Havesh.Silo/appsettings.Development.json
+"**/appsettings.Development.json" 
