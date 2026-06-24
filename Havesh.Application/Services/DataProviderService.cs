@@ -1594,29 +1594,68 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		;
 	}
 
-	public void SaveEditDailyJV(ShokouhPardisDailyJv dailyJv)
-	{
-		bool isNew = dailyJv.Id == 0;
-		if (dailyJv.Id == 0)
-		{
-			bool isDuplicate = DailyJVDuplicate(dailyJv);
-			if (isDuplicate)
-			{
-				throw new Exception("Duplicated daily JV record");
-			}
-		}
+    public void SaveEditDailyJV(ShokouhPardisDailyJv dailyJv)
+    {
+        bool isNew = dailyJv.Id == 0;
+        if (isNew)
+        {
+            bool isDuplicate = DailyJVDuplicate(dailyJv);
+            if (isDuplicate)
+                throw new Exception("Duplicated daily JV record");
+        }
 
-		DbContext.ChangeTracker.Clear();
-		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
-		SaveAll();
+        // قبل از Update، مقدار فعلی رکورد رو (فقط در حالت ویرایش) جدا می‌خونیم تا بشه با مقدار جدید مقایسه کرد
+        ShokouhPardisDailyJv old = null;
+        if (!isNew)
+            old = DbContext.ShokouhPardisDailyJvs.AsNoTracking().FirstOrDefault(x => x.Id == dailyJv.Id);
 
-		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", dailyJv.Id)
-			.Warning("DailyJv {Action} {DailyJvId}", isNew ? "Created" : "Updated", dailyJv.Id);
+        DbContext.ChangeTracker.Clear();
+        DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
+        SaveAll();
 
-	}
+        string changes = isNew
+            ? DescribeDailyJv(dailyJv)
+            : BuildDailyJvDiff(old, dailyJv);
+
+        Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", dailyJv.Id)
+            .Warning("DailyJv {Action} {DailyJvId} {Changes}", isNew ? "Created" : "Updated", dailyJv.Id, changes);
+    }
+
+    private static readonly HashSet<string> DiffIgnoreProps = new()
+    {
+        "Id", "DailyJvguid", "DailyJvlastModified"
+    };
 
 
-	bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
+    private string DescribeDailyJv(ShokouhPardisDailyJv dj)
+    {
+        var parts = typeof(ShokouhPardisDailyJv).GetProperties()
+            .Where(p => p.CanRead && (p.PropertyType.IsValueType || p.PropertyType == typeof(string)))
+            .Where(p => !DiffIgnoreProps.Contains(p.Name))
+            .Select(p => $"{p.Name}: {p.GetValue(dj)}");
+        return string.Join(" | ", parts);
+    }
+
+    private string BuildDailyJvDiff(ShokouhPardisDailyJv oldVal, ShokouhPardisDailyJv newVal)
+    {
+        if (oldVal == null) return DescribeDailyJv(newVal);
+
+        var changes = new List<string>();
+        var props = typeof(ShokouhPardisDailyJv).GetProperties()
+            .Where(p => p.CanRead && (p.PropertyType.IsValueType || p.PropertyType == typeof(string)))
+            .Where(p => !DiffIgnoreProps.Contains(p.Name));
+
+        foreach (var p in props)
+        {
+            var oldV = p.GetValue(oldVal);
+            var newV = p.GetValue(newVal);
+            if (!Equals(oldV, newV))
+                changes.Add($"{p.Name}: {oldV} → {newV}");
+        }
+        return changes.Count > 0 ? string.Join(" | ", changes) : "بدون تغییر محسوس";
+    }
+    
+bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 	{
         
         var result = DbContext.ShokouhPardisDailyJvs

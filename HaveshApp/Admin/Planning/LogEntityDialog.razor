@@ -38,7 +38,7 @@
     <DialogAction>
         @if (Student is { })
         {
-            <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Filled" Href="@($"/StudentInfo/{Student.Id}")">
+            <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Filled" Href="@($"/StudentInfo/{Student.StudentClassGuid:N}")">
                 مشاهده پرونده کامل
             </MudButton>
         }
