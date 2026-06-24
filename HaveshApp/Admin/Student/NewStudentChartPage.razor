@@ -32,7 +32,52 @@
 {
     <MudChart ChartType="ChartType.Bar" ChartSeries="@savedStudentsSeries" ChartOptions="ChartOp"
               @bind-SelectedIndex="Index"
-              XAxisLabels="@XAxisLabels.ToArray()" Width="100%" Height="350px" />
+              XAxisLabels="@XAxisLabels.ToArray()" Width="100%" Height="350px"/>
+
+    <MudSimpleTable Dense="true" Hover="true" Style="margin-top:16px;">
+        <thead>
+        <tr>
+            <th>هفته</th>
+            <th>پسر</th>
+            <th>دختر</th>
+            @if (savedStudentsSeries.Count > 2)
+            {
+                <th>نامشخص</th>
+            }
+            <th>جمع هفته</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < XAxisLabels.Count; i++)
+        {
+            var boys = (int)savedStudentsSeries[0].Data[i];
+            var girls = (int)savedStudentsSeries[1].Data[i];
+            var unknown = savedStudentsSeries.Count > 2 ? (int)savedStudentsSeries[2].Data[i] : 0;
+            <tr>
+                <td>@XAxisLabels[i]</td>
+                <td>@boys</td>
+                <td>@girls</td>
+                @if (savedStudentsSeries.Count > 2)
+                {
+                    <td>@unknown</td>
+                }
+                <td><b>@(boys + girls + unknown)</b></td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr style="font-weight:bold; border-top:2px solid #999;">
+            <td>جمع کل</td>
+            <td>@((int)savedStudentsSeries[0].Data.Sum())</td>
+            <td>@((int)savedStudentsSeries[1].Data.Sum())</td>
+            @if (savedStudentsSeries.Count > 2)
+            {
+                <td>@((int)savedStudentsSeries[2].Data.Sum())</td>
+            }
+            <td>@((int)savedStudentsSeries.Sum(s => s.Data.Sum()))</td>
+        </tr>
+        </tfoot>
+    </MudSimpleTable>
 }
 @code {
     private int Index = 0; //default value cannot be 0 -> first selectedindex is 0.
@@ -51,9 +96,9 @@
     private void ShowChartClick()
     {
         ChartOp = new ChartOptions
-            {
-                ChartPalette = new[] { "#3399FF", "#2ECC9A", "#F4C430" }
-            };
+        {
+            ChartPalette = new[] { "#3399FF", "#2ECC9A", "#F4C430" }
+        };
 
         var result = _dataProvider.GetStudentCountsByGenderAndWeek(DateFrom.Value, DateTo.Value);
         savedStudentsSeries = result.Series;
