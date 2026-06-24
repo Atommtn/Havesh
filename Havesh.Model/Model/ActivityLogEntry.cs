@@ -9,4 +9,5 @@ public class ActivityLogEntry
     public string UserName { get; set; }
     public string Role { get; set; }
     public string EntityType { get; set; }
+    public int? EntityId { get; set; }
 }
