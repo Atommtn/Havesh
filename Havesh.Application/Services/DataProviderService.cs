@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using DNTPersianUtils.Core;
 using Havesh.Domain;
 using Havesh.Model.Model;
 using Microsoft.EntityFrameworkCore;
@@ -2490,35 +2491,49 @@ bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 
 		return chartSeriesList;
 	}
-    public List<ChartSeries> GetStudentCountsByGenderAndDate(DateTime dateFrom, DateTime dateTo)
+    public (List<ChartSeries> Series, List<string> Labels) GetStudentCountsByGenderAndWeek(DateTime dateFrom, DateTime dateTo)
     {
+        DateTime AlignToSaturday(DateTime d)
+        {
+            int diff = ((int)d.DayOfWeek - (int)DayOfWeek.Saturday + 7) % 7;
+            return d.Date.AddDays(-diff);
+        }
+
         var students = DbContext.ShokouhPardisStudentClasses
             .Where(s => s.CreatedWhen >= dateFrom && s.CreatedWhen <= dateTo)
-            .GroupBy(s => new { s.CreatedWhen.Date, s.Gender })
-            .Select(g => new
-            {
-                Date = g.Key.Date,
-                Gender = g.Key.Gender,
-                Count = g.Count()
-            })
+            .Select(s => new { s.CreatedWhen, s.Gender })
+            .ToList(); // AlignToSaturday قابل ترجمه به SQL نیست، باید توی حافظه گروه‌بندی شه
+
+        var grouped = students
+            .GroupBy(s => new { WeekStart = AlignToSaturday(s.CreatedWhen), s.Gender })
+            .Select(g => new { g.Key.WeekStart, g.Key.Gender, Count = g.Count() })
             .ToList();
 
-        var dates = Enumerable.Range(0, (dateTo - dateFrom).Days + 1)
-            .Select(offset => dateFrom.AddDays(offset))
-            .ToList();
+        var firstWeek = AlignToSaturday(dateFrom);
+        var lastWeek = AlignToSaturday(dateTo);
+        var weeks = new List<DateTime>();
+        for (var w = firstWeek; w <= lastWeek; w = w.AddDays(7))
+            weeks.Add(w);
 
-        var boysData = dates.Select(d => students.FirstOrDefault(s => s.Date == d && s.Gender == true)?.Count ?? 0).ToList();
-        var girlsData = dates.Select(d => students.FirstOrDefault(s => s.Date == d && s.Gender == false)?.Count ?? 0).ToList();
-        var unknownData = dates.Select(d => students.FirstOrDefault(s => s.Date == d && s.Gender == null)?.Count ?? 0).ToList();
+        var boysData = weeks.Select(w => grouped.FirstOrDefault(g => g.WeekStart == w && g.Gender == true)?.Count ?? 0).ToList();
+        var girlsData = weeks.Select(w => grouped.FirstOrDefault(g => g.WeekStart == w && g.Gender == false)?.Count ?? 0).ToList();
+        var unknownData = weeks.Select(w => grouped.FirstOrDefault(g => g.WeekStart == w && g.Gender == null)?.Count ?? 0).ToList();
 
-        var chartSeries = new List<ChartSeries>
+        var series = new List<ChartSeries>
+    {
+        new ChartSeries { Name = "پسر", Data = boysData.Select(c => (double)c).ToArray() },
+        new ChartSeries { Name = "دختر", Data = girlsData.Select(c => (double)c).ToArray() }
+    };
+        if (unknownData.Any(c => c > 0))
+            series.Add(new ChartSeries { Name = "نامشخص", Data = unknownData.Select(c => (double)c).ToArray() });
+
+        var labels = weeks.Select(w =>
         {
-            new ChartSeries { Name = "Boys", Data = boysData.Select(count => (double)count).ToArray() },
-            new ChartSeries { Name = "Girls", Data = girlsData.Select(count => (double)count).ToArray() },
-            new ChartSeries { Name = "Unknown", Data = unknownData.Select(count => (double)count).ToArray() }
-        };
+            var weekEnd = w.AddDays(6);
+            return $"{w.GetPersianDayOfMonth()}/{w.GetPersianMonth()} الی {weekEnd.GetPersianDayOfMonth()}/{weekEnd.GetPersianMonth()}";
+        }).ToList();
 
-        return chartSeries;
+        return (series, labels);
     }
     public List<ChartSeries> GetDailyJvSeriesFeeFor(DateTime dateFrom, DateTime dateTo)
 	{
