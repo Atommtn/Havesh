@@ -1610,8 +1610,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 		SaveAll();
 
-		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv")
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", dailyJv.Id)
 			.Warning("DailyJv {Action} {DailyJvId}", isNew ? "Created" : "Updated", dailyJv.Id);
+
 	}
 
 
@@ -3079,7 +3080,7 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
     try
     {
         using var cmd = connection.CreateCommand();
-        var sql = "SELECT TOP (@Take) Id, Message, Level, TimeStamp, UserName, Role, EntityType FROM HaveshAppLogs WHERE Activity = 1";
+        var sql = "SELECT TOP (@Take) Id, Message, Level, TimeStamp, UserName, Role, EntityType, EntityId FROM HaveshAppLogs WHERE Activity = 1";
 
         if (from.HasValue) sql += " AND TimeStamp >= @From";
         if (to.HasValue) sql += " AND TimeStamp <= @To";
@@ -3108,6 +3109,7 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
                 UserName = reader.IsDBNull(4) ? null : reader.GetString(4),
                 Role = reader.IsDBNull(5) ? null : reader.GetString(5),
                 EntityType = reader.IsDBNull(6) ? null : reader.GetString(6),
+                EntityId = reader.IsDBNull(7) ? null : reader.GetInt32(7),
             });
         }
     }
@@ -3118,6 +3120,7 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 
     return result;
 }
+
 
 private void AddParam(System.Data.Common.DbCommand cmd, string name, object value)
 {

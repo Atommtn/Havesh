@@ -52,6 +52,7 @@
                 <MudTh>نوع</MudTh>
                 <MudTh>توضیح</MudTh>
                 <MudTh></MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Icon">
@@ -67,6 +68,7 @@
                                    Size="Size.Small"
                                    Disabled="@(!IsViewable(context))"
                                    OnClick="() => OpenEntityDialog(context)" />
+                    <MudTd DataLabel="Debug">[@context.EntityType / @context.EntityId]</MudTd>
                 </MudTd>
             </RowTemplate>
             <PagerContent>
