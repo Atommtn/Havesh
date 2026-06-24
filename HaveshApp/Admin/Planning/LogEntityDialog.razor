@@ -1,0 +1,49 @@
+@* فایل جدید: HaveshApp/Admin/Planning/LogEntityDialog.razor *@
+@using HaveshApp.Admin.Components
+@using Havesh.Model.Model
+
+<MtnDialog>
+    <ChildComponent>
+        @if (Loading)
+        {
+            <MudProgressCircular Indeterminate="true" />
+        }
+        else if (Jv is { })
+        {
+            <MudGrid>
+                <MudItem md="6"><MudText><b>دانش‌آموز:</b> @Jv.Student?.StudentName @Jv.Student?.StudentFamily</MudText></MudItem>
+                <MudItem md="6"><MudText><b>تاریخ:</b> @Jv.CurrentDate?.ToString("yyyy/MM/dd")</MudText></MudItem>
+                <MudItem md="6"><MudText><b>بابت:</b> @Jv.FeeFor</MudText></MudItem>
+                <MudItem md="6"><MudText><b>مبلغ:</b> @Jv.Fee.ToString("N0")</MudText></MudItem>
+                <MudItem md="6"><MudText><b>نوع پرداخت:</b> @Jv.PaymentType</MudText></MudItem>
+                <MudItem md="12"><MudText><b>توضیحات:</b> @Jv.Description</MudText></MudItem>
+            </MudGrid>
+        }
+        else if (Student is { })
+        {
+            <MudGrid>
+                <MudItem md="6"><MudText><b>نام:</b> @Student.StudentName @Student.StudentFamily</MudText></MudItem>
+                <MudItem md="6"><MudText><b>کد ملی:</b> @Student.StudentIdno</MudText></MudItem>
+                <MudItem md="6"><MudText><b>موبایل:</b> @Student.StudentPhone</MudText></MudItem>
+                <MudItem md="6"><MudText><b>موبایل پدر:</b> @Student.FatherPhone</MudText></MudItem>
+                <MudItem md="6"><MudText><b>موبایل مادر:</b> @Student.MotherPhone</MudText></MudItem>
+            </MudGrid>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning">رکورد مرتبط پیدا نشد (احتمالاً حذف شده).</MudAlert>
+        }
+    </ChildComponent>
+
+    <DialogAction>
+        @if (Student is { })
+        {
+            <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.OpenInNew" Variant="Variant.Filled" Href="@($"/StudentInfo/{Student.Id}")">
+                مشاهده پرونده کامل
+            </MudButton>
+        }
+        <MudButton Color="Color.Warning" StartIcon="@Icons.Material.Filled.Close" Variant="Variant.Text" OnClick="CloseDialogClick">
+            بستن
+        </MudButton>
+    </DialogAction>
+</MtnDialog>

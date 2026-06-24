@@ -196,7 +196,8 @@ public partial class DailyJvRecordListComponent
 			try
 			{
 				DataProvider.SaveEditDailyJV(retData);
-				Log.Warning("User {UserName} Update DailyJv {DailyJv}", _userSession.Payload.UserName,retData.Id);
+				Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", retData.Id)
+					.Warning("User {UserName} Update DailyJv {DailyJv}", _userSession.Payload.UserName,retData.Id);
 				Snackbar.Add("با موفقیت بروزرسانی گردید.", Severity.Success);
 
 			}
@@ -226,7 +227,7 @@ public partial class DailyJvRecordListComponent
 			}
 
 			Snackbar.Add("با موفقیت حذف گردید.", Severity.Success);
-			Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv")
+			Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", dJv.Id)
 				.Warning("User {UserName} Delete DailyJv {DailyJvid}", _userSession.Payload.UserName, dJv.Id);
 			await FilterData();
 		}

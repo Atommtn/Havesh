@@ -221,8 +221,9 @@ namespace HaveshApp.Admin.DailyJV
                 _dataProvider.SaveDailyJV(_dailyJV);
                 _userSession.LastJvDate = _dailyJV.CurrentDate;
                 _snackBar.Add("اطلاعات با موفقیت ذخیره شد", MudBlazor.Severity.Success);
-                Log.Warning("User {UserName} Create DailyJV For PreRegistration '{DailyJvid}'.",
-                    _userSession.Payload?.UserName, _dailyJV.Id);
+                Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", _dailyJV.Id)
+                    .Warning("User {UserName} Create DailyJV For PreRegistration '{DailyJvid}'.",
+                        _userSession.Payload?.UserName, _dailyJV.Id);
                 ////// reset page
                 ///
                 /// save preregistratin
@@ -234,8 +235,9 @@ namespace HaveshApp.Admin.DailyJV
                 preRegistration.DailyJV = _dailyJV;
                 _dataProvider.SavePreRegistration(preRegistration);
                 _snackBar.Add("اطلاعات پیش ثبت نام با موفقیت ذخیره شد", MudBlazor.Severity.Success);
-                Log.Warning("User {UserName} Create PreRegistration For student '{StudentID}' dailyJV '{DailyJvid}'  .",
-                    _userSession.Payload?.UserName, _dailyJV.Id, Student.Id);
+                Log.ForContext("Activity", true).ForContext("EntityType", "PreRegistration").ForContext("EntityId", _dailyJV.Id)
+                    .Warning("User {UserName} Create PreRegistration For student '{StudentID}' dailyJV '{DailyJvid}'  .",
+                        _userSession.Payload?.UserName, Student.Id,_dailyJV.Id);
                 RestForm();
                 StateHasChanged();
                 await PrintDailyJvFishClick();

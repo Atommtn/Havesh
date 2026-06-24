@@ -106,7 +106,8 @@ public partial class TeacherDefinitionPage
 			else
 			{
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save TeacherClass {TeacherClassId}", _userSession.Payload.UserName, retData.Id);
+				Log.ForContext("Activity", true).ForContext("EntityType", "TeacherClass").ForContext("EntityId", retData.Id)
+					.Warning("User {UserName} Save TeacherClass {TeacherClassId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			RefreshData();
@@ -156,7 +157,8 @@ public partial class TeacherDefinitionPage
 			DataProvider.SaveUser(user);
 			teacher.UserId = user.Id;
 			DataProvider.SaveEditTeacher(teacher);
-			Log.Warning("User {UserName} Save-Update Teacher {TeacherId}", _userSession.Payload.UserName, teacher.Id);
+			Log.ForContext("Activity", true).ForContext("EntityType", "Teacher").ForContext("EntityId", teacher.Id)
+				.Warning("User {UserName} Save-Update Teacher {TeacherId}", _userSession.Payload.UserName, teacher.Id);
 		}
 
 		await DialogService.ShowAsync<UserDialog>("Teacher Account", new DialogParameters()

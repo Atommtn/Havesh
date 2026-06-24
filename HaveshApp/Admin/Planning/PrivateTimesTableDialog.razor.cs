@@ -93,17 +93,7 @@ public partial class PrivateTimesTableDialog
 		DialogInstance.Close(DialogResult.Ok(TimeTableItem));
 	}
 
-    //void SaveTemplate()
-    //{
-    //    var x = string.Join(',', Days.Where(x => x.Value == true).Select(x => x.Key));
-    //    TermSessionTemplate.WeekdayIds = x;
-    //    _dataProvider.SaveTermSessionTemplate(TermSessionTemplate);
-    //    Log.Warning("User {UserName} Save TermSessionTemplate {TermSessionTemplateId}", _userSession.Payload.UserName, TermSessionTemplate.Id);
-    //    _templates = DataProviderService.GetTermTemplates(Term);
-    //    TermSessionTemplate = new TermSessionTemplate();
-    //    StateHasChanged();
-
-    //}
+  
 
     ShokouhPardisClassRoom ClassRoom
 	{

@@ -83,8 +83,9 @@ public class TimeTableSessionService
 			};
 
 			_dataProviderService.SaveTimeTableSession(timeTableSession);
-			Log.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}", 
-				_userSession.Payload.UserName, timeTableSession.Id);
+			Log.ForContext("Activity", true).ForContext("EntityType", "TimeTableSession").ForContext("EntityId", timeTableSession.Id)
+				.Warning("User {UserName} Save TimeTableSession {TimeTableSessionId}",
+					_userSession.Payload.UserName, timeTableSession.Id);
 			await OnTimeTableSessionCreated?.Invoke(timeTableSession);
 		}
 
@@ -112,9 +113,11 @@ public class TimeTableSessionService
 
 		// Save Should run before to get new Time Table Session ID
 		replTimeTableSession = _dataProviderService.SaveTimeTableSession(replTimeTableSession);
-		Log.Warning("User {UserName} replace TimeTableSession from {TimeTableSessionId} to new {TimeTableSessionId}", 
-			_userSession.Payload.UserName, replTimeTableSession.Id,origTimeTableSession.Id);
-
+		
+		Log.ForContext("Activity", true).ForContext("EntityType", "TimeTableSession").ForContext("EntityId", replTimeTableSession.Id)
+			.Warning("User {UserName} replace TimeTableSession from {TimeTableSessionId} to new {TimeTableSessionId}",
+				_userSession.Payload.UserName, replTimeTableSession.Id,origTimeTableSession.Id);
+		
 		origTimeTableSession.ReplacementTimeTableSessionFk = replTimeTableSession.Id;
 		origTimeTableSession.SessionStatus = SessionStatuses.Canceled;
 		string? x = null;
@@ -152,8 +155,9 @@ public class TimeTableSessionService
 		_dataProviderService.UpdateTimeTableSessions(allSessions);
 		origTimeTableSession.SessionNumber *= -1;
 		_dataProviderService.SaveTimeTableSession(origTimeTableSession);
-		Log.Warning("User {UserName} replace TimeTableSession from {TimeTableSessionId} to new {TimeTableSessionId}", 
-			_userSession.Payload.UserName, replTimeTableSession.Id, origTimeTableSession.Id);
+		Log.ForContext("Activity", true).ForContext("EntityType", "TimeTableSession").ForContext("EntityId", replTimeTableSession.Id)
+			.Warning("User {UserName} replace TimeTableSession from {TimeTableSessionId} to new {TimeTableSessionId}",
+				_userSession.Payload.UserName, replTimeTableSession.Id, origTimeTableSession.Id);
 		return replTimeTableSession;
 	}
 

@@ -78,8 +78,10 @@ public partial class LessonPlanDefinitionPage
 				else
 				{
 					Snackbar.Add("lesson plan save successfully.", Severity.Success);
-					Log.Warning("User {UserName} Save-Update LessonPlan {lessonPlanID}",
-						_userSession.Payload.UserName, retData.Id);
+					Log.ForContext("Activity", true).ForContext("EntityType", "LessonPlan").ForContext("EntityId", retData.Id)
+						.Warning("User {UserName} Save-Update LessonPlan {lessonPlanID}",
+							_userSession.Payload.UserName, retData.Id);
+
 				}
 			}
 			catch (Exception ex)

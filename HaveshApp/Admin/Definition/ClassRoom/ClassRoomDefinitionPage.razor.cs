@@ -75,7 +75,8 @@ namespace HaveshApp.Admin.Definition.ClassRoom
                 else
                 {
                     Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-                    Log.Warning("User {UserName} Save-Update ClassRoom {ClassRoomId}", _userSession.Payload.UserName, retData.Id);
+                    Log.ForContext("Activity", true).ForContext("EntityType", "ClassRoom").ForContext("EntityId", retData.Id)
+                        .Warning("User {UserName} Save-Update ClassRoom {ClassRoomId}", _userSession.Payload.UserName, retData.Id);
                 }
 
                 RefreshData();

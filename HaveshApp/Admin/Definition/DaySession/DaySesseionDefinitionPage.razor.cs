@@ -83,7 +83,8 @@ public partial class DaySesseionDefinitionPage
 			else
 			{
 				_snackBar.Add("با موفقیت ذخیره شد.", Severity.Success);
-				Log.Warning("User {UserName} Save-Update DaySession {DaySessionId}", _userSession.Payload.UserName, retData.Id);
+				Log.ForContext("Activity", true).ForContext("EntityType", "DaySession").ForContext("EntityId", retData.Id)
+					.Warning("User {UserName} Save-Update DaySession {DaySessionId}", _userSession.Payload.UserName, retData.Id);
 			}
 
 			RefreshData();

@@ -221,7 +221,8 @@ public partial class StudentsListComponent
 		{
 			var NewStudetent = (ShokouhPardisStudentClass)dialogResult.Data;
 			StudentService.SaveStudent(NewStudetent);
-			Log.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload.UserName, NewStudetent.Id);
+			Log.ForContext("Activity", true).ForContext("EntityType", "Student").ForContext("EntityId", NewStudetent.Id)
+				.Warning("User {UserName} Save Student {StudentId}", _userSession.Payload.UserName, NewStudetent.Id);
 			await ReloadTableServerData();
 			StateHasChanged();
 		}
@@ -350,7 +351,8 @@ public partial class StudentsListComponent
         var dialogResult = await dialogReference.Result;
         if (dialogResult.Cancelled == false)
         {
-            Log.Warning("User {UserName} Save FollowUp Student {StudentId}", _userSession.Payload.UserName, student.Id);
+	        Log.ForContext("Activity", true).ForContext("EntityType", "Student").ForContext("EntityId", student.Id)
+		        .Warning("User {UserName} Save FollowUp Student {StudentId}", _userSession.Payload.UserName, student.Id);
         }
     }
 }

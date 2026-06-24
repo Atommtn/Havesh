@@ -222,7 +222,8 @@ public partial class DailyJVPage
 			_dailyJV.Student ??= _dataProvider.GetStudent(_dailyJV.StudentId);
 
             Snackbar.Add("اطلاعات با موفقیت ذخیره شد", Severity.Success);
-			Log.Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
+            Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", _dailyJV.Id)
+	            .Warning("User {UserName} Create DailyJV '{DailyJvid}'.", _userSession.Payload?.UserName , _dailyJV.Id);
 
 			await _dailyJVListComponent.FilterData(); 
             await PrintDailyJvFishClick(_dailyJV);

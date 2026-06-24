@@ -78,8 +78,7 @@ public class StudentService
 		student.StudentClassLastModified = DateTime.Now;
 		_dbConntext.ShokouhPardisStudentClasses.Update(student);
 		_dbConntext.SaveChanges();
-
-		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "Student")
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "Student").ForContext("EntityId", student.Id)
 			.Warning("User {UserName} {Action} Student {StudentId} ({StudentName} {StudentFamily})",
 				_userSession.Payload?.UserName, isNew ? "Created" : "Updated", student.Id, student.StudentName, student.StudentFamily);
 	}
@@ -172,9 +171,9 @@ public class StudentService
 		_dbConntext.ShokouhPardisStudentClasses.Remove(student);
 		_dbConntext.SaveChanges();
 
-		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "Student")
-			.Warning("User {UserName} Deleted Student {StudentId} ({StudentName} {StudentFamily})",
-				_userSession.Payload?.UserName, student.Id, student.StudentName, student.StudentFamily);
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "Student").ForContext("EntityId", student.Id)
+			.Warning("User {UserName} Deleted Student {StudentId} ({StudentName} {StudentFamily})",_userSession.Payload?.UserName, student.Id, student.StudentName, student.StudentFamily);
+		
 	}
 	public List<ShokouhPardisStudentClassOnlineForm> GetStudentsprofile()
 	{

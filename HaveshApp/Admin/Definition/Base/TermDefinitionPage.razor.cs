@@ -93,7 +93,7 @@ namespace HaveshApp.Admin.Definition.Base
                 else
                 {
                     Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-                    Log.ForContext("Activity", true).ForContext("EntityType", "Term")
+                    Log.ForContext("Activity", true).ForContext("EntityType", "Term").ForContext("EntityId", retData.Id)
                         .Warning("User {UserName} Save-Update Term {TermId}", _userSession.Payload.UserName, retData.Id);
                 }
 

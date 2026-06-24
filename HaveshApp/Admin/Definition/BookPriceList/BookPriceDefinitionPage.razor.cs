@@ -83,7 +83,9 @@ public partial class BookPriceDefinitionPage
 				else
 				{
 					Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
-					Log.Warning("User {UserName} Save LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.Id);
+					Log.ForContext("Activity", true).ForContext("EntityType", "LevelBookPrice").ForContext("EntityId", retData.Id)
+						.Warning("User {UserName} Save LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.Id);
+
 				}
 
 			}
@@ -91,7 +93,8 @@ public partial class BookPriceDefinitionPage
 			{
 				//edit dialoge
 				DataProvider.UpdateEditLevelBookPrice(retData, SelectedTerm);
-				Log.Warning("User {UserName} Update LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.Id);
+				Log.ForContext("Activity", true).ForContext("EntityType", "LevelBookPrice").ForContext("EntityId", retData.Id)
+					.Warning("User {UserName} Update LevelBookPrice {LevelBookPriceId}", _userSession.Payload.UserName, retData.Id);
 				Snackbar.Add("با موفقیت ذخیره شد.", Severity.Success);
 
 			}

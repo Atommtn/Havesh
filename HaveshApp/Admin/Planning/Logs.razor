@@ -1,51 +1,78 @@
 @page "/Logs/"
+@layout PersianPagesLayout
 @using Microsoft.AspNetCore.Components
+@using System.Globalization
+@using DNTPersianUtils.Core
 @attribute [Authorize(Roles = "Admin,Supervisor")]
 @* ⚠️ نام دقیق نقش‌ها (Admin/Supervisor) رو با چیزی که توی پروژه واقعاً استفاده می‌شه چک کن *@
 
 <MudStack Class="pa-12">
     <MudPaper Class="pa-4 d-flex flex-wrap gap-4 align-end">
-        <MudDatePicker Label="از تاریخ" @bind-Date="From" />
-        <MudDatePicker Label="تا تاریخ" @bind-Date="To" />
-        <MudTextField @bind-Value="UserNameFilter" Label="نام کاربری" />
-        <MudSelect @bind-Value="RoleFilter" Label="نقش" Clearable="true">
+        <MudDatePicker Label="از تاریخ" @bind-Date="From"
+                       Culture="@GetPersianCulture()"
+                       FirstDayOfWeek="DayOfWeek.Saturday"
+                       TitleDateFormat="dddd, dd MMMM" />
+        <MudDatePicker Label="تا تاریخ" @bind-Date="To"
+                       Culture="@GetPersianCulture()"
+                       FirstDayOfWeek="DayOfWeek.Saturday"
+                       TitleDateFormat="dddd, dd MMMM" />
+
+        <MudSelect T="string" @bind-Value="UserNameFilter" Label="نام کاربری" Clearable="true">
+            @foreach (var u in Users)
+            {
+            <MudSelectItem Value="@u.UserName">@u.FullName (@u.UserName)</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="string" @bind-Value="RoleFilter" Label="نقش" Clearable="true">
             <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
             <MudSelectItem Value="@("Supervisor")">Supervisor</MudSelectItem>
             <MudSelectItem Value="@("Moderator")">Moderator</MudSelectItem>
         </MudSelect>
-        <MudSelect @bind-Value="EntityTypeFilter" Label="نوع موجودیت" Clearable="true">
+        <MudSelect T="string" @bind-Value="EntityTypeFilter" Label="نوع موجودیت" Clearable="true">
             <MudSelectItem Value="@("Student")">دانش‌آموز</MudSelectItem>
             <MudSelectItem Value="@("DailyJv")">فیش/پرداختی</MudSelectItem>
             <MudSelectItem Value="@("Term")">ترم</MudSelectItem>
             <MudSelectItem Value="@("TimeTable")">کلاس</MudSelectItem>
-            <MudSelectItem Value="@("Auth")">ورود/خروج</MudSelectItem>
+            <MudSelectItem Value="@("Login")">ورود/خروج</MudSelectItem>
         </MudSelect>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Search">جستجو</MudButton>
     </MudPaper>
 
     @if (Results is { })
     {
-        <MudPaper Class="pa-4">
-            <MudText Typo="Typo.caption" Class="mb-4">تعداد: @Results.Count</MudText>
-            <MudTable Items="@Results" Hover="true" RowsPerPage="50">
-                <HeaderContent>
-                    <MudTh>زمان</MudTh>
-                    <MudTh>کاربر</MudTh>
-                    <MudTh>نقش</MudTh>
-                    <MudTh>نوع</MudTh>
-                    <MudTh>توضیح</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Time">@context.TimeStamp.ToString("yyyy/MM/dd HH:mm:ss")</MudTd>
-                    <MudTd DataLabel="User">@context.UserName</MudTd>
-                    <MudTd DataLabel="Role">@context.Role</MudTd>
-                    <MudTd DataLabel="EntityType">@context.EntityType</MudTd>
-                    <MudTd DataLabel="Message">@context.Message</MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager PageSizeOptions="new int[] { 50, 100, 200 }" />
-                </PagerContent>
-            </MudTable>
-        </MudPaper>
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.caption" Class="mb-4">تعداد: @Results.Count</MudText>
+        <MudTable Items="@Results" Hover="true" RowsPerPage="50">
+            <HeaderContent>
+                <MudTh></MudTh>
+                <MudTh>زمان</MudTh>
+                <MudTh>کاربر</MudTh>
+                <MudTh>نقش</MudTh>
+                <MudTh>نوع</MudTh>
+                <MudTh>توضیح</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Icon">
+                    <MudIcon Icon="@GetEntityIcon(context.EntityType)" Color="@GetEntityColor(context.EntityType)" />
+                </MudTd>
+                <MudTd DataLabel="Time">@context.TimeStamp.ToString("yyyy/MM/dd HH:mm:ss")</MudTd>
+                <MudTd DataLabel="User">@context.UserName</MudTd>
+                <MudTd DataLabel="Role">@context.Role</MudTd>
+                <MudTd DataLabel="EntityType">@context.EntityType</MudTd>
+                <MudTd DataLabel="Message">@context.Message</MudTd>
+                <MudTd DataLabel="Open">
+                    <MudIconButton Icon="@Icons.Material.Filled.OpenInNew"
+                                   Size="Size.Small"
+                                   Disabled="@(!IsViewable(context))"
+                                   OnClick="() => OpenEntityDialog(context)" />
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[] { 50, 100, 200 }" />
+            </PagerContent>
+        </MudTable>
+    </MudPaper>
     }
 </MudStack>
