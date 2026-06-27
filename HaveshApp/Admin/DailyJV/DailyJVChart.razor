@@ -94,7 +94,7 @@
                 }
                 @if (FeeForSeries?.FirstOrDefault(p => p.Name == FeeForStatuses.Final)?.Data is { })
             {
-                <MudText Typo="Typo.h4" Color="Color.Dark" GutterBottom="true">
+                <MudText Typo="Typo.h4" Color="Color.Tertiary" GutterBottom="true">
                     جمع فاینال:
                     @FeeForSeries.FirstOrDefault(p => p.Name == FeeForStatuses.Final).Data.Sum().NumberToText(Language.Persian) تومان
                 </MudText>
@@ -150,22 +150,13 @@
 
     private void ShowChartClick()
     {
+        ChartOp = new ChartOptions();
 
-        ChartOp = new ChartOptions()
-        {
+        var paymentResult = _dataProvider.GetDailyJvSeriesPaymentTypeByWeek(DateFrom.Value, DateTo.Value);
+        PaymentSeries = paymentResult.Series;
+        XAxisLabels = paymentResult.Labels;
 
-
-
-        };
-        PaymentSeries = _dataProvider.GetDailyJvSeriesPaymentType(DateFrom.Value, DateTo.Value);
-        FeeForSeries = _dataProvider.GetDailyJvSeriesFeeFor(DateFrom.Value, DateTo.Value);
-        XAxisLabels = new List<string>();
-        var dateFrom = DateTo - DateFrom;
-        for (var i = 0; i <= dateFrom?.Days; i++)
-        {
-            var dateTime = DateFrom.Value.AddDays(i);
-            XAxisLabels.Add(dateTime.GetPersianMonth() + "/" + dateTime.GetPersianDayOfMonth().ToString());
-        }
+        FeeForSeries = _dataProvider.GetDailyJvSeriesFeeForByWeek(DateFrom.Value, DateTo.Value).Series;
     }
 
 

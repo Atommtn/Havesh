@@ -47,10 +47,8 @@ public class CardNumber
     public const string CN3586 = "5894631207073586 رفاه فرشید طایفه نفر";
     public const string CN1602 = "6221061224361602 پارسیان ندا طاهری";
     public const string CN4601 = "6037998228834601 ملی حسین طایفه نفر";
-    public const string CN4421 = "6362141089084421 آینده علی اکبر طایفه نفر";
-    public const string CN5307 = "5041721201075307 رسالت نرگس طایفه نفر";
-    public const string CN2189 = "5892101506202189 سپه عباس طاهری";
     public const string CN1670 = "6280231358791670 مسکن ندا طاهری";
+    public const string CN4077 = "6104338800734077 ملت بنام شرکت هاوش";
 }
 
 

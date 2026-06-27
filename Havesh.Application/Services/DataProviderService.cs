@@ -2448,7 +2448,76 @@ bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 			.ToList();
 
 	}
+	private DateTime AlignToSaturday(DateTime d)
+	{
+		int diff = ((int)d.DayOfWeek - (int)DayOfWeek.Saturday + 7) % 7;
+		return d.Date.AddDays(-diff);
+	}
+	public (List<ChartSeries> Series, List<string> Labels) GetDailyJvSeriesPaymentTypeByWeek(DateTime dateFrom, DateTime dateTo)
+{
+    var raw = DbContext.ShokouhPardisDailyJvs
+        .Where(p => p.CurrentDate >= dateFrom && p.CurrentDate <= dateTo)
+        .Select(p => new { p.CurrentDate, p.PaymentType, p.Fee })
+        .ToList();
 
+    var grouped = raw
+        .GroupBy(p => new { WeekStart = AlignToSaturday(p.CurrentDate), p.PaymentType })
+        .Select(g => new { g.Key.WeekStart, g.Key.PaymentType, TotalFee = g.Sum(x => x.Fee) })
+        .ToList();
+
+    var firstWeek = AlignToSaturday(dateFrom);
+    var lastWeek = AlignToSaturday(dateTo);
+    var weeks = new List<DateTime>();
+    for (var w = firstWeek; w <= lastWeek; w = w.AddDays(7)) weeks.Add(w);
+
+    var series = grouped.Select(g => g.PaymentType).Distinct()
+        .Select(pt => new ChartSeries
+        {
+            Name = pt,
+            Data = weeks.Select(w => (double)(grouped.FirstOrDefault(g => g.WeekStart == w && g.PaymentType == pt)?.TotalFee ?? 0)).ToArray()
+        }).ToList();
+
+    var labels = weeks.Select(w =>
+    {
+        var weekEnd = w.AddDays(6);
+        return $"{w.GetPersianDayOfMonth()}/{w.GetPersianMonth()} الی {weekEnd.GetPersianDayOfMonth()}/{weekEnd.GetPersianMonth()}";
+    }).ToList();
+
+    return (series, labels);
+}
+
+public (List<ChartSeries> Series, List<string> Labels) GetDailyJvSeriesFeeForByWeek(DateTime dateFrom, DateTime dateTo)
+{
+    var raw = DbContext.ShokouhPardisDailyJvs
+        .Where(p => p.CurrentDate >= dateFrom && p.CurrentDate <= dateTo)
+        .Select(p => new { p.CurrentDate, p.FeeFor, p.Fee })
+        .ToList();
+
+    var grouped = raw
+        .GroupBy(p => new { WeekStart = AlignToSaturday(p.CurrentDate), p.FeeFor })
+        .Select(g => new { g.Key.WeekStart, g.Key.FeeFor, TotalFee = g.Sum(x => x.Fee) })
+        .ToList();
+
+    var firstWeek = AlignToSaturday(dateFrom);
+    var lastWeek = AlignToSaturday(dateTo);
+    var weeks = new List<DateTime>();
+    for (var w = firstWeek; w <= lastWeek; w = w.AddDays(7)) weeks.Add(w);
+
+    var series = grouped.Select(g => g.FeeFor).Distinct()
+        .Select(ft => new ChartSeries
+        {
+            Name = ft,
+            Data = weeks.Select(w => (double)(grouped.FirstOrDefault(g => g.WeekStart == w && g.FeeFor == ft)?.TotalFee ?? 0)).ToArray()
+        }).ToList();
+
+    var labels = weeks.Select(w =>
+    {
+        var weekEnd = w.AddDays(6);
+        return $"{w.GetPersianDayOfMonth()}/{w.GetPersianMonth()} الی {weekEnd.GetPersianDayOfMonth()}/{weekEnd.GetPersianMonth()}";
+    }).ToList();
+
+    return (series, labels);
+}
 	public List<ChartSeries> GetDailyJvSeriesPaymentType(DateTime dateFrom, DateTime dateTo)
 	{
 		var paymentSummaries = DbContext.ShokouhPardisDailyJvs
