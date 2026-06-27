@@ -2461,7 +2461,7 @@ bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
         .ToList();
 
     var grouped = raw
-        .GroupBy(p => new { WeekStart = AlignToSaturday(p.CurrentDate), p.PaymentType })
+        .GroupBy(p => new { WeekStart = AlignToSaturday(p.CurrentDate.Value), p.PaymentType })
         .Select(g => new { g.Key.WeekStart, g.Key.PaymentType, TotalFee = g.Sum(x => x.Fee) })
         .ToList();
 
@@ -2494,7 +2494,7 @@ public (List<ChartSeries> Series, List<string> Labels) GetDailyJvSeriesFeeForByW
         .ToList();
 
     var grouped = raw
-        .GroupBy(p => new { WeekStart = AlignToSaturday(p.CurrentDate), p.FeeFor })
+        .GroupBy(p => new { WeekStart = AlignToSaturday(p.CurrentDate.Value), p.FeeFor })
         .Select(g => new { g.Key.WeekStart, g.Key.FeeFor, TotalFee = g.Sum(x => x.Fee) })
         .ToList();
 
