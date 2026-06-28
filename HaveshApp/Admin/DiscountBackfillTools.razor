@@ -54,7 +54,7 @@
                 <MudTh>از‌قبل تخفیف‌دار</MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd><MudCheckBox @bind-Value="context.Selected" /></MudTd>
+                <MudTd><MudCheckBox T="bool" @bind-Value="context.Selected" /></MudTd>
                 <MudTd>@context.StudentName @context.StudentFamily (#@context.StudentId)</MudTd>
                 <MudTd>@context.TermId</MudTd>
                 <MudTd>@context.ExtractedPercent%</MudTd>
