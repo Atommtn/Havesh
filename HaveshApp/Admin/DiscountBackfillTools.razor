@@ -94,12 +94,14 @@
     {
         if (_rows == null) return;
         foreach (var r in _rows) r.Selected = selected;
+        StateHasChanged();
     }
 
     private void SetGroup(int percent, bool selected)
     {
         if (_rows == null) return;
         foreach (var r in _rows.Where(x => x.ExtractedPercent == percent)) r.Selected = selected;
+        StateHasChanged();
     }
 
     private async Task LoadPreview()
