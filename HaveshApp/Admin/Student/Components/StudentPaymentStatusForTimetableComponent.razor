@@ -18,13 +18,18 @@
         }
         else
         {
-            @if (ShowTution)
-            {
-                <MudChip Label="true" Color="Color.Dark" Size="Size.Small">
-                    شهریه ترم
-                    <MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
-                </MudChip>
-            }
+	        @if (ShowTution)
+	        {
+		        <MudChip Label="true" Color="Color.Dark" Size="Size.Small">
+			        شهریه ترم
+			        <MudChip Size="Size.Small" Color="Color.Tertiary">@accStatus.ShehriehTerm.ToString("N0") تومان</MudChip>
+			        @if (accStatus.Discount > 0)
+			        {
+				        <MudChip Size="Size.Small" Color="Color.Warning">تخفیف: @accStatus.Discount.ToString("N0") تومان</MudChip>
+				        <MudChip Size="Size.Small" Color="Color.Success">شهریه پس از تخفیف: @accStatus.EffectiveShehrieh.ToString("N0") تومان</MudChip>
+			        }
+		        </MudChip>
+	        }
 
             <MudText Typo="Typo.body1">پرداختی ها :</MudText>
             @foreach (var x in accStatus.payments)
@@ -101,7 +106,7 @@
 		return attribute != null ? attribute.Description : value.ToString();
 	}
 
-	private (int ShehriehTerm, Dictionary<string, int> payments, AccountBalanceTypeEnum status, int Diff) AccountStatis(ShokouhPardisTimeTable timeTable)
+	/*private (int ShehriehTerm, Dictionary<string, int> payments, AccountBalanceTypeEnum status, int Diff) AccountStatis(ShokouhPardisTimeTable timeTable)
 	{
 		var levelBookPrice = _dataProvider.GetLevelBookPrice(timeTable);
 		if (levelBookPrice == null)
@@ -131,7 +136,42 @@
 		}
 		return (shahriehTerm, payments, _status, diff);
 	}
+	*/
+	private (int ShehriehTerm, int EffectiveShehrieh, int Discount, Dictionary<string, int> payments, AccountBalanceTypeEnum status, int Diff) AccountStatis(ShokouhPardisTimeTable timeTable)
+	{
+		var levelBookPrice = _dataProvider.GetLevelBookPrice(timeTable);
+		if (levelBookPrice == null)
+		{
+			return default;
+		}
+		var shahriehTerm = levelBookPrice.TuitionAmount;
 
+		var timeTableStudent = _dataProvider.GetTimeTableStudent(timeTable.Id, Student.Id);
+		var discount = timeTableStudent?.StudentAmountDiscount ?? 0;
+		var effectiveShahrieh = shahriehTerm - discount;
+
+		var djvs = _dataProvider.GetDailyJvBy(timeTable.TermId, Student.Id);
+		var payments = djvs
+			.GroupBy(x => x.FeeFor!)
+			.ToDictionary(x => x.Key, y => y.Sum(z => z.Fee));
+		var _status = AccountBalanceTypeEnum.Settle;
+		int diff = effectiveShahrieh;
+		if (payments.TryGetValue("شهریه", out var payedShahrieh))
+		{
+			diff = effectiveShahrieh - payedShahrieh;
+			_status = diff switch
+			{
+				0 => AccountBalanceTypeEnum.Settle,
+				> 0 => AccountBalanceTypeEnum.Debtor,
+				_ => AccountBalanceTypeEnum.Crediator
+			};
+		}
+		else
+		{
+			_status = AccountBalanceTypeEnum.Debtor;
+		}
+		return (shahriehTerm, effectiveShahrieh, discount, payments, _status, diff);
+	}
 
 	private Color GetColor(AccountBalanceTypeEnum accStatusStatus)
 	{

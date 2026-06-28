@@ -247,12 +247,14 @@ public partial class MyDbContext : DbContext
         ShokouhPardisTermClass.Setup(modelBuilder);
         ShokouhPardisSchedule.Setup(modelBuilder);
         ShokouhPardisProgram.Setup(modelBuilder);
+        
         ShokouhPardisDaySession.Setup(modelBuilder);
         ShokouhPardisTimeTable.Setup(modelBuilder);
         ShokouhPardisTimeTableStudent.Setup(modelBuilder);
         ShokouhPardisLevelBookPrice.Setup(modelBuilder);
 
         LessonPlanAttachment.Setup(modelBuilder);
+        FollowUp.Setup(modelBuilder);
         // Apply the global filter for all entities implementing ISoftDeletable
         /*foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {

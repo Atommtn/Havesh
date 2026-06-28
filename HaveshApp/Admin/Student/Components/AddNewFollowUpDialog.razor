@@ -1,0 +1,73 @@
+﻿@using HaveshApp.Admin.Components
+@using Havesh.Model.Model
+
+<MtnDialog>
+    <ChildComponent>
+
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudText Typo="Typo.h6">
+                @(Student.StudentName + " " + Student.StudentFamily)
+            </MudText>
+        </MudPaper>
+
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudGrid>
+                <MudItem md="6">
+                    <MudSelect T="FollowUpTypeEnum" @bind-Value="_followUp.Type" Label="نوع پیگیری">
+                        <MudSelectItem Value="FollowUpTypeEnum.Educational">آموزشی</MudSelectItem>
+                        <MudSelectItem Value="FollowUpTypeEnum.Churn">ریزش</MudSelectItem>
+                        <MudSelectItem Value="FollowUpTypeEnum.TeacherRequested">درخواست معلم</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem md="6">
+                    <MudCheckBox @bind-Checked="_followUp.IsResolved" Label="پیگیری انجام و نتیجه ثبت شد" LabelPosition="LabelPosition.Start" />
+                </MudItem>
+                <MudItem md="12">
+                    <MudTextField @bind-Value="_followUp.ReasonFollow" Label="دلیل / موضوع پیگیری" Lines="2" />
+                </MudItem>
+                <MudItem md="12">
+                    <MudTextField @bind-Value="_followUp.ResultFollow" Label="نتیجه‌ی پیگیری (مثلاً: از شهر رفته، ترم بعد می‌آید، جواب نداد...)" Lines="3" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+        @if (_history.Any())
+        {
+        <MudPaper Class="pa-2 ma-2" Outlined="true">
+            <MudText Typo="Typo.subtitle2" Class="mb-2">تاریخچه‌ی پیگیری‌های قبلی</MudText>
+            <MudSimpleTable Dense="true" Hover="true">
+                <thead>
+                <tr>
+                    <th>تاریخ</th>
+                    <th>نوع</th>
+                    <th>نتیجه</th>
+                    <th>وضعیت</th>
+                    <th>توسط</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var h in _history)
+                {
+                <tr>
+                    <td>@(h.FollowDate?.ToString("yyyy/MM/dd") ?? h.RequestDate.ToString("yyyy/MM/dd"))</td>
+                    <td>@h.Type</td>
+                    <td>@h.ResultFollow</td>
+                    <td>@(h.IsResolved ? "بسته‌شده" : "در انتظار")</td>
+                    <td>@h.HandledByUserName</td>
+                </tr>
+                }
+                </tbody>
+            </MudSimpleTable>
+        </MudPaper>
+        }
+
+    </ChildComponent>
+    <DialogAction>
+
+        <MudButton Color="@Color.Success" StartIcon="@Icons.Material.Filled.Save"
+                   Variant="@Variant.Filled" OnClick="@SaveDialogClick">
+            ذخیره
+        </MudButton>
+
+    </DialogAction>
+</MtnDialog>

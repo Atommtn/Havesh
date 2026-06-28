@@ -24,6 +24,7 @@ public partial class MyDbContext : DbContext
 	public virtual DbSet<ShokouhPardisAccountingCode> ShokouhPardisAccountingCodes { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisAccountingTransaction> ShokouhPardisAccountingTransactions { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisBookClass> ShokouhPardisBookClasses { get; set; } = null!;
+	public virtual DbSet<FollowUp> FollowUps { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisClassRoom> ShokouhPardisClassRooms { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisDailyJv> ShokouhPardisDailyJvs { get; set; } = null!;
 	public virtual DbSet<ShokouhPardisDaySession> ShokouhPardisDaySessions { get; set; } = null!;
@@ -123,6 +124,19 @@ public partial class MyDbContext : DbContext
 				.HasMaxLength(200)
 				.HasDefaultValueSql("(N'')");
 		});
+
+		modelBuilder.Entity<ShokouhPardisDailyJv>().HasQueryFilter(x => x.IsDeleted == false);
+
+		// از این به بعد هر LINQ query روی DbContext.ShokouhPardisDailyJvs خودکار رکوردهای
+		// IsDeleted=true رو نادیده می‌گیره (همه‌ی گزارش‌ها، داشبورد، RecalculatePaymentCompleteFlag و...)
+		// بدون نیاز به دستی فیلتر زدن روی هر کوئری موجود.
+
+		// اگه یه‌جایی (مثلاً صفحه‌ی آرشیو/لاگ آینده) واقعاً لازم شد رکوردهای حذف‌شده هم دیده بشن،
+		// روی همون کوئری خاص بنویس:
+		//   DbContext.ShokouhPardisDailyJvs.IgnoreQueryFilters().Where(...)
+
+		// نکته: چون IsDeleted از BranchBaseModel (کلاس پایه) میاد نه از خود ShokouhPardisDailyJv،
+		// این خط هیچ نیازی به تغییر فایل مدل ندارد.
 
 		modelBuilder.Entity<ShokouhPardisDailyJv>(entity =>
 		{
@@ -441,7 +455,38 @@ public partial class MyDbContext : DbContext
 
 			entity.Property(e => e.StudentShno).HasColumnName("StudentSHNo");
 		});
+// ۳. داخل OnModelCreating، کنار بقیه‌ی modelBuilder.Entity<...>(entity => {...}) های مربوط
+//    به جزئیات ستون/جدول (مثل ShokouhPardisBookClass) — این بخش فقط ستون/جدول رو تنظیم می‌کند،
+//    رابطه‌ها جای دیگه (بخش ۲ بالا) ست می‌شن:
+// =======================================================
+		modelBuilder.Entity<FollowUp>(entity =>
+		{
+			entity.HasKey(e => e.Id);
 
+			// اسم جدول: چون این جدول کاملاً جدیده (هیچ‌وقت استفاده نشده بود)، پیشوند قدیمی
+			// "ShokouhPardis_" رو روش نگذاشتم (اون پیشوند میراث یه دوره‌ی قبل از جداسازی شعبه‌هاست).
+			// اگه ترجیح می‌دی هم‌خوان با بقیه‌ی جدول‌ها باشه، بگو تا عوضش کنم به "ShokouhPardis_FollowUp".
+			entity.ToTable("FollowUp", "dbo");
+
+			entity.Property(e => e.Id).HasColumnName("Id");
+
+			entity.Property(e => e.FollowUpLastModified)
+				.HasDefaultValueSql("('1/1/0001 12:00:00 AM')"); // عیناً هم‌خوان با الگوی *LastModified در BookClass و بقیه‌ی مدل‌ها
+
+			entity.Property(e => e.ReasonFollow).HasMaxLength(1000);
+			entity.Property(e => e.ResultFollow).HasMaxLength(1000);
+			entity.Property(e => e.RequestedByUserName).HasMaxLength(100);
+			entity.Property(e => e.HandledByUserName).HasMaxLength(100);
+
+			// ⚠️ هنوز منتظر نتیجه‌ی SELECT از AppBranch هستیم (دو دیتابیس، احتمالاً Id فرق دارن).
+			// وقتی عدد رو فرستادی، این خط رو اضافه می‌کنم تا EF مقدار صفر رو insert نکنه و دیتابیس
+			// خودش از DEFAULT CONSTRAINT پرش کند (همون چیزی که برای ShokouhPardisDailyJv هم اتفاق می‌افته،
+			// چون CreateNewDailyJV() هم BranchFk رو ست نمی‌کند):
+			// entity.Property(e => e.BranchFk).HasDefaultValueSql("(<Id واقعی AppBranch>)");
+
+			// هم‌خوان با فیکس #16 (Soft Delete سراسری):
+			entity.HasQueryFilter(e => e.IsDeleted == false);
+		});
 		modelBuilder.Entity<ShokouhPardisStudentClassOnlineForm>(entity =>
 		{
 			entity.HasKey(e => e.Id);

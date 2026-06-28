@@ -1,0 +1,37 @@
+﻿@page "/Admin/BackfillTools"
+@* این صفحه‌ی موقتیه — فقط برای یک‌بار اجرای بک‌فیل. بعد از اجرای موفق و چک‌کردن نتیجه،
+   این فایل رو کامل از پروژه حذف کن (و لینکش رو، اگه به NavMenu اضافه کردی، پاک کن). *@
+@* حتماً همون [Authorize(Roles = "...")] که بقیه صفحات ادمین استفاده می‌کنن رو اینجا هم بگذار
+   تا کاربر عادی نتونه این صفحه رو اجرا کند. *@
+@inject DataProviderService DataProvider
+
+<MudPaper Class="pa-4 ma-4" Outlined="true">
+    <MudText Typo="Typo.h6">بک‌فیل یک‌بارمصرف فلگ تسویه</MudText>
+    <MudText Typo="Typo.body2" Class="mb-2">
+        این دکمه IsPaymentComplete/IsBookPaymentComplete رو برای همه‌ی ردیف‌های موجود
+        (ترم‌های قبل و فعلی) محاسبه می‌کند. اجرای دوباره‌ش هم بی‌خطره (idempotent).
+    </MudText>
+    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="RunBackfill" Disabled="_running">
+        @(_running ? "در حال اجرا..." : "اجرای بک‌فیل")
+    </MudButton>
+    @if (_done)
+    {
+        <MudAlert Severity="Severity.Success" Class="mt-2">
+            بک‌فیل با موفقیت روی @_count ردیف اجرا شد.
+        </MudAlert>
+    }
+</MudPaper>
+
+@code {
+    private bool _running;
+    private bool _done;
+    private int _count;
+
+    private async Task RunBackfill()
+    {
+        _running = true;
+        _count = await Task.Run(() => DataProvider.BackfillPaymentCompleteFlags());
+        _done = true;
+        _running = false;
+    }
+}

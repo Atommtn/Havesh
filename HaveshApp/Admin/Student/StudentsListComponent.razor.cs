@@ -5,6 +5,7 @@ using Havesh.Application.Services;
 using Havesh.Domain.Services;
 using Serilog;
 using HaveshApp.Admin.Authentication;
+using HaveshApp.Admin.Student.Components;
 
 
 namespace HaveshApp.Admin.Student;
@@ -335,24 +336,35 @@ public partial class StudentsListComponent
 		//}
 	}
 
-    private async Task FollowUpClick(ShokouhPardisStudentClass student)
-    {
-        var dialogReference = DialogService.Show<AddNewFollowUpDialog>(
-            " پیگیری " ,
-            new DialogParameters
-            {
-                ["Student"] = student
-            },
-            new DialogOptions()
-            {
-                CloseButton = true,
-                MaxWidth = MaxWidth.Large
-            });
-        var dialogResult = await dialogReference.Result;
-        if (dialogResult.Cancelled == false)
-        {
-	        Log.ForContext("Activity", true).ForContext("EntityType", "Student").ForContext("EntityId", student.Id)
-		        .Warning("User {UserName} Save FollowUp Student {StudentId}", _userSession.Payload.UserName, student.Id);
-        }
-    }
+// جایگزین متد FollowUpClick موجود. تفاوت: الان TermId رو هم به دیالوگ پاس می‌دهد
+// (قبلاً فقط Student پاس داده می‌شد و دیالوگ هیچ context ترمی نداشت). نوع پیش‌فرض
+// از این نقطه‌ی ورودی (لیست عمومی دانشجو) = Educational، چون اینجا منشی/مدیر دستی
+// و بدون محرک خاصی پیگیری ثبت می‌کند (برخلاف ورودی گزارش ریزش که Type=Churn خواهد بود
+// و ورودی حضور و غیاب معلم که Type=TeacherRequested خواهد بود).
+
+	private async Task FollowUpClick(ShokouhPardisStudentClass student)
+	{
+		var termId = Term?.Id ?? TimeTable?.TermId ?? 0;
+
+		var dialogReference = DialogService.Show<AddNewFollowUpDialog>(
+			" پیگیری ",
+			new DialogParameters
+			{
+				["Student"] = student,
+				["TermId"] = termId,
+				["Type"] = FollowUpTypeEnum.Educational
+			},
+			new DialogOptions()
+			{
+				CloseButton = true,
+				MaxWidth = MaxWidth.Large
+			});
+		var dialogResult = await dialogReference.Result;
+		if (dialogResult.Cancelled == false)
+		{
+			Log.ForContext("Activity", true).ForContext("EntityType", "Student").ForContext("EntityId", student.Id)
+				.Warning("User {UserName} Save FollowUp Student {StudentId}", _userSession.Payload.UserName, student.Id);
+		}
+	}
+
 }

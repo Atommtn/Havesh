@@ -348,9 +348,5 @@ public class StudentService
 		return list;
 	}
 
-    public FollowUp GetFollowUp(ShokouhPardisStudentClass student)
-    {
-		//_dbConntext.FollowUp
-        throw new NotImplementedException();
-    }
+   
 }

@@ -193,11 +193,6 @@ public partial class StudentJVReport
 		var shahriehDarInTerm = DataProvider.GetLevelBookPrice(SelectedTerm.Id, ttStdLevel.Level.Id);
 		if (shahriehDarInTerm == null) return false;
 
-		var list = _jvs.Where(x => x.StudentId == ttStudent.Student.Id);
-		int tedadJamPardakhtiShahrieh = list.Count(x => x.FeeFor.Equals("شهریه"));
-		int jamPardakhtiShahrieh = list.Where(x => x.FeeFor.Equals("شهریه")).Sum(x => x.Fee);
-
-		// هیچ پرداختی نکرده یا کمتر از شهریه‌ی ترم پرداخت کرده = بدهکار
-		return tedadJamPardakhtiShahrieh == 0 || jamPardakhtiShahrieh < shahriehDarInTerm.TuitionAmount;
+		return ttStudent.IsPaymentComplete != true;
 	}
 }

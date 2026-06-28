@@ -1,0 +1,122 @@
+﻿
+@using Havesh.Model.Model
+@page "/Admin/DiscountBackfillTools"
+@* صفحه‌ی موقتیه — فقط برای بک‌فیل یک‌بارمصرف تخفیف از روی توضیحات DailyJv.
+   بعد از اجرا و تأیید نتیجه، این فایل رو کامل از پروژه حذف کن.
+   حتماً همون [Authorize(Roles = "...")] که بقیه صفحات ادمین استفاده می‌کنن رو اینجا هم بگذار. *@
+@inject DataProviderService DataProvider
+@inject ISnackbar Snackbar
+
+<MudPaper Class="pa-4 ma-4" Outlined="true">
+    <MudText Typo="Typo.h6">بک‌فیل تخفیف از روی توضیحات DailyJv</MudText>
+    <MudText Typo="Typo.body2" Class="mb-2">
+        توضیحات همه‌ی DailyJv ها (همه‌ی ترم‌ها) را می‌گردد. برای هر دانشجو/ترم، اولین ردیفی که
+        در توضیحاتش عددی شبیه درصد/٪/% پیدا شود ملاک است. هیچ‌چیزی ذخیره نمی‌شود تا روی «اعمال
+        تخفیف‌های انتخاب‌شده» کلیک کنی — قبلش خط‌به‌خط لیست رو چک کن و ردیف‌های نادرست را از تیک بردار.
+    </MudText>
+
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="LoadPreview" Disabled="_loading">
+        @(_loading ? "در حال بررسی..." : "بررسی / Preview")
+    </MudButton>
+
+    @if (_rows != null)
+    {
+        <MudText Typo="Typo.body2" Class="mt-2">
+            @_rows.Count مورد یافت شد — همه از قبل تیک خورده‌اند، می‌تونی مستقیم «اعمال» رو بزنی،
+            یا با دکمه‌های زیر گروهی انتخاب/رد کنی، یا تک‌تک چک‌باکس‌های ردیف رو دستکاری کنی.
+        </MudText>
+
+        <div class="d-flex flex-wrap gap-2 mt-2">
+            <MudButton Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SetAll(true))">انتخاب همه</MudButton>
+            <MudButton Size="Size.Small" Variant="Variant.Outlined" OnClick="@(() => SetAll(false))">هیچ‌کدام</MudButton>
+
+            @foreach (var g in PercentGroups)
+            {
+                <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary"
+                           OnClick="@(() => SetGroup(g.Percent, true))">
+                    انتخاب @g.Percent% (@g.Count نفر)
+                </MudButton>
+                <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Default"
+                           OnClick="@(() => SetGroup(g.Percent, false))">
+                    رد @g.Percent%
+                </MudButton>
+            }
+        </div>
+
+        <MudTable Items="_rows" Class="mt-2" Dense="true" Hover="true">
+            <HeaderContent>
+                <MudTh></MudTh>
+                <MudTh>دانشجو</MudTh>
+                <MudTh>ترم</MudTh>
+                <MudTh>درصد</MudTh>
+                <MudTh>متن توضیحات (DailyJv #)</MudTh>
+                <MudTh>تعداد کلاس</MudTh>
+                <MudTh>از‌قبل تخفیف‌دار</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd><MudCheckBox @bind-Value="context.Selected" /></MudTd>
+                <MudTd>@context.StudentName @context.StudentFamily (#@context.StudentId)</MudTd>
+                <MudTd>@context.TermId</MudTd>
+                <MudTd>@context.ExtractedPercent%</MudTd>
+                <MudTd>@context.MatchedDescription (#@context.MatchedDailyJvId)</MudTd>
+                <MudTd>@context.AffectedTimeTableStudentCount</MudTd>
+                <MudTd>@context.AlreadyDiscountedCount</MudTd>
+            </RowTemplate>
+        </MudTable>
+
+        <MudButton Color="Color.Error" Variant="Variant.Filled" Class="mt-3" OnClick="ApplySelected" Disabled="_applying">
+            @(_applying ? "در حال اعمال..." : "اعمال تخفیف‌های انتخاب‌شده")
+        </MudButton>
+    }
+
+    @if (_appliedCount.HasValue)
+    {
+        <MudAlert Severity="Severity.Success" Class="mt-2">
+            تخفیف روی @_appliedCount ردیف TimeTableStudent اعمال شد.
+        </MudAlert>
+    }
+</MudPaper>
+
+@code {
+    private List<DiscountBackfillPreviewRow>? _rows;
+    private bool _loading;
+    private bool _applying;
+    private int? _appliedCount;
+
+    // گروه‌بندی فقط برای دکمه‌های انتخاب گروهی — لیست اصلی (_rows) دست‌نخورده می‌ماند
+    private IEnumerable<(int Percent, int Count)> PercentGroups =>
+        _rows?.GroupBy(x => x.ExtractedPercent)
+             .Select(g => (Percent: g.Key, Count: g.Count()))
+             .OrderBy(g => g.Percent)
+        ?? Enumerable.Empty<(int, int)>();
+
+    private void SetAll(bool selected)
+    {
+        if (_rows == null) return;
+        foreach (var r in _rows) r.Selected = selected;
+    }
+
+    private void SetGroup(int percent, bool selected)
+    {
+        if (_rows == null) return;
+        foreach (var r in _rows.Where(x => x.ExtractedPercent == percent)) r.Selected = selected;
+    }
+
+    private async Task LoadPreview()
+    {
+        _loading = true;
+        _rows = await Task.Run(() => DataProvider.PreviewDiscountBackfillFromDescription());
+        _loading = false;
+    }
+
+    private async Task ApplySelected()
+    {
+        if (_rows == null) return;
+
+        _applying = true;
+        _appliedCount = await Task.Run(() => DataProvider.ApplyDiscountBackfillFromDescription(_rows));
+        _applying = false;
+
+        Snackbar.Add($"اعمال شد روی {_appliedCount} ردیف.", Severity.Success);
+    }
+}

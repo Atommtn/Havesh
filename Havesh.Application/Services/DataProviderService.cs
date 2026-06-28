@@ -10,6 +10,8 @@ using Havesh.Model.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.RegularExpressions;
 using static Dapper.SqlMapper;
 
 namespace Havesh.Application.Services;
@@ -669,7 +671,9 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 			.ToList();
 		return xx;
 	}
-
+	public ShokouhPardisTimeTableStudent? GetTimeTableStudent(int timeTableId, int studentId)
+		=> DbContext.ShokouhPardisTimeTableStudents
+			.FirstOrDefault(x => x.TimeTableId == timeTableId && x.StudentId == studentId);
 	public int GetTimeTableStudentCount(int timeTableId)
 	{
 		var xx = DbContext.ShokouhPardisTimeTableStudents
@@ -805,13 +809,46 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		return shokouhPardisTimeTables;
 	}
 
+	public void RecalculatePaymentCompleteFlag(int timeTableId, int studentId)
+	{
+		var timeTable = DbContext.ShokouhPardisTimeTables.Find(timeTableId);
+		var levelBookPrice = GetLevelBookPrice(timeTable);
+		if (levelBookPrice == null) return;
 
+		var timeTableStudent = DbContext.ShokouhPardisTimeTableStudents
+			.FirstOrDefault(x => x.TimeTableId == timeTableId && x.StudentId == studentId);
+		if (timeTableStudent == null) return;
+
+		var discount = timeTableStudent.StudentAmountDiscount ?? 0;
+		var effectiveShahrieh = levelBookPrice.TuitionAmount - discount;
+
+		var paidShahrieh = DbContext.ShokouhPardisDailyJvs
+			.Where(d => d.StudentId == studentId && d.TermId == timeTable.TermId
+			                                     && d.FeeFor == "شهریه" && d.IsDeleted == false)
+			.Sum(d => (int?)d.Fee) ?? 0;
+		timeTableStudent.IsPaymentComplete = paidShahrieh >= effectiveShahrieh;
+
+		var paidBook = DbContext.ShokouhPardisDailyJvs
+			.Where(d => d.StudentId == studentId && d.TermId == timeTable.TermId
+			                                     && d.FeeFor == "کتاب" && d.IsDeleted == false)
+			.Sum(d => (int?)d.Fee) ?? 0;
+		timeTableStudent.IsBookPaymentComplete = paidBook >= levelBookPrice.BookPrice;
+
+		DbContext.SaveChanges();
+	}
 	public List<ShokouhPardisDailyJv> GetDaliyJv(DateTime dailyJvCurrentDate)
 	{
 		var JvIds = DbContext.ShokouhPardisDailyJvs.AsQueryable()
 			.Where(x => x.CurrentDate == dailyJvCurrentDate)
 			.ToList();
 		return JvIds;
+	}
+	public void SaveTimeTableStudentDiscount(ShokouhPardisTimeTableStudent timeTableStudent)
+	{
+		DbContext.ShokouhPardisTimeTableStudents.Update(timeTableStudent);
+		SaveAll();
+
+		RecalculatePaymentCompleteFlag(timeTableStudent.TimeTableId, timeTableStudent.StudentId);
 	}
 
 	public int GetTotalDailyJv(DateTime? selectedDate)
@@ -1595,32 +1632,46 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 		;
 	}
 
-    public void SaveEditDailyJV(ShokouhPardisDailyJv dailyJv)
-    {
-        bool isNew = dailyJv.Id == 0;
-        if (isNew)
-        {
-            bool isDuplicate = DailyJVDuplicate(dailyJv);
-            if (isDuplicate)
-                throw new Exception("Duplicated daily JV record");
-        }
+	public void SaveEditDailyJV(ShokouhPardisDailyJv dailyJv)
+	{
+		bool isNew = dailyJv.Id == 0;
+		if (isNew)
+		{
+			bool isDuplicate = DailyJVDuplicate(dailyJv);
+			if (isDuplicate)
+				throw new Exception("Duplicated daily JV record");
+		}
 
-        // قبل از Update، مقدار فعلی رکورد رو (فقط در حالت ویرایش) جدا می‌خونیم تا بشه با مقدار جدید مقایسه کرد
-        ShokouhPardisDailyJv old = null;
-        if (!isNew)
-            old = DbContext.ShokouhPardisDailyJvs.AsNoTracking().FirstOrDefault(x => x.Id == dailyJv.Id);
+		ShokouhPardisDailyJv old = null;
+		if (!isNew)
+			old = DbContext.ShokouhPardisDailyJvs.AsNoTracking().FirstOrDefault(x => x.Id == dailyJv.Id);
 
-        DbContext.ChangeTracker.Clear();
-        DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
-        SaveAll();
+		DbContext.ChangeTracker.Clear();
+		DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
+		SaveAll();
 
-        string changes = isNew
-            ? DescribeDailyJv(dailyJv)
-            : BuildDailyJvDiff(old, dailyJv);
+		string changes = isNew
+			? DescribeDailyJv(dailyJv)
+			: BuildDailyJvDiff(old, dailyJv);
 
-        Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", dailyJv.Id)
-            .Warning("DailyJv {Action} {DailyJvId} {Changes}", isNew ? "Created" : "Updated", dailyJv.Id, changes);
-    }
+		Serilog.Log.ForContext("Activity", true).ForContext("EntityType", "DailyJv").ForContext("EntityId", dailyJv.Id)
+			.Warning("DailyJv {Action} {DailyJvId} {Changes}", isNew ? "Created" : "Updated", dailyJv.Id, changes);
+
+		// به‌روزرسانی فلگ تسویه برای شهریه/کتاب
+		// در SaveEditDailyJV
+		if ((dailyJv.FeeFor == "شهریه" || dailyJv.FeeFor == "کتاب") && dailyJv.TimeTableFk.HasValue)
+		{
+			RecalculatePaymentCompleteFlag(dailyJv.TimeTableFk.Value, dailyJv.StudentId);
+		}
+
+		if (!isNew && old != null &&
+		    (old.FeeFor == "شهریه" || old.FeeFor == "کتاب") &&
+		    (old.StudentId != dailyJv.StudentId || old.TimeTableFk != dailyJv.TimeTableFk) &&
+		    old.TimeTableFk.HasValue)
+		{
+			RecalculatePaymentCompleteFlag(old.TimeTableFk.Value, old.StudentId);
+		}
+	}
 
     private static readonly HashSet<string> DiffIgnoreProps = new()
     {
@@ -1699,25 +1750,39 @@ bool DailyJVDuplicate(ShokouhPardisDailyJv dailyJv)
 
 	public bool DeleteDailyJV(ShokouhPardisDailyJv dailyJv)
 	{
+		var timeTableFk = dailyJv.TimeTableFk;
+		var studentId = dailyJv.StudentId;
+		var feeFor = dailyJv.FeeFor;
+
 		var pr = DbContext.PreRegistrations.FirstOrDefault(
 			x => x.DailyJVFk == dailyJv.Id);
 
+		bool wasPreRegister;
 		if (pr is null)
 		{
-
-			DbContext.ShokouhPardisDailyJvs.Remove(dailyJv);
+			dailyJv.IsDeleted = true;
+			DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 			SaveAll();
-			return false;
+			wasPreRegister = false;
 		}
 		else
 		{
+			// توجه: ردیف PreRegistrations همچنان فیزیکی حذف می‌شه (ربطی به مالی نداره، فقط یک رکورد پیش‌ثبت‌نام موقته)
 			DbContext.PreRegistrations.Remove(pr);
-			DbContext.ShokouhPardisDailyJvs.Remove(dailyJv);
+			dailyJv.IsDeleted = true;
+			DbContext.ShokouhPardisDailyJvs.Update(dailyJv);
 			SaveAll();
-			return true;
+			wasPreRegister = true;
 		}
 
+		if ((feeFor == "شهریه" || feeFor == "کتاب") && timeTableFk.HasValue)
+		{
+			RecalculatePaymentCompleteFlag(timeTableFk.Value, studentId);
+		}
+
+		return wasPreRegister;
 	}
+
 
 	public List<ShokouhPardisDailyJv> GetDailyJvsByTerm(int termId)
 	{
@@ -3084,29 +3149,29 @@ public (List<ChartSeries> Series, List<string> Labels) GetDailyJvSeriesFeeForByW
 
     public void ChangeTimeTableIdAndDailyJVTimeTableId(int studentId, int termId)
     {
-        try
-        {
-            var sql = "Update TimeTableStudent Set ";
-            var timeTableStudent = DbContext.ShokouhPardisTimeTableStudents
-                .First(x => x.StudentId == studentId &&
-                            x.TimeTable.TermId == termId);
-            timeTableStudent.TimeTableId = 3466;
-            DbContext.ShokouhPardisTimeTableStudents.Update(timeTableStudent);
-            var dailyJvs = DbContext.ShokouhPardisDailyJvs
-                .Where(x => x.StudentId == studentId && x.TermId == termId).ToList();
-            foreach (var dJv in dailyJvs)
-            {
-                dJv.TimeTableFk = 3466;
-            }
-            DbContext.ShokouhPardisDailyJvs.UpdateRange(dailyJvs);
-            SaveAll();
+	    try
+	    {
+		    var timeTableStudent = DbContext.ShokouhPardisTimeTableStudents
+			    .First(x => x.StudentId == studentId &&
+			                x.TimeTable.TermId == termId);
+		    timeTableStudent.TimeTableId = 3466;
+		    DbContext.ShokouhPardisTimeTableStudents.Update(timeTableStudent);
+		    var dailyJvs = DbContext.ShokouhPardisDailyJvs
+			    .Where(x => x.StudentId == studentId && x.TermId == termId).ToList();
+		    foreach (var dJv in dailyJvs)
+		    {
+			    dJv.TimeTableFk = 3466;
+		    }
+		    DbContext.ShokouhPardisDailyJvs.UpdateRange(dailyJvs);
+		    SaveAll();
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+		    RecalculatePaymentCompleteFlag(3466, studentId);
+	    }
+	    catch (Exception ex)
+	    {
+		    Console.WriteLine(ex.Message);
+		    throw;
+	    }
     }
     IDbContextTransaction? _transaction;
 
@@ -3245,13 +3310,190 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 }
 
 
-private void AddParam(System.Data.Common.DbCommand cmd, string name, object value)
-{
-    var p = cmd.CreateParameter();
-    p.ParameterName = name;
-    p.Value = value;
-    cmd.Parameters.Add(p);
-}
+	private void AddParam(System.Data.Common.DbCommand cmd, string name, object value)
+	{
+	    var p = cmd.CreateParameter();
+	    p.ParameterName = name;
+	    p.Value = value;
+	    cmd.Parameters.Add(p);
+	}
 
+	public int BackfillPaymentCompleteFlags()
+	{
+		var allTimeTableStudents = DbContext.ShokouhPardisTimeTableStudents
+			.Select(x => new { x.TimeTableId, x.StudentId })
+			.ToList();
+
+		foreach (var ts in allTimeTableStudents)
+		{
+			RecalculatePaymentCompleteFlag(ts.TimeTableId, ts.StudentId);
+		}
+
+		return allTimeTableStudents.Count;
+	}
+	
+	
+	public void SaveFollowUp(FollowUp followUp)
+	{
+		if (followUp.Id == 0)
+			DbContext.FollowUps.Add(followUp);
+		else
+			DbContext.FollowUps.Update(followUp);
+
+		SaveAll();
+	}
+
+// صف منشی: همه‌ی پیگیری‌های هنوز انجام‌نشده (هر نوعی)
+	public List<FollowUp> GetPendingFollowUps()
+		=> DbContext.FollowUps
+			.Where(x => !x.IsResolved)
+			.Include(x => x.Student)
+			.Include(x => x.Term)
+			.OrderBy(x => x.RequestDate)
+			.ToList();
+
+// تاریخچه‌ی کامل پیگیری‌های یک دانشجو (برای نمایش در دیالوگ/پروفایل)
+	public List<FollowUp> GetFollowUpsByStudent(int studentId)
+		=> DbContext.FollowUps
+			.Where(x => x.StudentId == studentId)
+			.OrderByDescending(x => x.RequestDate)
+			.ToList();
+
+// برای گزارش ریزش: آیا این دانشجو در این ترم پیگیری ریزش داشته و نتیجه‌اش چیه (مدیر این رو می‌بیند)
+	public FollowUp? GetLatestChurnFollowUp(int studentId, int termId)
+		=> DbContext.FollowUps
+			.Where(x => x.StudentId == studentId && x.TermId == termId && x.Type == FollowUpTypeEnum.Churn)
+			.OrderByDescending(x => x.RequestDate)
+			.FirstOrDefault();
+
+	 public List<DiscountBackfillPreviewRow> PreviewDiscountBackfillFromDescription()
+    {
+        var result = new List<DiscountBackfillPreviewRow>();
+
+        var terms = DbContext.ShokouhPardisTermClasses.ToList();
+
+        foreach (var term in terms)
+        {
+            var jvsInTerm = DbContext.ShokouhPardisDailyJvs
+                .Where(x => x.TermId == term.Id && !string.IsNullOrEmpty(x.Description))
+                .OrderBy(x => x.Id) // #1 — کمترین Id = اولین ردیف
+                .ToList();
+
+            if (jvsInTerm.Count == 0) continue;
+
+            var matchPerStudent = jvsInTerm
+                .GroupBy(x => x.StudentId)
+                .Select(g => new
+                {
+                    StudentId = g.Key,
+                    Matched = g.Select(jv => new { Jv = jv, Percent = TryExtractPercent(jv.Description) })
+                               .FirstOrDefault(x => x.Percent.HasValue)
+                })
+                .Where(x => x.Matched != null)
+                .ToList();
+
+            if (matchPerStudent.Count == 0) continue;
+
+            var allTimeTables = GetTimeTableByTerm(term);          // #3
+            var allTimeTableStudents = GetTimeTableStudents(allTimeTables);
+
+            foreach (var m in matchPerStudent)
+            {
+                var ttsForStudent = allTimeTableStudents.Where(x => x.StudentId == m.StudentId).ToList();
+                if (ttsForStudent.Count == 0) continue; // این دانشجو در این ترم هیچ کلاسی ندارد
+
+                var alreadyDiscounted = ttsForStudent.Count(x =>
+                    (x.StudentPercentDiscount ?? 0) > 0 || (x.StudentAmountDiscount ?? 0) > 0);
+
+                var firstStudent = ttsForStudent.First().Student;
+
+                result.Add(new DiscountBackfillPreviewRow
+                {
+                    StudentId = m.StudentId,
+                    StudentName = firstStudent?.StudentName,
+                    StudentFamily = firstStudent?.StudentFamily,
+                    TermId = term.Id,
+                    MatchedDailyJvId = m.Matched!.Jv.Id,
+                    MatchedDescription = m.Matched!.Jv.Description,
+                    ExtractedPercent = m.Matched!.Percent!.Value,
+                    AffectedTimeTableStudentCount = ttsForStudent.Count,
+                    AlreadyDiscountedCount = alreadyDiscounted
+                });
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// نوشتنی. فقط روی ردیف‌هایی که از صفحه‌ی Preview با Selected=true تأیید شدن اجرا می‌شود.
+    /// برای هر ردیف، تمام TimeTableStudentهای آن دانشجو در آن ترم که هنوز تخفیفی ندارن
+    /// (#2) آپدیت می‌شوند: StudentPercentDiscount + StudentAmountDiscount (#4) + Recalculate.
+    /// </summary>
+    public int ApplyDiscountBackfillFromDescription(List<DiscountBackfillPreviewRow> confirmedRows)
+    {
+        int updatedCount = 0;
+
+        foreach (var row in confirmedRows.Where(x => x.Selected))
+        {
+            var term = DbContext.ShokouhPardisTermClasses.First(x => x.Id == row.TermId);
+
+            var allTimeTables = GetTimeTableByTerm(term);
+            var allTimeTableStudents = GetTimeTableStudents(allTimeTables);
+
+            var ttsForStudent = allTimeTableStudents.Where(x => x.StudentId == row.StudentId).ToList();
+
+            foreach (var tts in ttsForStudent)
+            {
+                // #2 — اگه از قبل تخفیف داره، دستکاری نکن
+                if ((tts.StudentPercentDiscount ?? 0) > 0 || (tts.StudentAmountDiscount ?? 0) > 0)
+                    continue;
+
+                ShokouhPardisLevelBookPrice? price = tts.TimeTable != null
+                    ? GetLevelBookPrice(tts.TimeTable)
+                    : null;
+
+                tts.StudentPercentDiscount = row.ExtractedPercent;
+                tts.StudentAmountDiscount = price != null
+                    ? (int)Math.Round(price.TuitionAmount * row.ExtractedPercent / 100.0) // #4
+                    : null;
+
+                DbContext.ShokouhPardisTimeTableStudents.Update(tts);
+                updatedCount++;
+
+                RecalculatePaymentCompleteFlag(tts.TimeTableId, tts.StudentId);
+            }
+        }
+
+        SaveAll();
+        return updatedCount;
+    }
+
+    private static int? TryExtractPercent(string? description)
+    {
+        if (string.IsNullOrWhiteSpace(description)) return null;
+
+        var normalized = NormalizePersianArabicDigits(description);
+
+        var match = Regex.Match(normalized, @"(\d{1,3})\s*(?:%|٪|درصد)");
+        if (!match.Success) return null;
+
+        if (!int.TryParse(match.Groups[1].Value, out var percent)) return null;
+        if (percent < 1 || percent > 100) return null;
+
+        return percent;
+    }
+
+    private static string NormalizePersianArabicDigits(string input)
+    {
+        var sb = new StringBuilder(input.Length);
+        foreach (var c in input)
+        {
+            if (c >= '۰' && c <= '۹') sb.Append((char)(c - '۰' + '0'));      // فارسی U+06F0..U+06F9
+            else if (c >= '٠' && c <= '٩') sb.Append((char)(c - '٠' + '0')); // عربی  U+0660..U+0669
+            else sb.Append(c);
+        }
+        return sb.ToString();
+    }
 }
 
