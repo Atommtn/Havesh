@@ -503,9 +503,8 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	{
 		return DbContext.ShokouhPardisLevelBookPrices
 			.FirstOrDefault(x =>
-				//x.YearId == timeTable.Term.Year.YearClassId &&
-				x.TermId == timeTable.Term.Id &&
-				x.LevelId == timeTable.Level.Id);
+				x.TermId == timeTable.TermId &&
+				x.LevelId == timeTable.LevelId);
 	}
 
 	public ShokouhPardisLevelBookPrice? GetLevelBookPrice(int termId, int levelId)
@@ -812,6 +811,8 @@ public class DataProviderService : IAsyncDisposable , IDisposable
 	public void RecalculatePaymentCompleteFlag(int timeTableId, int studentId)
 	{
 		var timeTable = DbContext.ShokouhPardisTimeTables.Find(timeTableId);
+		if (timeTable == null) return;
+
 		var levelBookPrice = GetLevelBookPrice(timeTable);
 		if (levelBookPrice == null) return;
 
@@ -3324,12 +3325,21 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 			.Select(x => new { x.TimeTableId, x.StudentId })
 			.ToList();
 
+		int processed = 0;
 		foreach (var ts in allTimeTableStudents)
 		{
-			RecalculatePaymentCompleteFlag(ts.TimeTableId, ts.StudentId);
+			try
+			{
+				RecalculatePaymentCompleteFlag(ts.TimeTableId, ts.StudentId);
+				processed++;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"BackfillPaymentCompleteFlags failed for TimeTableId={ts.TimeTableId}, StudentId={ts.StudentId}: {ex.Message}");
+			}
 		}
 
-		return allTimeTableStudents.Count;
+		return processed;
 	}
 	
 	
