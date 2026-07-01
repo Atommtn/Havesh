@@ -4,7 +4,7 @@
 @* حتماً همون [Authorize(Roles = "...")] که بقیه صفحات ادمین استفاده می‌کنن رو اینجا هم بگذار
    تا کاربر عادی نتونه این صفحه رو اجرا کند. *@
 @inject DataProviderService DataProvider
-
+@inject IServiceScopeFactory ScopeFactory
 <MudPaper Class="pa-4 ma-4" Outlined="true">
     <MudText Typo="Typo.h6">بک‌فیل یک‌بارمصرف فلگ تسویه</MudText>
     <MudText Typo="Typo.body2" Class="mb-2">
@@ -27,11 +27,17 @@
     private bool _done;
     private int _count;
 
-    private async Task RunBackfill()
+
+private async Task RunBackfill()
+{
+    _running = true;
+    _count = await Task.Run(() =>
     {
-        _running = true;
-        _count = await Task.Run(() => DataProvider.BackfillPaymentCompleteFlags());
-        _done = true;
-        _running = false;
+        using var scope = ScopeFactory.CreateScope();
+    var dataProvider = scope.ServiceProvider.GetRequiredService<DataProviderService>();
+        return dataProvider.BackfillPaymentCompleteFlags();
+    });
+    _done = true;
+    _running = false;
     }
 }
