@@ -3322,6 +3322,7 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 	public int BackfillPaymentCompleteFlags()
 	{
 		var allTimeTableStudents = DbContext.ShokouhPardisTimeTableStudents
+			.IgnoreQueryFilters()   // ← bypass BranchFk filter
 			.Select(x => new { x.TimeTableId, x.StudentId })
 			.ToList();
 
@@ -3330,7 +3331,7 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 		{
 			try
 			{
-				RecalculatePaymentCompleteFlag(ts.TimeTableId, ts.StudentId);
+				RecalculatePaymentCompleteFlagAdmin(ts.TimeTableId, ts.StudentId);
 				processed++;
 			}
 			catch (Exception ex)
@@ -3338,11 +3339,43 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 				Console.WriteLine($"BackfillPaymentCompleteFlags failed for TimeTableId={ts.TimeTableId}, StudentId={ts.StudentId}: {ex.Message}");
 			}
 		}
-
 		return processed;
 	}
 	
-	
+	private void RecalculatePaymentCompleteFlagAdmin(int timeTableId, int studentId)
+	{
+		var timeTable = DbContext.ShokouhPardisTimeTables
+			.IgnoreQueryFilters()
+			.FirstOrDefault(x => x.Id == timeTableId);
+		if (timeTable == null) return;
+
+		var levelBookPrice = GetLevelBookPrice(timeTable);
+		if (levelBookPrice == null) return;
+
+		var timeTableStudent = DbContext.ShokouhPardisTimeTableStudents
+			.IgnoreQueryFilters()
+			.FirstOrDefault(x => x.TimeTableId == timeTableId && x.StudentId == studentId);
+		if (timeTableStudent == null) return;
+
+		var discount = timeTableStudent.StudentAmountDiscount ?? 0;
+		var effectiveShahrieh = levelBookPrice.TuitionAmount - discount;
+
+		var paidShahrieh = DbContext.ShokouhPardisDailyJvs
+			.IgnoreQueryFilters()
+			.Where(d => d.StudentId == studentId && d.TermId == timeTable.TermId
+			                                     && d.FeeFor == "شهریه" && d.IsDeleted == false)
+			.Sum(d => (int?)d.Fee) ?? 0;
+		timeTableStudent.IsPaymentComplete = paidShahrieh >= effectiveShahrieh;
+
+		var paidBook = DbContext.ShokouhPardisDailyJvs
+			.IgnoreQueryFilters()
+			.Where(d => d.StudentId == studentId && d.TermId == timeTable.TermId
+			                                     && d.FeeFor == "کتاب" && d.IsDeleted == false)
+			.Sum(d => (int?)d.Fee) ?? 0;
+		timeTableStudent.IsBookPaymentComplete = paidBook >= levelBookPrice.BookPrice;
+
+		DbContext.SaveChanges();
+	}
 	public void SaveFollowUp(FollowUp followUp)
 	{
 		if (followUp.Id == 0)
