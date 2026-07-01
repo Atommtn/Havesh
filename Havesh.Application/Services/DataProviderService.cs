@@ -3322,7 +3322,7 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 	public int BackfillPaymentCompleteFlags()
 	{
 		var allTimeTableStudents = DbContext.ShokouhPardisTimeTableStudents
-			.IgnoreQueryFilters()   // ← bypass BranchFk filter
+			.IgnoreQueryFilters()
 			.Select(x => new { x.TimeTableId, x.StudentId })
 			.ToList();
 
@@ -3338,6 +3338,9 @@ public List<ActivityLogEntry> GetActivityLogs(DateTime? from, DateTime? to, stri
 			{
 				Console.WriteLine($"BackfillPaymentCompleteFlags failed for TimeTableId={ts.TimeTableId}, StudentId={ts.StudentId}: {ex.Message}");
 			}
+
+			if (processed % 500 == 0)
+				DbContext.ChangeTracker.Clear(); // ← جلوگیری از O(N²) در SaveChanges
 		}
 		return processed;
 	}
